@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uef-gen"
+version = "0.1.0"
+description = "Standalone embedded project builder for UEF"
+requires-python = ">=3.11"
+dependencies = ["PyYAML>=6", "jsonschema>=4"]
+
+[project.optional-dependencies]
+templates = ["Jinja2>=3"]
+hardware-discovery = ["pyusb>=1.2", "pyserial>=3.5"]
+pyocd = ["pyocd>=0.36"]
+
+[project.scripts]
+uef-gen = "uef_gen.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+uef_gen = ["schemas/*.json", "uef_source/*.json", "uef_source/**/*"]

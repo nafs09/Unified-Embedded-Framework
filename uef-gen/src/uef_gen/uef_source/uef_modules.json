@@ -1,0 +1,812 @@
+{
+  "schema_version": "1.0",
+  "uef_version": "1.1.0",
+  "headers_root": "include",
+  "modules": {
+    "uhal/arm_cm": {
+      "sources": [
+        "src/uhal/arm_cm/core.c",
+        "src/uhal/arm_cm/clock.c",
+        "src/uhal/arm_cm/gpio.c",
+        "src/uhal/arm_cm/irq.c",
+        "src/uhal/arm_cm/atomic.c",
+        "src/uhal/arm_cm/cache.c",
+        "src/uhal/arm_cm/fault.c",
+        "src/uhal/arm_cm/memory.c",
+        "src/uhal/arm_cm/timing.c"
+      ],
+      "headers_root": "include",
+      "dependencies": [
+        "ucore"
+      ]
+    },
+    "upal/dma": {
+      "sources": [
+        "src/upal/dma/dma.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/uart": {
+      "sources": [
+        "src/upal/uart/uart.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/spi": {
+      "sources": [
+        "src/upal/spi/spi.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/i2c": {
+      "sources": [
+        "src/upal/i2c/i2c.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/adc": {
+      "sources": [
+        "src/upal/adc/adc.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/dac": {
+      "sources": [
+        "src/upal/dac/dac.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/timer": {
+      "sources": [
+        "src/upal/timer/timer.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/hrtim": {
+      "sources": [
+        "src/upal/hrtim/hrtim.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/timer"
+      ],
+      "requires_cap": [
+        "hrtim"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/can": {
+      "sources": [
+        "src/upal/can/can.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "requires_cap": [
+        "can"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/usb": {
+      "sources": [
+        "src/upal/usb/usb.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/qspi": {
+      "sources": [
+        "src/upal/qspi/qspi.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/flash": {
+      "sources": [
+        "src/upal/flash/flash.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/iwdg": {
+      "sources": [
+        "src/upal/iwdg/iwdg.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/wwdg": {
+      "sources": [
+        "src/upal/wwdg/wwdg.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/rtc": {
+      "sources": [
+        "src/upal/rtc/rtc.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/comp": {
+      "sources": [
+        "src/upal/comp/comp.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "requires_cap": [
+        "comp"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/opamp": {
+      "sources": [
+        "src/upal/opamp/opamp.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "requires_cap": [
+        "opamp"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/cordic": {
+      "sources": [
+        "src/upal/cordic/cordic.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "requires_cap": [
+        "cordic"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "upal/fmac": {
+      "sources": [
+        "src/upal/fmac/fmac.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "requires_cap": [
+        "fmac"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uos/freertos": {
+      "sources": [
+        "src/uos/freertos/uos_freertos.c"
+      ],
+      "dependencies": [
+        "uos"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "external_dependencies": [
+        "FreeRTOS kernel and target port supplied by the firmware project"
+      ]
+    },
+    "uos/baremetal": {
+      "sources": [
+        "src/uos/baremetal/uos_baremetal.c"
+      ],
+      "dependencies": [
+        "uos"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/ringbuf": {
+      "sources": [
+        "src/umid/ringbuf.c"
+      ],
+      "dependencies": [],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/log": {
+      "sources": [
+        "src/umid/log.c"
+      ],
+      "dependencies": [
+        "uos",
+        "upal/uart",
+        "umid/ringbuf"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/fatfs": {
+      "sources": [
+        "src/umid/fatfs.c"
+      ],
+      "dependencies": [
+        "upal/sdmmc"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [
+        "UEF_ENABLE_FATFS=1"
+      ],
+      "requires_cap": [
+        "sdmmc"
+      ],
+      "external_dependencies": [
+        "FatFS ff.h and diskio.h supplied by the firmware project"
+      ]
+    },
+    "umid/health": {
+      "sources": [
+        "src/umid/health.c"
+      ],
+      "dependencies": [],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/imu": {
+      "sources": [
+        "src/umid/imu.c"
+      ],
+      "dependencies": [
+        "upal/spi",
+        "upal/i2c",
+        "umid/ringbuf"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/encoder": {
+      "sources": [
+        "src/umid/encoder.c"
+      ],
+      "dependencies": [
+        "upal/timer"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/current": {
+      "sources": [
+        "src/umid/current.c"
+      ],
+      "dependencies": [
+        "upal/adc"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/voltage": {
+      "sources": [
+        "src/umid/voltage.c"
+      ],
+      "dependencies": [
+        "upal/adc"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/pressure": {
+      "sources": [
+        "src/umid/pressure.c"
+      ],
+      "dependencies": [
+        "upal/spi",
+        "upal/i2c"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/temp": {
+      "sources": [
+        "src/umid/temp.c"
+      ],
+      "dependencies": [
+        "upal/spi",
+        "upal/i2c",
+        "upal/adc"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/mag": {
+      "sources": [
+        "src/umid/mag.c"
+      ],
+      "dependencies": [
+        "upal/i2c"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/range": {
+      "sources": [
+        "src/umid/range.c"
+      ],
+      "dependencies": [
+        "upal/uart",
+        "upal/i2c"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "umid/gnss": {
+      "sources": [
+        "src/umid/gnss.c"
+      ],
+      "dependencies": [
+        "upal/uart",
+        "umid/ringbuf"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uproto/dshot": {
+      "sources": [
+        "src/uproto/dshot.c"
+      ],
+      "dependencies": [
+        "upal/timer",
+        "upal/uart",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uproto/crsf": {
+      "sources": [
+        "src/uproto/crsf.c"
+      ],
+      "dependencies": [
+        "upal/uart",
+        "umid/ringbuf"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uproto/mavlink": {
+      "sources": [
+        "src/uproto/mavlink.c"
+      ],
+      "dependencies": [
+        "upal/uart",
+        "umid/ringbuf"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uproto/uavcan": {
+      "sources": [
+        "src/uproto/uavcan.c"
+      ],
+      "dependencies": [
+        "upal/can"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uproto/sbus": {
+      "sources": [
+        "src/uproto/sbus.c"
+      ],
+      "dependencies": [
+        "upal/uart",
+        "umid/ringbuf"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uapp/lifecycle": {
+      "sources": [
+        "src/uapp/lifecycle.c"
+      ],
+      "dependencies": [
+        "uos"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uapp/statemachine": {
+      "sources": [
+        "src/uapp/statemachine.c"
+      ],
+      "dependencies": [],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uapp/supervisor": {
+      "sources": [
+        "src/uapp/supervisor.c"
+      ],
+      "dependencies": [
+        "umid/health"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "uapp/fault": {
+      "sources": [
+        "src/uapp/fault.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/rtc"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ]
+    },
+    "ucore": {
+      "sources": [
+        "src/ucore/assert.c",
+        "src/ucore/math.c",
+        "src/ucore/status.c",
+        "src/ucore/time.c"
+      ],
+      "dependencies": [],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    },
+    "uhal": {
+      "sources": [],
+      "dependencies": [
+        "ucore"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    },
+    "uhal/x86": {
+      "sources": [
+        "src/uhal/x86/core.c",
+        "src/uhal/x86/clock.c",
+        "src/uhal/x86/gpio.c",
+        "src/uhal/x86/irq.c",
+        "src/uhal/x86/atomic.c",
+        "src/uhal/x86/cache.c",
+        "src/uhal/x86/fault.c",
+        "src/uhal/x86/memory.c",
+        "src/uhal/x86/timing.c"
+      ],
+      "dependencies": [
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [
+        "UHAL_HOST_SIMULATION=1"
+      ],
+      "required_capabilities": []
+    },
+    "uos": {
+      "sources": [],
+      "dependencies": [
+        "ucore",
+        "uhal"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    },
+    "upal": {
+      "sources": [],
+      "dependencies": [
+        "upal/dma",
+        "upal/uart",
+        "upal/spi",
+        "upal/i2c"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    },
+    "upal/sdmmc": {
+      "sources": [
+        "src/upal/sdmmc/sdmmc.c"
+      ],
+      "dependencies": [
+        "uhal",
+        "upal/dma"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "requires_cap": [
+        "sdmmc"
+      ],
+      "external_dependencies": [
+        "Board-specific SDMMC clock, DMA, and card-detect wiring"
+      ]
+    },
+    "umid": {
+      "sources": [],
+      "dependencies": [
+        "umid/ringbuf",
+        "umid/health"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    },
+    "uproto": {
+      "sources": [],
+      "dependencies": [],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    },
+    "uapp": {
+      "sources": [],
+      "dependencies": [
+        "uapp/lifecycle",
+        "uapp/statemachine",
+        "uapp/supervisor",
+        "uapp/fault"
+      ],
+      "headers_root": "include",
+      "include_directories": [
+        "include"
+      ],
+      "defines": [],
+      "required_capabilities": []
+    }
+  },
+  "peripheral_provides": {
+    "UART": [
+      "upal/uart"
+    ],
+    "LPUART": [
+      "upal/uart"
+    ],
+    "SPI": [
+      "upal/spi"
+    ],
+    "I2C": [
+      "upal/i2c"
+    ],
+    "ADC": [
+      "upal/adc"
+    ],
+    "DAC": [
+      "upal/dac"
+    ],
+    "TIMER": [
+      "upal/timer"
+    ],
+    "HRTIM": [
+      "upal/hrtim"
+    ],
+    "CAN": [
+      "upal/can"
+    ],
+    "FDCAN": [
+      "upal/can"
+    ],
+    "USB": [
+      "upal/usb"
+    ],
+    "QSPI": [
+      "upal/qspi"
+    ],
+    "IWDG": [
+      "upal/iwdg"
+    ],
+    "WWDG": [
+      "upal/wwdg"
+    ],
+    "RTC": [
+      "upal/rtc"
+    ],
+    "FLASH": [
+      "upal/flash"
+    ],
+    "COMP": [
+      "upal/comp"
+    ],
+    "OPAMP": [
+      "upal/opamp"
+    ],
+    "CORDIC": [
+      "upal/cordic"
+    ],
+    "FMAC": [
+      "upal/fmac"
+    ],
+    "SDMMC": [
+      "upal/sdmmc"
+    ]
+  },
+  "protocol_provides": {
+    "DSHOT": [
+      "uproto/dshot"
+    ],
+    "DSHOT_UART": [
+      "uproto/dshot"
+    ],
+    "CRSF": [
+      "uproto/crsf"
+    ],
+    "SBUS": [
+      "uproto/sbus"
+    ],
+    "MAVLINK": [
+      "uproto/mavlink"
+    ],
+    "UAVCAN": [
+      "uproto/uavcan"
+    ],
+    "DRONECAN": [
+      "uproto/uavcan"
+    ]
+  }
+}

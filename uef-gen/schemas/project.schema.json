@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/uef-gen-project-1.0.schema.json",
+  "title": "uef-gen hardware project configuration",
+  "type": "object",
+  "required": ["target"],
+  "properties": {
+    "project": {"type": "object", "properties": {"name": {"type": "string", "minLength": 1}}, "additionalProperties": true},
+    "target": {
+      "type": "object", "required": ["chip"],
+      "properties": {
+        "chip": {"type": "string", "minLength": 1},
+        "arithmetic": {"enum": ["float32", "float64", "q15", "q31", "custom"]},
+        "rtos": {"type": "string", "minLength": 1}
+      }, "additionalProperties": true
+    },
+    "modules": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "protocols": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "required_capabilities": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "peripherals": {
+      "oneOf": [
+        {"type": "array", "items": {"$ref": "#/$defs/peripheral"}},
+        {"type": "object", "additionalProperties": {"$ref": "#/$defs/peripheralConfig"}}
+      ]
+    },
+    "clock": {"type": "object", "properties": {"constraints": {"type": "array", "items": {"type": "object", "required": ["domain", "frequency_hz"], "properties": {"domain": {"type": "string"}, "frequency_hz": {"type": "integer", "minimum": 1}, "tolerance_ppm": {"type": "integer", "minimum": 0}}, "additionalProperties": true}}}, "additionalProperties": true},
+    "memory": {"type": "object", "properties": {"flash_bytes": {"type": "integer", "minimum": 0}, "sram_bytes": {"type": "integer", "minimum": 0}}, "additionalProperties": true},
+    "rtos": {"oneOf": [{"type": "string"}, {"type": "object", "properties": {"name": {"type": "string"}, "tick_us": {"type": "integer", "minimum": 1}}, "additionalProperties": true}]},
+    "tasks": {"type": "array", "items": {"type": "object", "properties": {"name": {"type": "string"}, "period_us": {"type": "integer", "minimum": 1}, "priority": {"type": "integer"}, "stack_bytes": {"type": "integer", "minimum": 0}}, "required": ["period_us"], "additionalProperties": true}},
+    "defines": {"type": "array", "items": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*(=.*)?$"}},
+    "compiler_flags": {"type": "array", "items": {"type": "string"}},
+    "ucon": {
+      "type": "object",
+      "properties": {
+        "subsystems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "rate_hz", "execution_context"],
+            "properties": {
+              "name": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"},
+              "rate_hz": {"type": "number", "exclusiveMinimum": 0},
+              "execution_context": {"type": "string", "minLength": 1},
+              "isr_source": {"type": "string"},
+              "inputs": {"type": "array", "items": {"$ref": "#/$defs/inputSignal"}},
+              "outputs": {"type": "array", "items": {"$ref": "#/$defs/outputSignal"}}
+            },
+            "additionalProperties": true
+          }
+        },
+        "transforms": {"type": "object", "additionalProperties": {"type": "string"}}
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "peripheralConfig": {"type": "object", "properties": {"type": {"type": "string"}, "pins": {"type": "object", "additionalProperties": {"type": "string"}}, "dma": {"type": "object", "additionalProperties": {"type": "string"}}, "irq_priority": {"type": "integer"}}, "additionalProperties": true},
+    "peripheral": {"allOf": [{"$ref": "#/$defs/peripheralConfig"}, {"type": "object", "required": ["instance"], "properties": {"instance": {"type": "string", "minLength": 1}}}]},
+    "signalCommon": {
+      "type": "object",
+      "required": ["name", "units", "type"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "units": {"type": "string", "minLength": 1},
+        "type": {"enum": ["float32", "q31"]},
+        "range": {"type": "array", "prefixItems": [{"type": "number"}, {"type": "number"}], "minItems": 2, "maxItems": 2},
+        "range_min": {"type": "number"},
+        "range_max": {"type": "number"}
+      },
+      "additionalProperties": true
+    },
+    "signalSource": {
+      "type": "object",
+      "required": ["peripheral"],
+      "properties": {
+        "peripheral": {"type": "string", "minLength": 1},
+        "index": {"type": "integer", "minimum": 0},
+        "transform": {"type": "string", "minLength": 1},
+        "output_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "signalSink": {
+      "type": "object",
+      "required": ["peripheral", "output"],
+      "properties": {
+        "peripheral": {"type": "string", "minLength": 1},
+        "output": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "inputSignal": {
+      "allOf": [
+        {"$ref": "#/$defs/signalCommon"},
+        {"type": "object", "required": ["source"], "properties": {"source": {"$ref": "#/$defs/signalSource"}}}
+      ]
+    },
+    "outputSignal": {
+      "allOf": [
+        {"$ref": "#/$defs/signalCommon"},
+        {"type": "object", "required": ["sink"], "properties": {"sink": {"$ref": "#/$defs/signalSink"}}}
+      ]
+    }
+  },
+  "additionalProperties": true
+}

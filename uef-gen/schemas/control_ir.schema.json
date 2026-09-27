@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/control-ir-1.0.schema.json",
+  "title": "NEXUS ControlIR",
+  "type": "object",
+  "required": ["schema_version", "subsystem", "target", "execution_groups", "nodes", "edges", "interface", "composite_nodes"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "subsystem": {"type": "object", "required": ["name"], "properties": {"name": {"type": "string", "minLength": 1}}, "additionalProperties": true},
+    "target": {"type": "object", "required": ["chip", "arithmetic", "rtos"], "properties": {"chip": {"type": "string"}, "arithmetic": {"type": "string"}, "rtos": {"type": "string"}}, "additionalProperties": true},
+    "execution_groups": {"type": "array", "items": {"type": "object", "required": ["id", "rate_hz", "context", "priority", "deadline_us", "stack_bytes", "isr_source", "node_ids"], "properties": {"id": {"type": "string"}, "rate_hz": {"type": "number", "exclusiveMinimum": 0}, "context": {"type": "string"}, "priority": {"type": "integer"}, "deadline_us": {"type": "integer", "minimum": 0}, "stack_bytes": {"type": "integer", "minimum": 0}, "isr_source": {"type": "string"}, "node_ids": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": true}},
+    "nodes": {"type": "array", "items": {"type": "object", "required": ["id", "type", "subtype", "execution_group", "inputs", "outputs"], "properties": {"id": {"type": "string", "minLength": 1}, "type": {"type": "string", "minLength": 1}, "subtype": {"type": "string"}, "execution_group": {"type": "string"}, "inputs": {"type": "array", "items": {"$ref": "#/$defs/port"}}, "outputs": {"type": "array", "items": {"$ref": "#/$defs/port"}}, "model": {"type": "object"}, "features": {"type": "object"}, "structural_constants": {"type": "object"}, "config_params": {"type": "object"}, "plant_constants": {"type": "object"}}, "additionalProperties": true}},
+    "edges": {"type": "array", "items": {"type": "object", "required": ["id", "source", "target", "signal", "rate_bridge"], "properties": {"id": {"type": "string"}, "source": {"$ref": "#/$defs/endpoint"}, "target": {"$ref": "#/$defs/endpoint"}, "signal": {"type": "string"}, "rate_bridge": {"oneOf": [{"type": "object"}, {"type": "null"}]}}, "additionalProperties": true}},
+    "interface": {"type": "object", "required": ["sensor_inputs", "actuator_outputs"], "properties": {"sensor_inputs": {"type": "array"}, "actuator_outputs": {"type": "array"}}, "additionalProperties": true},
+    "composite_nodes": {"type": "array", "items": {"type": "object", "required": ["id", "role", "internal_graph"], "properties": {"id": {"type": "string"}, "role": {"type": ["string", "integer"]}, "internal_graph": {"type": "object"}}, "additionalProperties": true}}
+  },
+  "$defs": {
+    "port": {"type": "object", "required": ["id", "name", "dtype", "units", "dimension", "optional"], "properties": {"id": {"type": "string"}, "name": {"type": "string"}, "dtype": {"type": "string"}, "units": {"type": "string"}, "dimension": {"type": "integer", "minimum": 1}, "optional": {"type": "boolean"}}, "additionalProperties": true},
+    "endpoint": {"type": "object", "required": ["node", "port"], "properties": {"node": {"type": "string"}, "port": {"type": "string"}}, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "uef_version": "1.1.0",
+  "upal_api": {
+    "upal/adc": {
+      "read_single_channel": {
+        "c_function": "upal_adc_dma_result",
+        "signature": "uint16_t upal_adc_dma_result(const upal_adc_t*, uint8_t ch)",
+        "header": "uef/upal/upal_adc.h"
+      }
+    },
+    "upal/hrtim": {
+      "set_duty": {
+        "c_function": "upal_hrtim_set_duty",
+        "signature": "void upal_hrtim_set_duty(upal_hrtim_t*, upal_hrtim_timer_t, uint32_t)",
+        "header": "uef/upal/upal_hrtim.h",
+        "enum_values": [
+          "UPAL_HRTIM_TIMER_A",
+          "UPAL_HRTIM_TIMER_B",
+          "UPAL_HRTIM_TIMER_C",
+          "UPAL_HRTIM_TIMER_D",
+          "UPAL_HRTIM_TIMER_E"
+        ]
+      }
+    },
+    "upal/timer": {
+      "set_duty": {
+        "c_function": "upal_timer_pwm_set_duty",
+        "signature": "void upal_timer_pwm_set_duty(upal_timer_t*, uint8_t ch, uint32_t duty)",
+        "header": "uef/upal/upal_timer.h"
+      }
+    },
+    "upal/uart": {
+      "transmit_dma": {
+        "c_function": "upal_uart_tx_dma",
+        "signature": "uef_status_t upal_uart_tx_dma(upal_uart_t*, const uint8_t*, uint32_t, upal_dma_callback_t, void*)",
+        "header": "uef/upal/upal_uart.h"
+      },
+      "rx_read": {
+        "c_function": "upal_uart_rx_read",
+        "signature": "uint32_t upal_uart_rx_read(upal_uart_t*, uint8_t*, uint32_t)",
+        "header": "uef/upal/upal_uart.h"
+      }
+    },
+    "upal/can": {
+      "transmit": {
+        "c_function": "upal_can_transmit",
+        "signature": "uef_status_t upal_can_transmit(upal_can_t*, const upal_can_frame_t*, uint32_t timeout_ms)",
+        "header": "uef/upal/upal_can.h"
+      },
+      "transmit_async": {
+        "c_function": "upal_can_transmit_async",
+        "signature": "uef_status_t upal_can_transmit_async(upal_can_t*, const upal_can_frame_t*)",
+        "header": "uef/upal/upal_can.h"
+      }
+    },
+    "upal/dac": {
+      "write": {
+        "c_function": "upal_dac_write",
+        "signature": "void upal_dac_write(upal_dac_t*, uint8_t channel, uint16_t value_12bit)",
+        "header": "uef/upal/upal_dac.h"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "uef-gen to NEXUS response",
+  "type": "object",
+  "required": ["contract_version", "ok", "diagnostics"],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "ok": {"type": "boolean"},
+    "output_directory": {"type": "string"},
+    "manifest": {"type": "object"},
+    "diagnostics": {"type": "array", "items": {"type": "object", "required": ["severity", "code", "message"], "properties": {"severity": {"enum": ["error", "warning", "info"]}, "code": {"type": "string"}, "message": {"type": "string"}, "location": {"type": "string"}}, "additionalProperties": false}}
+  },
+  "additionalProperties": false
+}

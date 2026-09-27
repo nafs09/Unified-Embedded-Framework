@@ -1,0 +1,5 @@
+{
+  "project": {"name": "reference-project"},
+  "target": {"chip": "generic-reference", "arithmetic": "float32", "rtos": "baremetal"},
+  "modules": ["uapp"]
+}
