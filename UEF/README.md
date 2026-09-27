@@ -1,57 +1,84 @@
 # Unified Embedded Framework (UEF)
 
-UEF is the standalone, C-first embedded runtime described by the **UEF Architecture and API Specification V1.1**. It has no NEXUS or Python runtime dependency. `uef-gen` is a separate project-construction tool; NEXUS can invoke it over the documented JSON subprocess contract.
+UEF is a C11 framework for embedded systems. It provides portable interfaces and source modules for hardware access, peripheral drivers, middleware, protocols, operating-system integration, and application lifecycle management. Framework modules are compiled into a firmware project; UEF is not an operating system or a ready-made application.
 
-Every function declared by the current public runtime headers has a matching source definition, so the tree has a linkable starting point for each module. Many definitions are deliberately nonfunctional scaffolds: status-returning functions return `UEF_NOT_SUPPORTED`, value-returning functions return a neutral value, and each body has a concrete implementation TODO. Treat those as unimplemented behavior, not as working drivers. The portable UCORE routines, host-simulation UHAL pieces, lifecycle/supervisor pieces, basic ring-buffer byte-copy operations, and selected UOS services have behavior; the ring buffer's cross-context memory-ordering contract still needs review. The TODO and architecture-status documents distinguish working behavior from placeholders.
+## Layers
 
-## Layer map
+| Layer | Role |
+|---|---|
+| `ucore` | Shared types, status codes, math, time, and assertions |
+| `uhal` | CPU, GPIO, interrupts, memory, timing, and target boundary |
+| `upal` | Peripheral access such as UART, SPI, I2C, DMA, timers, and storage |
+| `uos` | Bare-metal and FreeRTOS operating-system abstraction |
+| `umid` | Reusable middleware and sensor-facing APIs |
+| `uproto` | Protocol interfaces and implementations |
+| `uapp` | Component lifecycle, state machines, supervision, and fault handling |
+| `ucon` | Planned home for reusable control algorithms and templates; currently incomplete |
 
-| Layer | Owns | Public headers |
-|---|---|---|
-| UCORE | Scalar types, status, time, assertions, limits, math | `include/uef/ucore` |
-| UHAL | CPU, clock, GPIO, IRQ, atomics, cache, faults, memory | `include/uef/uhal` |
-| UPAL | DMA and peripheral drivers, including the Phase 0 raw SDMMC block boundary | `include/uef/upal` |
-| UOS | Microsecond time, static task and synchronization APIs | `include/uef/uos` |
-| UMID | Sensors, logging, health, ring buffer, and optional FatFS diskio binding | `include/uef/umid` |
-| UPROTO | DSHOT, CRSF, SBUS, MAVLink, and UAVCAN bindings | `include/uef/uproto` |
-| UAPP | Component lifecycle, state machine, supervisor, fault handling | `include/uef/uapp` |
-| UCON | Intended UEF-owned control and estimation algorithms/assets; uef-gen will select and assemble the needed UEF content | The current catalogue is intentionally sparse; algorithms and the generator handoff are not yet specified |
+The public headers are under `include/uef/`, with implementations under `src/`. `uef_modules.json` describes modules and dependencies, while `uef_api.json` records peripheral API metadata.
 
-`include/uef/uef.h` is the public umbrella for the current runtime scaffold. Its UCON surface will be defined with the UEF-owned algorithm designs and handoff contract.
-
-## Source organization
-
-- `src/ucore`: shared status, timing, assertion, and math implementations.
-- `src/uhal/arm_cm`: Cortex-M target work isolated from portable modules.
-- `src/uhal/x86`: host simulation behavior; host clocks and GPIO are not hardware accurate.
-- `src/upal/<peripheral>`: one implementation file per peripheral contract.
-- `src/uos/{baremetal,freertos}`: mutually selected scheduler backends.
-- `src/umid`, `src/uproto`, `src/uapp`: one source file per named module.
-- `templates/ucon` and `include/uef/ucon`: currently documentation-only placeholders. UEF is the intended home for UCON algorithms and reusable assets, but the transfer/design work and uef-gen consumption contract are not complete. Treat generator-side UCON code as transitional; do not copy it into UEF as a substitute for the algorithm designs.
-
-The source files define the public API even when hardware or algorithm behavior is pending. A status of `UEF_NOT_SUPPORTED` or a neutral getter value means the implementation has not been connected; do not treat it as a successful no-op. Cortex-M fault handlers fail-stop until exception-frame capture and persistent fault reporting are implemented.
+The layer boundaries keep portable code above hardware-specific implementations: UPAL drivers use UHAL interfaces, middleware sits above the peripheral APIs, and application lifecycle helpers coordinate components. Target selection happens at configure time so a build selects one UHAL backend rather than mixing host simulation with a firmware backend.
 
 ## Build
 
-Host simulation with the single-loop bare-metal UOS backend:
+Requirements: CMake 3.20 or newer and a C11 compiler. The host target is a simulation/testing boundary, not a substitute for hardware validation.
 
 ```powershell
-cmake -S . -B out/build/host -DUEF_TARGET=HOST -DUEF_UOS_BACKEND=BAREMETAL -DUEF_BUILD_EXAMPLE=ON
-cmake --build out/build/host
+cmake -S . -B build -DUEF_TARGET=HOST -DUEF_UOS_BACKEND=BAREMETAL
+cmake --build build
 ```
 
-For a Cortex-M build, configure `UEF_TARGET=CORTEX_M`, `UEF_CMSIS_INCLUDE_DIR`, and `UEF_CMSIS_DEVICE_HEADER` for the selected vendor/device package. The target modules still need a verified board implementation and linker/startup integration before they can drive hardware.
+To include the minimal lifecycle example, configure with `-DUEF_BUILD_EXAMPLE=ON`:
 
-For FreeRTOS, set `UEF_UOS_BACKEND=FREERTOS`, `UEF_FREERTOS_INCLUDE_DIR`, and, when available, `UEF_FREERTOS_TARGET` to the target that supplies the kernel and port. UEF does not vendor the FreeRTOS kernel here.
+```powershell
+cmake -S . -B build -DUEF_TARGET=HOST -DUEF_UOS_BACKEND=BAREMETAL -DUEF_BUILD_EXAMPLE=ON
+cmake --build build
+```
 
-## SDMMC Phase 0 and FatFS boundary
+For Cortex-M, set `UEF_TARGET=CORTEX_M` and provide `UEF_CMSIS_INCLUDE_DIR` and `UEF_CMSIS_DEVICE_HEADER` for the selected device. FreeRTOS and FatFS are optional external dependencies configured through the corresponding CMake variables; neither is bundled here.
 
-`upal_sdmmc` is the Phase 0 hardware transfer boundary: it describes card identification, capacity/CID, 512-byte block transfers, DMA callbacks, blocking operations, erase, and controller/DMA handlers. The public block address/count types currently follow the specification's 32-bit contract. The functions are scaffolds until a selected board's controller and DMA/cache behavior are implemented. Filesystem operations stay above UPAL; the optional UMID `umid_fatfs` adapter supplies FatFS diskio callbacks without vendoring FatFS itself.
+The main build options are:
 
-Enable the binding with `UEF_ENABLE_FATFS=ON` and set `UEF_FATFS_INCLUDE_DIR` to the external FatFS headers. The firmware project supplies the FatFS version, `ffconf.h`, and any FatFS target/library. `UEF_FATFS_TARGET` can name an existing CMake target when one is available.
+| CMake option | Values / purpose |
+|---|---|
+| `UEF_TARGET` | `HOST` for simulation, or `CORTEX_M` for the CMSIS-backed target boundary |
+| `UEF_UOS_BACKEND` | `BAREMETAL` or `FREERTOS` |
+| `UEF_BUILD_EXAMPLE` | Build the minimal component-lifecycle executable |
+| `UEF_ENABLE_FATFS` | Include the optional FatFS diskio adapter; requires an external FatFS package |
 
-## Manifests and generated snapshots
+## Minimal API example
 
-`uef_modules.json` describes granular source dependencies for `uef-gen`, including host/ARM UHAL selection, Phase 0 SDMMC, and the optional FatFS binding's external dependency. `uef_api.json` contains the UPAL signal-binding operations listed by the specification. Keep both synchronized with the headers.
+The checked-in `examples/minimal/` demonstrates the UAPP lifecycle API. A component supplies initialization/start callbacks, then transitions through the framework lifecycle functions:
 
-UEF is the source of truth. `uef-gen/src/uef_gen/uef_source` is a content-verified release snapshot, not a second implementation. Refresh it and its SHA-256 metadata together when publishing a UEF version.
+```c
+#include "uef/uapp/uapp_lifecycle.h"
+
+static uef_status_t init(void* ctx)  { (void)ctx; return UEF_OK; }
+static uef_status_t start(void* ctx) { (void)ctx; return UEF_OK; }
+static void stop(void* ctx)          { (void)ctx; }
+
+uapp_component_t component = {
+    .state = UAPP_STATE_CREATED,
+    .name = "sensor",
+    .init = init,
+    .start = start,
+    .stop = stop,
+};
+
+if (uapp_component_init(&component) == UEF_OK &&
+    uapp_component_start(&component) == UEF_OK) {
+    uapp_component_stop(&component);
+}
+```
+
+This demonstrates component state transitions only; it does not configure hardware or show a complete embedded application.
+
+## Examples
+
+`examples/minimal/` exercises the component lifecycle without board-specific peripherals. Other example folders describe hardware scenarios, but their board configuration and driver behavior may be placeholders. Read each example's README before treating it as runnable on a target.
+
+## Current implementation status
+
+The source tree includes useful portable foundations and linkable API surfaces, but many target-dependent drivers are scaffolds. Cortex-M operations still need device-specific implementations and board validation; protocol parsing, sensor behavior, and complete middleware are also unfinished. UCON algorithms, public types, metadata, and their generation contract are still being designed. A declared function or module does not by itself mean its behavior is implemented.
+
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the source-to-contract status map and [`TODO.md`](TODO.md) for the implementation sequence.
