@@ -1,0 +1,33 @@
+{
+  "id": "c2000-piccolo",
+  "vendor": "Texas Instruments",
+  "family": "C2000",
+  "series": "F28027/F28069 Piccolo",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "TI C28x"
+  ],
+  "core_notes": "Phase 3; non-Arm backend.",
+  "roadmap_phase": 3,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "TMS320F28027",
+    "TMS320F28069"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "IQMath",
+    "ePWM",
+    "eCAP",
+    "eQEP"
+  ],
+  "source_references": [
+    "ti"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

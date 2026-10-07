@@ -1,5 +1,5 @@
 /// @file include/uef/upal/upal_wwdg.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UPAL_WWDG_H
 #define UPAL_WWDG_H

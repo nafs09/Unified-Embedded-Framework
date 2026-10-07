@@ -1,0 +1,35 @@
+{
+  "sources": [
+    "src/ucon/filtering/runtime/biquad_cascade.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/filtering/runtime/biquad_cascade.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "BIQUAD_CASCADE",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_biquad_cascade_validate_config",
+    "ucon_biquad_cascade_init",
+    "ucon_biquad_cascade_reset",
+    "ucon_biquad_cascade_update_state",
+    "ucon_biquad_cascade_process_sample"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

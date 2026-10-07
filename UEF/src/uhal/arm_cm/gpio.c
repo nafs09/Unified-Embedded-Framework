@@ -1,5 +1,5 @@
 /// @file src/uhal/arm_cm/gpio.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_gpio.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uhal/uhal_gpio.h.
 ///
 /// Implementation intent: Implement GPIO mode, speed, pull, alternate-function, and BSRR
 ///   operations for the chosen MCU family.

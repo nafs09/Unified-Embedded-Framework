@@ -1,0 +1,37 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": true,
+  "direct_use": true,
+  "renderable": true,
+  "domain": "ucon",
+  "family": "control/classical",
+  "description": "P, PI, PD, PID, and 2-DOF configurations of one implementation.",
+  "implementation_notes": "Implemented in the generic C API and exposed through a thin named wrapper. The application still supplies validated typed configuration and maps ControlIR ports to wrapper arguments.",
+  "outputs": [
+    {
+      "template": "ucon/wrappers/pid.h.tmpl",
+      "output": "ucon/{{ node.model.symbol_prefix }}_pid.h"
+    }
+  ],
+  "modules": [
+    "ucon/core",
+    "ucon/control/pid"
+  ],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [
+    {
+      "code": "ucon_configuration_and_port_binding",
+      "message": "Populate the typed UCON configuration from ControlIR design values, connect graph input/output ports to the generated wrapper, and verify units, sample time, limits, and anti-windup tracking before target use.",
+      "required_before_hardware_use": true
+    }
+  ],
+  "spec_section": "Part XVI",
+  "api_header": "uef/ucon/control/pid.h",
+  "api_functions": [
+    "ucon_pid_init",
+    "ucon_pid_reset",
+    "ucon_pid_step"
+  ],
+  "contract_status": "implemented_review_required"
+}

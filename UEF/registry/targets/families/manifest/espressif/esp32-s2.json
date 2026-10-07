@@ -1,0 +1,32 @@
+{
+  "id": "esp32-s2",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32-S2",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Xtensa LX7"
+  ],
+  "core_notes": "Single-core Wi-Fi family.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ESP32-S2"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "ESP-IDF",
+    "memory/peripherals"
+  ],
+  "source_references": [
+    "esp_portfolio",
+    "esp_selector",
+    "esp_idf"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

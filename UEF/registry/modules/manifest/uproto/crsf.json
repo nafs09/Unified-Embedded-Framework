@@ -1,0 +1,21 @@
+{
+  "sources": [
+    "src/uproto/crsf.c"
+  ],
+  "dependencies": [
+    "upal/uart",
+    "umid/ringbuf"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_cache.h",
+    "include/uef/uhal/uhal_gpio.h",
+    "include/uef/umid/umid_ringbuf.h",
+    "include/uef/upal/upal_dma.h",
+    "include/uef/upal/upal_uart.h",
+    "include/uef/uproto/uproto_crsf.h"
+  ]
+}

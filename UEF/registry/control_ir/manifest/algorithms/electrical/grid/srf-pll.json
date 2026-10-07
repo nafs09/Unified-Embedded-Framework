@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "electrical/grid",
+  "description": "Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention. Family contract work: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/electrical/grid/srf_pll.h",
+  "scaffold_source": "src/ucon/electrical/grid/srf_pll.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/electrical/grid/srf_pll",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check phase sequence, nominal frequency, gains, and grid limits.",
+      "todo": "Declare sequence and per-unit/scaling conventions. Algorithm-specific focus: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize orthogonal-signal, sequence, phase, and loop states.",
+      "todo": "Define phase seed and acquisition range. Algorithm-specific focus: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear synchronization history and lock persistence.",
+      "todo": "Define loss-of-lock and restart behavior. Algorithm-specific focus: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention."
+    },
+    {
+      "name": "update_signal_model",
+      "purpose": "Update SOGI/sequence or synchronous-frame signal estimates.",
+      "todo": "Specify frequency adaptation and sample-time coupling. Algorithm-specific focus: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention."
+    },
+    {
+      "name": "update_loop",
+      "purpose": "Update phase/frequency and lock/quality state.",
+      "todo": "Define anti-windup, bounds, and units. Algorithm-specific focus: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one grid sample and publish synchronization outputs.",
+      "todo": "Reject invalid amplitude/sequence inputs without poisoning state. Algorithm-specific focus: Synchronous-reference-frame phase-locked loop for three-phase grid synchronization using an explicitly declared transform convention."
+    }
+  ]
+}

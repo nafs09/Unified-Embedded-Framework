@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/umath/lie/so3.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/lie/so3.h",
+    "include/uef/umath/quaternion.h",
+    "include/uef/umath/status.h",
+    "include/uef/umath/vector3.h"
+  ],
+  "dependencies": [
+    "umath/core",
+    "umath/vector3",
+    "umath/quaternion"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Project-priority mathematical scaffold; functions remain UMATH_NOT_IMPLEMENTED and are blocked from generation until implemented.",
+  "contract_status": "catalogue_only",
+  "phase": 0
+}

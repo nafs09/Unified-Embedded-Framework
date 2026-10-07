@@ -1,0 +1,59 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "signal_processing",
+  "family": "signal_processing/analysis",
+  "description": "Sub-bin frequency estimate from a declared interpolator around a detected spectral peak.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Sub-bin frequency estimate from a declared interpolator around a detected spectral peak. Family contract work: declare sample format/timebase, transform sign and scaling, window/latency, fixed-buffer length, aliasing, accumulator range, and reset/startup behavior. Select interpolation rule/window and define peak selection, boundary bins, and confidence output. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare sample format/timebase, transform sign and scaling, window/latency, fixed-buffer length, aliasing, accumulator range, and reset/startup behavior.",
+    "Select interpolation rule/window and define peak selection, boundary bins, and confidence output.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/signal_processing/analysis/spectral_peak_interpolation",
+  "scaffold_header": "include/uef/ucon/future/signal_processing/analysis/spectral_peak_interpolation.h",
+  "scaffold_source": "src/ucon/future/signal_processing/analysis/spectral_peak_interpolation.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check transform/statistic/rate dimensions and numeric range.",
+      "todo": "Define sample layout, scale, rate, and fixed buffer size. Algorithm-specific focus: Sub-bin frequency estimate from a declared interpolator around a detected spectral peak."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize window, phase, ring buffer, and accumulator.",
+      "todo": "Define warm-up and reset behavior. Algorithm-specific focus: Sub-bin frequency estimate from a declared interpolator around a detected spectral peak."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear signal history and phase/index state.",
+      "todo": "State ownership of coefficient/window tables. Algorithm-specific focus: Sub-bin frequency estimate from a declared interpolator around a detected spectral peak."
+    },
+    {
+      "name": "process_block",
+      "purpose": "Process one bounded block or fixed-rate sample group.",
+      "todo": "Define latency, overlap, scaling, and overflow behavior. Algorithm-specific focus: Sub-bin frequency estimate from a declared interpolator around a detected spectral peak."
+    },
+    {
+      "name": "step",
+      "purpose": "Advance the algorithm and publish output/validity metadata.",
+      "todo": "Specify incomplete-block and dropped-sample behavior. Algorithm-specific focus: Sub-bin frequency estimate from a declared interpolator around a detected spectral peak."
+    }
+  ]
+}

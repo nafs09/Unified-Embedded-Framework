@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "aerospace/navigation",
+  "description": "Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate. Family contract work: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/aerospace/navigation/gnss_carrier_pll.h",
+  "scaffold_source": "src/ucon/aerospace/navigation/gnss_carrier_pll.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/aerospace/navigation/gnss_carrier_pll",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check sensor dimensions, frames, timing, and noise parameters.",
+      "todo": "Distinguish raw observables from position/velocity fixes. Algorithm-specific focus: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize navigation state, covariance, and sensor history.",
+      "todo": "Define alignment and initial-uncertainty requirements. Algorithm-specific focus: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset filter history for the selected coupling mode.",
+      "todo": "Define recovery after invalid IMU/GNSS intervals. Algorithm-specific focus: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate."
+    },
+    {
+      "name": "propagate_imu",
+      "purpose": "Propagate state/covariance over one IMU interval.",
+      "todo": "Define integration, bias, gravity/coordinate model, and gap handling. Algorithm-specific focus: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate."
+    },
+    {
+      "name": "update_gnss",
+      "purpose": "Apply a fix or raw-observable measurement update.",
+      "todo": "Define lever arm, time alignment, validity, and rejected-satellite behavior. Algorithm-specific focus: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate."
+    },
+    {
+      "name": "step",
+      "purpose": "Coordinate IMU propagation with available GNSS updates.",
+      "todo": "Bound measurements and preserve the prior solution on failure. Algorithm-specific focus: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators are separate."
+    }
+  ]
+}

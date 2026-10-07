@@ -1,0 +1,38 @@
+{
+  "id": "stm32-g4",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32G4",
+  "parent_series": null,
+  "aliases": [
+    "stm32g4xx"
+  ],
+  "architectures": [
+    "Cortex-M4F"
+  ],
+  "core_notes": "Phase 0 mixed-signal scaffold.",
+  "roadmap_phase": 0,
+  "catalogue_status": "phase0_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32G474RE"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "DMAMUX",
+    "HRTIM",
+    "FDCAN",
+    "CORDIC",
+    "FMAC",
+    "OPAMP"
+  ],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "stm32g4xx"
+}

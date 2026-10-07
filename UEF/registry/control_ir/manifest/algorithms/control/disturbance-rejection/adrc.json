@@ -1,0 +1,64 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/disturbance_rejection",
+  "description": "Active disturbance rejection controller composed around a declared extended-state observer (ESO).",
+  "implementation_notes": "Define the augmented disturbance state, observer bandwidth, input gain/sign, controller law, saturation, and whether ESO is reused or composed as a distinct module. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/disturbance_rejection/adrc.h",
+  "scaffold_source": "src/ucon/control/disturbance_rejection/adrc.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/disturbance_rejection/adrc",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define the augmented disturbance state, observer bandwidth, input gain/sign, controller law, saturation, and whether ESO is reused or composed as a distinct module.",
+    "Specify the augmented disturbance state, observer bandwidth, input gain/sign, controller law, saturation, and whether the generic ESO is reused or composed as a distinct instance."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check plant/input gain and disturbance-state model.",
+      "todo": "State bandwidth, sign, and matched-disturbance assumptions. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize observer and controller state.",
+      "todo": "Define state seed and bounded observer transient. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset disturbance estimate and controller history.",
+      "todo": "Specify bumpless restart behavior. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+    },
+    {
+      "name": "update_observer",
+      "purpose": "Update extended-state/disturbance estimate.",
+      "todo": "Define discretization, noise sensitivity, and estimation limits. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+    },
+    {
+      "name": "compute_control",
+      "purpose": "Compute a bounded command from reference and estimates.",
+      "todo": "Define compensation sign, actuator saturation, and fallback interface. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+    },
+    {
+      "name": "step",
+      "purpose": "Run observer and controller in the specified order.",
+      "todo": "Commit state only after all checks succeed. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+    }
+  ]
+}

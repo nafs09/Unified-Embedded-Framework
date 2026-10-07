@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/predictive/nmpc_rti.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/predictive/nmpc_rti.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "NMPC_RTI",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_nmpc_rti_validate_problem",
+    "ucon_nmpc_rti_init",
+    "ucon_nmpc_rti_reset",
+    "ucon_nmpc_rti_prepare_step",
+    "ucon_nmpc_rti_feedback_step",
+    "ucon_nmpc_rti_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

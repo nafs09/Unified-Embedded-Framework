@@ -1,0 +1,56 @@
+{
+  "id": "stm32f722ret6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-f7",
+  "series": "STM32F7",
+  "part_number": "STM32F722RET6",
+  "aliases": [
+    "STM32F722RE"
+  ],
+  "roadmap_phase": 0,
+  "core": {
+    "name": "Cortex-M7",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 216000000
+  },
+  "package": {
+    "name": "LQFP64",
+    "pin_count": 64
+  },
+  "memory": {
+    "flash_bytes": 524288,
+    "sram_bytes": 262144
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "USB",
+    "SDMMC"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32F722RE product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f722re.html"
+    },
+    {
+      "title": "ST STM32F722xx datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32f722rc.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Selected F7 single-core M7 variant; headline facts only. No pin mux, DMA routing or clock tree is asserted."
+}

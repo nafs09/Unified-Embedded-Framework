@@ -1,0 +1,41 @@
+/*
+ * {{ node.model.symbol_prefix }}_dshot.c
+ * Binds the UEF DSHOT implementation to this project's selected transport.
+ * TODO: verify timer clock/prescaler or UART oversampling, pin mux, DMA
+ * ownership, and idle polarity before enabling ESC output.
+ */
+#include "{{ node.model.symbol_prefix }}_dshot.h"
+
+{% if node.subtype == "DSHOT_UART" or node.config_params.transport == "uart" %}
+uef_status_t {{ node.model.symbol_prefix }}_dshot_init(
+    {{ node.model.symbol_prefix }}_dshot_t *instance,
+    upal_uart_t *uart)
+{
+    if (instance == NULL || uart == NULL) {
+        return UEF_INVALID_ARG;
+    }
+
+    instance->protocol.rate = UPROTO_DSHOT{{ node.config_params.rate | int }};
+    instance->protocol.transport = UPROTO_DSHOT_TRANSPORT_UART;
+    instance->protocol.uart.uart = uart;
+    return uproto_dshot_init(&instance->protocol);
+}
+{% elif node.config_params.transport == "timer_dma" %}
+uef_status_t {{ node.model.symbol_prefix }}_dshot_init(
+    {{ node.model.symbol_prefix }}_dshot_t *instance,
+    upal_timer_t *timer,
+    uef_u8_t timer_channel)
+{
+    if (instance == NULL || timer == NULL) {
+        return UEF_INVALID_ARG;
+    }
+
+    instance->protocol.rate = UPROTO_DSHOT{{ node.config_params.rate | int }};
+    instance->protocol.transport = UPROTO_DSHOT_TRANSPORT_TIMER;
+    instance->protocol.timer.timer = timer;
+    instance->protocol.timer.channel = timer_channel;
+    return uproto_dshot_init(&instance->protocol);
+}
+{% else %}
+#error "DSHOT requires config_params.transport to be 'timer_dma' or 'uart'"
+{% endif %}

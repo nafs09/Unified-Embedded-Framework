@@ -1,5 +1,5 @@
 /// @file include/uef/umid/umid_current.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UMID_CURRENT_H
 #define UMID_CURRENT_H

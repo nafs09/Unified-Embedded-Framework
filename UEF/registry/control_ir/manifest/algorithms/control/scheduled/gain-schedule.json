@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/scheduled",
+  "description": "Interpolation between configured linear controllers.",
+  "implementation_notes": "Define the scheduling variable, grid/interpolation, hysteresis, transition continuity, and controller-state transfer. This is scheduled control; do not imply online parameter adaptation. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/scheduled/gain_schedule.h",
+  "scaffold_source": "src/ucon/control/scheduled/gain_schedule.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/scheduled/gain_schedule",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define the scheduling variable, grid/interpolation, hysteresis, transition continuity, and controller-state transfer. This is scheduled control; do not imply online parameter adaptation."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_schedule",
+      "purpose": "Check schedule grid, gain dimensions, and scheduling-variable bounds.",
+      "todo": "Define grid order, extrapolation, and compatible controller modes. Algorithm-specific focus: Interpolation between configured linear controllers."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize active schedule cell and interpolation state.",
+      "todo": "Define first selection without stale state. Algorithm-specific focus: Interpolation between configured linear controllers."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset transition and hysteresis state.",
+      "todo": "Specify transition behavior after grid changes. Algorithm-specific focus: Interpolation between configured linear controllers."
+    },
+    {
+      "name": "select_gains",
+      "purpose": "Interpolate/select gains from the declared scheduling variable.",
+      "todo": "Define interpolation, hysteresis, and numeric bounds. Algorithm-specific focus: Interpolation between configured linear controllers."
+    },
+    {
+      "name": "transfer_state",
+      "purpose": "Map controller state during a gain/mode transition.",
+      "todo": "Define bumpless transfer and incompatible-state handling. Algorithm-specific focus: Interpolation between configured linear controllers."
+    },
+    {
+      "name": "step",
+      "purpose": "Apply the scheduled controller and publish selected-cell diagnostics.",
+      "todo": "Keep schedule selection separate from plant parameter adaptation. Algorithm-specific focus: Interpolation between configured linear controllers."
+    }
+  ]
+}

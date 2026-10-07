@@ -1,0 +1,56 @@
+{
+  "id": "lpc55s69jev98",
+  "vendor": "NXP",
+  "family_id": "lpc55xx",
+  "series": "LPC55S6x",
+  "part_number": "LPC55S69JEV98",
+  "aliases": [
+    "LPC55S69"
+  ],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "Dual Cortex-M33",
+    "isa": "Armv8-M",
+    "count": 2,
+    "fpu": "single precision",
+    "max_frequency_hz": 150000000
+  },
+  "package": {
+    "name": "VFBGA98",
+    "pin_count": 98
+  },
+  "memory": {
+    "flash_bytes": 655360,
+    "sram_bytes": 327680
+  },
+  "peripheral_groups": [
+    "DMA",
+    "USB",
+    "SDIO",
+    "SPI",
+    "I2C",
+    "USART",
+    "ADC",
+    "crypto"
+  ],
+  "source_references": [
+    {
+      "title": "NXP LPC55S6x product page",
+      "url": "https://www.nxp.com/products/LPC55S6x"
+    },
+    {
+      "title": "NXP LPC55S6x product data sheet",
+      "url": "https://www.nxp.com/docs/en/data-sheet/LPC55S6x.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core_count",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Dual-core LPC55S69. Maximum clock and memory are family/device headline values; core-specific startup and ownership are not described here."
+}

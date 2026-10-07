@@ -5,7 +5,6 @@
 /// source location, and message before entering their board fault path.
 
 #include "uef/ucore/uef_assert.h"
-#include "uef/uhal/target.h"
 
 #include <stdlib.h>
 

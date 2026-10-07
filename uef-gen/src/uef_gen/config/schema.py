@@ -18,7 +18,17 @@ def validate_configuration(config: dict[str, Any]) -> list[Diagnostic]:
         validator_type = jsonschema.validators.validator_for(document)
         validator = validator_type(document)
         issues = sorted(
-            validator.iter_errors(config),
+            (
+                issue
+                for issue in validator.iter_errors(config)
+                # The offline validator emits a more actionable diagnostic
+                # for unsupported `uef.*` keys, so avoid a duplicate generic
+                # additionalProperties message for the same object.
+                if not (
+                    issue.validator == "additionalProperties"
+                    and tuple(issue.absolute_path) == ("uef",)
+                )
+            ),
             key=lambda issue: list(map(str, issue.absolute_path)),
         )
         diagnostics.extend(
@@ -49,13 +59,60 @@ def _minimal_validation(config: dict[str, Any]) -> list[Diagnostic]:
     if not isinstance(target, dict) or not isinstance(target.get("chip"), str) or not target["chip"]:
         return [error("hardware_config_target", "target.chip is required")]
     diagnostics: list[Diagnostic] = []
-    for key in ("modules", "protocols", "required_capabilities", "tasks", "compiler_flags"):
+    if "toolchain" in target and (
+        not isinstance(target["toolchain"], str) or not target["toolchain"].strip()
+    ):
+        diagnostics.append(
+            error("hardware_config_toolchain", "target.toolchain must be a non-empty profile name", "target.toolchain")
+        )
+    freertos = target.get("freertos")
+    if freertos is not None:
+        if not isinstance(freertos, dict):
+            diagnostics.append(error("hardware_config_type", "target.freertos must be an object", "target.freertos"))
+        elif "tick_hz" in freertos and (
+            not isinstance(freertos["tick_hz"], (int, float))
+            or isinstance(freertos["tick_hz"], bool)
+            or freertos["tick_hz"] <= 0
+        ):
+            diagnostics.append(error("hardware_config_tick_invalid", "target.freertos.tick_hz must be positive", "target.freertos.tick_hz"))
+    for key in ("modules", "required_capabilities", "compiler_flags"):
         if key in config and not isinstance(config[key], list):
             diagnostics.append(error("hardware_config_type", f"{key} must be an array", key))
+    for key in ("protocols", "tasks"):
+        if key in config and not isinstance(config[key], (list, dict)):
+            diagnostics.append(error("hardware_config_type", f"{key} must be an array or mapping", key))
     if "peripherals" in config and not isinstance(config["peripherals"], (list, dict)):
         diagnostics.append(error("hardware_config_type", "peripherals must be an array or mapping", "peripherals"))
-    if "ucon" in config and not isinstance(config["ucon"], dict):
-        diagnostics.append(error("hardware_config_type", "ucon must be an object", "ucon"))
+    if "ucon" in config:
+        diagnostics.append(error(
+            "hardware_config_ucon_removed",
+            "UCON details are supplied through NEXUS ControlIR and UEF-owned templates, not hardware configuration",
+            "ucon",
+        ))
+    if "uef" in config:
+        uef = config["uef"]
+        if not isinstance(uef, dict):
+            diagnostics.append(error("hardware_config_type", "uef must be an object", "uef"))
+        else:
+            unsupported = sorted(set(uef) - {"path", "extra_modules"})
+            for key in unsupported:
+                diagnostics.append(error(
+                    "hardware_config_uef_option_unsupported",
+                    f"uef.{key} is not a supported project option; locate and version UEF with UEF_PATH/uef.path and its version.json",
+                    f"uef.{key}",
+                ))
+            if "path" in uef and (not isinstance(uef["path"], str) or not uef["path"].strip()):
+                diagnostics.append(error("hardware_config_uef_path", "uef.path must be a non-empty path string", "uef.path"))
+            extra_modules = uef.get("extra_modules", [])
+            if not isinstance(extra_modules, list) or any(
+                not isinstance(module, str) or not module.strip()
+                for module in extra_modules
+            ):
+                diagnostics.append(error(
+                    "hardware_config_uef_modules",
+                    "uef.extra_modules must be an array of non-empty UEF module names",
+                    "uef.extra_modules",
+                ))
     rtos = config.get("rtos")
     if rtos is not None and not isinstance(rtos, (str, dict)):
         diagnostics.append(error("hardware_config_type", "rtos must be a name or settings object", "rtos"))

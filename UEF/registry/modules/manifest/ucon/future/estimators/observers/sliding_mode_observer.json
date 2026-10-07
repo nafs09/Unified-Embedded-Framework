@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/estimators/observers/sliding_mode_observer.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/estimators/observers/sliding_mode_observer.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "SLIDING_MODE_OBSERVER",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_sliding_mode_observer_validate_model",
+    "ucon_sliding_mode_observer_init",
+    "ucon_sliding_mode_observer_reset",
+    "ucon_sliding_mode_observer_predict",
+    "ucon_sliding_mode_observer_correct",
+    "ucon_sliding_mode_observer_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

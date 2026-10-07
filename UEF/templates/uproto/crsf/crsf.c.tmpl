@@ -1,0 +1,37 @@
+/*
+ * {{ node.model.symbol_prefix }}_crsf.c
+ * TODO: configure the target UART for CRSF and connect its bounded RX/DMA
+ * producer to this instance. Defer parsing out of the hard interrupt.
+ */
+#include <stddef.h>
+#include "{{ node.model.symbol_prefix }}_crsf.h"
+
+uef_status_t {{ node.model.symbol_prefix }}_crsf_init(
+    {{ node.model.symbol_prefix }}_crsf_t *instance,
+    upal_uart_t *uart)
+{
+    if (instance == NULL || uart == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    return uproto_crsf_init(&instance->protocol, uart);
+}
+
+void {{ node.model.symbol_prefix }}_crsf_process(
+    {{ node.model.symbol_prefix }}_crsf_t *instance)
+{
+    if (instance != NULL) {
+        uproto_crsf_process(&instance->protocol);
+    }
+}
+
+bool {{ node.model.symbol_prefix }}_crsf_read_rc(
+    {{ node.model.symbol_prefix }}_crsf_t *instance,
+    uproto_crsf_rc_t *sample)
+{
+    if (instance == NULL || sample == NULL ||
+        !uproto_crsf_rc_available(&instance->protocol)) {
+        return false;
+    }
+    uproto_crsf_get_rc(&instance->protocol, sample);
+    return true;
+}

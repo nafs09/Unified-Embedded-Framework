@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/uproto/future/j1939/j1939.c"
+  ],
+  "dependencies": [
+    "upal/can"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part XV.3 lists J1939; 29-bit identifier, address-claim, NAME, and transport-protocol behavior need a typed contract.",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uproto/future/j1939/j1939.h",
+    "include/uef/uproto/future/scaffold_call.h"
+  ]
+}

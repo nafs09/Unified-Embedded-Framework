@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/estimators/tracking/alpha_beta.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/tracking/alpha_beta.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "ALPHA_BETA",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_alpha_beta_validate_config",
+    "ucon_alpha_beta_init",
+    "ucon_alpha_beta_reset",
+    "ucon_alpha_beta_predict",
+    "ucon_alpha_beta_correct",
+    "ucon_alpha_beta_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

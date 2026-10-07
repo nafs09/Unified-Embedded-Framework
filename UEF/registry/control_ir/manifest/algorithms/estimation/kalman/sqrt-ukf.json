@@ -1,0 +1,68 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman",
+  "description": "Square-root UKF; most numerically stable",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Square-root UKF; most numerically stable Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/kalman/sqrt_ukf.h",
+  "scaffold_source": "src/ucon/estimators/kalman/sqrt_ukf.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/kalman/sqrt_ukf",
+  "scaffold_reason": "Square-root UKF is included as a numerically robust alternative for the project's nonlinear estimation.",
+  "project_relevance": [
+    "qcwdrsstc"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check nonlinear models, sigma configuration, and covariance-factor dimensions.",
+      "todo": "Pin scaled sigma-point weights and factor orientation. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate and covariance square root.",
+      "todo": "Define factorization and rank-deficiency failure. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset estimate/factor history.",
+      "todo": "Define model-context retention. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    },
+    {
+      "name": "generate_sigma_points",
+      "purpose": "Generate scaled sigma points from the covariance factor.",
+      "todo": "Specify central weights and negative-weight safeguards. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    },
+    {
+      "name": "predict_factor",
+      "purpose": "Propagate points and recover the predicted covariance factor.",
+      "todo": "Specify QR/Cholesky update and process-noise handling. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    },
+    {
+      "name": "correct_factor",
+      "purpose": "Update from measurement points while retaining factor form.",
+      "todo": "Define innovation solve/gating and rank-deficiency behavior. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    },
+    {
+      "name": "step",
+      "purpose": "Run one square-root UKF prediction/correction cycle.",
+      "todo": "Do not form an unchecked full covariance as a hidden shortcut. Algorithm-specific focus: Square-root UKF; most numerically stable"
+    }
+  ]
+}

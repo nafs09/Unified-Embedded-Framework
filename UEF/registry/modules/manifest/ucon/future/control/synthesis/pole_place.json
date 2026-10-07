@@ -1,0 +1,33 @@
+{
+  "sources": [
+    "src/ucon/future/control/synthesis/pole_place.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/control/synthesis/pole_place.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "POLE_PLACE",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_pole_place_validate_plant",
+    "ucon_pole_place_build_controllability_basis",
+    "ucon_pole_place_synthesize_gain",
+    "ucon_pole_place_verify_closed_loop",
+    "ucon_pole_place_publish_gain"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/estimators/kalman/ekf.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/kalman/ekf.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "EKF",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_ekf_validate_model",
+    "ucon_ekf_init",
+    "ucon_ekf_reset",
+    "ucon_ekf_predict",
+    "ucon_ekf_correct",
+    "ucon_ekf_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

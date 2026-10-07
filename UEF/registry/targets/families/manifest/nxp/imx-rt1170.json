@@ -1,0 +1,33 @@
+{
+  "id": "imx-rt1170",
+  "vendor": "NXP",
+  "family": "i.MX RT",
+  "series": "i.MX RT1170",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M7 plus Cortex-M4"
+  ],
+  "core_notes": "Exact profile not prioritized.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "MIMXRT1176"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "dual-core",
+    "FlexSPI",
+    "eDMA",
+    "cache"
+  ],
+  "source_references": [
+    "nxp_rt",
+    "nxp_rt1170"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

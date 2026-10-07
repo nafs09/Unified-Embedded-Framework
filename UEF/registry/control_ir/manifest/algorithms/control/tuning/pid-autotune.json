@@ -1,0 +1,63 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/tuning",
+  "description": "Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation.",
+  "implementation_notes": "Choose a named supervised relay/response experiment, excitation and stop limits, data validity criteria, gain calculation, and proposal/reject output. Never alter live gains implicitly. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/tuning/pid_autotune.h",
+  "scaffold_source": "src/ucon/control/tuning/pid_autotune.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/tuning/pid_autotune",
+  "scaffold_reason": "Automatic PID tuning is a useful commissioning and experiment workflow across projects.",
+  "project_relevance": [
+    "common"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Choose a named supervised relay/response experiment, excitation and stop limits, data validity criteria, gain calculation, and proposal/reject output. Never alter live gains implicitly."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_experiment",
+      "purpose": "Check tuning mode, safe excitation bounds, and stop conditions.",
+      "todo": "Require explicit supervision; never launch an experiment implicitly. Algorithm-specific focus: Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize experiment and result state.",
+      "todo": "Define prior gain snapshot and abort behavior. Algorithm-specific focus: Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation."
+    },
+    {
+      "name": "reset",
+      "purpose": "Abort/rearm tuning and restore the documented gain state.",
+      "todo": "Specify what happens after invalid or interrupted data. Algorithm-specific focus: Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation."
+    },
+    {
+      "name": "collect_response",
+      "purpose": "Collect bounded input/output data for the selected tuning method.",
+      "todo": "Define sample synchronization, noise rejection, and excitation limits. Algorithm-specific focus: Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation."
+    },
+    {
+      "name": "estimate_parameters",
+      "purpose": "Compute gains from the named relay/response-based rule.",
+      "todo": "State exact formula, validity range, and confidence/rejection criteria. Algorithm-specific focus: Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation."
+    },
+    {
+      "name": "publish_candidate",
+      "purpose": "Return proposed gains for explicit caller review/application.",
+      "todo": "Do not write live controller gains automatically. Algorithm-specific focus: Supervised PID tuning utility using a named relay or response-based experiment; it must not change gains implicitly during operation."
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+/// Generated named wrapper around UEF's generic Tustin 2-DOF PID implementation.
+#ifndef {{ node.model.symbol_prefix|upper }}_PID_INSTANCE_H
+#define {{ node.model.symbol_prefix|upper }}_PID_INSTANCE_H
+
+#include <uef/ucon/control/pid.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct {
+    ucon_pid_state_t state;
+    ucon_pid_config_t config;
+} {{ node.model.symbol_prefix }}_pid_instance_t;
+
+/// Copy caller-resolved configuration and initialize this named controller.
+static inline ucon_status_t {{ node.model.symbol_prefix }}_pid_init(
+    {{ node.model.symbol_prefix }}_pid_instance_t *instance,
+    const ucon_pid_config_t *config)
+{
+    if (instance == NULL || config == NULL) {
+        return UCON_INVALID_ARGUMENT;
+    }
+    instance->config = *config;
+    return ucon_pid_init(&instance->state, &instance->config);
+}
+
+static inline ucon_status_t {{ node.model.symbol_prefix }}_pid_reset(
+    {{ node.model.symbol_prefix }}_pid_instance_t *instance)
+{
+    return instance == NULL ? UCON_INVALID_ARGUMENT :
+        ucon_pid_reset(&instance->state);
+}
+
+/// The application maps ControlIR ports to this explicit call boundary.
+static inline ucon_status_t {{ node.model.symbol_prefix }}_pid_step(
+    {{ node.model.symbol_prefix }}_pid_instance_t *instance,
+    ucon_scalar_t reference,
+    ucon_scalar_t measurement,
+    ucon_scalar_t feedforward,
+    const ucon_scalar_t *tracking_output,
+    ucon_scalar_t *output)
+{
+    return instance == NULL ? UCON_INVALID_ARGUMENT :
+        ucon_pid_step(&instance->state, &instance->config, reference,
+                      measurement, feedforward, tracking_output, output);
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* {{ node.model.symbol_prefix|upper }}_PID_INSTANCE_H */

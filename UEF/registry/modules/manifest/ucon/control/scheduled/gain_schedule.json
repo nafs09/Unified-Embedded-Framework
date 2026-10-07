@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/scheduled/gain_schedule.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/scheduled/gain_schedule.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "GAIN_SCHEDULE",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_gain_schedule_validate_schedule",
+    "ucon_gain_schedule_init",
+    "ucon_gain_schedule_reset",
+    "ucon_gain_schedule_select_gains",
+    "ucon_gain_schedule_transfer_state",
+    "ucon_gain_schedule_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

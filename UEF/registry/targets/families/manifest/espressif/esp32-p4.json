@@ -1,0 +1,33 @@
+{
+  "id": "esp32-p4",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32-P4",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Dual-core RISC-V 32-bit"
+  ],
+  "core_notes": "Application SoC; no profile registered.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ESP32-P4"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "ESP-IDF",
+    "external memory",
+    "device map"
+  ],
+  "source_references": [
+    "esp_portfolio",
+    "esp_selector",
+    "esp_idf"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

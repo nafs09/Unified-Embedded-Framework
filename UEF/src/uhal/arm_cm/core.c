@@ -1,5 +1,5 @@
 /// @file src/uhal/arm_cm/core.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_core.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uhal/uhal_core.h.
 ///
 /// Implementation intent: Bind core identity, reset, cycle-counter, and barriers to the
 ///   selected CMSIS device without leaking device names into portable modules.

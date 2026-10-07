@@ -1,8 +1,6 @@
 from __future__ import annotations
-
 from dataclasses import dataclass, field
 from typing import Any
-
 
 @dataclass(frozen=True)
 class ArchSpec:
@@ -19,7 +17,6 @@ class ArchSpec:
     capabilities: frozenset[str] = frozenset()
     compiler_flags: tuple[str, ...] = ()
 
-
 @dataclass(frozen=True)
 class DMASpec:
     controller_count: int = 0
@@ -27,14 +24,12 @@ class DMASpec:
     muxed: bool = False
     request_map: dict[str, str] = field(default_factory=dict)
 
-
 @dataclass(frozen=True)
 class PeripheralTypeSpec:
     type_name: str
     generic_signals: tuple[str, ...] = ()
     dma_directions: tuple[str, ...] = ()
     type_caps: dict[str, Any] = field(default_factory=dict)
-
 
 @dataclass(frozen=True)
 class PeripheralInstanceSpec:
@@ -46,7 +41,6 @@ class PeripheralInstanceSpec:
     dma_requests: dict[str, str] = field(default_factory=dict)
     irqs: tuple[str, ...] = ()
     instance_caps: dict[str, Any] = field(default_factory=dict)
-
 
 @dataclass(frozen=True)
 class FamilySpec:
@@ -64,7 +58,6 @@ class FamilySpec:
     dma_mux: bool = False
     clock_domains: dict[str, dict[str, int]] = field(default_factory=dict)
 
-
 @dataclass(frozen=True)
 class ChipSpec:
     name: str
@@ -77,7 +70,6 @@ class ChipSpec:
     overrides: dict[str, Any] = field(default_factory=dict)
     verified: bool = False
     source_note: str = ""
-
 
 class ChipCapabilities:
     """Unified capability view; templates never branch on a part number."""

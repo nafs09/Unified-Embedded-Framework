@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "lock_file": "third_party/freertos-kernel.lock.json",
+  "common_sources": [
+    "tasks.c",
+    "queue.c",
+    "list.c",
+    "timers.c",
+    "event_groups.c",
+    "stream_buffer.c"
+  ],
+  "common_include_directories": [
+    "include"
+  ],
+  "profiles": {}
+}

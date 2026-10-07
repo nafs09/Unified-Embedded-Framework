@@ -1,0 +1,59 @@
+{
+  "id": "stm32f303ret6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-f3",
+  "series": "STM32F3",
+  "part_number": "STM32F303RET6",
+  "aliases": [
+    "STM32F303RE"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 72000000
+  },
+  "package": {
+    "name": "LQFP64",
+    "pin_count": 64
+  },
+  "memory": {
+    "flash_bytes": 524288,
+    "sram_bytes": 81920,
+    "notes": "512 KiB flash and 80 KiB SRAM for the xE density group."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "DAC",
+    "COMP",
+    "OPAMP",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "bxCAN"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32F303RE product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f303re.html"
+    },
+    {
+      "title": "ST STM32F303xD/E datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32f303re.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Catalogue-only mixed-signal Cortex-M4F representative."
+}

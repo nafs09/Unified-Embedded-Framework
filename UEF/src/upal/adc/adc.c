@@ -1,5 +1,5 @@
 /// @file src/upal/adc/adc.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_adc.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_adc.h.
 ///
 /// Implementation intent: Implement calibration and timer-triggered DMA sampling; define
 ///   channel ordering and the meaning of each returned sample.

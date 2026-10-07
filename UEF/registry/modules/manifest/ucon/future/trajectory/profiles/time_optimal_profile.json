@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/trajectory/profiles/time_optimal_profile.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/trajectory/profiles/time_optimal_profile.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "TIME_OPTIMAL_PROFILE",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_time_optimal_profile_validate_limits",
+    "ucon_time_optimal_profile_init",
+    "ucon_time_optimal_profile_reset",
+    "ucon_time_optimal_profile_plan",
+    "ucon_time_optimal_profile_sample",
+    "ucon_time_optimal_profile_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

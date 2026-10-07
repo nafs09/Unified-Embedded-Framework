@@ -1,0 +1,14 @@
+{
+  "sources": [
+    "src/umid/range.c"
+  ],
+  "dependencies": [
+    "upal/uart",
+    "upal/i2c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umid/umid_range.h"
+  ]
+}

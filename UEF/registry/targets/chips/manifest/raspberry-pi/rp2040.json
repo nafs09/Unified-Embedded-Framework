@@ -1,0 +1,55 @@
+{
+  "id": "rp2040",
+  "vendor": "Raspberry Pi",
+  "family_id": "rp2040",
+  "series": "RP2040",
+  "part_number": "RP2040",
+  "aliases": [],
+  "roadmap_phase": 2,
+  "core": {
+    "name": "Cortex-M0+",
+    "isa": "Armv6-M",
+    "count": 2,
+    "fpu": "none",
+    "max_frequency_hz": 133000000
+  },
+  "package": {
+    "name": "QFN56",
+    "pin_count": 56
+  },
+  "memory": {
+    "flash_bytes": 0,
+    "sram_bytes": 270336,
+    "notes": "264 KiB on-chip SRAM; external flash is required for standalone firmware storage."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "PIO",
+    "USB",
+    "UART",
+    "SPI",
+    "I2C",
+    "PWM",
+    "ADC",
+    "GPIO"
+  ],
+  "source_references": [
+    {
+      "title": "Raspberry Pi RP2040 specifications",
+      "url": "https://www.raspberrypi.com/products/rp2040/specifications/"
+    },
+    {
+      "title": "Raspberry Pi RP2040 datasheet",
+      "url": "https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 2 roadmap part; no embedded flash, dual-core startup, inter-core FIFO and PIO allocation need a dedicated backend."
+}

@@ -1,5 +1,5 @@
 /// @file src/upal/dma/dma.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_dma.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_dma.h.
 ///
 /// Implementation intent: Validate buffer direction, alignment, length, and capability before
 ///   starting DMA; preserve cache-maintenance ordering and callback context.

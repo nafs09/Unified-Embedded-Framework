@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "aerospace/attitude",
+  "description": "Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces. Family contract work: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/aerospace/attitude/bdot_detumble.h",
+  "scaffold_source": "src/ucon/aerospace/attitude/bdot_detumble.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/aerospace/attitude/bdot_detumble",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check frame, quaternion/rotation convention, and control limits.",
+      "todo": "Declare handedness, component order, and sign continuity. Algorithm-specific focus: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize desired-attitude and rate-control history.",
+      "todo": "Require a valid initial attitude. Algorithm-specific focus: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear control/error history.",
+      "todo": "Define safe re-entry after attitude-source loss. Algorithm-specific focus: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces."
+    },
+    {
+      "name": "compute_error",
+      "purpose": "Compute attitude/rate error in the declared frame.",
+      "todo": "Handle quaternion double cover and rotation singularities. Algorithm-specific focus: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces."
+    },
+    {
+      "name": "compute_command",
+      "purpose": "Compute a bounded torque/rate/magnetic command.",
+      "todo": "Specify actuator model and output units. Algorithm-specific focus: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one timestamped attitude-control update.",
+      "todo": "Expose stale sensor and actuator-limit status. Algorithm-specific focus: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+/// Generated named wrapper around UEF's bilinear-transform lead-lag block.
+#ifndef {{ node.model.symbol_prefix|upper }}_LEAD_LAG_INSTANCE_H
+#define {{ node.model.symbol_prefix|upper }}_LEAD_LAG_INSTANCE_H
+
+#include <uef/ucon/control/lead_lag.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct {
+    ucon_lead_lag_state_t state;
+    ucon_lead_lag_config_t config;
+} {{ node.model.symbol_prefix }}_lead_lag_instance_t;
+
+static inline ucon_status_t {{ node.model.symbol_prefix }}_lead_lag_init(
+    {{ node.model.symbol_prefix }}_lead_lag_instance_t *instance,
+    const ucon_lead_lag_config_t *config)
+{
+    if (instance == NULL || config == NULL) {
+        return UCON_INVALID_ARGUMENT;
+    }
+    instance->config = *config;
+    return ucon_lead_lag_init(&instance->state, &instance->config);
+}
+
+static inline ucon_status_t {{ node.model.symbol_prefix }}_lead_lag_reset(
+    {{ node.model.symbol_prefix }}_lead_lag_instance_t *instance)
+{
+    return instance == NULL ? UCON_INVALID_ARGUMENT :
+        ucon_lead_lag_reset(&instance->state);
+}
+
+/// The application maps ControlIR ports to this explicit call boundary.
+static inline ucon_status_t {{ node.model.symbol_prefix }}_lead_lag_step(
+    {{ node.model.symbol_prefix }}_lead_lag_instance_t *instance,
+    ucon_scalar_t input,
+    ucon_scalar_t *output)
+{
+    return instance == NULL ? UCON_INVALID_ARGUMENT :
+        ucon_lead_lag_step(&instance->state, &instance->config, input, output);
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* {{ node.model.symbol_prefix|upper }}_LEAD_LAG_INSTANCE_H */

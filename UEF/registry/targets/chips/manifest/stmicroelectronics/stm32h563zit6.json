@@ -1,0 +1,62 @@
+{
+  "id": "stm32h563zit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-h5",
+  "series": "STM32H5",
+  "part_number": "STM32H563ZIT6",
+  "aliases": [
+    "STM32H563ZI"
+  ],
+  "roadmap_phase": 2,
+  "core": {
+    "name": "Cortex-M33F",
+    "isa": "Armv8-M Mainline",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 250000000
+  },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 655360,
+    "backup_sram_bytes": 4096,
+    "notes": "2 MiB flash, 640 KiB system SRAM, and separate 4 KiB backup SRAM."
+  },
+  "peripheral_groups": [
+    "GPDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ETHERNET_MAC",
+    "ADC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "OCTOSPI",
+    "FMC"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32H563ZI product/package page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h563zi.html"
+    },
+    {
+      "title": "ST STM32H563 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32h563zi.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 2 representative; TrustZone, GPDMA and security provisioning remain unimplemented."
+}

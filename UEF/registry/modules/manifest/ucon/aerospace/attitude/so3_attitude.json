@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/aerospace/attitude/so3_attitude.c"
+  ],
+  "headers": [
+    "include/uef/ucon/aerospace/attitude/so3_attitude.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "SO3_ATTITUDE",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_so3_attitude_validate_config",
+    "ucon_so3_attitude_init",
+    "ucon_so3_attitude_reset",
+    "ucon_so3_attitude_compute_error",
+    "ucon_so3_attitude_compute_command",
+    "ucon_so3_attitude_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

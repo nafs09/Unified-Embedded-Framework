@@ -1,0 +1,26 @@
+{
+  "id": "stm32-l1",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32L1",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M3"
+  ],
+  "core_notes": "Legacy ultra-low-power.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

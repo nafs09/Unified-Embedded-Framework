@@ -1,0 +1,61 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "electrical/grid",
+  "description": "Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit.",
+  "implementation_notes": "Define number/tuning of branches, harmonic/sequence targets, shared versus per-branch state, FLL coupling, gains, lock criteria, and frequency units. Define typed dimensions/units, fixed memory/work, numeric failure behavior, and state/output preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/electrical/grid/msogi_fll.h",
+  "scaffold_source": "src/ucon/future/electrical/grid/msogi_fll.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/electrical/grid/msogi_fll",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define number/tuning of branches, harmonic/sequence targets, shared versus per-branch state, FLL coupling, gains, lock criteria, and frequency units."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check phase sequence, nominal frequency, gains, and grid limits.",
+      "todo": "Declare sequence and per-unit/scaling conventions. Algorithm-specific focus: Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize orthogonal-signal, sequence, phase, and loop states.",
+      "todo": "Define phase seed and acquisition range. Algorithm-specific focus: Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear synchronization history and lock persistence.",
+      "todo": "Define loss-of-lock and restart behavior. Algorithm-specific focus: Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit."
+    },
+    {
+      "name": "update_signal_model",
+      "purpose": "Update SOGI/sequence or synchronous-frame signal estimates.",
+      "todo": "Specify frequency adaptation and sample-time coupling. Algorithm-specific focus: Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit."
+    },
+    {
+      "name": "update_loop",
+      "purpose": "Update phase/frequency and lock/quality state.",
+      "todo": "Define anti-windup, bounds, and units. Algorithm-specific focus: Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one grid sample and publish synchronization outputs.",
+      "todo": "Reject invalid amplitude/sequence inputs without poisoning state. Algorithm-specific focus: Multiple second-order generalized-integrator signal branches combined with a frequency-locked loop; branch selection and frequency coupling must be explicit."
+    }
+  ]
+}

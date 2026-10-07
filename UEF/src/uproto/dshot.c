@@ -1,5 +1,5 @@
 /// @file src/uproto/dshot.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uproto/uproto_dshot.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uproto/uproto_dshot.h.
 ///
 /// Implementation intent: Encode the 16-bit DSHOT frame and telemetry bit, then hand symbols to
 ///   timer or UART transport with DMA-safe ownership.

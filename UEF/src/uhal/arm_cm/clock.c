@@ -1,5 +1,5 @@
 /// @file src/uhal/arm_cm/clock.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_clock.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uhal/uhal_clock.h.
 ///
 /// Implementation intent: Implement clock queries and gate/reset control using the board clock
 ///   tree; verify frequencies against SystemInit configuration.

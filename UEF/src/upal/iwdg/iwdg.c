@@ -1,5 +1,5 @@
 /// @file src/upal/iwdg/iwdg.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_iwdg.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_iwdg.h.
 ///
 /// Implementation intent: Configure the independent watchdog from the verified clock source and
 ///   reject unrepresentable timeout requests.

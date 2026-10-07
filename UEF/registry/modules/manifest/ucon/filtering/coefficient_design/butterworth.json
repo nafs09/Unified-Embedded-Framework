@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/filtering/coefficient_design/butterworth.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/filtering/coefficient_design/butterworth.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "BUTTERWORTH",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Standard low-pass, high-pass, band-pass, and band-stop designs are common embedded filters.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_butterworth_validate_spec",
+    "ucon_butterworth_estimate_order",
+    "ucon_butterworth_compute_poles_zeros",
+    "ucon_butterworth_pair_sections",
+    "ucon_butterworth_normalize_coefficients",
+    "ucon_butterworth_design"
+  ],
+  "project_relevance": [
+    "common"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

@@ -1,26 +1,31 @@
-# UCON template catalogue
+# UCON templates and algorithm catalog
 
-UCON is intended to be held by UEF as part of its control and estimation library. `uef-gen` will select and assemble the UEF-owned algorithms/assets needed by each firmware project. The current supplied UEF specification still describes the older generator-owned boundary; reconcile it with this project decision before finalizing the handoff. The specification gives a family tree and selected substitution points, but not complete algorithm source bodies. Those bodies must come from reviewed algorithm designs; this catalogue does not invent them.
+UEF owns reusable algorithm behavior and every reusable UCON template. NEXUS authors the ControlGraph and serializes it as ControlIR. uef-gen resolves the requested algorithm key from UEF's `registry/control_ir/registry.json` index and its per-algorithm detail file, then renders only outputs declared by a registered entry.
 
-| Planned folder | Families named in V1.1 | Example dimensions/slots named in the spec |
+## Registered templates
+
+| Algorithm | Template | Generic implementation |
 |---|---|---|
-| `numerics` | matrix-vector/matrix-matrix, Cholesky, Cholesky solve, QR, active-set QP, vector clamp | `N`, `M`, `K` dimensions |
-| `control` | PID, state feedback, LQR, lead-lag, Smith predictor, IMC, deadbeat, two-degree-of-freedom PID | integral/derivative update, anti-windup, output law, K matrix, plant/delay model |
-| `estimation` | EKF, UKF, linear Kalman, square-root UKF, IMM-EKF, Mahony, Madgwick, complementary, Luenberger, disturbance observer | prediction/Jacobian/covariance/gating and model matrices |
-| `predictive` | linear MPC, explicit MPC, finite-set MPC, nonlinear MPC RTI/SQP, iLQR | prediction matrices, QP solve, candidate set, cost, preparation/feedback steps |
-| `filtering` | Butterworth, Bessel, Chebyshev, elliptic, notch, resonant PR, moving average, median, FIR, biquad, alpha-beta, alpha-beta-gamma | coefficients, order, taps, window length, notch frequency/Q |
-| `nonlinear` | sliding-mode, super-twisting, NDI, INDI, backstepping, CLF-CBF | sliding surface, control law, plant inverse, virtual controls, constraints |
-| `adaptive` | Lyapunov MRAC, L1 adaptive, gain scheduling, ADRC | reference model, adaptation law, schedule table, observer bandwidth |
-| `trajectory` | first/second-order reference model, jerk profile, polynomial trajectory | fixed-size trajectory parameters |
-| `infrastructure` | saturation, rate limiter, deadband, hysteresis, anti-windup variants, bumpless transfer, mode select | project tuning and state-transition settings |
+| PID / PI / PD / 2-DOF PID | `wrappers/pid.h.tmpl` | `uef/ucon/control/pid.h` |
+| First-order lead-lag | `wrappers/lead_lag.h.tmpl` | `uef/ucon/control/lead_lag.h` |
 
-The spec also names root templates for `config.h`, ISR/task execution, HAL stubs, and a UPAL-backed HAL implementation. The family paths above are the intended organization; those subdirectories and algorithm bodies have not yet been checked in. This folder currently contains only this catalogue and its TODO list. Until a reviewed body, metadata, and generation path exist, a family is a planned catalogue entry and must not be advertised as generator-supported.
+Each template emits a small named instance wrapper and forwards init/reset/step calls to the UEF generic C implementation. It does not synthesize a second control law. The consuming application maps graph ports, supplies validated configuration, and completes any manifest-declared manual actions.
+The selected module manifest supplies the generic implementation source and its public-header closure to the generated project; the template output is instance-specific glue, not another copy of the algorithm.
 
-## Template implementation rules
+## Unregistered algorithms
 
-- Keep all generated buffers and state statically sized; generated UCON has no RTOS API or heap dependency.
-- Specialize dimensions at generation time and emit compile-time shape checks.
-- Preserve the selected arithmetic type and overflow/saturation behavior throughout each generated algorithm.
-- Keep hardware access in generated HAL bindings backed by selected UPAL modules.
-- Include source/design provenance with each template so a generated controller can be reviewed and reproduced.
-- Do not claim a family is available to `uef-gen` until a reviewed body, metadata, and generation path exist.
+Every unregistered catalog key has its own header and source file in a family directory. Initial entries are placed beside implemented APIs under `include/uef/ucon/<family>/` and `src/ucon/<family>/`; for example, Kalman estimators use `estimators/kalman/<algorithm>.h` and `.c`. Later entries are under the corresponding `future/<family>/` path. `estimation/` in the catalog maps to the public directory name `estimators/`.
+
+Each file contains a detailed `TODO(UCON-KEY)`, one function declaration/definition, and a fail-closed body that returns `UCON_NOT_IMPLEMENTED` without mutating state or outputs. The shared development envelope is internal at `include/uef/ucon/detail/algorithm_call.h` and is not included by `ucon.h`. A file existing in the repository does not make its key directly usable or renderable.
+
+The catalog's `FIRST_PASS` entries are in the initial tree. Selected `PLANNED` entries are also in that tree because they are common project building blocks or match known NEXUS projects: standard filter designs and PID autotuning; nonlinear drone estimators/control, trajectory profiles, and safety constraints; QCWDRSSTC predictive-control variants and square-root UKF; and medical PK/PD target control. The exact keys and staging reasons are listed in `uef_api.json` and repeated on each algorithm manifest row. Other planned and all deferred entries remain under `future/`.
+
+All unregistered entries have `registered: false`, `renderable: false`, empty outputs, and a per-algorithm scaffold module marked `scaffold_only`. uef-gen verifies that each row resolves to its own header/source/module and rejects the key as `algorithm_unregistered`; module selection also refuses scaffold-only modules. CMake excludes `src/ucon/future/` by default.
+
+Regenerate the individual placeholder files and synchronized manifest/module/API paths after catalog edits:
+
+```powershell
+python tools/generate_ucon_scaffolds.py
+```
+
+Do not edit generated algorithm placeholders as the source of truth. To promote a key, replace its placeholder with a typed generic implementation, define dimensions/units/bounds/failure semantics/static memory, add an appropriate UEF-owned wrapper if needed, and update module/API metadata. Set `registered: true` only when the real implementation and every declared output exist and have been reviewed.

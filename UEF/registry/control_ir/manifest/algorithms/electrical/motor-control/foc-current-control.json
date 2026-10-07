@@ -1,0 +1,68 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "electrical/motor_control",
+  "description": "Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces. Family contract work: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/electrical/motor_control/foc_current_control.h",
+  "scaffold_source": "src/ucon/electrical/motor_control/foc_current_control.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/electrical/motor_control/foc_current_control",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check motor model, transform, sample timing, and current/voltage limits.",
+      "todo": "State motor type and angle-source validity. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize d/q loops, flux/torque estimate, and modulation state.",
+      "todo": "Define alignment and sensor-offset ownership. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset control/estimator history without issuing gate actions.",
+      "todo": "Define a safe restart state. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    },
+    {
+      "name": "estimate_motor_state",
+      "purpose": "Update flux, torque, angle, or speed estimates.",
+      "todo": "State model validity and low-speed operating limits. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    },
+    {
+      "name": "compute_current_command",
+      "purpose": "Compute d/q or switching-state command.",
+      "todo": "Define decoupling, saturation, and current-limit policy. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    },
+    {
+      "name": "modulate",
+      "purpose": "Map abstract command into declared modulation values.",
+      "todo": "Do not assume gate polarity, dead time, or timer setup. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    },
+    {
+      "name": "step",
+      "purpose": "Coordinate one synchronized motor-control update.",
+      "todo": "Bound work and preserve outputs on invalid measurements. Algorithm-specific focus: Field-oriented current-control composition with d/q regulators, decoupling, and modulation interfaces."
+    }
+  ]
+}

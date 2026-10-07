@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "src/umid/temp.c"
+  ],
+  "dependencies": [
+    "upal/spi",
+    "upal/i2c",
+    "upal/adc"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umid/umid_temperature.h"
+  ]
+}

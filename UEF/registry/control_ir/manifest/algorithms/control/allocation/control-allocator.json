@@ -1,0 +1,68 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/allocation",
+  "description": "Bounded control allocation from requested generalized forces/moments to declared actuator commands.",
+  "implementation_notes": "Define actuator effectiveness matrix, requested generalized-force units, objective weights, position/rate bounds, solver deadline, and infeasible/saturated command status. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/allocation/control_allocator.h",
+  "scaffold_source": "src/ucon/control/allocation/control_allocator.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/allocation/control_allocator",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define actuator effectiveness matrix, requested generalized-force units, objective weights, position/rate bounds, solver deadline, and infeasible/saturated command status."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check effector matrix, actuator bounds/rates, weights, and dimensions.",
+      "todo": "Define units, priority, and rank/conditioning requirements. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize solver and previous actuator command.",
+      "todo": "Define safe seed and fixed workspace. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset solver/command history.",
+      "todo": "Define whether previous actuator values are retained. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    },
+    {
+      "name": "build_problem",
+      "purpose": "Build the bounded allocation objective and constraints.",
+      "todo": "Specify axis weights, trim/bias, and rate constraints. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    },
+    {
+      "name": "solve_allocation",
+      "purpose": "Compute an actuator command for the requested generalized force/moment.",
+      "todo": "Bound solver work and return infeasible/saturation status. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    },
+    {
+      "name": "verify_command",
+      "purpose": "Check command residuals and all position/rate limits.",
+      "todo": "Never publish a command that violates declared actuator bounds. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    },
+    {
+      "name": "step",
+      "purpose": "Allocate one requested command and publish status/residual.",
+      "todo": "Leave output untouched if allocation fails. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+/*
+ * {{ node.model.symbol_prefix }}_mavlink.c
+ * TODO: add the selected generated dialect headers/build dependency and bind
+ * `transport` to the configured UART, USB, or other bounded byte stream.
+ * Validate system/component IDs and enforce the project's message allow-list.
+ */
+#include <stddef.h>
+#include "{{ node.model.symbol_prefix }}_mavlink.h"
+
+uef_status_t {{ node.model.symbol_prefix }}_mavlink_init(
+    {{ node.model.symbol_prefix }}_mavlink_t *instance,
+    uproto_stream_t transport,
+    uef_u8_t system_id,
+    uef_u8_t component_id,
+    uef_u8_t target_system_id,
+    uef_u8_t target_component_id)
+{
+    if (instance == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    const uef_status_t status = uproto_mavlink_init(
+        &instance->protocol, transport, system_id, component_id);
+    if (status != UEF_OK) {
+        return status;
+    }
+    instance->protocol.target_sys = target_system_id;
+    instance->protocol.target_comp = target_component_id;
+    return UEF_OK;
+}
+
+uef_status_t {{ node.model.symbol_prefix }}_mavlink_send(
+    {{ node.model.symbol_prefix }}_mavlink_t *instance,
+    const uef_u8_t *packed_message,
+    uef_u32_t length)
+{
+    if (instance == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    return uproto_mavlink_send(&instance->protocol, packed_message, length);
+}
+
+bool {{ node.model.symbol_prefix }}_mavlink_receive(
+    {{ node.model.symbol_prefix }}_mavlink_t *instance,
+    uef_u8_t *message_buffer,
+    uef_u32_t *length)
+{
+    return instance != NULL &&
+           uproto_mavlink_receive(&instance->protocol, message_buffer, length);
+}

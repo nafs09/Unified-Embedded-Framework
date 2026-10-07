@@ -1,5 +1,5 @@
 /// @file src/upal/rtc/rtc.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_rtc.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_rtc.h.
 ///
 /// Implementation intent: Convert validated calendar values and Unix time with leap-year
 ///   handling and target-specific backup-domain setup.

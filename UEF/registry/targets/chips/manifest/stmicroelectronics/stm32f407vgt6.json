@@ -1,0 +1,62 @@
+{
+  "id": "stm32f407vgt6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-f4",
+  "series": "STM32F4",
+  "part_number": "STM32F407VGT6",
+  "aliases": [
+    "STM32F407VG"
+  ],
+  "roadmap_phase": 0,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 168000000
+  },
+  "package": {
+    "name": "LQFP100",
+    "pin_count": 100
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 196608,
+    "backup_sram_bytes": 4096,
+    "notes": "192 KiB SRAM includes 64 KiB CCM data RAM; 4 KiB backup SRAM is separate."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "USART",
+    "SPI",
+    "I2C",
+    "USB_OTG_FS",
+    "USB_OTG_HS",
+    "ETHERNET_MAC",
+    "bxCAN",
+    "ADC",
+    "DAC",
+    "TIM",
+    "FSMC"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32F407VG product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f407vg.html"
+    },
+    {
+      "title": "ST STM32F407VG datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32f407vg.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 0 representative with fixed DMA routing and bxCAN; resource routing remains to be entered."
+}

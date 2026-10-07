@@ -1,0 +1,37 @@
+{
+  "sources": [
+    "src/ucon/control/predictive/ddp.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/predictive/ddp.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "DDP",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Differential dynamic programming belongs to the project's planned predictive/optimal-control comparisons.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_ddp_validate_problem",
+    "ucon_ddp_init",
+    "ucon_ddp_reset",
+    "ucon_ddp_prepare_problem",
+    "ucon_ddp_solve_problem",
+    "ucon_ddp_verify_solution",
+    "ucon_ddp_step"
+  ],
+  "project_relevance": [
+    "qcwdrsstc"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

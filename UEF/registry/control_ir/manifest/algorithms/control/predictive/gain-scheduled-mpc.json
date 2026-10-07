@@ -1,0 +1,69 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/predictive",
+  "description": "MPC profile that selects among declared model/controller schedules using a bounded scheduling variable.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable. Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Define schedule grid/interpolation, transition continuity, constraint compatibility, and region-exit behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior.",
+    "Define schedule grid/interpolation, transition continuity, constraint compatibility, and region-exit behavior.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/control/predictive/gain_scheduled_mpc",
+  "scaffold_header": "include/uef/ucon/future/control/predictive/gain_scheduled_mpc.h",
+  "scaffold_source": "src/ucon/future/control/predictive/gain_scheduled_mpc.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_problem",
+      "purpose": "Check plant, horizon, objective, constraints, and solver contract.",
+      "todo": "Reject inconsistent bounds and define fixed memory/iteration budgets. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize warm start, references, and solver workspace.",
+      "todo": "Define first-solve seed and caller-owned data. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear warm-start, disturbance, and optimizer history.",
+      "todo": "Specify reusable factorization/active-set behavior. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    },
+    {
+      "name": "prepare_problem",
+      "purpose": "Build/update the finite-horizon prediction and optimization problem.",
+      "todo": "State discretization, terminal conditions, scaling, and time budget. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    },
+    {
+      "name": "solve_problem",
+      "purpose": "Run the selected bounded optimization method.",
+      "todo": "Report infeasible, nonconverged, numeric, and iteration-limit outcomes distinctly. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    },
+    {
+      "name": "verify_solution",
+      "purpose": "Check candidate bounds and configured residual tolerances.",
+      "todo": "Never apply an unchecked solution or hide a missed deadline. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    },
+    {
+      "name": "step",
+      "purpose": "Prepare, solve, verify, and publish the first admissible input.",
+      "todo": "Fallback must be caller-configured; do not invent a command. Algorithm-specific focus: MPC profile that selects among declared model/controller schedules using a bounded scheduling variable."
+    }
+  ]
+}

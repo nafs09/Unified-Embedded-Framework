@@ -1,39 +1,5 @@
-"""Typed AlgorithmIR contracts and self-registering node IR builders."""
+"""Parse and validate the NEXUS-owned ControlIR input contract."""
 
-from uef_gen.ir.algorithms import (
-    AlgorithmIR,
-    EKFAlgorithmIR,
-    KalmanFilterAlgorithmIR,
-    LinearMPCAlgorithmIR,
-    LuenbergerObserverIR,
-    MahonyFilterAlgorithmIR,
-    MatrixExpr,
-    PIDAlgorithmIR,
-    StateFeedbackAlgorithmIR,
-    UKFAlgorithmIR,
-    VectorExpr,
-    algorithm_type_for,
-    validate_algorithm_ir,
-)
-from uef_gen.ir.registry import NodeIRBuilder, UnknownNodeTypeError, build_node_ir, registered_builders
+from uef_gen.ir.control_ir import validate_control_ir
 
-__all__ = [
-    "AlgorithmIR",
-    "EKFAlgorithmIR",
-    "KalmanFilterAlgorithmIR",
-    "LinearMPCAlgorithmIR",
-    "LuenbergerObserverIR",
-    "MahonyFilterAlgorithmIR",
-    "MatrixExpr",
-    "NodeIRBuilder",
-    "PIDAlgorithmIR",
-    "StateFeedbackAlgorithmIR",
-    "UKFAlgorithmIR",
-    "UnknownNodeTypeError",
-    "VectorExpr",
-    "algorithm_type_for",
-    "build_node_ir",
-    "registered_builders",
-    "validate_algorithm_ir",
-]
-"""AlgorithmIR builder extension points and ControlIR validation."""
+__all__ = ["validate_control_ir"]

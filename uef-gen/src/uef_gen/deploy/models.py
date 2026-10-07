@@ -52,7 +52,7 @@ class BuildConfig:
     target_name: str
     flash_budget: int = 0
     ram_budget: int = 0
-    snapshot_hash: str = ""
+    source_fingerprint: str = ""
 
 
 @dataclass
@@ -71,7 +71,7 @@ class BuildResult:
     warnings: list[str] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
     success: bool = False
-    snapshot_hash: str = ""
+    source_fingerprint: str = ""
 
 
 @dataclass(frozen=True)
@@ -85,7 +85,7 @@ class FirmwareArtifact:
     chip_name: str
     chip_hash: str
     project_hash: str
-    uef_snapshot_hash: str
+    uef_source_fingerprint: str
     build_timestamp: str
     build_result: BuildResult
     flash_start_addr: int | None = None
@@ -101,7 +101,7 @@ class FirmwareArtifact:
         """Create provenance only after a successful, complete build."""
         raise NotImplementedError(
             "TODO(artifact-provenance): require a successful build; hash the ELF and "
-            "project input; derive a stable chip-spec hash and UEF snapshot hash; "
+            "project input; derive a stable chip-spec hash and UEF source fingerprint; "
             "record a UTC build time; and obtain the programmed address range from "
             "verified linker/target metadata rather than guessing it."
         )

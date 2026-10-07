@@ -1,0 +1,68 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/moving_horizon",
+  "description": "Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/moving_horizon/mhe.h",
+  "scaffold_source": "src/ucon/estimators/moving_horizon/mhe.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/moving_horizon/mhe",
+  "scaffold_reason": "Moving-horizon estimation supports constrained state estimation and can pair with predictive-control studies.",
+  "project_relevance": [
+    "drone"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_problem",
+      "purpose": "Check horizon, models, constraints, arrival cost, and solver.",
+      "todo": "Specify fixed storage and optimization problem class. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize arrival estimate and window/solver workspace.",
+      "todo": "Define first timestamp and warm start. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear window and optimizer history.",
+      "todo": "Specify how caller reseeds arrival information. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    },
+    {
+      "name": "append_sample",
+      "purpose": "Append aligned input/measurement data to the fixed window.",
+      "todo": "Define missing/out-of-order samples and eviction. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    },
+    {
+      "name": "update_arrival_cost",
+      "purpose": "Compress information from removed samples into arrival term.",
+      "todo": "Specify approximation and conditioning. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    },
+    {
+      "name": "solve_window",
+      "purpose": "Solve the bounded finite-horizon estimation problem.",
+      "todo": "Define convergence, infeasible, and iteration-limit outputs. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    },
+    {
+      "name": "step",
+      "purpose": "Append, solve, and expose the selected estimate.",
+      "todo": "Specify partial-result and state-preservation policy. Algorithm-specific focus: Moving-horizon estimator that solves a bounded fixed-window estimation problem with a declared arrival cost and solver contract."
+    }
+  ]
+}

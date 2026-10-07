@@ -4,12 +4,13 @@
   "type": "object",
   "required": ["contract_version", "operation", "hardware_configuration", "output_directory", "work_directory"],
   "properties": {
-    "contract_version": {"const": "1.0"},
+    "contract_version": {"const": "1.1"},
     "operation": {"const": "generate"},
     "hardware_configuration": {"$ref": "project.schema.json"},
     "control_ir": {"$ref": "control_ir.schema.json"},
     "output_directory": {"type": "string"},
-    "work_directory": {"type": "string", "minLength": 1}
+    "work_directory": {"type": "string", "minLength": 1},
+    "project_directory": {"type": "string", "minLength": 1}
   },
   "additionalProperties": false
 }

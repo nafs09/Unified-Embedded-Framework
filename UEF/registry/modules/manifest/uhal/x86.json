@@ -1,0 +1,33 @@
+{
+  "sources": [
+    "src/uhal/x86/atomic.c",
+    "src/uhal/x86/cache.c",
+    "src/uhal/x86/clock.c",
+    "src/uhal/x86/core.c",
+    "src/uhal/x86/fault.c",
+    "src/uhal/x86/gpio.c",
+    "src/uhal/x86/irq.c",
+    "src/uhal/x86/memory.c",
+    "src/uhal/x86/timing.c"
+  ],
+  "dependencies": [
+    "ucore"
+  ],
+  "target": "HOST",
+  "variant_of": "uhal",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_time.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_atomic.h",
+    "include/uef/uhal/uhal_cache.h",
+    "include/uef/uhal/uhal_clock.h",
+    "include/uef/uhal/uhal_core.h",
+    "include/uef/uhal/uhal_fault.h",
+    "include/uef/uhal/uhal_gpio.h",
+    "include/uef/uhal/uhal_irq.h",
+    "include/uef/uhal/uhal_memory.h"
+  ]
+}

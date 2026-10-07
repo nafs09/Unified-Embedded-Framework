@@ -1,0 +1,53 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "electrical/transforms",
+  "description": "Three-phase transforms with declared phase sequence, scaling, zero-sequence treatment, and angle convention.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Three-phase transforms with declared phase sequence, scaling, zero-sequence treatment, and angle convention. Family contract work: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/electrical/transforms/clarke_park.h",
+  "scaffold_source": "src/ucon/electrical/transforms/clarke_park.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/electrical/transforms/clarke_park",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check phase order, scaling, angle convention, and zero-sequence policy.",
+      "todo": "Keep forward/inverse conventions consistent. Algorithm-specific focus: Three-phase transforms with declared phase sequence, scaling, zero-sequence treatment, and angle convention."
+    },
+    {
+      "name": "forward_transform",
+      "purpose": "Transform phase samples into the configured frame.",
+      "todo": "Specify phase ordering and numeric range. Algorithm-specific focus: Three-phase transforms with declared phase sequence, scaling, zero-sequence treatment, and angle convention."
+    },
+    {
+      "name": "inverse_transform",
+      "purpose": "Transform frame commands back to phase values.",
+      "todo": "Define zero-sequence reconstruction and saturation ownership. Algorithm-specific focus: Three-phase transforms with declared phase sequence, scaling, zero-sequence treatment, and angle convention."
+    },
+    {
+      "name": "step",
+      "purpose": "Run the requested transform for one synchronized sample set.",
+      "todo": "Validate all inputs before writing outputs. Algorithm-specific focus: Three-phase transforms with declared phase sequence, scaling, zero-sequence treatment, and angle convention."
+    }
+  ]
+}

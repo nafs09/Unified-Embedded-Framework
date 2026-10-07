@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/nonlinear/clf_cbf.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/nonlinear/clf_cbf.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "CLF_CBF",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "The combined CLF/CBF QP supports performance tracking with explicit safety constraints.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_clf_cbf_validate_model",
+    "ucon_clf_cbf_init",
+    "ucon_clf_cbf_reset",
+    "ucon_clf_cbf_compute_surface",
+    "ucon_clf_cbf_compute_control",
+    "ucon_clf_cbf_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

@@ -1,5 +1,5 @@
 /// @file include/uef/uproto/uproto.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UPROTO_H
 #define UPROTO_H

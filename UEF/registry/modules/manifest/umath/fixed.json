@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "src/umath/fixed.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/fixed.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

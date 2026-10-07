@@ -1,5 +1,5 @@
 /// @file src/uhal/arm_cm/cache.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_cache.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uhal/uhal_cache.h.
 ///
 /// Implementation intent: Implement cache-line-aligned maintenance only on cache-equipped
 ///   targets; keep no-cache targets as compile-time no-ops.

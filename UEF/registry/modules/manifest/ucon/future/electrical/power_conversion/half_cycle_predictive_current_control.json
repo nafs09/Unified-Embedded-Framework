@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/electrical/power_conversion/half_cycle_predictive_current_control.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/electrical/power_conversion/half_cycle_predictive_current_control.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL",
+  "priority": "DEFERRED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "contract_status": "deferred_underspecified",
+  "outlined_functions": [
+    "ucon_half_cycle_predictive_current_control_validate_topology",
+    "ucon_half_cycle_predictive_current_control_init",
+    "ucon_half_cycle_predictive_current_control_reset",
+    "ucon_half_cycle_predictive_current_control_predict_candidates",
+    "ucon_half_cycle_predictive_current_control_select_switch_action",
+    "ucon_half_cycle_predictive_current_control_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

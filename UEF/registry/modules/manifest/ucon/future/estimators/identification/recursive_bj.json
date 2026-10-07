@@ -1,0 +1,35 @@
+{
+  "sources": [
+    "src/ucon/future/estimators/identification/recursive_bj.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/estimators/identification/recursive_bj.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "RECURSIVE_BJ",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_recursive_bj_validate_model",
+    "ucon_recursive_bj_init",
+    "ucon_recursive_bj_reset",
+    "ucon_recursive_bj_build_regressor",
+    "ucon_recursive_bj_update_parameters",
+    "ucon_recursive_bj_get_diagnostics",
+    "ucon_recursive_bj_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

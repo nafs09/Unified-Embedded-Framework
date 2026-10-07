@@ -1,0 +1,8 @@
+{
+  "sources": [],
+  "dependencies": [
+    "ucore"
+  ],
+  "selection_group": "uhal",
+  "headers": []
+}

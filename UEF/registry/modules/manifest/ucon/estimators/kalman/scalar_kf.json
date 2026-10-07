@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/estimators/kalman/scalar_kf.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/kalman/scalar_kf.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "SCALAR_KF",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_scalar_kf_validate_model",
+    "ucon_scalar_kf_init",
+    "ucon_scalar_kf_reset",
+    "ucon_scalar_kf_predict",
+    "ucon_scalar_kf_correct",
+    "ucon_scalar_kf_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

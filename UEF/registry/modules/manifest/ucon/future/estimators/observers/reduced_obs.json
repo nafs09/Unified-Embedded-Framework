@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/estimators/observers/reduced_obs.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/estimators/observers/reduced_obs.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "REDUCED_OBS",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_reduced_obs_validate_model",
+    "ucon_reduced_obs_init",
+    "ucon_reduced_obs_reset",
+    "ucon_reduced_obs_predict",
+    "ucon_reduced_obs_correct",
+    "ucon_reduced_obs_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

@@ -1,17 +1,14 @@
+# ControlIR is serialized by NEXUS and passed to uef-gen as versioned JSON.
+# This module validates the inter-process payload only; it does not define
+# algorithm models or translate graph semantics into generator-owned classes.
+
 from __future__ import annotations
-
-# Transitional parser for the earlier generator-owned UCON schema. Keep it
-# isolated until UEF publishes the serialization/generation contract that
-# replaces this boundary.
-
 import json
 from pathlib import Path
 from typing import Any
-
 from uef_gen.diagnostics import Diagnostic, error
 
 _SCHEMA_PATH = Path(__file__).resolve().parents[1] / "schemas" / "control_ir.schema.json"
-
 
 def validate_control_ir(value: Any) -> list[Diagnostic]:
     if not isinstance(value, dict):

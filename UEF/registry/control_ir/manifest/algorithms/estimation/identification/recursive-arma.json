@@ -1,0 +1,69 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "estimation",
+  "family": "estimation/identification",
+  "description": "Online parameter estimation for an autoregressive moving-average time-series model.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Online parameter estimation for an autoregressive moving-average time-series model. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Define prediction-error recursion, initial conditions, stability constraints, and bounded numerical behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Define prediction-error recursion, initial conditions, stability constraints, and bounded numerical behavior.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/estimators/identification/recursive_arma",
+  "scaffold_header": "include/uef/ucon/future/estimators/identification/recursive_arma.h",
+  "scaffold_source": "src/ucon/future/estimators/identification/recursive_arma.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check model order, delays, regressor layout, and parameter bounds.",
+      "todo": "Document identifiability assumptions and fixed covariance/history size. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize parameters and information/covariance state.",
+      "todo": "Define P0, forgetting/regularization, and parameter seed. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset recursive memory under a documented parameter policy.",
+      "todo": "State whether reset retains or reinitializes parameters. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    },
+    {
+      "name": "build_regressor",
+      "purpose": "Build ordered regressors, instruments, and sensitivity terms.",
+      "todo": "Pin signal sign/order/delay and reject stale/non-finite samples. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    },
+    {
+      "name": "update_parameters",
+      "purpose": "Apply one bounded recursive parameter update.",
+      "todo": "Define forgetting, conditioning, symmetrization, and projection. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    },
+    {
+      "name": "get_diagnostics",
+      "purpose": "Report residual and excitation/conditioning status.",
+      "todo": "Distinguish insufficient excitation from numeric/model failure. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    },
+    {
+      "name": "step",
+      "purpose": "Consume one aligned sample and atomically publish the updated model.",
+      "todo": "Bound loops and preserve state on failure. Algorithm-specific focus: Online parameter estimation for an autoregressive moving-average time-series model."
+    }
+  ]
+}

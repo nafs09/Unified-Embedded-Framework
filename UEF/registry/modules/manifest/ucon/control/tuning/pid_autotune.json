@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/tuning/pid_autotune.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/tuning/pid_autotune.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "PID_AUTOTUNE",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Automatic PID tuning is a useful commissioning and experiment workflow across projects.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_pid_autotune_validate_experiment",
+    "ucon_pid_autotune_init",
+    "ucon_pid_autotune_reset",
+    "ucon_pid_autotune_collect_response",
+    "ucon_pid_autotune_estimate_parameters",
+    "ucon_pid_autotune_publish_candidate"
+  ],
+  "project_relevance": [
+    "common"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

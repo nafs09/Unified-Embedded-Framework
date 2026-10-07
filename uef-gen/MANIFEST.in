@@ -1,2 +1,1 @@
 recursive-include src/uef_gen/schemas *.json
-recursive-include src/uef_gen/uef_source *

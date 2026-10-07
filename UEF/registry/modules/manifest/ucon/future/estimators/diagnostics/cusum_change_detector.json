@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/estimators/diagnostics/cusum_change_detector.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/estimators/diagnostics/cusum_change_detector.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "CUSUM_CHANGE_DETECTOR",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_cusum_change_detector_validate_config",
+    "ucon_cusum_change_detector_init",
+    "ucon_cusum_change_detector_reset",
+    "ucon_cusum_change_detector_update_statistic",
+    "ucon_cusum_change_detector_update_decision",
+    "ucon_cusum_change_detector_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

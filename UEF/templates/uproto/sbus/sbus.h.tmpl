@@ -1,0 +1,23 @@
+/*
+ * {{ node.model.symbol_prefix }}_sbus.h
+ * Generated SBUS instance wrapper; the bounded decoder is owned by UEF.
+ */
+#ifndef {{ node.model.symbol_prefix | upper }}_SBUS_INSTANCE_H
+#define {{ node.model.symbol_prefix | upper }}_SBUS_INSTANCE_H
+
+#include "uef/uproto/uproto_sbus.h"
+
+typedef struct {
+    uproto_sbus_t protocol;
+} {{ node.model.symbol_prefix }}_sbus_t;
+
+uef_status_t {{ node.model.symbol_prefix }}_sbus_init(
+    {{ node.model.symbol_prefix }}_sbus_t *instance,
+    upal_uart_t *uart);
+void {{ node.model.symbol_prefix }}_sbus_process(
+    {{ node.model.symbol_prefix }}_sbus_t *instance);
+bool {{ node.model.symbol_prefix }}_sbus_read(
+    {{ node.model.symbol_prefix }}_sbus_t *instance,
+    uproto_sbus_frame_t *frame);
+
+#endif

@@ -34,8 +34,9 @@ void uapp_supervisor_tick(uapp_supervisor_t* supervisor) {
     /* The fault counter saturates at the threshold and calls back only on the crossing tick. */
     const uef_u8_t count = umid_health_count();
     for (uef_u8_t id = 0u; id < count && id < 32u; ++id) {
-        const umid_health_entry_t* entry = umid_health_entry(id);
-        if (entry == NULL || entry->status < UMID_HEALTH_FAULT) {
+        umid_health_entry_t entry;
+        if (!umid_health_entry_copy(id, &entry) ||
+            entry.status < UMID_HEALTH_FAULT) {
             supervisor->fault_counts[id] = 0u;
             continue;
         }
@@ -44,7 +45,7 @@ void uapp_supervisor_tick(uapp_supervisor_t* supervisor) {
             ++supervisor->fault_counts[id];
             if (supervisor->fault_counts[id] == supervisor->cfg.fault_threshold &&
                 supervisor->cfg.on_fault != NULL) {
-                supervisor->cfg.on_fault(id, entry->status, supervisor->cfg.ctx);
+                supervisor->cfg.on_fault(id, entry.status, supervisor->cfg.ctx);
             }
         }
     }

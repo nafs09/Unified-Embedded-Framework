@@ -1,5 +1,5 @@
 /// @file src/upal/usb/usb.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_usb.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_usb.h.
 ///
 /// Implementation intent: Bind the controller transport only; CDC/HID class policy remains a
 ///   separately selected profile implementation.

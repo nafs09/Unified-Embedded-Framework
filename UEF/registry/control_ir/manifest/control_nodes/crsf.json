@@ -1,0 +1,28 @@
+{
+  "domain": "uproto",
+  "outputs": [
+    {
+      "template": "uproto/crsf/crsf.h.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_crsf.h"
+    },
+    {
+      "template": "uproto/crsf/crsf.c.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_crsf.c"
+    }
+  ],
+  "modules": [
+    "uproto/crsf"
+  ],
+  "features": [
+    "uart_rx",
+    "uart_tx",
+    "telemetry"
+  ],
+  "manual_actions": [
+    {
+      "code": "uproto_transport_binding",
+      "message": "Configure the board UART/DMA path for CRSF, verify the required baud and signal polarity, and connect the generated process hook to a bounded task or deferred ISR path.",
+      "required_before_hardware_use": true
+    }
+  ]
+}

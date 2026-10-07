@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/umath/vector4.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h",
+    "include/uef/umath/vector4.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

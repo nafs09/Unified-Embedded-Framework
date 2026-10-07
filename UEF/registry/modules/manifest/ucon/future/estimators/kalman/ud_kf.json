@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/estimators/kalman/ud_kf.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/estimators/kalman/ud_kf.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "UD_KF",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_ud_kf_validate_model",
+    "ucon_ud_kf_init",
+    "ucon_ud_kf_reset",
+    "ucon_ud_kf_predict_factor",
+    "ucon_ud_kf_correct_factor",
+    "ucon_ud_kf_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

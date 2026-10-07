@@ -1,0 +1,61 @@
+{
+  "priority": "DEFERRED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/classical",
+  "description": "Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified.",
+  "implementation_notes": "Define sampled plant form/order, dead-time handling, target response/time constant, coefficient computation, stability range, and whether design is offline or runtime. Define typed dimensions/units, fixed memory/work, numeric failure behavior, and state/output preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/control/classical/dahlin.h",
+  "scaffold_source": "src/ucon/future/control/classical/dahlin.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/control/classical/dahlin",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "project_relevance": [],
+  "contract_status": "deferred_underspecified",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define sampled plant form/order, dead-time handling, target response/time constant, coefficient computation, stability range, and whether design is offline or runtime."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_plant",
+      "purpose": "Check sampled plant model, delay, and requested response parameter.",
+      "todo": "Specify supported plant order and dead-time representation. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+    },
+    {
+      "name": "design_coefficients",
+      "purpose": "Derive the Dahlin controller coefficients for the declared response target.",
+      "todo": "Pin discretization, target time constant, and coefficient convention. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+    },
+    {
+      "name": "verify_closed_loop",
+      "purpose": "Check stability and response constraints for the designed coefficients.",
+      "todo": "Reject invalid delay/response combinations. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize controller recurrence state.",
+      "todo": "Define reset and initial output behavior. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear/preload recurrence state.",
+      "todo": "Specify bumpless coefficient replacement. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+    },
+    {
+      "name": "step",
+      "purpose": "Evaluate the designed discrete recurrence for one sample.",
+      "todo": "Keep deferred until design range and numeric bounds are specified. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+    }
+  ]
+}

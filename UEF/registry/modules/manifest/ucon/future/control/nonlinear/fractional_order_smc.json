@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/control/nonlinear/fractional_order_smc.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/control/nonlinear/fractional_order_smc.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "FRACTIONAL_ORDER_SMC",
+  "priority": "DEFERRED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "contract_status": "deferred_underspecified",
+  "outlined_functions": [
+    "ucon_fractional_order_smc_validate_config",
+    "ucon_fractional_order_smc_init",
+    "ucon_fractional_order_smc_reset",
+    "ucon_fractional_order_smc_update_fractional_memory",
+    "ucon_fractional_order_smc_compute_switching_control",
+    "ucon_fractional_order_smc_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

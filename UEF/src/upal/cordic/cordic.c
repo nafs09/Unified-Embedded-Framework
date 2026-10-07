@@ -1,5 +1,5 @@
 /// @file src/upal/cordic/cordic.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_cordic.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_cordic.h.
 ///
 /// Implementation intent: Implement capability-gated fixed-point operation ordering and define
 ///   angle scaling and saturation behavior.

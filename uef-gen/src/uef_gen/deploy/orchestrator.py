@@ -62,10 +62,10 @@ class DeploymentOrchestrator:
             # This sequence remains unavailable until each backend has reviewed timeout,
             # protection, erase geometry, and cancellation behavior for its supported target.
             raise NotImplementedError(
-                "TODO(deployment-sequence): confirm the selected probe/target with the user; " 
-                "halt; inspect protection without changing destructive option bytes; validate " 
+                "TODO(deployment-sequence): confirm the selected probe/target with the user; "
+                "halt; inspect protection without changing destructive option bytes; validate "
                 "the absolute artifact range against verified target flash base/length and sector "
-                "geometry (capacity alone is not an address); erase exactly the required " 
+                "geometry (capacity alone is not an address); erase exactly the required "
                 "sectors; program; verify by readback/hash; report byte progress; reset only after "
                 "successful verification; and preserve a recoverable diagnostic on every failure."
             )

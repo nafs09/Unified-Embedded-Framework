@@ -1,0 +1,56 @@
+{
+  "id": "stm32c071cbt6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-c0",
+  "series": "STM32C0",
+  "part_number": "STM32C071CBT6",
+  "aliases": [
+    "STM32C071CB"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M0+",
+    "isa": "Armv6-M",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 48000000
+  },
+  "package": {
+    "name": "LQFP48",
+    "pin_count": 48
+  },
+  "memory": {
+    "flash_bytes": 131072,
+    "sram_bytes": 24576,
+    "notes": "128 KiB flash and 24 KiB SRAM."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "USB_FS",
+    "ADC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32C071CB product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32c071cb.html"
+    },
+    {
+      "title": "ST STM32C071 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32c071cb.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Catalogue-only compact STM32 representative; no implementation phase is assigned."
+}

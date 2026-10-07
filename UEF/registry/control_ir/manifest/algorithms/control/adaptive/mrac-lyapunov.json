@@ -1,0 +1,66 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/adaptive",
+  "description": "Lyapunov-based MRAC; guaranteed stability",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Lyapunov-based MRAC; guaranteed stability Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/control/adaptive/mrac_lyapunov.h",
+  "scaffold_source": "src/ucon/future/control/adaptive/mrac_lyapunov.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/control/adaptive/mrac_lyapunov",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check reference model, adaptation gains, projection bounds, and rate.",
+      "todo": "State the stability assumptions; tuning alone is not a stability proof. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize controller, observer, reference model, and parameter state.",
+      "todo": "Define parameter seeds and startup saturation behavior. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset adaptation and controller history.",
+      "todo": "Say whether learned parameters are retained or reseeded. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    },
+    {
+      "name": "update_model",
+      "purpose": "Update the declared reference/observer/model state.",
+      "todo": "Define sampling and input-delay alignment. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    },
+    {
+      "name": "update_parameters",
+      "purpose": "Apply adaptation law and projection/leakage policy.",
+      "todo": "Bound drift and specify low-excitation/saturation behavior. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    },
+    {
+      "name": "compute_control",
+      "purpose": "Compute/bound command from current estimates.",
+      "todo": "Keep actuator constraints and independent safety supervision explicit. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    },
+    {
+      "name": "step",
+      "purpose": "Coordinate model, adaptation, and control in a fixed order.",
+      "todo": "Return diagnostics and preserve state on intermediate failure. Algorithm-specific focus: Lyapunov-based MRAC; guaranteed stability"
+    }
+  ]
+}

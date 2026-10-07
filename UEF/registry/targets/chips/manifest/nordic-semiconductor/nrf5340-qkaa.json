@@ -1,0 +1,60 @@
+{
+  "id": "nrf5340-qkaa",
+  "vendor": "Nordic Semiconductor",
+  "family_id": "nrf5340",
+  "series": "nRF5340",
+  "part_number": "nRF5340-QKAA",
+  "aliases": [
+    "nRF5340"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M33 application + network cores",
+    "isa": "Armv8-M",
+    "count": 2,
+    "fpu": "single-precision on application core",
+    "max_frequency_hz": 128000000
+  },
+  "package": {
+    "name": "aQFN94",
+    "pin_count": 94
+  },
+  "memory": {
+    "flash_bytes": 1310720,
+    "sram_bytes": 589824,
+    "notes": "Application core: 1 MiB flash + 512 KiB RAM; network core: 256 KiB flash + 64 KiB RAM. Application core can operate at 128 or 64 MHz; network core at 64 MHz."
+  },
+  "peripheral_groups": [
+    "EasyDMA",
+    "GPIO",
+    "SPI",
+    "I2C",
+    "UART",
+    "USB",
+    "QSPI",
+    "PWM",
+    "PDM",
+    "I2S",
+    "radio"
+  ],
+  "source_references": [
+    {
+      "title": "Nordic nRF5340 product page",
+      "url": "https://www.nordicsemi.com/products/nrf5340"
+    },
+    {
+      "title": "Nordic nRF5340 product specification",
+      "url": "https://docs-be.nordicsemi.com/bundle/nRF5340_PS_v1.1/raw/resource/enus/nRF5340_PS_v1.1.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core_count",
+    "application_core_frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Dual-core radio SoC. Memory totals are the sum of separate application and network core memories; keep per-core ownership explicit in a future full ChipSpec."
+}

@@ -1,0 +1,73 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman",
+  "description": "Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/kalman/imm_ekf.h",
+  "scaffold_source": "src/ucon/estimators/kalman/imm_ekf.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/kalman/imm_ekf",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model_bank",
+      "purpose": "Check model count, compatible dimensions, and transition probabilities.",
+      "todo": "Bound model count and require normalized nonnegative probabilities. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize each model estimate/covariance and model probability.",
+      "todo": "Define state mappings and zero-probability behavior. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset every model and probability consistently.",
+      "todo": "Define caller ownership of model context. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "mix_mode_states",
+      "purpose": "Compute destination-model mixed initial states/covariances.",
+      "todo": "Specify cross-model mappings and covariance mixing. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "predict_modes",
+      "purpose": "Predict each EKF model from its mixed state.",
+      "todo": "Bound work and define failed-mode policy. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "correct_modes",
+      "purpose": "Correct each model and evaluate measurement likelihood.",
+      "todo": "Define likelihood floor and all-models-rejected behavior. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "update_probabilities",
+      "purpose": "Normalize model probabilities and combine state estimates.",
+      "todo": "Report degeneracy and preserve probability normalization. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    },
+    {
+      "name": "step",
+      "purpose": "Run mixing, prediction, correction, probability update, and combination.",
+      "todo": "Commit consistently or report which model failed. Algorithm-specific focus: Interacting multiple-model estimator using a declared bank of EKF models, mode-transition probabilities, mixing, and probability update."
+    }
+  ]
+}

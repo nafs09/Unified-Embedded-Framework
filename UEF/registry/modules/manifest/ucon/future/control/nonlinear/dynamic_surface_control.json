@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/control/nonlinear/dynamic_surface_control.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/control/nonlinear/dynamic_surface_control.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "DYNAMIC_SURFACE_CONTROL",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_dynamic_surface_control_validate_model",
+    "ucon_dynamic_surface_control_init",
+    "ucon_dynamic_surface_control_reset",
+    "ucon_dynamic_surface_control_compute_surface",
+    "ucon_dynamic_surface_control_compute_control",
+    "ucon_dynamic_surface_control_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

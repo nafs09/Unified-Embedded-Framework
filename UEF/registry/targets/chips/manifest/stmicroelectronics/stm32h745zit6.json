@@ -1,0 +1,69 @@
+{
+  "id": "stm32h745zit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-h7",
+  "series": "STM32H7",
+  "part_number": "STM32H745ZIT6",
+  "aliases": [
+    "STM32H745ZI"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M7 + Cortex-M4",
+    "isa": "Armv7E-M",
+    "count": 2,
+    "fpu": "M7 double; M4 single",
+    "max_frequency_hz": 480000000,
+    "core_frequencies_hz": {
+      "Cortex-M7": 480000000,
+      "Cortex-M4": 240000000
+    }
+  },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 1048576,
+    "notes": "Vendor headline up to 1 MiB RAM with shared and core-specific regions; exact map required."
+  },
+  "peripheral_groups": [
+    "BDMA",
+    "DMA",
+    "MDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ETHERNET_MAC",
+    "ADC",
+    "DAC",
+    "HRTIM",
+    "QSPI",
+    "FMC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32H745ZI product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h745zi.html"
+    },
+    {
+      "title": "ST STM32H745xI datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32h745zi.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Dual-core example; it does not fit the existing Phase 0 single-core H7 profile. Define boot, shared-memory and interrupt ownership before target registration."
+}

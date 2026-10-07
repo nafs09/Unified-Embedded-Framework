@@ -1,0 +1,30 @@
+{
+  "id": "lpc11xx",
+  "vendor": "NXP",
+  "family": "LPC",
+  "series": "LPC11xx",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M0; selected LPC11Uxx parts use Cortex-M0+"
+  ],
+  "core_notes": "Architecture differs by subfamily: LPC11xx includes Cortex-M0 parts and selected LPC11Uxx Cortex-M0+ parts.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "pins",
+    "clock",
+    "startup"
+  ],
+  "source_references": [
+    "nxp_lpc",
+    "nxp_lpc11"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

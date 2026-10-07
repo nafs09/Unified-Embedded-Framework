@@ -1,5 +1,5 @@
 /// @file src/umid/current.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_current.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_current.h.
 ///
 /// Implementation intent: Convert ADC readings with the configured shunt/gain calibration and
 ///   make zero-offset calibration explicit.

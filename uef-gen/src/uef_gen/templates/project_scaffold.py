@@ -1,58 +1,218 @@
+"""Build non-UCON project scaffolding from resolved hardware/project data."""
+
 from __future__ import annotations
 
 import json
-from typing import Any
+import re
 
 from uef_gen.resolver.models import ResolvedProject
-from uef_gen.templates.registry import GeneratedFile
+from uef_gen.templates.models import GeneratedFile
 
 
-def render_project_scaffold(project: ResolvedProject, snapshot_hash: str = "") -> tuple[GeneratedFile, ...]:
-    """Render only the generic application files that do not own UCON behavior.
+def _identifier(value: str, fallback: str = "generated") -> str:
+    """Return a stable C identifier derived from user-visible configuration."""
+    result = re.sub(r"[^A-Za-z0-9_]", "_", value)
+    if not result or result[0].isdigit():
+        result = f"{fallback}_{result}"
+    return result
 
-    UCON's reusable scalar types and algorithm implementation belong to UEF.
-    Until that UEF contract is present, this scaffold must not emit a second
-    generated copy of UCON types.
+
+def _comment_text(value: str) -> str:
+    """Keep arbitrary project names from ending a generated C comment."""
+    clean = "".join(character if ord(character) >= 32 and ord(character) != 127 else " "
+                     for character in value)
+    return clean.replace("*/", "* /")
+
+
+def _protocol_entries(project: ResolvedProject) -> list[tuple[str, str]]:
+    raw = project.user_configuration.get("protocols", {})
+    entries: list[tuple[str, str]] = []
+    if isinstance(raw, dict):
+        for key, value in raw.items():
+            protocol_type = value.get("type", key) if isinstance(value, dict) else key
+            entries.append((str(key), str(protocol_type)))
+    elif isinstance(raw, list):
+        for index, value in enumerate(raw):
+            if isinstance(value, dict):
+                entries.append((str(value.get("name", f"protocol_{index}")),
+                                str(value.get("type", value.get("name", "unknown")))))
+            else:
+                entries.append((str(value), str(value)))
+    return entries
+
+
+def render_project_scaffold(
+    project: ResolvedProject,
+    source_fingerprint: str = "",
+    selected_modules: tuple[str, ...] | None = None,
+) -> tuple[GeneratedFile, ...]:
+    """Render organized project files without embedding UEF runtime or UCON code.
+
+    Hardware-dependent source files are explicit placeholders. They do not
+    imply that the reference chip data is sufficient to boot a physical board.
     """
     name = " ".join(project.name.split())
-    chip = " ".join(project.chip.name.split())
-    comment_name = "".join(character if ord(character) >= 32 and ord(character) != 127 else " "
-                           for character in name).replace("*/", "* /")
-    c_string = lambda value: json.dumps(value, ensure_ascii=True)
-    config = f"""/* Generated target configuration for {comment_name}. */
-#ifndef GENERATED_CONFIG_H
-#define GENERATED_CONFIG_H
-#define UEF_TARGET_CHIP {c_string(chip)}
-#define UEF_TARGET_ARITHMETIC {c_string(project.arithmetic)}
-#define UEF_TARGET_RTOS {c_string(project.rtos)}
-#define UEF_SNAPSHOT_HASH {c_string(snapshot_hash)}
-""" + "".join(f"#define {define}\n" for define in project.defines) + "#endif\n"
-    app = f"""/* Generated application entry point. Add verified board startup here. */
+    chip = project.chip
+    modules = selected_modules or project.modules
+    module_macros = "".join(
+        f"#define UEF_MODULE_{_identifier(module).upper()} 1\n"
+        for module in modules
+    )
+    config_header = f"""/* Generated project options for {_comment_text(name)}. */
+#ifndef UEF_GENERATED_CONFIG_H
+#define UEF_GENERATED_CONFIG_H
+#include <stdint.h>
+
+#define UEF_TARGET_CHIP {json.dumps(chip.name)}
+#define UEF_TARGET_ARITHMETIC {json.dumps(project.arithmetic)}
+#define UEF_TARGET_RTOS {json.dumps(project.rtos)}
+#define UEF_SOURCE_FINGERPRINT {json.dumps(source_fingerprint)}
+{module_macros}{''.join(f'#define {define}\n' for define in project.defines)}
+#endif /* UEF_GENERATED_CONFIG_H */
+"""
+
+    caps = project.capabilities
+    arch = chip.family.arch
+    capability_values = {
+        "UHAL_HAS_FPU": caps.has_fpu,
+        "UHAL_HAS_DCACHE": caps.dcache,
+        "UHAL_HAS_ICACHE": arch.icache,
+        "UHAL_HAS_MPU": arch.mpu,
+        "UHAL_HAS_DWT": arch.dwt,
+        "UHAL_HAS_DSP_SIMD": arch.dsp_simd,
+        "UHAL_HAS_HW_DIV": arch.hw_divide,
+        "UHAL_HAS_CMSIS_DSP": arch.cmsis_dsp,
+        "UHAL_HAS_HRTIM": caps.hrtim,
+        "UHAL_HAS_FDCAN": caps.fdcan,
+        "UHAL_HAS_CORDIC": caps.cordic,
+        "UHAL_HAS_FMAC": caps.fmac,
+        "UHAL_HAS_OPAMP": caps.opamp,
+        "UHAL_HAS_COMP": caps.comp,
+        "UHAL_HAS_USB_FS": caps.usb_fs,
+        "UHAL_HAS_DMAMUX": caps.dma_mux,
+    }
+    target_header = f"""/* Target capability snapshot for {_comment_text(chip.name)}.
+ * These values reflect the registered target record, not an independent claim
+ * that its vendor data has been validated.
+ */
+#ifndef UEF_GENERATED_TARGET_H
+#define UEF_GENERATED_TARGET_H
+
+#define UEF_TARGET_ARCH_NAME {json.dumps(arch.name)}
+#define UEF_TARGET_WORD_BITS {arch.word_bits}U
+#define UEF_TARGET_FLASH_BYTES {chip.flash_bytes}ULL
+#define UEF_TARGET_SRAM_BYTES {chip.sram_bytes}ULL
+#define UEF_TARGET_DATA_VERIFIED {1 if chip.verified else 0}
+""" + "".join(
+        f"#define {macro} {1 if supported else 0}\n"
+        for macro, supported in capability_values.items()
+    ) + "#endif /* UEF_GENERATED_TARGET_H */\n"
+
+    board_instance_lines = "".join(
+        f"#define UEF_BOARD_PERIPHERAL_{_identifier(p.key or p.instance).upper()} {json.dumps(p.instance)}\n"
+        for p in project.peripherals
+    )
+    board_config = f"""/* Stable project aliases for the resolved board resources. */
+#ifndef UEF_GENERATED_BOARD_CONFIG_H
+#define UEF_GENERATED_BOARD_CONFIG_H
+{board_instance_lines}#endif /* UEF_GENERATED_BOARD_CONFIG_H */
+"""
+    board_header = """/* Board-level initialization boundary; implement for a verified board. */
+#ifndef GENERATED_BOARD_H
+#define GENERATED_BOARD_H
+#include <uef/ucore/uef_status.h>
+
+uef_status_t board_initialize(void);
+void board_deinitialize(void);
+
+#endif /* GENERATED_BOARD_H */
+"""
+    board_source = f"""/* Board initialization scaffold for {_comment_text(chip.name)}.
+ * The target record is {'verified' if chip.verified else 'unverified'}; this placeholder
+ * refuses to report successful hardware initialization until pin, clock,
+ * DMA, and peripheral setup has been implemented for the selected board.
+ */
+#include "board/board.h"
+
+uef_status_t board_initialize(void)
+{{
+    /* TODO: configure board clocks and pins, then initialize selected UPAL devices. */
+    return UEF_NOT_SUPPORTED;
+}}
+
+void board_deinitialize(void)
+{{
+    /* TODO: stop board-owned devices and return pins to their documented safe state. */
+}}
+"""
+
+    system_init = """/* Target startup hook. This is deliberately not added to the source list.
+ * Implement clock-tree, flash-wait-state, MPU and cache setup from verified
+ * vendor data before connecting this function to the reset/startup sequence.
+ */
+void uef_system_initialize(void)
+{
+    /* TODO: use the selected MCU reference manual and board clock plan. */
+}
+"""
+    startup_assembly = """/* GENERATED PLACEHOLDER — replace with the selected vendor startup file.
+ * The reset vector, stack top, exception vectors and data/BSS copy ranges are
+ * target-specific. This file is not included in project_sources.txt.
+ */
+"""
+    linker_script = """/* GENERATED PLACEHOLDER — replace with a verified target linker script.
+ * Define FLASH/RAM origin and length, vector placement, stack/heap limits,
+ * load addresses, and all required section-retention rules before linking.
+ */
+"""
+    target_readme = f"""# Target integration for {chip.name}
+
+The generator created named placeholders because this target record is
+{'marked verified' if chip.verified else 'not verified'} and does not currently provide a complete startup/linker profile.
+
+- `startup.s` is not a reset handler and is intentionally omitted from the build list.
+- `link.ld` contains no memory map and must be replaced before linking.
+- `system_init.c` is not called automatically; connect verified clock and memory setup in the board startup flow.
+- `board/board.c` returns `UEF_NOT_SUPPORTED` until the physical board setup is implemented.
+
+Use the vendor reference manual, datasheet, errata, CMSIS device package,
+board schematic and selected toolchain to fill these files. Do not infer
+addresses or clock values from the generic target name.
+"""
+
+    task_files = _render_task_scaffold(project)
+    protocol_files = _render_protocol_scaffolds(project)
+    freertos_files = _render_freertos_config(project)
+    application = f"""/* Application lifecycle scaffold for {_comment_text(name)}. */
 #include <uef/uapp/uapp_lifecycle.h>
 #include <uef/uos/uos.h>
-#include <generated/config.h>
+#include "board/board.h"
+#include "config/uef_config.h"
 
-static uef_status_t application_initialize(void *context) {{
+static uef_status_t application_initialize(void *context)
+{{
     (void)context;
-    /* Initialize board-owned drivers and application components here. */
-    return UEF_OK;
+    return board_initialize();
 }}
 
-static uef_status_t application_start(void *context) {{
+static uef_status_t application_start(void *context)
+{{
     (void)context;
-    /* Start only after every required component has initialized successfully. */
-    return UEF_OK;
+    /* TODO: start application services after every required component is ready. */
+    return UEF_NOT_SUPPORTED;
 }}
 
-static void application_stop(void *context) {{
+static void application_stop(void *context)
+{{
     (void)context;
-    /* Stop components in the order required by the application. */
+    /* TODO: stop services in reverse dependency order and flush durable state. */
 }}
 
-int main(void) {{
+int main(void)
+{{
     uapp_component_t application = {{
         .state = UAPP_STATE_CREATED,
-        .name = {c_string(name)},
+        .name = {json.dumps(name)},
         .init = application_initialize,
         .start = application_start,
         .stop = application_stop,
@@ -62,33 +222,139 @@ int main(void) {{
 
     if (uapp_component_init(&application) != UEF_OK) return 1;
     if (uapp_component_start(&application) != UEF_OK) return 2;
-    /* FreeRTOS owns control after this call; bare-metal apps own their loop. */
+    /* TODO: replace this skeleton path with the selected UOS lifecycle policy. */
     uos_scheduler_start();
     uapp_component_stop(&application);
     return 0;
 }}
 """
-    readme = f"""# {name}
 
-Generated embedded project skeleton for **{chip}**.
+    project_readme = f"""# {name}
 
-The canonical build description is in `project_sources.txt`, `project_includes.txt`,
-`project_defines.txt`, and `project_cflags.txt`. Add a target startup/backend,
-verified board drivers, and registered algorithm/template extensions before
-using this output on hardware. NEXUS and uef-gen are not firmware runtime dependencies.
+Generated C project skeleton for **{chip.name}**.
+
+## Project layout
+
+- `uef/` contains the selected headers and source modules copied from the UEF checkout resolved for this generation.
+- `application/` is the application lifecycle entry point.
+- `board/` is the board initialization boundary and deliberately fails closed until implemented.
+- `target/` contains startup/linker placeholders that must be replaced with verified target files.
+- `config/`, `uos/`, and `protocols/` contain generated configuration surfaces and implementation notes.
+- `manifest/` records target resolution, selected modules, UEF identity and source provenance.
+
+## Before building for hardware
+
+1. Select a concrete verified MCU and board record; confirm package pins, clock domains, DMA routes, IRQs and memory regions against vendor documentation.
+2. Replace `target/startup.s` and `target/link.ld` with the correct startup/vector and linker files; connect `uef_system_initialize()` in the reset flow.
+3. Implement `board_initialize()` and every selected UPAL operation; its scaffold returns `UEF_NOT_SUPPORTED` intentionally.
+4. Supply external dependencies listed in `manifest/modules.json`, including the configured RTOS kernel, CMSIS/device headers or FatFS where required.
+5. Complete any UCON template contract in the UEF checkout before generating algorithm code from NEXUS ControlIR.
+
+The generic reference target is useful for configuration/assembly only. It is not board data. Python and NEXUS are generation-time tools and are not firmware runtime dependencies.
+
+Canonical source, include, and link lists are `project_sources.txt`, `project_includes.txt`,
+`project_defines.txt`, `project_cflags.txt`, and `project_libraries.txt`. The CMake and Make fragments under
+`config/` consume those lists; they do not provide missing startup or dependency files.
 """
-    return (GeneratedFile("src/main.c", app), GeneratedFile("include/generated/config.h", config),
-            GeneratedFile("README.md", readme))
+
+    return tuple([
+        GeneratedFile("application/application.c", application),
+        GeneratedFile("config/uef_config.h", config_header),
+        GeneratedFile("config/uef_target.h", target_header),
+        GeneratedFile("config/uef_board.h", board_config),
+        GeneratedFile("board/board.h", board_header),
+        GeneratedFile("board/board.c", board_source),
+        GeneratedFile("target/system_init.c", system_init),
+        GeneratedFile("target/startup.s", startup_assembly),
+        GeneratedFile("target/link.ld", linker_script),
+        GeneratedFile("target/README.md", target_readme),
+        GeneratedFile("README.md", project_readme),
+        *task_files,
+        *protocol_files,
+        *freertos_files,
+    ])
 
 
-def render_user_algorithms(algorithms: tuple[Any, ...], context: dict[str, Any]) -> tuple[GeneratedFile, ...]:
-    """Call registered legacy algorithm renderers until UEF owns this boundary.
+def _render_task_scaffold(project: ResolvedProject) -> tuple[GeneratedFile, ...]:
+    tasks = [task for task in project.tasks if task.execution_context == "task"]
+    if not tasks:
+        return ()
+    declarations = "".join(
+        f"void {_identifier(task.name, 'task')}(void *context);\n" for task in tasks
+    )
+    entries = "\n".join(
+        f"    /* TODO: create {_identifier(task.name, 'task')} at {task.period_us} us, "
+        f"priority {task.priority}, stack {task.stack_bytes} bytes using the selected UOS backend. */"
+        for task in tasks
+    )
+    header = f"""/* Generated task declarations; implement task bodies in the application. */
+#ifndef GENERATED_TASKS_H
+#define GENERATED_TASKS_H
 
-    This adapter is migration-only. New algorithm bodies and reusable UCON
-    type definitions belong in the verified UEF snapshot, not these extensions.
-    """
-    from uef_gen.templates.registry import render_algorithm
-    result: list[GeneratedFile] = []
-    for algorithm in algorithms:
-        result.extend(render_algorithm(algorithm, context))
-    return tuple(result)
+{declarations}void uef_project_tasks_create(void);
+
+#endif /* GENERATED_TASKS_H */
+"""
+    source = f"""#include "uos/tasks.h"
+
+void uef_project_tasks_create(void)
+{{
+{entries}
+}}
+"""
+    return (GeneratedFile("uos/tasks.h", header), GeneratedFile("uos/tasks.c", source))
+
+
+def _render_protocol_scaffolds(project: ResolvedProject) -> tuple[GeneratedFile, ...]:
+    files: list[GeneratedFile] = []
+    for name, protocol_type in _protocol_entries(project):
+        stem = _identifier(name).lower()
+        macro = _identifier(f"{name}_{protocol_type}").upper()
+        header = f"""/* Protocol configuration placeholder for {protocol_type} ({name}). */
+#ifndef GENERATED_PROTOCOL_{macro}_H
+#define GENERATED_PROTOCOL_{macro}_H
+
+#define UEF_PROTOCOL_{macro}_TYPE {json.dumps(protocol_type)}
+/* TODO: add timing/frame constants only after target clocks and pin assignments resolve. */
+
+#endif /* GENERATED_PROTOCOL_{macro}_H */
+"""
+        files.append(GeneratedFile(f"protocols/{stem}_config.h", header))
+    return tuple(files)
+
+
+def _render_freertos_config(project: ResolvedProject) -> tuple[GeneratedFile, ...]:
+    if project.rtos.casefold() != "freertos":
+        return ()
+    target = project.user_configuration.get("target", {})
+    settings = target.get("freertos", {}) if isinstance(target, dict) else {}
+    if not isinstance(settings, dict):
+        settings = {}
+    tick_hz = int(settings.get("tick_hz", 1000))
+    highest_priority = max((task.priority for task in project.tasks if task.execution_context == "task"), default=0)
+    heap_bytes = int(settings.get("heap_bytes", 0))
+    static_allocation = bool(settings.get("static_allocation", True))
+    header = f"""/* FreeRTOS application configuration scaffold.
+ * The kernel sources/port remain an external dependency of the firmware project.
+ * Confirm every option against the selected FreeRTOS release and port.
+ */
+#ifndef FREERTOS_CONFIG_H
+#define FREERTOS_CONFIG_H
+
+#ifndef UEF_CPU_CLOCK_HZ
+#error Define UEF_CPU_CLOCK_HZ from the verified board clock configuration
+#endif
+#define configCPU_CLOCK_HZ UEF_CPU_CLOCK_HZ
+#define configTICK_RATE_HZ {tick_hz}UL
+#define configMAX_PRIORITIES {highest_priority + 1}U
+#define configTOTAL_HEAP_SIZE {heap_bytes}U
+#define configSUPPORT_STATIC_ALLOCATION {1 if static_allocation else 0}
+#define configSUPPORT_DYNAMIC_ALLOCATION {1 if heap_bytes > 0 else 0}
+
+/* TODO: set interrupt priorities, timer hooks, stack-depth type, assertions,
+ * FPU/MPU options, allocation hooks and ISR-yield macro for the chosen port.
+ */
+
+#endif /* FREERTOS_CONFIG_H */
+"""
+    return (GeneratedFile("uos/FreeRTOSConfig.h", header),)

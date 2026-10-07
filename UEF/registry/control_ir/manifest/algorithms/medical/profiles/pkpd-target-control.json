@@ -1,0 +1,63 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "medical/profiles",
+  "description": "Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided.",
+  "implementation_notes": "Specify the external PK/PD model interface, target variable/units, estimate freshness, constraint provenance, candidate-dose contract, independent supervisor, and failure state; do not invent clinical values. Define typed dimensions/units, fixed memory/work, numeric failure behavior, and state/output preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/medical/profiles/pkpd_target_control.h",
+  "scaffold_source": "src/ucon/medical/profiles/pkpd_target_control.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/medical/profiles/pkpd_target_control",
+  "scaffold_reason": "Target-controlled pharmacokinetic/pharmacodynamic dosing is directly relevant to the medical project.",
+  "project_relevance": [
+    "medical"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Specify the external PK/PD model interface, target variable/units, estimate freshness, constraint provenance, candidate-dose contract, independent supervisor, and failure state; do not invent clinical values."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_inputs",
+      "purpose": "Check units, timestamps, model identity, and supplied supervisor limits.",
+      "todo": "Never infer clinical settings or therapy limits. Algorithm-specific focus: Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize reusable profile state and external model interface.",
+      "todo": "Require explicit safe seed and configuration provenance. Algorithm-specific focus: Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset history only under explicit external supervision.",
+      "todo": "Define stale-data and therapy-state handoff. Algorithm-specific focus: Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided."
+    },
+    {
+      "name": "update_estimate",
+      "purpose": "Consume the declared application-owned physiology/device model output.",
+      "todo": "Do not invent patient or device dynamics. Algorithm-specific focus: Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided."
+    },
+    {
+      "name": "compute_candidate",
+      "purpose": "Compute a candidate subject to caller-supplied constraints.",
+      "todo": "Require independent safety supervision and report limiting conditions. Algorithm-specific focus: Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided."
+    },
+    {
+      "name": "step",
+      "purpose": "Return candidate/status for external approval and actuation.",
+      "todo": "No generic UCON profile establishes clinical safety. Algorithm-specific focus: Target-control boundary around caller-supplied pharmacokinetic/pharmacodynamic models, estimates, dose constraints, and independent supervision; no clinical defaults are provided."
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "filtering",
+  "family": "filtering/adaptive",
+  "description": "Least-mean-squares adaptive FIR update driven by a declared reference and error signal.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Least-mean-squares adaptive FIR update driven by a declared reference and error signal. Family contract work: declare sample units/rate, coefficient source and scaling, exact delay/state layout, startup fill, reset behavior, and saturation/overflow bounds. Define tap count, step size, initialization, input scaling, and saturation/overflow policy. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare sample units/rate, coefficient source and scaling, exact delay/state layout, startup fill, reset behavior, and saturation/overflow bounds.",
+    "Define tap count, step size, initialization, input scaling, and saturation/overflow policy.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/filtering/adaptive/lms",
+  "scaffold_header": "include/uef/ucon/future/filtering/adaptive/lms.h",
+  "scaffold_source": "src/ucon/future/filtering/adaptive/lms.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check tap count, step size, regularization, and sample format.",
+      "todo": "Define stable gain range and low-energy behavior. Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by a declared reference and error signal."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize coefficients and delay-line state.",
+      "todo": "Define coefficient seed and fixed memory size. Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by a declared reference and error signal."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset delay line and adaptation history.",
+      "todo": "State whether coefficients are retained or reseeded. Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by a declared reference and error signal."
+    },
+    {
+      "name": "compute_output_error",
+      "purpose": "Compute aligned filter output and adaptation error.",
+      "todo": "Declare desired/reference signal roles and synchronization. Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by a declared reference and error signal."
+    },
+    {
+      "name": "update_coefficients",
+      "purpose": "Apply the selected bounded coefficient update.",
+      "todo": "Define normalization, projection, and adaptation freeze rules. Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by a declared reference and error signal."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one sample and publish output/adaptation status.",
+      "todo": "Bound tap-loop work and commit only after finite checks. Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by a declared reference and error signal."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+/*
+ * {{ node.model.symbol_prefix }}_ppm.c
+ * TODO: bind same-polarity timer capture edges to the interval hook and verify
+ * receiver polarity, timer rollover handling, pulse bounds, and frame timing.
+ */
+#include "{{ node.model.symbol_prefix }}_ppm.h"
+
+uef_status_t {{ node.model.symbol_prefix }}_ppm_init(
+    {{ node.model.symbol_prefix }}_ppm_t *instance,
+    const uproto_ppm_config_t *config)
+{
+    if (instance == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    return uproto_ppm_init(&instance->decoder, config);
+}
+
+uef_status_t {{ node.model.symbol_prefix }}_ppm_capture_interval(
+    {{ node.model.symbol_prefix }}_ppm_t *instance,
+    uef_u32_t interval_us,
+    uef_u64_t timestamp_us)
+{
+    if (instance == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    return uproto_ppm_capture_interval(&instance->decoder, interval_us, timestamp_us);
+}
+
+bool {{ node.model.symbol_prefix }}_ppm_read_frame(
+    {{ node.model.symbol_prefix }}_ppm_t *instance,
+    uproto_ppm_frame_t *frame)
+{
+    return instance != NULL &&
+           uproto_ppm_get_frame(&instance->decoder, frame) == UEF_OK;
+}

@@ -1,0 +1,33 @@
+{
+  "id": "esp32",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Xtensa LX6",
+    " core count varies"
+  ],
+  "core_notes": "Original wireless family; exact SoC varies.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ESP32"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "ESP-IDF",
+    "memory/peripherals"
+  ],
+  "source_references": [
+    "esp_portfolio",
+    "esp_selector",
+    "esp_idf"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

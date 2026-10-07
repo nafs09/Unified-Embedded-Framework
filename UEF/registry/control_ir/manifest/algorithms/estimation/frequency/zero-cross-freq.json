@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/frequency",
+  "description": "Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/frequency/zero_cross_freq.h",
+  "scaffold_source": "src/ucon/estimators/frequency/zero_cross_freq.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/frequency/zero_cross_freq",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check hysteresis, minimum/maximum period, and sample rate.",
+      "todo": "Define units, polarity, and valid crossing interval. Algorithm-specific focus: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize crossing detector and period history.",
+      "todo": "Specify first-crossing acquisition and invalid initial estimate. Algorithm-specific focus: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear event history and frequency validity.",
+      "todo": "Define reacquisition after a gap. Algorithm-specific focus: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator."
+    },
+    {
+      "name": "detect_crossing",
+      "purpose": "Detect a qualified threshold crossing with hysteresis.",
+      "todo": "Specify interpolation/timestamp precision and rearm behavior. Algorithm-specific focus: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator."
+    },
+    {
+      "name": "update_period",
+      "purpose": "Update period/frequency from accepted crossing timestamps.",
+      "todo": "Define averaging, rejection, and frequency bounds. Algorithm-specific focus: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one sample and report estimate validity.",
+      "todo": "Do not report frequency before enough valid events exist. Algorithm-specific focus: Frequency estimator based on qualified zero-crossing events, hysteresis, and a declared period/window estimator."
+    }
+  ]
+}

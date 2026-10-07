@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/umath/matrix.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/matrix.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

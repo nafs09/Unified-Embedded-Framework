@@ -1,0 +1,11 @@
+{
+  "sources": [
+    "src/uproto/ppm.c"
+  ],
+  "dependencies": [],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uproto/uproto_ppm.h"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "estimation",
+  "family": "estimation/kalman",
+  "description": "Dual estimation scheme that jointly tracks plant state and selected unknown parameters.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Dual estimation scheme that jointly tracks plant state and selected unknown parameters. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Define state/parameter partition and coupling; do not imply observability without an excitation and model contract. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Define state/parameter partition and coupling; do not imply observability without an excitation and model contract.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/estimators/kalman/dual_kf",
+  "scaffold_header": "include/uef/ucon/future/estimators/kalman/dual_kf.h",
+  "scaffold_source": "src/ucon/future/estimators/kalman/dual_kf.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_partition",
+      "purpose": "Check state/parameter partition and coupled process/measurement models.",
+      "todo": "Specify which unknown parameters are augmented and why the joint model is observable. Algorithm-specific focus: Dual estimation scheme that jointly tracks plant state and selected unknown parameters."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize state/parameter estimates and covariance blocks.",
+      "todo": "Define cross-covariance and parameter uncertainty seed. Algorithm-specific focus: Dual estimation scheme that jointly tracks plant state and selected unknown parameters."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset joint estimation history.",
+      "todo": "Specify retained plant state versus parameter estimate. Algorithm-specific focus: Dual estimation scheme that jointly tracks plant state and selected unknown parameters."
+    },
+    {
+      "name": "predict_state_parameters",
+      "purpose": "Propagate physical state and parameter model.",
+      "todo": "Pin parameter random-walk/fixed-model assumption. Algorithm-specific focus: Dual estimation scheme that jointly tracks plant state and selected unknown parameters."
+    },
+    {
+      "name": "correct_joint_estimate",
+      "purpose": "Apply measurement information to state and parameter estimates.",
+      "todo": "Define coupling and prevent unobservable drift. Algorithm-specific focus: Dual estimation scheme that jointly tracks plant state and selected unknown parameters."
+    },
+    {
+      "name": "step",
+      "purpose": "Run bounded joint estimation and publish observability diagnostics.",
+      "todo": "Do not imply parameter convergence without excitation. Algorithm-specific focus: Dual estimation scheme that jointly tracks plant state and selected unknown parameters."
+    }
+  ]
+}

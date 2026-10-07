@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/frequency",
+  "description": "Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/frequency/nco.h",
+  "scaffold_source": "src/ucon/estimators/frequency/nco.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/frequency/nco",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check phase representation, frequency range, and sample timing.",
+      "todo": "Define phase units, wrap convention, and output scaling. Algorithm-specific focus: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize phase accumulator and oscillator state.",
+      "todo": "Specify phase seed and deterministic startup. Algorithm-specific focus: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset phase/output history.",
+      "todo": "Define whether reset preserves commanded frequency. Algorithm-specific focus: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference."
+    },
+    {
+      "name": "set_frequency",
+      "purpose": "Set a bounded frequency/phase increment.",
+      "todo": "Convert using the exact timebase and reject overflow. Algorithm-specific focus: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference."
+    },
+    {
+      "name": "advance_phase",
+      "purpose": "Advance and wrap phase for one elapsed sample interval.",
+      "todo": "Handle irregular dt only when explicitly enabled. Algorithm-specific focus: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference."
+    },
+    {
+      "name": "get_output",
+      "purpose": "Generate the configured periodic output or phase representation.",
+      "todo": "Define waveform, lookup/interpolation error, and amplitude units. Algorithm-specific focus: Numerically controlled oscillator that advances a bounded phase accumulator and produces a configured periodic reference."
+    }
+  ]
+}

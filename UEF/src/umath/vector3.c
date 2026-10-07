@@ -1,0 +1,61 @@
+/// @file src/umath/vector3.c
+/// @brief Three-dimensional vector operations in a right-handed coordinate basis.
+#include <math.h>
+#include <uef/umath/scalar.h>
+#include <uef/umath/vector3.h>
+
+umath_vec3_t umath_vec3_add(umath_vec3_t a, umath_vec3_t b)
+{
+    const umath_vec3_t result = { a.x + b.x, a.y + b.y, a.z + b.z };
+    return result;
+}
+
+umath_vec3_t umath_vec3_sub(umath_vec3_t a, umath_vec3_t b)
+{
+    const umath_vec3_t result = { a.x - b.x, a.y - b.y, a.z - b.z };
+    return result;
+}
+
+umath_vec3_t umath_vec3_scale(umath_vec3_t value, umath_scalar_t scale)
+{
+    const umath_vec3_t result = { value.x * scale, value.y * scale, value.z * scale };
+    return result;
+}
+
+umath_scalar_t umath_vec3_dot(umath_vec3_t a, umath_vec3_t b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+umath_vec3_t umath_vec3_cross(umath_vec3_t a, umath_vec3_t b)
+{
+    const umath_vec3_t result = {
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+    };
+    return result;
+}
+
+umath_status_t umath_vec3_norm(umath_vec3_t value, umath_scalar_t *norm)
+{
+    const double result = hypot(hypot((double)value.x, (double)value.y), (double)value.z);
+    if (norm == NULL || !isfinite(result) ||
+        !umath_scalar_is_finite((umath_scalar_t)result)) return UMATH_NUMERIC_FAILURE;
+    *norm = (umath_scalar_t)result;
+    return UMATH_OK;
+}
+
+umath_status_t umath_vec3_normalize(umath_vec3_t value, umath_vec3_t *unit)
+{
+    umath_scalar_t norm;
+    umath_vec3_t result;
+    if (unit == NULL || umath_vec3_norm(value, &norm) != UMATH_OK || norm <= 0) {
+        return UMATH_INVALID_ARGUMENT;
+    }
+    result.x = value.x / norm;
+    result.y = value.y / norm;
+    result.z = value.z / norm;
+    *unit = result;
+    return UMATH_OK;
+}

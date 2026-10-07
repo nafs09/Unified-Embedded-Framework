@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "infrastructure",
+  "family": "infrastructure/fault_detection",
+  "description": "Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied.",
+  "implementation_notes": "Define residual sources, thresholds, persistence, fault hypotheses/isolation masks, stale-data behavior, and latched-state reset. The generic monitor does not create plant residual models. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/infrastructure/fault_detection/sensor_fdi.h",
+  "scaffold_source": "src/ucon/infrastructure/fault_detection/sensor_fdi.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/infrastructure/fault_detection/sensor_fdi",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define residual sources, thresholds, persistence, fault hypotheses/isolation masks, stale-data behavior, and latched-state reset. The generic monitor does not create plant residual models."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check residual channels, thresholds, persistence, and isolation masks.",
+      "todo": "Keep residual models and fault policy caller-owned. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize counters and diagnostic outputs.",
+      "todo": "Define startup grace and initial fault state. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear/rearm diagnostic channels.",
+      "todo": "Specify whether latched faults require an explicit clear. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+    },
+    {
+      "name": "update_residuals",
+      "purpose": "Consume caller-supplied residuals and validity flags.",
+      "todo": "Separate missing/bad data from a physical fault indication. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+    },
+    {
+      "name": "update_fault_state",
+      "purpose": "Apply persistence and configured isolation rules.",
+      "todo": "Do not claim root cause without explicit hypotheses. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+    },
+    {
+      "name": "step",
+      "purpose": "Publish one bounded diagnostic update.",
+      "todo": "Do not actuate or silently choose a fallback. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+    }
+  ]
+}

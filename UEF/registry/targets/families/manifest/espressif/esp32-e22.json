@@ -1,0 +1,32 @@
+{
+  "id": "esp32-e22",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32-E22",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "requires device datasheet"
+  ],
+  "core_notes": "Portfolio-listed; architecture/status unverified.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "vendor_listed_check_device",
+  "representative_parts": [
+    "ESP32-E22"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "verify architecture",
+    "availability",
+    "ESP-IDF"
+  ],
+  "source_references": [
+    "esp_portfolio",
+    "esp_selector"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

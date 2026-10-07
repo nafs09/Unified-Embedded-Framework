@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/upal/i2c/i2c.c"
+  ],
+  "dependencies": [
+    "uhal",
+    "upal/dma"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_cache.h",
+    "include/uef/uhal/uhal_gpio.h",
+    "include/uef/upal/upal_dma.h",
+    "include/uef/upal/upal_i2c.h"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "c2000-delfino",
+  "vendor": "Texas Instruments",
+  "family": "C2000",
+  "series": "F28377/F28388 Delfino",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "TI C28x",
+    " some parts CLA/dual-core"
+  ],
+  "core_notes": "Phase 3; confirm per device.",
+  "roadmap_phase": 3,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "TMS320F28377D",
+    "TMS320F28388D"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "FPU",
+    "CLA",
+    "dual-core"
+  ],
+  "source_references": [
+    "ti"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

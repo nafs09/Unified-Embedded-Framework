@@ -1,0 +1,68 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/predictive",
+  "description": "Condensed constrained QP and disturbance-augmented offset-free option.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Condensed constrained QP and disturbance-augmented offset-free option. Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/predictive/tracking_mpc.h",
+  "scaffold_source": "src/ucon/control/predictive/tracking_mpc.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/predictive/tracking_mpc",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_problem",
+      "purpose": "Check plant, horizon, objective, constraints, and solver contract.",
+      "todo": "Reject inconsistent bounds and define fixed memory/iteration budgets. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize warm start, references, and solver workspace.",
+      "todo": "Define first-solve seed and caller-owned data. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear warm-start, disturbance, and optimizer history.",
+      "todo": "Specify reusable factorization/active-set behavior. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    },
+    {
+      "name": "prepare_problem",
+      "purpose": "Build/update the finite-horizon prediction and optimization problem.",
+      "todo": "State discretization, terminal conditions, scaling, and time budget. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    },
+    {
+      "name": "solve_problem",
+      "purpose": "Run the selected bounded optimization method.",
+      "todo": "Report infeasible, nonconverged, numeric, and iteration-limit outcomes distinctly. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    },
+    {
+      "name": "verify_solution",
+      "purpose": "Check candidate bounds and configured residual tolerances.",
+      "todo": "Never apply an unchecked solution or hide a missed deadline. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    },
+    {
+      "name": "step",
+      "purpose": "Prepare, solve, verify, and publish the first admissible input.",
+      "todo": "Fallback must be caller-configured; do not invent a command. Algorithm-specific focus: Condensed constrained QP and disturbance-augmented offset-free option."
+    }
+  ]
+}

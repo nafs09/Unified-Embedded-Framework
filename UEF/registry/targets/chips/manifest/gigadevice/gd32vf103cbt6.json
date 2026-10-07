@@ -1,0 +1,53 @@
+{
+  "id": "gd32vf103cbt6",
+  "vendor": "GigaDevice",
+  "family_id": "gd32vf103",
+  "series": "GD32VF103",
+  "part_number": "GD32VF103CBT6",
+  "aliases": [
+    "GD32VF103"
+  ],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "Bumblebee RISC-V",
+    "isa": "RV32IMAC",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 108000000
+  },
+  "package": {
+    "name": "LQFP48",
+    "pin_count": 48
+  },
+  "memory": {
+    "flash_bytes": 131072,
+    "sram_bytes": 32768
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "DAC",
+    "USB",
+    "CAN",
+    "TIM",
+    "USART",
+    "I2C",
+    "SPI"
+  ],
+  "source_references": [
+    {
+      "title": "GigaDevice GD32VF103 datasheet",
+      "url": "https://www.gd32mcu.com/data/documents/datasheet/GD32VF103_Datasheet_Rev1.7.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "GD32VF103CBT6 high-density 128-KiB Flash package; confirm silicon revision and package pin map before target enablement."
+}

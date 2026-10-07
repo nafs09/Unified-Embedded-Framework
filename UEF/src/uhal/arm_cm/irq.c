@@ -1,5 +1,5 @@
 /// @file src/uhal/arm_cm/irq.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_irq.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uhal/uhal_irq.h.
 ///
 /// Implementation intent: Map IRQ operations to CMSIS NVIC calls and document priority grouping
 ///   at board startup.

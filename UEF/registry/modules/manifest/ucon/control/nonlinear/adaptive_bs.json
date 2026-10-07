@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/nonlinear/adaptive_bs.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/nonlinear/adaptive_bs.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "ADAPTIVE_BS",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Nonlinear adaptive control is part of the planned flight-control design space.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_adaptive_bs_validate_model",
+    "ucon_adaptive_bs_init",
+    "ucon_adaptive_bs_reset",
+    "ucon_adaptive_bs_compute_surface",
+    "ucon_adaptive_bs_compute_control",
+    "ucon_adaptive_bs_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

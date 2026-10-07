@@ -1,0 +1,32 @@
+{
+  "id": "nrf52",
+  "vendor": "Nordic Semiconductor",
+  "family": "nRF",
+  "series": "nRF52 series",
+  "parent_series": null,
+  "aliases": [
+    "nrf52xx"
+  ],
+  "architectures": [
+    "Cortex-M4F"
+  ],
+  "core_notes": "Family variants are not interchangeable.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "nRF52840"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "radio",
+    "pin/peripherals"
+  ],
+  "source_references": [
+    "nordic52"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

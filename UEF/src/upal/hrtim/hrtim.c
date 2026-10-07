@@ -1,5 +1,5 @@
 /// @file src/upal/hrtim/hrtim.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_hrtim.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_hrtim.h.
 ///
 /// Implementation intent: Implement high-resolution calibration, preload, fault shutdown, and
 ///   duty bounds from the selected device reference manual.

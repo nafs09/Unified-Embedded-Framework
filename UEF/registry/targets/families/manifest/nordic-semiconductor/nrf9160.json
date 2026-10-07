@@ -1,0 +1,31 @@
+{
+  "id": "nrf9160",
+  "vendor": "Nordic Semiconductor",
+  "family": "nRF",
+  "series": "nRF9160",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M33"
+  ],
+  "core_notes": "Phase 3; modem is separate.",
+  "roadmap_phase": 3,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "nRF9160"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "modem",
+    "power",
+    "secure boot"
+  ],
+  "source_references": [
+    "nordic91"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

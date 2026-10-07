@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "src/uapp/fault.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "headers": [
+    "include/uef/uapp/uapp_fault.h",
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_core.h",
+    "include/uef/uhal/uhal_fault.h",
+    "include/uef/uhal/uhal_memory.h"
+  ]
+}

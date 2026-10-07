@@ -1,5 +1,5 @@
 /// @file include/uef/upal/upal_can.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UPAL_CAN_H
 #define UPAL_CAN_H

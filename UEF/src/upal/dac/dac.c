@@ -1,5 +1,5 @@
 /// @file src/upal/dac/dac.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_dac.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_dac.h.
 ///
 /// Implementation intent: Validate channel and resolution before writes; make DMA waveform
 ///   start/stop state explicit.

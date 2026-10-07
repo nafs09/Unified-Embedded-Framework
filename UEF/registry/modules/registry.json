@@ -1,0 +1,449 @@
+{
+  "schema_version": "1.0",
+  "uef_version": "1.1.0",
+  "headers_root": "include",
+  "modules": {
+    "uapp/fault": "registry/modules/manifest/uapp/fault.json",
+    "uapp/lifecycle": "registry/modules/manifest/uapp/lifecycle.json",
+    "uapp/statemachine": "registry/modules/manifest/uapp/statemachine.json",
+    "uapp/supervisor": "registry/modules/manifest/uapp/supervisor.json",
+    "ucon/aerospace/attitude/bdot_detumble": "registry/modules/manifest/ucon/aerospace/attitude/bdot_detumble.json",
+    "ucon/aerospace/attitude/quaternion_pd": "registry/modules/manifest/ucon/aerospace/attitude/quaternion_pd.json",
+    "ucon/aerospace/attitude/so3_attitude": "registry/modules/manifest/ucon/aerospace/attitude/so3_attitude.json",
+    "ucon/aerospace/guidance/path_following_guidance": "registry/modules/manifest/ucon/aerospace/guidance/path_following_guidance.json",
+    "ucon/aerospace/guidance/pn_guidance": "registry/modules/manifest/ucon/aerospace/guidance/pn_guidance.json",
+    "ucon/aerospace/navigation/gnss_carrier_fll": "registry/modules/manifest/ucon/aerospace/navigation/gnss_carrier_fll.json",
+    "ucon/aerospace/navigation/gnss_carrier_pll": "registry/modules/manifest/ucon/aerospace/navigation/gnss_carrier_pll.json",
+    "ucon/aerospace/navigation/gnss_code_dll": "registry/modules/manifest/ucon/aerospace/navigation/gnss_code_dll.json",
+    "ucon/aerospace/navigation/ins_gnss": "registry/modules/manifest/ucon/aerospace/navigation/ins_gnss.json",
+    "ucon/aerospace/navigation/ins_gnss_tight": "registry/modules/manifest/ucon/aerospace/navigation/ins_gnss_tight.json",
+    "ucon/control/adaptive/extremum_seek": "registry/modules/manifest/ucon/control/adaptive/extremum_seek.json",
+    "ucon/control/adaptive/self_tune_reg": "registry/modules/manifest/ucon/control/adaptive/self_tune_reg.json",
+    "ucon/control/allocation/control_allocator": "registry/modules/manifest/ucon/control/allocation/control_allocator.json",
+    "ucon/control/classical/imc": "registry/modules/manifest/ucon/control/classical/imc.json",
+    "ucon/control/classical/smith_predictor": "registry/modules/manifest/ucon/control/classical/smith_predictor.json",
+    "ucon/control/disturbance_rejection/adrc": "registry/modules/manifest/ucon/control/disturbance_rejection/adrc.json",
+    "ucon/control/lead_lag": "registry/modules/manifest/ucon/control/lead_lag.json",
+    "ucon/control/nonlinear/adaptive_bs": "registry/modules/manifest/ucon/control/nonlinear/adaptive_bs.json",
+    "ucon/control/nonlinear/backstepping": "registry/modules/manifest/ucon/control/nonlinear/backstepping.json",
+    "ucon/control/nonlinear/cbf_qp": "registry/modules/manifest/ucon/control/nonlinear/cbf_qp.json",
+    "ucon/control/nonlinear/clf_cbf": "registry/modules/manifest/ucon/control/nonlinear/clf_cbf.json",
+    "ucon/control/nonlinear/clf_qp": "registry/modules/manifest/ucon/control/nonlinear/clf_qp.json",
+    "ucon/control/nonlinear/computed_torque": "registry/modules/manifest/ucon/control/nonlinear/computed_torque.json",
+    "ucon/control/nonlinear/feedback_lin": "registry/modules/manifest/ucon/control/nonlinear/feedback_lin.json",
+    "ucon/control/nonlinear/flatness": "registry/modules/manifest/ucon/control/nonlinear/flatness.json",
+    "ucon/control/nonlinear/indi": "registry/modules/manifest/ucon/control/nonlinear/indi.json",
+    "ucon/control/nonlinear/indi2": "registry/modules/manifest/ucon/control/nonlinear/indi2.json",
+    "ucon/control/nonlinear/ndi": "registry/modules/manifest/ucon/control/nonlinear/ndi.json",
+    "ucon/control/pid": "registry/modules/manifest/ucon/control/pid.json",
+    "ucon/control/predictive/ddp": "registry/modules/manifest/ucon/control/predictive/ddp.json",
+    "ucon/control/predictive/deadbeat_mpc": "registry/modules/manifest/ucon/control/predictive/deadbeat_mpc.json",
+    "ucon/control/predictive/economic_mpc": "registry/modules/manifest/ucon/control/predictive/economic_mpc.json",
+    "ucon/control/predictive/explicit_mpc": "registry/modules/manifest/ucon/control/predictive/explicit_mpc.json",
+    "ucon/control/predictive/fs_mpc": "registry/modules/manifest/ucon/control/predictive/fs_mpc.json",
+    "ucon/control/predictive/ilqr": "registry/modules/manifest/ucon/control/predictive/ilqr.json",
+    "ucon/control/predictive/linear_mpc": "registry/modules/manifest/ucon/control/predictive/linear_mpc.json",
+    "ucon/control/predictive/nmpc_rti": "registry/modules/manifest/ucon/control/predictive/nmpc_rti.json",
+    "ucon/control/predictive/robust_mpc": "registry/modules/manifest/ucon/control/predictive/robust_mpc.json",
+    "ucon/control/predictive/sparse_mpc": "registry/modules/manifest/ucon/control/predictive/sparse_mpc.json",
+    "ucon/control/predictive/stochastic_mpc": "registry/modules/manifest/ucon/control/predictive/stochastic_mpc.json",
+    "ucon/control/predictive/tracking_mpc": "registry/modules/manifest/ucon/control/predictive/tracking_mpc.json",
+    "ucon/control/predictive/zone_mpc": "registry/modules/manifest/ucon/control/predictive/zone_mpc.json",
+    "ucon/control/safety/reference_governor": "registry/modules/manifest/ucon/control/safety/reference_governor.json",
+    "ucon/control/scheduled/gain_schedule": "registry/modules/manifest/ucon/control/scheduled/gain_schedule.json",
+    "ucon/control/state_space/decoupler": "registry/modules/manifest/ucon/control/state_space/decoupler.json",
+    "ucon/control/state_space/lqg": "registry/modules/manifest/ucon/control/state_space/lqg.json",
+    "ucon/control/state_space/lqi": "registry/modules/manifest/ucon/control/state_space/lqi.json",
+    "ucon/control/state_space/lqr": "registry/modules/manifest/ucon/control/state_space/lqr.json",
+    "ucon/control/state_space/state_feedback": "registry/modules/manifest/ucon/control/state_space/state_feedback.json",
+    "ucon/control/tuning/pid_autotune": "registry/modules/manifest/ucon/control/tuning/pid_autotune.json",
+    "ucon/core": "registry/modules/manifest/ucon/core.json",
+    "ucon/electrical/grid/droop_control": "registry/modules/manifest/ucon/electrical/grid/droop_control.json",
+    "ucon/electrical/grid/resonant_pr": "registry/modules/manifest/ucon/electrical/grid/resonant_pr.json",
+    "ucon/electrical/grid/sogi_fll": "registry/modules/manifest/ucon/electrical/grid/sogi_fll.json",
+    "ucon/electrical/grid/sogi_pll": "registry/modules/manifest/ucon/electrical/grid/sogi_pll.json",
+    "ucon/electrical/grid/srf_pll": "registry/modules/manifest/ucon/electrical/grid/srf_pll.json",
+    "ucon/electrical/motor_control/dtc_control": "registry/modules/manifest/ucon/electrical/motor_control/dtc_control.json",
+    "ucon/electrical/motor_control/dtc_flux_torque_estimator": "registry/modules/manifest/ucon/electrical/motor_control/dtc_flux_torque_estimator.json",
+    "ucon/electrical/motor_control/foc_current_control": "registry/modules/manifest/ucon/electrical/motor_control/foc_current_control.json",
+    "ucon/electrical/motor_control/svpwm": "registry/modules/manifest/ucon/electrical/motor_control/svpwm.json",
+    "ucon/electrical/transforms/clarke_park": "registry/modules/manifest/ucon/electrical/transforms/clarke_park.json",
+    "ucon/estimators/attitude/complementary": "registry/modules/manifest/ucon/estimators/attitude/complementary.json",
+    "ucon/estimators/attitude/madgwick": "registry/modules/manifest/ucon/estimators/attitude/madgwick.json",
+    "ucon/estimators/attitude/mahony": "registry/modules/manifest/ucon/estimators/attitude/mahony.json",
+    "ucon/estimators/attitude/mekf": "registry/modules/manifest/ucon/estimators/attitude/mekf.json",
+    "ucon/estimators/attitude/quest": "registry/modules/manifest/ucon/estimators/attitude/quest.json",
+    "ucon/estimators/attitude/triad": "registry/modules/manifest/ucon/estimators/attitude/triad.json",
+    "ucon/estimators/bayesian/particle": "registry/modules/manifest/ucon/estimators/bayesian/particle.json",
+    "ucon/estimators/frequency/fll": "registry/modules/manifest/ucon/estimators/frequency/fll.json",
+    "ucon/estimators/frequency/nco": "registry/modules/manifest/ucon/estimators/frequency/nco.json",
+    "ucon/estimators/frequency/pll": "registry/modules/manifest/ucon/estimators/frequency/pll.json",
+    "ucon/estimators/frequency/sliding_dft": "registry/modules/manifest/ucon/estimators/frequency/sliding_dft.json",
+    "ucon/estimators/frequency/sogi": "registry/modules/manifest/ucon/estimators/frequency/sogi.json",
+    "ucon/estimators/frequency/zero_cross_freq": "registry/modules/manifest/ucon/estimators/frequency/zero_cross_freq.json",
+    "ucon/estimators/identification/rls": "registry/modules/manifest/ucon/estimators/identification/rls.json",
+    "ucon/estimators/kalman/ckf": "registry/modules/manifest/ucon/estimators/kalman/ckf.json",
+    "ucon/estimators/kalman/ekf": "registry/modules/manifest/ucon/estimators/kalman/ekf.json",
+    "ucon/estimators/kalman/error_state_ekf": "registry/modules/manifest/ucon/estimators/kalman/error_state_ekf.json",
+    "ucon/estimators/kalman/imm_ekf": "registry/modules/manifest/ucon/estimators/kalman/imm_ekf.json",
+    "ucon/estimators/kalman/invariant_ekf": "registry/modules/manifest/ucon/estimators/kalman/invariant_ekf.json",
+    "ucon/estimators/kalman/iterated_ekf": "registry/modules/manifest/ucon/estimators/kalman/iterated_ekf.json",
+    "ucon/estimators/kalman/linear_kf": "registry/modules/manifest/ucon/estimators/kalman/linear_kf.json",
+    "ucon/estimators/kalman/scalar_kf": "registry/modules/manifest/ucon/estimators/kalman/scalar_kf.json",
+    "ucon/estimators/kalman/sqrt_ekf": "registry/modules/manifest/ucon/estimators/kalman/sqrt_ekf.json",
+    "ucon/estimators/kalman/sqrt_ukf": "registry/modules/manifest/ucon/estimators/kalman/sqrt_ukf.json",
+    "ucon/estimators/kalman/ukf": "registry/modules/manifest/ucon/estimators/kalman/ukf.json",
+    "ucon/estimators/kalman/ukf_merwe": "registry/modules/manifest/ucon/estimators/kalman/ukf_merwe.json",
+    "ucon/estimators/moving_horizon/mhe": "registry/modules/manifest/ucon/estimators/moving_horizon/mhe.json",
+    "ucon/estimators/observers/dob": "registry/modules/manifest/ucon/estimators/observers/dob.json",
+    "ucon/estimators/observers/edob": "registry/modules/manifest/ucon/estimators/observers/edob.json",
+    "ucon/estimators/observers/eso": "registry/modules/manifest/ucon/estimators/observers/eso.json",
+    "ucon/estimators/observers/luenberger": "registry/modules/manifest/ucon/estimators/observers/luenberger.json",
+    "ucon/estimators/tracking/alpha_beta": "registry/modules/manifest/ucon/estimators/tracking/alpha_beta.json",
+    "ucon/estimators/tracking/alpha_beta_gamma": "registry/modules/manifest/ucon/estimators/tracking/alpha_beta_gamma.json",
+    "ucon/filtering/coefficient_design/bessel": "registry/modules/manifest/ucon/filtering/coefficient_design/bessel.json",
+    "ucon/filtering/coefficient_design/butterworth": "registry/modules/manifest/ucon/filtering/coefficient_design/butterworth.json",
+    "ucon/filtering/coefficient_design/chebyshev1": "registry/modules/manifest/ucon/filtering/coefficient_design/chebyshev1.json",
+    "ucon/filtering/coefficient_design/chebyshev2": "registry/modules/manifest/ucon/filtering/coefficient_design/chebyshev2.json",
+    "ucon/filtering/coefficient_design/elliptic": "registry/modules/manifest/ucon/filtering/coefficient_design/elliptic.json",
+    "ucon/filtering/coefficient_design/fir_windowed": "registry/modules/manifest/ucon/filtering/coefficient_design/fir_windowed.json",
+    "ucon/filtering/runtime/biquad_cascade": "registry/modules/manifest/ucon/filtering/runtime/biquad_cascade.json",
+    "ucon/filtering/runtime/ema": "registry/modules/manifest/ucon/filtering/runtime/ema.json",
+    "ucon/filtering/runtime/fir": "registry/modules/manifest/ucon/filtering/runtime/fir.json",
+    "ucon/filtering/runtime/median": "registry/modules/manifest/ucon/filtering/runtime/median.json",
+    "ucon/filtering/runtime/moving_average": "registry/modules/manifest/ucon/filtering/runtime/moving_average.json",
+    "ucon/filtering/runtime/notch": "registry/modules/manifest/ucon/filtering/runtime/notch.json",
+    "ucon/future/aerospace/guidance/los_guidance": "registry/modules/manifest/ucon/future/aerospace/guidance/los_guidance.json",
+    "ucon/future/aerospace/guidance/pure_pursuit_guidance": "registry/modules/manifest/ucon/future/aerospace/guidance/pure_pursuit_guidance.json",
+    "ucon/future/control/adaptive/ilc": "registry/modules/manifest/ucon/future/control/adaptive/ilc.json",
+    "ucon/future/control/adaptive/l1_adaptive": "registry/modules/manifest/ucon/future/control/adaptive/l1_adaptive.json",
+    "ucon/future/control/adaptive/mrac_composite": "registry/modules/manifest/ucon/future/control/adaptive/mrac_composite.json",
+    "ucon/future/control/adaptive/mrac_lyapunov": "registry/modules/manifest/ucon/future/control/adaptive/mrac_lyapunov.json",
+    "ucon/future/control/adaptive/mrac_mit": "registry/modules/manifest/ucon/future/control/adaptive/mrac_mit.json",
+    "ucon/future/control/classical/dahlin": "registry/modules/manifest/ucon/future/control/classical/dahlin.json",
+    "ucon/future/control/classical/deadbeat": "registry/modules/manifest/ucon/future/control/classical/deadbeat.json",
+    "ucon/future/control/classical/repetitive": "registry/modules/manifest/ucon/future/control/classical/repetitive.json",
+    "ucon/future/control/nonlinear/dynamic_surface_control": "registry/modules/manifest/ucon/future/control/nonlinear/dynamic_surface_control.json",
+    "ucon/future/control/nonlinear/fractional_order_smc": "registry/modules/manifest/ucon/future/control/nonlinear/fractional_order_smc.json",
+    "ucon/future/control/nonlinear/fuzzy_controller": "registry/modules/manifest/ucon/future/control/nonlinear/fuzzy_controller.json",
+    "ucon/future/control/nonlinear/ida_pbc": "registry/modules/manifest/ucon/future/control/nonlinear/ida_pbc.json",
+    "ucon/future/control/nonlinear/integral_smc": "registry/modules/manifest/ucon/future/control/nonlinear/integral_smc.json",
+    "ucon/future/control/nonlinear/rise": "registry/modules/manifest/ucon/future/control/nonlinear/rise.json",
+    "ucon/future/control/nonlinear/smc": "registry/modules/manifest/ucon/future/control/nonlinear/smc.json",
+    "ucon/future/control/nonlinear/super_twisting": "registry/modules/manifest/ucon/future/control/nonlinear/super_twisting.json",
+    "ucon/future/control/nonlinear/terminal_smc": "registry/modules/manifest/ucon/future/control/nonlinear/terminal_smc.json",
+    "ucon/future/control/predictive/adaptive_mpc": "registry/modules/manifest/ucon/future/control/predictive/adaptive_mpc.json",
+    "ucon/future/control/predictive/gain_scheduled_mpc": "registry/modules/manifest/ucon/future/control/predictive/gain_scheduled_mpc.json",
+    "ucon/future/control/state_space/h2_state_feedback": "registry/modules/manifest/ucon/future/control/state_space/h2_state_feedback.json",
+    "ucon/future/control/state_space/h_inf_of": "registry/modules/manifest/ucon/future/control/state_space/h_inf_of.json",
+    "ucon/future/control/state_space/h_inf_sf": "registry/modules/manifest/ucon/future/control/state_space/h_inf_sf.json",
+    "ucon/future/control/synthesis/pole_place": "registry/modules/manifest/ucon/future/control/synthesis/pole_place.json",
+    "ucon/future/electrical/grid/ddsrf_pll": "registry/modules/manifest/ucon/future/electrical/grid/ddsrf_pll.json",
+    "ucon/future/electrical/grid/dsogi_pll": "registry/modules/manifest/ucon/future/electrical/grid/dsogi_pll.json",
+    "ucon/future/electrical/grid/msogi_fll": "registry/modules/manifest/ucon/future/electrical/grid/msogi_fll.json",
+    "ucon/future/electrical/motor_control/flux_weakening_control": "registry/modules/manifest/ucon/future/electrical/motor_control/flux_weakening_control.json",
+    "ucon/future/electrical/motor_control/mtpa_control": "registry/modules/manifest/ucon/future/electrical/motor_control/mtpa_control.json",
+    "ucon/future/electrical/motor_control/sensorless_foc_observer": "registry/modules/manifest/ucon/future/electrical/motor_control/sensorless_foc_observer.json",
+    "ucon/future/electrical/power_conversion/average_current_mode_control": "registry/modules/manifest/ucon/future/electrical/power_conversion/average_current_mode_control.json",
+    "ucon/future/electrical/power_conversion/half_cycle_predictive_current_control": "registry/modules/manifest/ucon/future/electrical/power_conversion/half_cycle_predictive_current_control.json",
+    "ucon/future/electrical/power_conversion/hysteretic_current_control": "registry/modules/manifest/ucon/future/electrical/power_conversion/hysteretic_current_control.json",
+    "ucon/future/electrical/power_conversion/peak_current_mode_control": "registry/modules/manifest/ucon/future/electrical/power_conversion/peak_current_mode_control.json",
+    "ucon/future/electrical/power_conversion/phase_shift_full_bridge_control": "registry/modules/manifest/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.json",
+    "ucon/future/estimators/diagnostics/cusum_change_detector": "registry/modules/manifest/ucon/future/estimators/diagnostics/cusum_change_detector.json",
+    "ucon/future/estimators/diagnostics/innovation_monitor": "registry/modules/manifest/ucon/future/estimators/diagnostics/innovation_monitor.json",
+    "ucon/future/estimators/identification/persistent_excitation_monitor": "registry/modules/manifest/ucon/future/estimators/identification/persistent_excitation_monitor.json",
+    "ucon/future/estimators/identification/recursive_ar": "registry/modules/manifest/ucon/future/estimators/identification/recursive_ar.json",
+    "ucon/future/estimators/identification/recursive_arma": "registry/modules/manifest/ucon/future/estimators/identification/recursive_arma.json",
+    "ucon/future/estimators/identification/recursive_armax": "registry/modules/manifest/ucon/future/estimators/identification/recursive_armax.json",
+    "ucon/future/estimators/identification/recursive_arx": "registry/modules/manifest/ucon/future/estimators/identification/recursive_arx.json",
+    "ucon/future/estimators/identification/recursive_bj": "registry/modules/manifest/ucon/future/estimators/identification/recursive_bj.json",
+    "ucon/future/estimators/identification/recursive_iv": "registry/modules/manifest/ucon/future/estimators/identification/recursive_iv.json",
+    "ucon/future/estimators/identification/recursive_oe": "registry/modules/manifest/ucon/future/estimators/identification/recursive_oe.json",
+    "ucon/future/estimators/identification/rpem": "registry/modules/manifest/ucon/future/estimators/identification/rpem.json",
+    "ucon/future/estimators/kalman/adaptive_kf": "registry/modules/manifest/ucon/future/estimators/kalman/adaptive_kf.json",
+    "ucon/future/estimators/kalman/dual_kf": "registry/modules/manifest/ucon/future/estimators/kalman/dual_kf.json",
+    "ucon/future/estimators/kalman/fading_memory_kf": "registry/modules/manifest/ucon/future/estimators/kalman/fading_memory_kf.json",
+    "ucon/future/estimators/kalman/gaussian_sum_filter": "registry/modules/manifest/ucon/future/estimators/kalman/gaussian_sum_filter.json",
+    "ucon/future/estimators/kalman/out_of_sequence_kf": "registry/modules/manifest/ucon/future/estimators/kalman/out_of_sequence_kf.json",
+    "ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src": "registry/modules/manifest/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.json",
+    "ucon/future/estimators/kalman/robust_kf": "registry/modules/manifest/ucon/future/estimators/kalman/robust_kf.json",
+    "ucon/future/estimators/kalman/ud_kf": "registry/modules/manifest/ucon/future/estimators/kalman/ud_kf.json",
+    "ucon/future/estimators/observers/h_inf_obs": "registry/modules/manifest/ucon/future/estimators/observers/h_inf_obs.json",
+    "ucon/future/estimators/observers/high_gain_observer": "registry/modules/manifest/ucon/future/estimators/observers/high_gain_observer.json",
+    "ucon/future/estimators/observers/reduced_obs": "registry/modules/manifest/ucon/future/estimators/observers/reduced_obs.json",
+    "ucon/future/estimators/observers/sliding_mode_observer": "registry/modules/manifest/ucon/future/estimators/observers/sliding_mode_observer.json",
+    "ucon/future/estimators/observers/uio": "registry/modules/manifest/ucon/future/estimators/observers/uio.json",
+    "ucon/future/filtering/adaptive/lms": "registry/modules/manifest/ucon/future/filtering/adaptive/lms.json",
+    "ucon/future/filtering/adaptive/nlms": "registry/modules/manifest/ucon/future/filtering/adaptive/nlms.json",
+    "ucon/future/filtering/runtime/savgol_filter": "registry/modules/manifest/ucon/future/filtering/runtime/savgol_filter.json",
+    "ucon/future/infrastructure/blocks/aw_observer": "registry/modules/manifest/ucon/future/infrastructure/blocks/aw_observer.json",
+    "ucon/future/optimization/qp/qp_active_set": "registry/modules/manifest/ucon/future/optimization/qp/qp_active_set.json",
+    "ucon/future/optimization/qp/qp_admm": "registry/modules/manifest/ucon/future/optimization/qp/qp_admm.json",
+    "ucon/future/optimization/qp/qp_projected_gradient": "registry/modules/manifest/ucon/future/optimization/qp/qp_projected_gradient.json",
+    "ucon/future/signal_processing/analysis/spectral_peak_interpolation": "registry/modules/manifest/ucon/future/signal_processing/analysis/spectral_peak_interpolation.json",
+    "ucon/future/signal_processing/demodulation/synchronous_demod": "registry/modules/manifest/ucon/future/signal_processing/demodulation/synchronous_demod.json",
+    "ucon/future/signal_processing/resampling/cic_decimator": "registry/modules/manifest/ucon/future/signal_processing/resampling/cic_decimator.json",
+    "ucon/future/signal_processing/resampling/polyphase_resampler": "registry/modules/manifest/ucon/future/signal_processing/resampling/polyphase_resampler.json",
+    "ucon/future/signal_processing/statistics/peak_tracker": "registry/modules/manifest/ucon/future/signal_processing/statistics/peak_tracker.json",
+    "ucon/future/signal_processing/statistics/rms_window": "registry/modules/manifest/ucon/future/signal_processing/statistics/rms_window.json",
+    "ucon/future/signal_processing/transforms/fft_radix2": "registry/modules/manifest/ucon/future/signal_processing/transforms/fft_radix2.json",
+    "ucon/future/signal_processing/transforms/goertzel": "registry/modules/manifest/ucon/future/signal_processing/transforms/goertzel.json",
+    "ucon/future/trajectory/optimization/minimum_snap_traj": "registry/modules/manifest/ucon/future/trajectory/optimization/minimum_snap_traj.json",
+    "ucon/future/trajectory/profiles/time_optimal_profile": "registry/modules/manifest/ucon/future/trajectory/profiles/time_optimal_profile.json",
+    "ucon/infrastructure/blocks/anti_windup_backcalc": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_backcalc.json",
+    "ucon/infrastructure/blocks/anti_windup_clamp": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_clamp.json",
+    "ucon/infrastructure/blocks/anti_windup_cond": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_cond.json",
+    "ucon/infrastructure/blocks/bumpless_transfer": "registry/modules/manifest/ucon/infrastructure/blocks/bumpless_transfer.json",
+    "ucon/infrastructure/blocks/deadband": "registry/modules/manifest/ucon/infrastructure/blocks/deadband.json",
+    "ucon/infrastructure/blocks/gain_block": "registry/modules/manifest/ucon/infrastructure/blocks/gain_block.json",
+    "ucon/infrastructure/blocks/hysteresis": "registry/modules/manifest/ucon/infrastructure/blocks/hysteresis.json",
+    "ucon/infrastructure/blocks/integrator": "registry/modules/manifest/ucon/infrastructure/blocks/integrator.json",
+    "ucon/infrastructure/blocks/mode_select": "registry/modules/manifest/ucon/infrastructure/blocks/mode_select.json",
+    "ucon/infrastructure/blocks/multirate_bridge": "registry/modules/manifest/ucon/infrastructure/blocks/multirate_bridge.json",
+    "ucon/infrastructure/blocks/rate_limiter": "registry/modules/manifest/ucon/infrastructure/blocks/rate_limiter.json",
+    "ucon/infrastructure/blocks/saturator": "registry/modules/manifest/ucon/infrastructure/blocks/saturator.json",
+    "ucon/infrastructure/blocks/sensor_voter": "registry/modules/manifest/ucon/infrastructure/blocks/sensor_voter.json",
+    "ucon/infrastructure/blocks/signal_validity": "registry/modules/manifest/ucon/infrastructure/blocks/signal_validity.json",
+    "ucon/infrastructure/blocks/sum_junction": "registry/modules/manifest/ucon/infrastructure/blocks/sum_junction.json",
+    "ucon/infrastructure/blocks/unit_delay": "registry/modules/manifest/ucon/infrastructure/blocks/unit_delay.json",
+    "ucon/infrastructure/fault_detection/sensor_fdi": "registry/modules/manifest/ucon/infrastructure/fault_detection/sensor_fdi.json",
+    "ucon/medical/profiles/glucose_control_profile": "registry/modules/manifest/ucon/medical/profiles/glucose_control_profile.json",
+    "ucon/medical/profiles/pkpd_target_control": "registry/modules/manifest/ucon/medical/profiles/pkpd_target_control.json",
+    "ucon/medical/profiles/ventilator_control_profile": "registry/modules/manifest/ucon/medical/profiles/ventilator_control_profile.json",
+    "ucon/trajectory/profiles/bezier_traj": "registry/modules/manifest/ucon/trajectory/profiles/bezier_traj.json",
+    "ucon/trajectory/profiles/bspline_traj": "registry/modules/manifest/ucon/trajectory/profiles/bspline_traj.json",
+    "ucon/trajectory/profiles/jerk_profile": "registry/modules/manifest/ucon/trajectory/profiles/jerk_profile.json",
+    "ucon/trajectory/profiles/poly_traj_3": "registry/modules/manifest/ucon/trajectory/profiles/poly_traj_3.json",
+    "ucon/trajectory/profiles/poly_traj_5": "registry/modules/manifest/ucon/trajectory/profiles/poly_traj_5.json",
+    "ucon/trajectory/profiles/ref_model_1": "registry/modules/manifest/ucon/trajectory/profiles/ref_model_1.json",
+    "ucon/trajectory/profiles/ref_model_2": "registry/modules/manifest/ucon/trajectory/profiles/ref_model_2.json",
+    "ucon/trajectory/profiles/s_curve": "registry/modules/manifest/ucon/trajectory/profiles/s_curve.json",
+    "ucon/trajectory/profiles/trapezoid_profile": "registry/modules/manifest/ucon/trajectory/profiles/trapezoid_profile.json",
+    "ucore": "registry/modules/manifest/ucore.json",
+    "uhal": "registry/modules/manifest/uhal.json",
+    "uhal/arm_cm": "registry/modules/manifest/uhal/arm_cm.json",
+    "uhal/target_profiles": "registry/modules/manifest/uhal/target_profiles.json",
+    "uhal/x86": "registry/modules/manifest/uhal/x86.json",
+    "umath/autodiff/dual": "registry/modules/manifest/umath/autodiff/dual.json",
+    "umath/complex": "registry/modules/manifest/umath/complex.json",
+    "umath/core": "registry/modules/manifest/umath/core.json",
+    "umath/differentiation/jacobian": "registry/modules/manifest/umath/differentiation/jacobian.json",
+    "umath/fixed": "registry/modules/manifest/umath/fixed.json",
+    "umath/future/matrix/sparse_csr": "registry/modules/manifest/umath/future/matrix/sparse_csr.json",
+    "umath/geometry/transform3": "registry/modules/manifest/umath/geometry/transform3.json",
+    "umath/interpolation/splines": "registry/modules/manifest/umath/interpolation/splines.json",
+    "umath/lie/se2": "registry/modules/manifest/umath/lie/se2.json",
+    "umath/lie/se3": "registry/modules/manifest/umath/lie/se3.json",
+    "umath/lie/so2": "registry/modules/manifest/umath/lie/so2.json",
+    "umath/lie/so3": "registry/modules/manifest/umath/lie/so3.json",
+    "umath/matrix/cholesky": "registry/modules/manifest/umath/matrix/cholesky.json",
+    "umath/matrix/core": "registry/modules/manifest/umath/matrix/core.json",
+    "umath/matrix/ldlt": "registry/modules/manifest/umath/matrix/ldlt.json",
+    "umath/matrix/lu": "registry/modules/manifest/umath/matrix/lu.json",
+    "umath/matrix/qr": "registry/modules/manifest/umath/matrix/qr.json",
+    "umath/matrix/svd": "registry/modules/manifest/umath/matrix/svd.json",
+    "umath/matrix/symmetric_eigen": "registry/modules/manifest/umath/matrix/symmetric_eigen.json",
+    "umath/numerical/integration": "registry/modules/manifest/umath/numerical/integration.json",
+    "umath/optimization/least_squares": "registry/modules/manifest/umath/optimization/least_squares.json",
+    "umath/polynomial/core": "registry/modules/manifest/umath/polynomial/core.json",
+    "umath/polynomial/roots": "registry/modules/manifest/umath/polynomial/roots.json",
+    "umath/probability/distributions": "registry/modules/manifest/umath/probability/distributions.json",
+    "umath/probability/multivariate_normal": "registry/modules/manifest/umath/probability/multivariate_normal.json",
+    "umath/quaternion": "registry/modules/manifest/umath/quaternion.json",
+    "umath/random/prng": "registry/modules/manifest/umath/random/prng.json",
+    "umath/signal/fft": "registry/modules/manifest/umath/signal/fft.json",
+    "umath/signal/windows": "registry/modules/manifest/umath/signal/windows.json",
+    "umath/special/functions": "registry/modules/manifest/umath/special/functions.json",
+    "umath/statistics/streaming": "registry/modules/manifest/umath/statistics/streaming.json",
+    "umath/vector2": "registry/modules/manifest/umath/vector2.json",
+    "umath/vector3": "registry/modules/manifest/umath/vector3.json",
+    "umath/vector4": "registry/modules/manifest/umath/vector4.json",
+    "umid/current": "registry/modules/manifest/umid/current.json",
+    "umid/encoder": "registry/modules/manifest/umid/encoder.json",
+    "umid/fatfs": "registry/modules/manifest/umid/fatfs.json",
+    "umid/gnss": "registry/modules/manifest/umid/gnss.json",
+    "umid/health": "registry/modules/manifest/umid/health.json",
+    "umid/imu": "registry/modules/manifest/umid/imu.json",
+    "umid/log": "registry/modules/manifest/umid/log.json",
+    "umid/mag": "registry/modules/manifest/umid/mag.json",
+    "umid/pressure": "registry/modules/manifest/umid/pressure.json",
+    "umid/range": "registry/modules/manifest/umid/range.json",
+    "umid/ringbuf": "registry/modules/manifest/umid/ringbuf.json",
+    "umid/temp": "registry/modules/manifest/umid/temp.json",
+    "umid/voltage": "registry/modules/manifest/umid/voltage.json",
+    "uos": "registry/modules/manifest/uos.json",
+    "uos/baremetal": "registry/modules/manifest/uos/baremetal.json",
+    "uos/freertos": "registry/modules/manifest/uos/freertos.json",
+    "uos/safertos": "registry/modules/manifest/uos/safertos.json",
+    "upal/adc": "registry/modules/manifest/upal/adc.json",
+    "upal/can": "registry/modules/manifest/upal/can.json",
+    "upal/comp": "registry/modules/manifest/upal/comp.json",
+    "upal/cordic": "registry/modules/manifest/upal/cordic.json",
+    "upal/dac": "registry/modules/manifest/upal/dac.json",
+    "upal/dma": "registry/modules/manifest/upal/dma.json",
+    "upal/fdcan_fd": "registry/modules/manifest/upal/fdcan_fd.json",
+    "upal/flash": "registry/modules/manifest/upal/flash.json",
+    "upal/fmac": "registry/modules/manifest/upal/fmac.json",
+    "upal/hrtim": "registry/modules/manifest/upal/hrtim.json",
+    "upal/i2c": "registry/modules/manifest/upal/i2c.json",
+    "upal/iwdg": "registry/modules/manifest/upal/iwdg.json",
+    "upal/opamp": "registry/modules/manifest/upal/opamp.json",
+    "upal/qspi": "registry/modules/manifest/upal/qspi.json",
+    "upal/rtc": "registry/modules/manifest/upal/rtc.json",
+    "upal/sdmmc": "registry/modules/manifest/upal/sdmmc.json",
+    "upal/spi": "registry/modules/manifest/upal/spi.json",
+    "upal/timer": "registry/modules/manifest/upal/timer.json",
+    "upal/uart": "registry/modules/manifest/upal/uart.json",
+    "upal/usb": "registry/modules/manifest/upal/usb.json",
+    "upal/wwdg": "registry/modules/manifest/upal/wwdg.json",
+    "uproto/crsf": "registry/modules/manifest/uproto/crsf.json",
+    "uproto/dshot": "registry/modules/manifest/uproto/dshot.json",
+    "uproto/future/elrs": "registry/modules/manifest/uproto/future/elrs.json",
+    "uproto/future/iec60870": "registry/modules/manifest/uproto/future/iec60870.json",
+    "uproto/future/j1939": "registry/modules/manifest/uproto/future/j1939.json",
+    "uproto/future/lin": "registry/modules/manifest/uproto/future/lin.json",
+    "uproto/future/msp": "registry/modules/manifest/uproto/future/msp.json",
+    "uproto/future/uavcan_v1": "registry/modules/manifest/uproto/future/uavcan_v1.json",
+    "uproto/mavlink": "registry/modules/manifest/uproto/mavlink.json",
+    "uproto/ppm": "registry/modules/manifest/uproto/ppm.json",
+    "uproto/sbus": "registry/modules/manifest/uproto/sbus.json",
+    "uproto/uavcan": "registry/modules/manifest/uproto/uavcan.json"
+  },
+  "selection_groups": {
+    "uhal": {
+      "selection": "exactly_one",
+      "selector": "target",
+      "options": {
+        "HOST": "uhal/x86",
+        "CORTEX_M": "uhal/arm_cm"
+      }
+    },
+    "uos": {
+      "selection": "exactly_one",
+      "selector": "uos_backend",
+      "options": {
+        "BAREMETAL": "uos/baremetal",
+        "FREERTOS": "uos/freertos"
+      }
+    }
+  },
+  "external_dependencies": {
+    "fatfs": {
+      "provider": "consumer",
+      "optional": true,
+      "required_by": [
+        "umid/fatfs"
+      ],
+      "headers": [
+        "ff.h",
+        "diskio.h"
+      ],
+      "cmake_option": "UEF_ENABLE_FATFS",
+      "include_directory_variable": "UEF_FATFS_INCLUDE_DIR",
+      "notes": "UEF provides the SDMMC diskio adapter; the FatFS implementation and configuration remain consumer supplied."
+    }
+  },
+  "bundled_dependencies": {
+    "freertos-kernel": {
+      "root": "third_party/freertos-kernel",
+      "lock_file": "third_party/freertos-kernel.lock.json",
+      "integration_manifest": "third_party/freertos-kernel/uef-integration.json",
+      "selection": "target architecture and compiler profile"
+    }
+  },
+  "peripheral_provides": {
+    "UART": [
+      "upal/uart"
+    ],
+    "LPUART": [
+      "upal/uart"
+    ],
+    "SPI": [
+      "upal/spi"
+    ],
+    "I2C": [
+      "upal/i2c"
+    ],
+    "ADC": [
+      "upal/adc"
+    ],
+    "DAC": [
+      "upal/dac"
+    ],
+    "TIMER": [
+      "upal/timer"
+    ],
+    "HRTIM": [
+      "upal/hrtim"
+    ],
+    "CAN": [
+      "upal/can"
+    ],
+    "FDCAN": [
+      "upal/can",
+      "upal/fdcan_fd"
+    ],
+    "FDCAN-FD": [
+      "upal/fdcan_fd"
+    ],
+    "USB": [
+      "upal/usb"
+    ],
+    "QSPI": [
+      "upal/qspi"
+    ],
+    "SDMMC": [
+      "upal/sdmmc"
+    ],
+    "IWDG": [
+      "upal/iwdg"
+    ],
+    "WWDG": [
+      "upal/wwdg"
+    ],
+    "RTC": [
+      "upal/rtc"
+    ],
+    "FLASH": [
+      "upal/flash"
+    ],
+    "COMP": [
+      "upal/comp"
+    ],
+    "OPAMP": [
+      "upal/opamp"
+    ],
+    "CORDIC": [
+      "upal/cordic"
+    ],
+    "FMAC": [
+      "upal/fmac"
+    ]
+  },
+  "protocol_provides": {
+    "DSHOT": [
+      "uproto/dshot"
+    ],
+    "DSHOT_UART": [
+      "uproto/dshot"
+    ],
+    "CRSF": [
+      "uproto/crsf"
+    ],
+    "SBUS": [
+      "uproto/sbus"
+    ],
+    "MAVLINK": [
+      "uproto/mavlink"
+    ],
+    "UAVCAN": [
+      "uproto/uavcan"
+    ],
+    "DRONECAN": [
+      "uproto/uavcan"
+    ],
+    "PPM": [
+      "uproto/ppm"
+    ]
+  }
+}

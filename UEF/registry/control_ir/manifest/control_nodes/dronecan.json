@@ -1,0 +1,27 @@
+{
+  "domain": "uproto",
+  "outputs": [
+    {
+      "template": "uproto/uavcan/uavcan.h.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_dronecan.h"
+    },
+    {
+      "template": "uproto/uavcan/uavcan.c.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_dronecan.c"
+    }
+  ],
+  "modules": [
+    "uproto/uavcan"
+  ],
+  "features": [
+    "can_transport",
+    "external_stack"
+  ],
+  "manual_actions": [
+    {
+      "code": "uproto_external_transport_required",
+      "message": "Select the DroneCAN dialect and compatible libcanard package, then implement its bounded CAN RX/TX callbacks and node identity policy.",
+      "required_before_hardware_use": true
+    }
+  ]
+}

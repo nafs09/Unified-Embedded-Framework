@@ -1,13 +1,9 @@
 from __future__ import annotations
-
 from dataclasses import dataclass
-
 from uef_gen.chips.specs import ChipSpec
-
 
 class UnknownChipError(ValueError):
     pass
-
 
 @dataclass
 class ChipDatabase:
@@ -30,6 +26,5 @@ class ChipDatabase:
 
     def names(self) -> tuple[str, ...]:
         return tuple(sorted(chip.name for chip in self._chips.values()))
-
 
 DEFAULT_DATABASE = ChipDatabase()

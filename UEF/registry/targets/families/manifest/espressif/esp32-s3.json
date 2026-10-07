@@ -1,0 +1,33 @@
+{
+  "id": "esp32-s3",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32-S3",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Dual-core Xtensa LX7"
+  ],
+  "core_notes": "Not Cortex-M4F; Xtensa family.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ESP32-S3FN8"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "ESP-IDF",
+    "memory/peripherals"
+  ],
+  "source_references": [
+    "esp_portfolio",
+    "esp_selector",
+    "esp_idf",
+    "esp32_s3"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

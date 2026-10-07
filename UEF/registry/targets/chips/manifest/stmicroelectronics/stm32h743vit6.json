@@ -1,0 +1,68 @@
+{
+  "id": "stm32h743vit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-h7",
+  "series": "STM32H7",
+  "part_number": "STM32H743VIT6",
+  "aliases": [
+    "STM32H743VI"
+  ],
+  "roadmap_phase": 0,
+  "additional_phase_targets": [
+    1
+  ],
+  "core": {
+    "name": "Cortex-M7",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "double",
+    "max_frequency_hz": 480000000
+  },
+  "package": {
+    "name": "LQFP100",
+    "pin_count": 100
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 1048576,
+    "notes": "Vendor headline is up to 1 MiB RAM split across TCM and user SRAM domains; see record note for link-time caveat."
+  },
+  "peripheral_groups": [
+    "BDMA",
+    "DMA",
+    "MDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ETHERNET_MAC",
+    "ADC",
+    "DAC",
+    "HRTIM",
+    "QSPI",
+    "FMC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32H743VI product/package page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h743vi.html"
+    },
+    {
+      "title": "ST STM32H743xI datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32h743vi.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 0 single-core H7 example and Phase 1 SDMMC candidate. This RAM headline must not be used as a linker map."
+}

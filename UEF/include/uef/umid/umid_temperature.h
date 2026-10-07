@@ -1,5 +1,5 @@
 /// @file include/uef/umid/umid_temperature.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UMID_TEMPERATURE_H
 #define UMID_TEMPERATURE_H

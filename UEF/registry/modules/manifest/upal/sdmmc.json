@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/upal/sdmmc/sdmmc.c"
+  ],
+  "dependencies": [
+    "uhal",
+    "upal/dma"
+  ],
+  "requires_cap": [
+    "sdmmc"
+  ],
+  "phase": 1,
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_cache.h",
+    "include/uef/uhal/uhal_gpio.h",
+    "include/uef/upal/upal_dma.h",
+    "include/uef/upal/upal_sdmmc.h"
+  ]
+}

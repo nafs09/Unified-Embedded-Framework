@@ -1,0 +1,8 @@
+{
+  "target": [
+    "PLL",
+    "FLL",
+    "ZERO_CROSS_FREQ",
+    "SLIDING_DFT"
+  ]
+}

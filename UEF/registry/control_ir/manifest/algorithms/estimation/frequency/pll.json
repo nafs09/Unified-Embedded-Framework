@@ -1,0 +1,73 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/frequency",
+  "description": "Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/frequency/pll.h",
+  "scaffold_source": "src/ucon/estimators/frequency/pll.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/frequency/pll",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check sample period, detector/filter gains, and phase/frequency limits.",
+      "todo": "Declare units, phase wrap, and admissible update rate. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize phase, frequency, filter, and quality state.",
+      "todo": "Define acquisition seed and startup behavior. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear tracking history and lock persistence.",
+      "todo": "Specify reacquisition and caller-seeded restart behavior. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "update_detector",
+      "purpose": "Compute the configured phase/frequency detector output.",
+      "todo": "Define input quality rejection and detector sign convention. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "update_loop",
+      "purpose": "Apply bounded loop-filter or adaptation update.",
+      "todo": "Define anti-windup, frequency limits, and numeric failures. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "advance_phase",
+      "purpose": "Advance/wrap phase or NCO state for the elapsed interval.",
+      "todo": "Specify phase representation and prevent overflow/unit ambiguity. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "get_status",
+      "purpose": "Report estimate validity and configured lock/loss-of-lock status.",
+      "todo": "Use threshold persistence; small instantaneous phase error is not lock proof. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one timestamped sample in a documented update order.",
+      "todo": "Leave output/state unchanged when the sample is invalid. Algorithm-specific focus: Generic phase/frequency tracking loop and numerically controlled oscillator with declared detector and output units."
+    }
+  ]
+}

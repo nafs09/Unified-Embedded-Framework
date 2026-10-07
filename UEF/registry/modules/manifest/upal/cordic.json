@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/upal/cordic/cordic.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "requires_cap": [
+    "cordic"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_cache.h",
+    "include/uef/upal/upal_cordic.h",
+    "include/uef/upal/upal_dma.h"
+  ]
+}

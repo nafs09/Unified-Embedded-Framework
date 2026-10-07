@@ -1,13 +1,11 @@
 from __future__ import annotations
-
 import re
 from typing import Any
-
 from uef_gen.chips.database import ChipDatabase, UnknownChipError
 from uef_gen.chips.specs import ChipCapabilities, ChipSpec
+from uef_gen.config.normalize import normalize_configuration
 from uef_gen.diagnostics import Diagnostic, error, warning
 from uef_gen.resolver.models import ResolvedPeripheral, ResolvedProject, ResolvedTask
-
 
 class ResourceResolver:
     """Owns all hardware allocation; templates only consume this resolved result."""
@@ -16,6 +14,8 @@ class ResourceResolver:
         self._database = database
 
     def resolve(self, config: dict[str, Any]) -> ResolvedProject:
+        source_config = config
+        config = normalize_configuration(config)
         diagnostics: list[Diagnostic] = []
         target = config.get("target", {})
         chip_name = target.get("chip", "") if isinstance(target, dict) else ""
@@ -60,6 +60,10 @@ class ResourceResolver:
                 diagnostics.append(error("pin_config_invalid", "pins must map peripheral signals to pin names", f"{location}.pins"))
                 pin_config = {}
             for signal, pin in pin_config.items():
+                signal = next(
+                    (known for known in instance.pins if known.casefold() == str(signal).casefold()),
+                    str(signal),
+                )
                 pin = str(pin).upper()
                 choices = tuple(p.upper() for p in instance.pins.get(signal, ()))
                 if not choices:
@@ -87,6 +91,8 @@ class ResourceResolver:
                 dma_config = {}
             for direction, channel in dma_config.items():
                 direction = direction.upper()
+                if channel is False or channel is None:
+                    continue
                 if direction not in instance.type.dma_directions:
                     diagnostics.append(error("dma_direction_unsupported", f"{instance_name} does not support DMA {direction}", f"{location}.dma.{direction}"))
                     continue
@@ -97,6 +103,19 @@ class ResourceResolver:
                 if chip.family.dma.request_map and dma_request not in chip.family.dma.request_map:
                     diagnostics.append(error("dma_request_unavailable", f"DMA request {dma_request} is absent from the family DMAMUX table", f"{location}.dma.{direction}"))
                     continue
+                if channel is True:
+                    channel = _automatic_dma_channel(
+                        dma_request,
+                        chip.family.dma.request_map,
+                        claimed_dma,
+                    )
+                    if channel is None:
+                        diagnostics.append(error(
+                            "dma_route_unresolved",
+                            f"No free verified channel is recorded for {instance_name}.{direction} ({dma_request})",
+                            f"{location}.dma.{direction}",
+                        ))
+                        continue
                 channel = str(channel).upper()
                 channel_match = re.fullmatch(r"DMA(\d+)_CH(?:ANNEL)?(\d+)", channel)
                 if chip.family.dma.controller_count <= 0 or chip.family.dma.channels_per_controller <= 0:
@@ -180,6 +199,33 @@ class ResourceResolver:
                     diagnostics.append(error("memory_region_unresolved", f"No verified size is recorded for memory region {region_name}", f"memory.regions.{region_name}"))
                 elif int(region_size) > int(limits[region_name]):
                     diagnostics.append(error("memory_region_exceeded", f"Requested {region_size} bytes exceeds {region_name} capacity ({limits[region_name]})", f"memory.regions.{region_name}"))
+            freertos_settings = target.get("freertos", {}) if isinstance(target, dict) else {}
+            kernel_heap = int(freertos_settings.get("heap_bytes", 0)) if isinstance(freertos_settings, dict) else 0
+            declared_heap = int(memory.get("heap_bytes", kernel_heap))
+            rtos_value = config.get("rtos", "")
+            rtos_name = str(rtos_value.get("name", "") if isinstance(rtos_value, dict) else rtos_value)
+            if rtos_name.casefold() == "freertos" and "heap_bytes" in memory and declared_heap != kernel_heap:
+                diagnostics.append(error(
+                    "freertos_heap_mismatch",
+                    "memory.heap_bytes and target.freertos.heap_bytes must match",
+                    "memory.heap_bytes",
+                ))
+            required_ram = (
+                int(memory.get("main_stack_bytes", 0))
+                + declared_heap
+                + sum(
+                    int(task.get("stack_bytes", 0))
+                    for task in config.get("tasks", [])
+                    if isinstance(task, dict)
+                    and str(task.get("context", "task")).casefold() == "task"
+                )
+            )
+            if chip.sram_bytes > 0 and required_ram > chip.sram_bytes:
+                diagnostics.append(error(
+                    "sram_budget_exceeded",
+                    f"Configured stacks and heap require {required_ram} bytes, exceeding {chip.name} SRAM ({chip.sram_bytes})",
+                    "memory",
+                ))
 
         rtos_config = config.get("rtos", {})
         if isinstance(rtos_config, dict):
@@ -195,11 +241,15 @@ class ResourceResolver:
                 continue
             name = str(task.get("name", f"task_{index}"))
             period = int(task.get("period_us", 0))
+            context = str(task.get("context", task.get("execution_context", "task"))).casefold()
+            if context not in {"task", "isr"}:
+                diagnostics.append(error("task_context_invalid", f"Task {name} context must be 'task' or 'isr'", f"tasks[{index}].context"))
             if period <= 0:
                 diagnostics.append(error("task_period_invalid", f"Task {name} requires a positive period_us", f"tasks[{index}].period_us"))
-            elif period < tick_us:
+            elif context == "task" and period < tick_us:
                 diagnostics.append(error("task_period_below_tick", f"Task {name} period {period} us is below scheduler tick {tick_us} us", f"tasks[{index}].period_us"))
-            tasks.append(ResolvedTask(name, period, int(task.get("priority", 0)), int(task.get("stack_bytes", 0))))
+            tasks.append(ResolvedTask(name, period, int(task.get("priority", 0)),
+                                      int(task.get("stack_bytes", 0)), context))
 
         required_capabilities = config.get("required_capabilities", [])
         caps = ChipCapabilities(chip)
@@ -211,10 +261,26 @@ class ResourceResolver:
 
         arithmetic = str(target.get("arithmetic", "float32"))
         rtos = rtos_name
-        configured_modules = config.get("modules", ["ucon", "uhal", "umid", "uos", "upal", "uproto"])
+        configured_modules = config.get("modules", ["uhal", "umid", "uos", "upal", "uproto"])
         modules = tuple(dict.fromkeys(["uapp", *(str(value).casefold() for value in configured_modules)]))
         defines = tuple(str(value) for value in config.get("defines", []))
         flags = tuple([*chip.family.arch.compiler_flags, *(str(value) for value in config.get("compiler_flags", []))])
         return ResolvedProject(str(config.get("project", {}).get("name", chip.name)), chip, caps,
                                arithmetic, rtos, modules, tuple(peripherals), tuple(tasks), defines,
-                               flags, tuple(diagnostics), config)
+                               flags, tuple(diagnostics), source_config)
+
+
+def _automatic_dma_channel(request: str, request_map: dict[str, Any],
+                           claimed: dict[str, str]) -> str | None:
+    """Choose the first unclaimed channel explicitly assigned to a DMA request."""
+    routes = request_map.get(request)
+    if isinstance(routes, str):
+        candidates = [routes]
+    elif isinstance(routes, (list, tuple)):
+        candidates = [str(route) for route in routes]
+    elif isinstance(routes, dict):
+        raw = routes.get("channels", routes.get("channel", []))
+        candidates = [raw] if isinstance(raw, str) else [str(route) for route in raw]
+    else:
+        candidates = []
+    return next((candidate for candidate in candidates if candidate.upper() not in claimed), None)

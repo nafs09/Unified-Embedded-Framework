@@ -1,0 +1,63 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/safety",
+  "description": "Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller.",
+  "implementation_notes": "Define prediction model, horizon, admissible reference set, constraint checking, robust margin, optimization/iteration budget, and behavior when no feasible reference exists. Define typed dimensions/units, fixed memory/work, numeric failure behavior, and state/output preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/safety/reference_governor.h",
+  "scaffold_source": "src/ucon/control/safety/reference_governor.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/safety/reference_governor",
+  "scaffold_reason": "A reference governor adds a reusable constraint-handling layer for flight references.",
+  "project_relevance": [
+    "drone"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Define prediction model, horizon, admissible reference set, constraint checking, robust margin, optimization/iteration budget, and behavior when no feasible reference exists."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check closed-loop model, constraints, and reference bounds.",
+      "todo": "Define prediction/feasibility assumptions and protected outputs. Algorithm-specific focus: Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize reference/constraint history.",
+      "todo": "Define startup state and previous feasible reference. Algorithm-specific focus: Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear governor/safety history.",
+      "todo": "Specify behavior after model or constraint updates. Algorithm-specific focus: Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller."
+    },
+    {
+      "name": "check_candidate",
+      "purpose": "Evaluate the requested reference against declared future constraints.",
+      "todo": "Bound prediction work and specify uncertainty margin. Algorithm-specific focus: Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller."
+    },
+    {
+      "name": "shape_reference",
+      "purpose": "Compute the admissible reference under the selected governor rule.",
+      "todo": "Do not modify the inner controller or actuate hardware. Algorithm-specific focus: Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller."
+    },
+    {
+      "name": "step",
+      "purpose": "Return governed reference, feasibility, and limitation status.",
+      "todo": "Define infeasible and solver-timeout behavior. Algorithm-specific focus: Constraint-aware reference shaper around a declared closed-loop model; it returns a governed reference/status and does not replace the inner controller."
+    }
+  ]
+}

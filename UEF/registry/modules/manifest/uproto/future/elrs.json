@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/uproto/future/elrs/elrs.c"
+  ],
+  "dependencies": [
+    "uproto/crsf"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part XV.3 lists ExpressLRS as CRSF-compatible; define the boundary between reusable CRSF framing and ELRS-specific receiver/link behavior before registration.",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uproto/future/elrs/elrs.h",
+    "include/uef/uproto/future/scaffold_call.h"
+  ]
+}

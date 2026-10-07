@@ -1,5 +1,5 @@
 /// @file src/uproto/crsf.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uproto/uproto_crsf.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uproto/uproto_crsf.h.
 ///
 /// Implementation intent: Validate frame length/type/CRC before updating RC state; keep decode
 ///   work bounded in the receive path.

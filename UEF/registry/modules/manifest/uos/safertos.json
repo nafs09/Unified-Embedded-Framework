@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "src/uos/future/safertos/uos_safertos.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "backend": "SAFERTOS",
+  "variant_of": "uos",
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part II names a consumer-licensed SafeRTOS adapter; the API operation outline is present, but no SafeRTOS dependency or target adapter is selected.",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uos/uos.h"
+  ]
+}

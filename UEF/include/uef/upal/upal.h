@@ -13,6 +13,7 @@
 #include "uef/upal/upal_timer.h"
 #include "uef/upal/upal_hrtim.h"
 #include "uef/upal/upal_can.h"
+#include "uef/upal/upal_fdcan_fd.h"
 #include "uef/upal/upal_usb.h"
 #include "uef/upal/upal_qspi.h"
 #include "uef/upal/upal_flash.h"

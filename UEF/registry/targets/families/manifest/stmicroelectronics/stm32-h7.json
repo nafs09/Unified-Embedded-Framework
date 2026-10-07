@@ -1,0 +1,45 @@
+{
+  "id": "stm32-h7",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32H7",
+  "parent_series": null,
+  "aliases": [
+    "stm32h7xx"
+  ],
+  "architectures": [
+    "Cortex-M7",
+    " selected dual-core parts also Cortex-M4"
+  ],
+  "core_notes": "Phase 0 C profile covers single-core M7 only. Phase 1 SDMMC is a target-family use case.",
+  "roadmap_phase": 0,
+  "catalogue_status": "phase0_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32H743VI"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "SDMMC (Phase 1 target)",
+    "single/dual core",
+    "BDMA",
+    "AXI SRAM",
+    "D-cache"
+  ],
+  "source_references": [
+    "st_h7",
+    "st"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "stm32h7xx-single-core",
+  "additional_phase_targets": [
+    1
+  ],
+  "series_examples_outside_profile": [
+    "STM32H745XI"
+  ],
+  "profile_inclusion_rule": "The Phase 0 C profile only covers single-core Cortex-M7 parts; dual-core M7+M4 parts require a separate profile and ownership contract."
+}

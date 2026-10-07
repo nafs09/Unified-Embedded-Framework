@@ -1,0 +1,26 @@
+{
+  "domain": "uproto",
+  "outputs": [
+    {
+      "template": "uproto/sbus/sbus.h.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_sbus.h"
+    },
+    {
+      "template": "uproto/sbus/sbus.c.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_sbus.c"
+    }
+  ],
+  "modules": [
+    "uproto/sbus"
+  ],
+  "features": [
+    "uart_rx"
+  ],
+  "manual_actions": [
+    {
+      "code": "uproto_transport_binding",
+      "message": "Configure an inverted 100 kbaud 8E2 UART receive path, route its bytes into the UEF decoder, and verify failsafe/frame-lost behavior with the selected receiver.",
+      "required_before_hardware_use": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 /// @file src/upal/opamp/opamp.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_opamp.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_opamp.h.
 ///
 /// Implementation intent: Validate PGA/follower configuration and calibration before enabling
 ///   the selected internal amplifier.

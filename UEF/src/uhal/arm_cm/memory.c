@@ -1,5 +1,5 @@
 /// @file src/uhal/arm_cm/memory.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_memory.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uhal/uhal_memory.h.
 ///
 /// Implementation intent: Describe verified memory regions and configure MPU/backup registers
 ///   from the selected linker map and MCU reference manual.

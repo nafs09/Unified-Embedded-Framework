@@ -49,27 +49,11 @@ typedef int16_t  uef_i16_t;
 typedef int32_t  uef_i32_t;
 typedef int64_t  uef_i64_t;
 
-/* UCON scalar type — set per project by uef-gen */
-#ifndef UCON_SCALAR_TYPE
-#  define UCON_SCALAR_TYPE  uef_f32_t
+/* Shared UMATH scalar type selected once for all numerical modules. */
+#ifndef UMATH_SCALAR_TYPE
+#  define UMATH_SCALAR_TYPE uef_f32_t
 #endif
-typedef UCON_SCALAR_TYPE ucon_scalar_t;
-
-/* Q16.16 arithmetic */
-#define UEF_Q16_FRAC_BITS  16
-#define UEF_Q16_ONE        (1 << UEF_Q16_FRAC_BITS)
-#define UEF_Q16_FROM_F(x)  ((uef_q16_t)((x) * UEF_Q16_ONE))
-#define UEF_Q16_TO_F(x)    ((uef_f32_t)(x) / UEF_Q16_ONE)
-
-static inline uef_q16_t uef_q16_mul(uef_q16_t a, uef_q16_t b) {
-    return (uef_q16_t)(((int64_t)a * b) >> UEF_Q16_FRAC_BITS);
-}
-static inline uef_q15_t uef_q15_mul(uef_q15_t a, uef_q15_t b) {
-    return (uef_q15_t)(((int32_t)a * b) >> 15);
-}
-static inline uef_q31_t uef_q31_mul(uef_q31_t a, uef_q31_t b) {
-    return (uef_q31_t)(((int64_t)a * b) >> 31);
-}
+typedef UMATH_SCALAR_TYPE umath_scalar_t;
 
 #ifdef __cplusplus
 }

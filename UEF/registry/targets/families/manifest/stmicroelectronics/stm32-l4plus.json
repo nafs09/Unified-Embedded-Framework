@@ -1,0 +1,37 @@
+{
+  "id": "stm32-l4plus",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32L4+",
+  "parent_series": null,
+  "aliases": [
+    "stm32l4plus",
+    "stm32l4plusxx"
+  ],
+  "architectures": [
+    "Cortex-M4F"
+  ],
+  "core_notes": "Phase 1 scaffold added for SDMMC.",
+  "roadmap_phase": 1,
+  "catalogue_status": "phase1_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32L4R5ZI"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "SDMMC",
+    "DMA",
+    "clocks",
+    "package"
+  ],
+  "source_references": [
+    "st_l4p",
+    "st"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "stm32l4plus"
+}

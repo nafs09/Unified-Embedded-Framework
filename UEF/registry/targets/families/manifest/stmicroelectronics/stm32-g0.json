@@ -1,0 +1,35 @@
+{
+  "id": "stm32-g0",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32G0",
+  "parent_series": null,
+  "aliases": [
+    "stm32g0xx"
+  ],
+  "architectures": [
+    "Cortex-M0+"
+  ],
+  "core_notes": "Phase 0 family scaffold.",
+  "roadmap_phase": 0,
+  "catalogue_status": "phase0_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32G0B1RE"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "DMAMUX",
+    "limited RAM",
+    "no FPU"
+  ],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "stm32g0xx"
+}

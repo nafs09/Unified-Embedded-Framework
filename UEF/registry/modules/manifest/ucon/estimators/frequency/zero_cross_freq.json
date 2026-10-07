@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/estimators/frequency/zero_cross_freq.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/frequency/zero_cross_freq.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "ZERO_CROSS_FREQ",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_zero_cross_freq_validate_config",
+    "ucon_zero_cross_freq_init",
+    "ucon_zero_cross_freq_reset",
+    "ucon_zero_cross_freq_detect_crossing",
+    "ucon_zero_cross_freq_update_period",
+    "ucon_zero_cross_freq_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

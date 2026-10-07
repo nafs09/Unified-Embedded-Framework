@@ -1,0 +1,32 @@
+{
+  "id": "nrf52840",
+  "vendor": "Nordic Semiconductor",
+  "family": "nRF",
+  "series": "nRF52840",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M4F"
+  ],
+  "core_notes": "Phase 0 scaffold; no exact resources.",
+  "roadmap_phase": 0,
+  "catalogue_status": "phase0_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "nRF52840"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "peripherals",
+    "radio",
+    "pins/clocks/memory"
+  ],
+  "source_references": [
+    "nordic52"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "nrf52840"
+}

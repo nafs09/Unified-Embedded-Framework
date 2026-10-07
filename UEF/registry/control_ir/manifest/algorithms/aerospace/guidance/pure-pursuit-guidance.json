@@ -1,0 +1,59 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "aerospace",
+  "family": "aerospace/guidance",
+  "description": "Geometric path-following guidance that aims toward a configured look-ahead point.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Geometric path-following guidance that aims toward a configured look-ahead point. Family contract work: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior. Define coordinate frame, look-ahead selection, curvature/turn limits, path-end behavior, and invalid geometry status. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior.",
+    "Define coordinate frame, look-ahead selection, curvature/turn limits, path-end behavior, and invalid geometry status.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/aerospace/guidance/pure_pursuit_guidance",
+  "scaffold_header": "include/uef/ucon/future/aerospace/guidance/pure_pursuit_guidance.h",
+  "scaffold_source": "src/ucon/future/aerospace/guidance/pure_pursuit_guidance.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_geometry",
+      "purpose": "Check path/target geometry, frames, and guidance limits.",
+      "todo": "Define coincident-point and path-end behavior. Algorithm-specific focus: Geometric path-following guidance that aims toward a configured look-ahead point."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize guidance mode and path progress.",
+      "todo": "Specify entry/reseed behavior after route replacement. Algorithm-specific focus: Geometric path-following guidance that aims toward a configured look-ahead point."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear path progress and command history.",
+      "todo": "Define behavior when navigation validity is lost. Algorithm-specific focus: Geometric path-following guidance that aims toward a configured look-ahead point."
+    },
+    {
+      "name": "compute_guidance",
+      "purpose": "Convert relative geometry into a guidance command.",
+      "todo": "State command units and separation from inner-loop control. Algorithm-specific focus: Geometric path-following guidance that aims toward a configured look-ahead point."
+    },
+    {
+      "name": "step",
+      "purpose": "Process timestamped route/navigation data and publish status.",
+      "todo": "Bound commands and preserve outputs on invalid geometry. Algorithm-specific focus: Geometric path-following guidance that aims toward a configured look-ahead point."
+    }
+  ]
+}

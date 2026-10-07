@@ -1,0 +1,33 @@
+{
+  "id": "lpc55xx",
+  "vendor": "NXP",
+  "family": "LPC",
+  "series": "LPC55xx",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M33"
+  ],
+  "core_notes": "Phase 4; LPC55S69 is M33, not M4F.",
+  "roadmap_phase": 4,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "LPC55S69"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "FLEXCOMM",
+    "HS SPI",
+    "PowerQuad",
+    "TrustZone"
+  ],
+  "source_references": [
+    "nxp_lpc",
+    "nxp_lpc55"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

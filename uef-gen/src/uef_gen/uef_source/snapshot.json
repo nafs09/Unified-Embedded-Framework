@@ -1,8 +1,0 @@
-{
-  "version": "1.1.0",
-  "hash_excludes": [
-    "snapshot.json"
-  ],
-  "hash_algorithm": "sha256",
-  "content_hash": "sha256:86ac0428371f397402e9b34996901791eec5f385d8b600aaad6207e39914d8ea"
-}

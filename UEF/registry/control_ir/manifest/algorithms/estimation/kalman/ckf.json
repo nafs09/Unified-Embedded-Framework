@@ -1,0 +1,69 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman",
+  "description": "Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Use the third-degree spherical-radial cubature rule specified in Part XVI. Remove the stale Gauss-Hermite wording from the specification before claiming consistency. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/kalman/ckf.h",
+  "scaffold_source": "src/ucon/estimators/kalman/ckf.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/kalman/ckf",
+  "scaffold_reason": "A cubature estimator is a relevant nonlinear state-estimation alternative for high-dimensional sensor fusion.",
+  "project_relevance": [
+    "drone"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Use the third-degree spherical-radial cubature rule specified in Part XVI. Remove the stale Gauss-Hermite wording from the specification before claiming consistency."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Validate nonlinear models and covariance dimensions.",
+      "todo": "Use the third-degree spherical-radial cubature rule, never Gauss-Hermite points. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate, covariance, and fixed point workspace.",
+      "todo": "Define positive-semidefinite covariance and factorization failure. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset estimate/covariance history.",
+      "todo": "Define model-context retention. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    },
+    {
+      "name": "generate_cubature_points",
+      "purpose": "Generate points from the covariance factor.",
+      "todo": "Pin the 2*n point ordering and equal weights for this cubature rule. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate points through the process model and recover predicted moments.",
+      "todo": "Preserve covariance symmetry/PSD and bound point count. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    },
+    {
+      "name": "correct",
+      "purpose": "Compute measurement moments, innovation, and cross covariance.",
+      "todo": "Define solve/gating/rejected-measurement policy. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    },
+    {
+      "name": "step",
+      "purpose": "Run prediction and optional measurement correction.",
+      "todo": "Do not publish partial state after factorization failure. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+    }
+  ]
+}

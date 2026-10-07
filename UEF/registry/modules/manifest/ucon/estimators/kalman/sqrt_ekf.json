@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/estimators/kalman/sqrt_ekf.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/kalman/sqrt_ekf.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "SQRT_EKF",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Square-root covariance propagation is relevant to numerically robust high-dimensional state estimation.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_sqrt_ekf_validate_model",
+    "ucon_sqrt_ekf_init",
+    "ucon_sqrt_ekf_reset",
+    "ucon_sqrt_ekf_predict_factor",
+    "ucon_sqrt_ekf_correct_factor",
+    "ucon_sqrt_ekf_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

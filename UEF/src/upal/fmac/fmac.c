@@ -1,5 +1,5 @@
 /// @file src/upal/fmac/fmac.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_fmac.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_fmac.h.
 ///
 /// Implementation intent: Implement accelerator configuration and bounded input/output
 ///   transfer; define coefficient and scaling formats.

@@ -1,0 +1,32 @@
+{
+  "id": "ch32v307",
+  "vendor": "WCH",
+  "family": "CH32V",
+  "series": "CH32V307",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "RISC-V 32-bit",
+    " verify extensions"
+  ],
+  "core_notes": "Phase 4; no RV32F assumption.",
+  "roadmap_phase": 4,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "CH32V307"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "WCH HAL",
+    "interrupts",
+    "compiler"
+  ],
+  "source_references": [
+    "wch"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

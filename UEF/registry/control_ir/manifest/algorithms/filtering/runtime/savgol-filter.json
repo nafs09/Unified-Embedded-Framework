@@ -1,0 +1,59 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "filtering",
+  "family": "filtering/runtime",
+  "description": "Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order. Family contract work: declare sample units/rate, coefficient source and scaling, exact delay/state layout, startup fill, reset behavior, and saturation/overflow bounds. Define odd window/order constraints, derivative scaling, edge policy, coefficient generation, and fixed storage. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare sample units/rate, coefficient source and scaling, exact delay/state layout, startup fill, reset behavior, and saturation/overflow bounds.",
+    "Define odd window/order constraints, derivative scaling, edge policy, coefficient generation, and fixed storage.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/filtering/runtime/savgol_filter",
+  "scaffold_header": "include/uef/ucon/future/filtering/runtime/savgol_filter.h",
+  "scaffold_source": "src/ucon/future/filtering/runtime/savgol_filter.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check coefficient count, sample rate, and fixed state size.",
+      "todo": "State coefficient stability and initialization assumptions. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize history and ring-buffer indices.",
+      "todo": "Define zero, constant-input, or caller-supplied initial conditions. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear or preload filter history.",
+      "todo": "Define whether coefficients can change while running. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+    },
+    {
+      "name": "update_state",
+      "purpose": "Advance bounded filter/window state for one sample.",
+      "todo": "Check accumulator scaling and invalid-sample policy. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+    },
+    {
+      "name": "process_sample",
+      "purpose": "Compute output using the declared recurrence/window.",
+      "todo": "Define latency, warm-up, saturation, and non-finite behavior. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+    }
+  ]
+}

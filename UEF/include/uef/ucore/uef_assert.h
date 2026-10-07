@@ -1,5 +1,5 @@
 /// @file include/uef/ucore/uef_assert.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UEF_ASSERT_H
 #define UEF_ASSERT_H

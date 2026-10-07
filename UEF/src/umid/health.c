@@ -69,10 +69,23 @@ umid_health_status_t umid_health_system_status(void) {
 }
 
 const umid_health_entry_t* umid_health_entry(uef_u8_t id) {
-    /* TODO(UEF health concurrency): This borrowed pointer can change after this call returns.
-     * Add a copy-out/snapshot API or document a task/ISR locking rule for concurrent readers.
-     */
+    /* Legacy borrowed view: callers must serialize reads against health reports. */
     return id < g_count ? &g_entries[id] : NULL;
+}
+
+bool umid_health_entry_copy(uef_u8_t id, umid_health_entry_t* out) {
+    if (out == NULL) {
+        return false;
+    }
+
+    const uhal_critical_t critical_state = uhal_critical_enter();
+    if (id >= g_count) {
+        uhal_critical_exit(critical_state);
+        return false;
+    }
+    *out = g_entries[id];
+    uhal_critical_exit(critical_state);
+    return true;
 }
 
 uef_u8_t umid_health_count(void) {

@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "src/uapp/lifecycle.c"
+  ],
+  "dependencies": [
+    "uos"
+  ],
+  "headers": [
+    "include/uef/uapp/uapp_lifecycle.h",
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h"
+  ]
+}

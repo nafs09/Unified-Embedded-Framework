@@ -1,0 +1,55 @@
+{
+  "id": "tms320f28027ptt",
+  "vendor": "Texas Instruments",
+  "family_id": "c2000-piccolo",
+  "series": "C2000 Piccolo",
+  "part_number": "TMS320F28027PTT",
+  "aliases": [
+    "TMS320F28027"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "C28x",
+    "isa": "TI C28x",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 60000000
+  },
+  "package": {
+    "name": "LQFP48",
+    "pin_count": 48
+  },
+  "memory": {
+    "flash_bytes": 65536,
+    "sram_bytes": 12288
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "ePWM",
+    "eCAP",
+    "SPI",
+    "I2C",
+    "SCI"
+  ],
+  "source_references": [
+    {
+      "title": "TI TMS320F28027PTT product page",
+      "url": "https://www.ti.com/product/TMS320F28027/part-details/TMS320F28027PTT"
+    },
+    {
+      "title": "TI TMS320F2802x data sheet",
+      "url": "https://www.ti.com/lit/ds/symlink/tms320f28027.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Entry C2000 target exemplar; its C28x core/toolchain model differs from Arm and RISC-V families."
+}

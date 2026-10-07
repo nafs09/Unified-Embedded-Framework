@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/trajectory/profiles/poly_traj_3.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/trajectory/profiles/poly_traj_3.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "POLY_TRAJ_3",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_poly_traj_3_validate_limits",
+    "ucon_poly_traj_3_init",
+    "ucon_poly_traj_3_reset",
+    "ucon_poly_traj_3_plan",
+    "ucon_poly_traj_3_sample",
+    "ucon_poly_traj_3_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

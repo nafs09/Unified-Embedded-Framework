@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "src/umath/future/matrix/sparse_csr.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/future/matrix/sparse_csr.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Planned reusable mathematical system; API is outlined and returns UMATH_NOT_IMPLEMENTED.",
+  "contract_status": "catalogue_only"
+}

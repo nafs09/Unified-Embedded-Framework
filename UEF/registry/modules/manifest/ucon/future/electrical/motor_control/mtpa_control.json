@@ -1,0 +1,35 @@
+{
+  "sources": [
+    "src/ucon/future/electrical/motor_control/mtpa_control.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/electrical/motor_control/mtpa_control.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "MTPA_CONTROL",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_mtpa_control_validate_config",
+    "ucon_mtpa_control_init",
+    "ucon_mtpa_control_reset",
+    "ucon_mtpa_control_estimate_motor_state",
+    "ucon_mtpa_control_compute_current_command",
+    "ucon_mtpa_control_modulate",
+    "ucon_mtpa_control_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

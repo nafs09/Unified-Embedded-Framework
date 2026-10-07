@@ -1,0 +1,61 @@
+{
+  "priority": "DEFERRED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/nonlinear",
+  "description": "Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified.",
+  "implementation_notes": "Choose fractional order, finite-memory discretization and coefficients, truncation error, surface/reaching law, sampling effects, and bounded computation. Define typed dimensions/units, fixed memory/work, numeric failure behavior, and state/output preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/control/nonlinear/fractional_order_smc.h",
+  "scaffold_source": "src/ucon/future/control/nonlinear/fractional_order_smc.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/control/nonlinear/fractional_order_smc",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "project_relevance": [],
+  "contract_status": "deferred_underspecified",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Choose fractional order, finite-memory discretization and coefficients, truncation error, surface/reaching law, sampling effects, and bounded computation."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check fractional order, surface, sample period, and coefficient table.",
+      "todo": "Select finite-memory discretization; ideal unbounded fractional memory is not implementable. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize fixed fractional-memory history.",
+      "todo": "Specify memory length and initial-history assumption. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear bounded fractional history.",
+      "todo": "Define zero-fill versus caller-supplied history. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+    },
+    {
+      "name": "update_fractional_memory",
+      "purpose": "Advance the selected finite-memory approximation.",
+      "todo": "Document coefficients, truncation, scaling, and work bound. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+    },
+    {
+      "name": "compute_switching_control",
+      "purpose": "Compute reaching/switching term from declared surface.",
+      "todo": "Specify boundary layer and actuator/chattering policy. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one fractional sliding-mode update.",
+      "todo": "Keep deferred until approximation/stability claims are specified. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+    }
+  ]
+}

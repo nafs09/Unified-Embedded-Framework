@@ -1,0 +1,33 @@
+{
+  "id": "esp32-c6",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32-C6",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "RISC-V 32-bit",
+    " no FPU assumption"
+  ],
+  "core_notes": "Phase 4; RF outside generic UEF scope.",
+  "roadmap_phase": 4,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ESP32-C6FH4"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "ESP-IDF",
+    "wireless boundary"
+  ],
+  "source_references": [
+    "esp_portfolio",
+    "esp_selector",
+    "esp_idf"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

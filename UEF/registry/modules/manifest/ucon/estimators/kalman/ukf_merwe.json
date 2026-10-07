@@ -1,0 +1,37 @@
+{
+  "sources": [
+    "src/ucon/estimators/kalman/ukf_merwe.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/kalman/ukf_merwe.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "UKF_MERWE",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_ukf_merwe_validate_model",
+    "ucon_ukf_merwe_init",
+    "ucon_ukf_merwe_reset",
+    "ucon_ukf_merwe_generate_merwe_points",
+    "ucon_ukf_merwe_predict",
+    "ucon_ukf_merwe_correct",
+    "ucon_ukf_merwe_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

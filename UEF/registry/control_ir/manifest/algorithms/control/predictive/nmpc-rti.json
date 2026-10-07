@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/predictive",
+  "description": "One SQP/RTI preparation and feedback step per control sample.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: One SQP/RTI preparation and feedback step per control sample. Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/predictive/nmpc_rti.h",
+  "scaffold_source": "src/ucon/control/predictive/nmpc_rti.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/predictive/nmpc_rti",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_problem",
+      "purpose": "Check nonlinear model, horizon, constraints, and QP backend.",
+      "todo": "Define one-SQP-step assumptions and fixed workspace. Algorithm-specific focus: One SQP/RTI preparation and feedback step per control sample."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize trajectory, multipliers, and linearization workspace.",
+      "todo": "Define feasible warm start and model context. Algorithm-specific focus: One SQP/RTI preparation and feedback step per control sample."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear warm start and preparation/feedback phase state.",
+      "todo": "Specify recovery after a missed sample. Algorithm-specific focus: One SQP/RTI preparation and feedback step per control sample."
+    },
+    {
+      "name": "prepare_step",
+      "purpose": "Linearize/discretize the nonlinear problem and assemble one bounded QP.",
+      "todo": "Define preparation budget and data snapshot. Algorithm-specific focus: One SQP/RTI preparation and feedback step per control sample."
+    },
+    {
+      "name": "feedback_step",
+      "purpose": "Solve/apply the prepared QP correction and verify constraints.",
+      "todo": "Define deadline, solver status, and missed-preparation behavior. Algorithm-specific focus: One SQP/RTI preparation and feedback step per control sample."
+    },
+    {
+      "name": "step",
+      "purpose": "Coordinate one real-time iteration using the declared preparation result.",
+      "todo": "Never reuse stale preparation silently. Algorithm-specific focus: One SQP/RTI preparation and feedback step per control sample."
+    }
+  ]
+}

@@ -1,0 +1,424 @@
+{
+  "schema_version": "1.0",
+  "catalogue_kind": "uef_target_family_roadmap",
+  "canonical_owner": "UEF",
+  "description": "Family-level discovery and staged target roadmap; not an exact-chip database.",
+  "selection_rules": {
+    "catalogue_entry_is_chip_spec": false,
+    "family_name_is_generation_target": false,
+    "generation_available_for_catalogue_entries": false,
+    "verified_hardware_data": false,
+    "exact_part_resources_included": false,
+    "representative_parts_are_nonbinding_examples": true,
+    "exact_part_record_requirements": [
+      "vendor datasheet and reference-manual revision",
+      "orderable part and package pinout",
+      "peripherals, clocks/resets, alternate functions",
+      "DMA routing and interrupt names",
+      "memory, startup, linker, MPU/cache, and errata",
+      "vendor citations and verification record"
+    ]
+  },
+  "roadmap_phase_meaning": {
+    "0": "Initial family scaffold, not exact-part support.",
+    "1": "Initial-release extension, not exact-part support.",
+    "2": "Later target named in UEF specification.",
+    "3": "Later target named in UEF specification.",
+    "4": "Later target named in UEF specification.",
+    "null": "Catalogue coverage only; no phase assigned by current specification."
+  },
+  "source_references": {
+    "uef_spec": {
+      "title": "UEF target expansion plan",
+      "url": "Specificaitons/UEF_Specification.md",
+      "scope": "Project roadmap phases and named families."
+    },
+    "st": {
+      "title": "ST STM32 family overview",
+      "url": "https://www.st.com/resource/en/product_presentation/microcontrollers-stm32-family-overview.pdf",
+      "scope": "Series discovery; exact device resources require vendor documents."
+    },
+    "st_mpu": {
+      "title": "ST AN4838, MPU management",
+      "url": "https://www.st.com/resource/en/application_note/an4838-introduction-to-memory-protection-unit-management-on-stm32-mcus-stmicroelectronics.pdf",
+      "scope": "Series cross-check only; not exact target data."
+    },
+    "st_f7": {
+      "title": "ST STM32F7",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f7-series.html",
+      "scope": "F7 family and core reference."
+    },
+    "st_h7": {
+      "title": "ST STM32H7",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h7-series.html",
+      "scope": "H7 line; exact core varies by device."
+    },
+    "st_l4p": {
+      "title": "ST STM32L4+",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32l4r5-s5.html",
+      "scope": "L4+ family reference."
+    },
+    "esp_portfolio": {
+      "title": "Espressif SoC portfolio",
+      "url": "https://dl.espressif.com/public/Espressif%20SoC%20Product%20Portfolio.pdf",
+      "scope": "Family discovery; not proof of orderability."
+    },
+    "esp_selector": {
+      "title": "Espressif product selector",
+      "url": "https://products.espressif.com/en/product-comparison",
+      "scope": "Family discovery; verify selected SoC status."
+    },
+    "esp_idf": {
+      "title": "ESP-IDF hardware reference",
+      "url": "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/",
+      "scope": "ESP-IDF targets and hardware docs."
+    },
+    "rpi": {
+      "title": "Raspberry Pi RP2040",
+      "url": "https://www.raspberrypi.com/products/rp2040/specifications/",
+      "scope": "RP2040 discovery."
+    },
+    "microchip": {
+      "title": "Microchip SAM D/E",
+      "url": "https://www.microchip.com/en-us/products/microcontrollers-and-microprocessors/32-bit-mcus/sam-32-bit-mcus/sam-d-e",
+      "scope": "SAMD/SAME discovery."
+    },
+    "nordic52": {
+      "title": "Nordic nRF52840",
+      "url": "https://www.nordicsemi.com/Products/nRF52840",
+      "scope": "Device identity; exact resources require device docs."
+    },
+    "nordic91": {
+      "title": "Nordic nRF9160",
+      "url": "https://www.nordicsemi.com/Products/nRF9160",
+      "scope": "Family discovery."
+    },
+    "nxp_rt": {
+      "title": "NXP i.MX RT",
+      "url": "https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES",
+      "scope": "Family discovery; core varies by part."
+    },
+    "nxp_lpc": {
+      "title": "NXP LPC",
+      "url": "https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers:MC_53456",
+      "scope": "Family discovery; exact resources require device docs."
+    },
+    "ti": {
+      "title": "TI C2000",
+      "url": "https://www.ti.com/design-development/embedded-development/c2000-mcus.html",
+      "scope": "C2000 discovery."
+    },
+    "wch": {
+      "title": "WCH CH32V307",
+      "url": "https://www.wch-ic.com/products/CH32V307.html",
+      "scope": "Family discovery; ISA requires exact-part docs."
+    },
+    "gd": {
+      "title": "GigaDevice GD32VF103",
+      "url": "https://www.gigadevice.com/product/mcu/main-stream-mcus/gd32vf103-series/",
+      "scope": "Family discovery."
+    },
+    "st_f0": {
+      "title": "ST STM32F0 series",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f0x0-value-line.html",
+      "scope": "STM32F0 Cortex-M0 family reference."
+    },
+    "st_c0": {
+      "title": "ST STM32C0 series",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32c0-series.html",
+      "scope": "STM32C0 Cortex-M0+ series reference."
+    },
+    "nordic51": {
+      "title": "Nordic nRF51822",
+      "url": "https://www.nordicsemi.com/Products/nRF51822",
+      "scope": "nRF51 Cortex-M0 family reference."
+    },
+    "nxp_lpc11": {
+      "title": "NXP LPC1100 family",
+      "url": "https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/general-purpose-mcus/lpc1100-arm-cortex-m0-plus-m0%3AMC_1392389687150",
+      "scope": "LPC11xx includes Cortex-M0 and selected LPC11Uxx Cortex-M0+ variants."
+    },
+    "nxp_lpc55": {
+      "title": "NXP LPC55S6x family",
+      "url": "https://www.nxp.com/products/LPC55S6x",
+      "scope": "LPC55 Cortex-M33 family reference."
+    },
+    "nxp_rt1062": {
+      "title": "NXP MIMXRT1062 product",
+      "url": "https://www.nxp.com/part/MIMXRT1062CVL5B",
+      "scope": "Representative active i.MX RT1060 Cortex-M7 part."
+    },
+    "nxp_rt1170": {
+      "title": "NXP i.MX RT1170 core overview",
+      "url": "https://www.nxp.com/assets/block-diagram/en/i.MX-RT1170.pdf",
+      "scope": "i.MX RT1170 M7 and M4 dual-core overview."
+    },
+    "esp32_s3": {
+      "title": "Espressif ESP32-S3",
+      "url": "https://www.espressif.com/en/products/socs/esp32-s3",
+      "scope": "Dual-core Xtensa LX7 SoC family reference."
+    }
+  },
+  "entries": [
+    {
+      "id": "stm32-c0",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-c0.json"
+    },
+    {
+      "id": "stm32-c5",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-c5.json"
+    },
+    {
+      "id": "stm32-f0",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-f0.json"
+    },
+    {
+      "id": "stm32-f1",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-f1.json"
+    },
+    {
+      "id": "stm32-f2",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-f2.json"
+    },
+    {
+      "id": "stm32-f3",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-f3.json"
+    },
+    {
+      "id": "stm32-f4",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-f4.json"
+    },
+    {
+      "id": "stm32-f7",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-f7.json"
+    },
+    {
+      "id": "stm32-g0",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-g0.json"
+    },
+    {
+      "id": "stm32-g4",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-g4.json"
+    },
+    {
+      "id": "stm32-h5",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-h5.json"
+    },
+    {
+      "id": "stm32-h7",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-h7.json"
+    },
+    {
+      "id": "stm32-h7rs",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-h7rs.json"
+    },
+    {
+      "id": "stm32-l0",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-l0.json"
+    },
+    {
+      "id": "stm32-l1",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-l1.json"
+    },
+    {
+      "id": "stm32-l4",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-l4.json"
+    },
+    {
+      "id": "stm32-l4plus",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-l4plus.json"
+    },
+    {
+      "id": "stm32-l5",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-l5.json"
+    },
+    {
+      "id": "stm32-u0",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-u0.json"
+    },
+    {
+      "id": "stm32-u3",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-u3.json"
+    },
+    {
+      "id": "stm32-u5",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-u5.json"
+    },
+    {
+      "id": "stm32-wb",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-wb.json"
+    },
+    {
+      "id": "stm32-wb0",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-wb0.json"
+    },
+    {
+      "id": "stm32-wba",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-wba.json"
+    },
+    {
+      "id": "stm32-wl",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-wl.json"
+    },
+    {
+      "id": "stm32-wl3",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-wl3.json"
+    },
+    {
+      "id": "stm32-n6",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-n6.json"
+    },
+    {
+      "id": "stm32-v8",
+      "path": "registry/targets/families/manifest/stmicroelectronics/stm32-v8.json"
+    },
+    {
+      "id": "nrf51",
+      "path": "registry/targets/families/manifest/nordic-semiconductor/nrf51.json"
+    },
+    {
+      "id": "nrf52",
+      "path": "registry/targets/families/manifest/nordic-semiconductor/nrf52.json"
+    },
+    {
+      "id": "nrf52840",
+      "path": "registry/targets/families/manifest/nordic-semiconductor/nrf52840.json"
+    },
+    {
+      "id": "nrf5340",
+      "path": "registry/targets/families/manifest/nordic-semiconductor/nrf5340.json"
+    },
+    {
+      "id": "nrf9160",
+      "path": "registry/targets/families/manifest/nordic-semiconductor/nrf9160.json"
+    },
+    {
+      "id": "rp2040",
+      "path": "registry/targets/families/manifest/raspberry-pi/rp2040.json"
+    },
+    {
+      "id": "samd21",
+      "path": "registry/targets/families/manifest/microchip/samd21.json"
+    },
+    {
+      "id": "samd51-same51",
+      "path": "registry/targets/families/manifest/microchip/samd51-same51.json"
+    },
+    {
+      "id": "lpc11xx",
+      "path": "registry/targets/families/manifest/nxp/lpc11xx.json"
+    },
+    {
+      "id": "lpc17xx",
+      "path": "registry/targets/families/manifest/nxp/lpc17xx.json"
+    },
+    {
+      "id": "lpc18xx",
+      "path": "registry/targets/families/manifest/nxp/lpc18xx.json"
+    },
+    {
+      "id": "lpc55xx",
+      "path": "registry/targets/families/manifest/nxp/lpc55xx.json"
+    },
+    {
+      "id": "imx-rt10xx",
+      "path": "registry/targets/families/manifest/nxp/imx-rt10xx.json"
+    },
+    {
+      "id": "imx-rt1170",
+      "path": "registry/targets/families/manifest/nxp/imx-rt1170.json"
+    },
+    {
+      "id": "same70",
+      "path": "registry/targets/families/manifest/microchip/same70.json"
+    },
+    {
+      "id": "ra6m4",
+      "path": "registry/targets/families/manifest/renesas/ra6m4.json"
+    },
+    {
+      "id": "c2000-piccolo",
+      "path": "registry/targets/families/manifest/texas-instruments/c2000-piccolo.json"
+    },
+    {
+      "id": "c2000-delfino",
+      "path": "registry/targets/families/manifest/texas-instruments/c2000-delfino.json"
+    },
+    {
+      "id": "ch32v003",
+      "path": "registry/targets/families/manifest/wch/ch32v003.json"
+    },
+    {
+      "id": "ch32v203",
+      "path": "registry/targets/families/manifest/wch/ch32v203.json"
+    },
+    {
+      "id": "ch32v307",
+      "path": "registry/targets/families/manifest/wch/ch32v307.json"
+    },
+    {
+      "id": "gd32vf103",
+      "path": "registry/targets/families/manifest/gigadevice/gd32vf103.json"
+    },
+    {
+      "id": "esp32",
+      "path": "registry/targets/families/manifest/espressif/esp32.json"
+    },
+    {
+      "id": "esp32-s2",
+      "path": "registry/targets/families/manifest/espressif/esp32-s2.json"
+    },
+    {
+      "id": "esp32-s3",
+      "path": "registry/targets/families/manifest/espressif/esp32-s3.json"
+    },
+    {
+      "id": "esp32-c2",
+      "path": "registry/targets/families/manifest/espressif/esp32-c2.json"
+    },
+    {
+      "id": "esp32-c3",
+      "path": "registry/targets/families/manifest/espressif/esp32-c3.json"
+    },
+    {
+      "id": "esp32-c5",
+      "path": "registry/targets/families/manifest/espressif/esp32-c5.json"
+    },
+    {
+      "id": "esp32-c6",
+      "path": "registry/targets/families/manifest/espressif/esp32-c6.json"
+    },
+    {
+      "id": "esp32-c61",
+      "path": "registry/targets/families/manifest/espressif/esp32-c61.json"
+    },
+    {
+      "id": "esp32-h2",
+      "path": "registry/targets/families/manifest/espressif/esp32-h2.json"
+    },
+    {
+      "id": "esp32-h4",
+      "path": "registry/targets/families/manifest/espressif/esp32-h4.json"
+    },
+    {
+      "id": "esp32-h21",
+      "path": "registry/targets/families/manifest/espressif/esp32-h21.json"
+    },
+    {
+      "id": "esp32-p4",
+      "path": "registry/targets/families/manifest/espressif/esp32-p4.json"
+    },
+    {
+      "id": "esp32-s31",
+      "path": "registry/targets/families/manifest/espressif/esp32-s31.json"
+    },
+    {
+      "id": "esp32-e22",
+      "path": "registry/targets/families/manifest/espressif/esp32-e22.json"
+    },
+    {
+      "id": "imx-rt1060",
+      "path": "registry/targets/families/manifest/nxp/imx-rt1060.json"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 /// @file src/umid/mag.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_magnetometer.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_magnetometer.h.
 ///
 /// Implementation intent: Apply explicit hard-iron and soft-iron calibration without embedding
 ///   a guessed calibration model.

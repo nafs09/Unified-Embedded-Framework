@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/nonlinear/feedback_lin.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/nonlinear/feedback_lin.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "FEEDBACK_LIN",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Feedback linearization is a relevant nonlinear flight-control option; its inverse-dynamics dependency remains explicit.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_feedback_lin_validate_model",
+    "ucon_feedback_lin_init",
+    "ucon_feedback_lin_reset",
+    "ucon_feedback_lin_compute_surface",
+    "ucon_feedback_lin_compute_control",
+    "ucon_feedback_lin_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

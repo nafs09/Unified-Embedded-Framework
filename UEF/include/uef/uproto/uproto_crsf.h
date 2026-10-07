@@ -1,5 +1,5 @@
 /// @file include/uef/uproto/uproto_crsf.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UPROTO_CRSF_H
 #define UPROTO_CRSF_H
@@ -38,7 +38,7 @@ typedef struct {
 
 uef_status_t uproto_crsf_init(uproto_crsf_t* c, upal_uart_t* uart);
 
-/* Call from UART IDLE ISR to process incoming bytes */
+/* Call from a bounded task or deferred interrupt path to parse queued bytes. */
 void uproto_crsf_process(uproto_crsf_t* c);
 
 bool uproto_crsf_rc_available(const uproto_crsf_t* c);

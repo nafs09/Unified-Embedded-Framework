@@ -1,0 +1,63 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/nonlinear",
+  "description": "Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/nonlinear/feedback_lin.h",
+  "scaffold_source": "src/ucon/control/nonlinear/feedback_lin.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/nonlinear/feedback_lin",
+  "scaffold_reason": "Feedback linearization is a relevant nonlinear flight-control option; its inverse-dynamics dependency remains explicit.",
+  "project_relevance": [
+    "drone"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check nonlinear model, surface/relative-degree data, and parameter bounds.",
+      "todo": "State operating-region and uncertainty assumptions. Algorithm-specific focus: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block"
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize virtual-control, adaptation, integral, and filter state.",
+      "todo": "Define state seeds and bound startup transients. Algorithm-specific focus: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block"
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset controller/adaptation history.",
+      "todo": "Specify parameter projection and bumpless restart. Algorithm-specific focus: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block"
+    },
+    {
+      "name": "compute_surface",
+      "purpose": "Evaluate tracking error, surface, barrier, or Lyapunov terms.",
+      "todo": "Declare sign, units, derivative source, and singularity handling. Algorithm-specific focus: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block"
+    },
+    {
+      "name": "compute_control",
+      "purpose": "Compute the method-specific bounded control candidate.",
+      "todo": "Define actuator limits and chattering/boundary-layer policy. Algorithm-specific focus: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block"
+    },
+    {
+      "name": "step",
+      "purpose": "Run one deterministic control update and report status/diagnostics.",
+      "todo": "Commit state only after numeric and constraint checks succeed. Algorithm-specific focus: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block"
+    }
+  ]
+}

@@ -1,18 +1,92 @@
 {
   "schema_version": "1.0",
   "uef_version": "1.1.0",
+  "module_registry": "registry/modules/registry.json",
+  "ucon_api": {
+    "catalogue_manifest": "registry/control_ir/registry.json",
+    "status_header": "uef/ucon/ucon_status.h",
+    "scaffold_header": "uef/ucon/detail/algorithm_call.h",
+    "scaffold_tree": {
+      "initial_headers_root": "include/uef/ucon",
+      "initial_sources_root": "src/ucon",
+      "future_headers_root": "include/uef/ucon/future",
+      "future_sources_root": "src/ucon/future",
+      "one_algorithm_per_header_and_source": true,
+      "generator": "tools/generate_ucon_scaffolds.py",
+      "future_policy": "Unselected PLANNED and all DEFERRED entries are repository-only and not selectable by uef-gen",
+      "initial_planned_algorithms": [
+        "ADAPTIVE_BS",
+        "BACKSTEPPING",
+        "BESSEL",
+        "BEZIER_TRAJ",
+        "BSPLINE_TRAJ",
+        "BUTTERWORTH",
+        "CBF_QP",
+        "CHEBYSHEV1",
+        "CHEBYSHEV2",
+        "CKF",
+        "CLF_CBF",
+        "CLF_QP",
+        "DDP",
+        "DEADBEAT_MPC",
+        "ECONOMIC_MPC",
+        "ELLIPTIC",
+        "EXTREMUM_SEEK",
+        "FEEDBACK_LIN",
+        "FIR_WINDOWED",
+        "FLATNESS",
+        "ILQR",
+        "INDI2",
+        "ITERATED_EKF",
+        "MHE",
+        "PARTICLE",
+        "PID_AUTOTUNE",
+        "PKPD_TARGET_CONTROL",
+        "REFERENCE_GOVERNOR",
+        "ROBUST_MPC",
+        "SPARSE_MPC",
+        "SQRT_EKF",
+        "SQRT_UKF",
+        "STOCHASTIC_MPC",
+        "ZONE_MPC"
+      ]
+    },
+    "registered_algorithms": {
+      "PID": {
+        "header": "uef/ucon/control/pid.h",
+        "functions": [
+          "ucon_pid_init",
+          "ucon_pid_reset",
+          "ucon_pid_step"
+        ]
+      },
+      "LEAD_LAG": {
+        "header": "uef/ucon/control/lead_lag.h",
+        "functions": [
+          "ucon_lead_lag_init",
+          "ucon_lead_lag_reset",
+          "ucon_lead_lag_step"
+        ]
+      }
+    },
+    "unregistered_policy": "Scaffold functions return UCON_NOT_IMPLEMENTED and never alter state or output buffers.",
+    "per_algorithm_operation_functions": true,
+    "operation_todos_are_function_scoped": true
+  },
   "upal_api": {
     "upal/adc": {
-      "read_single_channel": {
-        "c_function": "upal_adc_dma_result",
-        "signature": "uint16_t upal_adc_dma_result(const upal_adc_t*, uint8_t ch)",
-        "header": "uef/upal/upal_adc.h"
+      "read_scan_blocking": {
+        "c_function": "upal_adc_read_blocking",
+        "signature": "uef_status_t upal_adc_read_blocking(upal_adc_t* a, uef_u16_t* results, uef_u32_t timeout_ms)",
+        "header": "uef/upal/upal_adc.h",
+        "execution_context": "initialization_only",
+        "notes": "This scans the configured ADC channels into the caller buffer. It is a blocking setup API, not a per-channel nonblocking control-loop read."
       }
     },
     "upal/hrtim": {
       "set_duty": {
         "c_function": "upal_hrtim_set_duty",
-        "signature": "void upal_hrtim_set_duty(upal_hrtim_t*, upal_hrtim_timer_t, uint32_t)",
+        "signature": "void upal_hrtim_set_duty(upal_hrtim_t* h, upal_hrtim_timer_t timer, uef_u32_t pulse_ticks)",
         "header": "uef/upal/upal_hrtim.h",
         "enum_values": [
           "UPAL_HRTIM_TIMER_A",
@@ -26,40 +100,226 @@
     "upal/timer": {
       "set_duty": {
         "c_function": "upal_timer_pwm_set_duty",
-        "signature": "void upal_timer_pwm_set_duty(upal_timer_t*, uint8_t ch, uint32_t duty)",
+        "signature": "void upal_timer_pwm_set_duty(upal_timer_t* t, uef_u8_t channel, uef_u32_t duty)",
         "header": "uef/upal/upal_timer.h"
       }
     },
     "upal/uart": {
       "transmit_dma": {
         "c_function": "upal_uart_tx_dma",
-        "signature": "uef_status_t upal_uart_tx_dma(upal_uart_t*, const uint8_t*, uint32_t, upal_dma_callback_t, void*)",
+        "signature": "uef_status_t upal_uart_tx_dma(upal_uart_t* u, const uef_u8_t* data, uef_u32_t len, upal_dma_callback_t cb, void* ctx)",
         "header": "uef/upal/upal_uart.h"
       },
       "rx_read": {
         "c_function": "upal_uart_rx_read",
-        "signature": "uint32_t upal_uart_rx_read(upal_uart_t*, uint8_t*, uint32_t)",
+        "signature": "uef_u32_t upal_uart_rx_read(upal_uart_t* u, uef_u8_t* dst, uef_u32_t max_len)",
         "header": "uef/upal/upal_uart.h"
       }
+    },
+    "upal/fdcan_fd": {
+      "header": "uef/upal/upal_fdcan_fd.h",
+      "init": {
+        "c_function": "upal_fdcan_fd_init",
+        "signature": "uef_status_t upal_fdcan_fd_init(upal_fdcan_fd_t* driver, const upal_fdcan_fd_config_t* config)"
+      },
+      "transmit": {
+        "c_function": "upal_fdcan_fd_transmit",
+        "signature": "uef_status_t upal_fdcan_fd_transmit(upal_fdcan_fd_t* driver, const upal_fdcan_fd_frame_t* frame)"
+      },
+      "receive": {
+        "c_function": "upal_fdcan_fd_receive",
+        "signature": "uef_status_t upal_fdcan_fd_receive(upal_fdcan_fd_t* driver, upal_fdcan_fd_frame_t* frame)"
+      },
+      "deinit": {
+        "c_function": "upal_fdcan_fd_deinit",
+        "signature": "uef_status_t upal_fdcan_fd_deinit(upal_fdcan_fd_t* driver)"
+      },
+      "phase": 1,
+      "implementation_status": "SCAFFOLD_ONLY"
     },
     "upal/can": {
       "transmit": {
         "c_function": "upal_can_transmit",
-        "signature": "uef_status_t upal_can_transmit(upal_can_t*, const upal_can_frame_t*, uint32_t timeout_ms)",
+        "signature": "uef_status_t upal_can_transmit(upal_can_t* c, const upal_can_frame_t* f, uef_u32_t timeout_ms)",
         "header": "uef/upal/upal_can.h"
       },
       "transmit_async": {
         "c_function": "upal_can_transmit_async",
-        "signature": "uef_status_t upal_can_transmit_async(upal_can_t*, const upal_can_frame_t*)",
+        "signature": "uef_status_t upal_can_transmit_async(upal_can_t* c, const upal_can_frame_t* f)",
         "header": "uef/upal/upal_can.h"
       }
     },
     "upal/dac": {
       "write": {
         "c_function": "upal_dac_write",
-        "signature": "void upal_dac_write(upal_dac_t*, uint8_t channel, uint16_t value_12bit)",
+        "signature": "void upal_dac_write(upal_dac_t* d, uef_u8_t channel, uef_u16_t value_12bit)",
         "header": "uef/upal/upal_dac.h"
       }
+    },
+    "upal/sdmmc": {
+      "header": "uef/upal/upal_sdmmc.h",
+      "init": {
+        "c_function": "upal_sdmmc_init",
+        "signature": "uef_status_t upal_sdmmc_init(upal_sdmmc_t* sdmmc, const upal_sdmmc_hw_t* hw, uef_u32_t max_clock_hz, upal_sdmmc_width_t bus_width)",
+        "phase": 1,
+        "implementation_status": "SCAFFOLD_ONLY"
+      },
+      "card_present": {
+        "c_function": "upal_sdmmc_card_present",
+        "signature": "bool upal_sdmmc_card_present(const upal_sdmmc_t* sdmmc)"
+      },
+      "card_info": {
+        "c_function": "upal_sdmmc_card_info",
+        "signature": "const upal_sdmmc_card_info_t* upal_sdmmc_card_info(const upal_sdmmc_t* sdmmc)"
+      },
+      "read_blocks_async": {
+        "c_function": "upal_sdmmc_read_blocks",
+        "signature": "uef_status_t upal_sdmmc_read_blocks(upal_sdmmc_t* sdmmc, uef_u32_t block_addr, uef_u8_t* buffer, uef_u32_t block_count, upal_dma_callback_t callback, void* context)"
+      },
+      "write_blocks_async": {
+        "c_function": "upal_sdmmc_write_blocks",
+        "signature": "uef_status_t upal_sdmmc_write_blocks(upal_sdmmc_t* sdmmc, uef_u32_t block_addr, const uef_u8_t* buffer, uef_u32_t block_count, upal_dma_callback_t callback, void* context)"
+      },
+      "read_blocks_blocking": {
+        "c_function": "upal_sdmmc_read_blocking",
+        "signature": "uef_status_t upal_sdmmc_read_blocking(upal_sdmmc_t* sdmmc, uef_u32_t block_addr, uef_u8_t* buffer, uef_u32_t block_count, uef_u32_t timeout_ms)"
+      },
+      "write_blocks_blocking": {
+        "c_function": "upal_sdmmc_write_blocking",
+        "signature": "uef_status_t upal_sdmmc_write_blocking(upal_sdmmc_t* sdmmc, uef_u32_t block_addr, const uef_u8_t* buffer, uef_u32_t block_count, uef_u32_t timeout_ms)"
+      },
+      "erase": {
+        "c_function": "upal_sdmmc_erase",
+        "signature": "uef_status_t upal_sdmmc_erase(upal_sdmmc_t* sdmmc, uef_u32_t start_block, uef_u32_t end_block, uef_u32_t timeout_ms)"
+      },
+      "controller_irq": {
+        "c_function": "upal_sdmmc_irq_handler",
+        "signature": "void upal_sdmmc_irq_handler(upal_sdmmc_t* sdmmc)"
+      },
+      "dma_irq": {
+        "c_function": "upal_sdmmc_dma_handler",
+        "signature": "void upal_sdmmc_dma_handler(upal_sdmmc_t* sdmmc)"
+      }
     }
+  },
+  "umid_api": {
+    "umid/fatfs": {
+      "header": "uef/umid/umid_fatfs.h",
+      "register_sdmmc": {
+        "c_function": "umid_fatfs_register_sdmmc",
+        "signature": "uef_status_t umid_fatfs_register_sdmmc(uef_u8_t drive_num, upal_sdmmc_t* sdmmc)",
+        "phase": 1,
+        "optional_dependency": "fatfs",
+        "implementation_status": "SCAFFOLD_ONLY"
+      }
+    }
+  },
+  "uhal_api": {
+    "target_profiles": {
+      "header": "uef/uhal/target_profiles.h",
+      "profiles": [
+        "stm32g4xx",
+        "stm32f4xx",
+        "stm32h7xx-single-core",
+        "stm32f7xx",
+        "stm32g0xx",
+        "nrf52840"
+      ],
+      "list_phase0_profiles": {
+        "c_function": "uef_target_phase0_profiles",
+        "signature": "const uef_target_profile_t* const* uef_target_phase0_profiles(size_t* count)"
+      },
+      "find_by_family_key": {
+        "c_function": "uef_target_profile_find",
+        "signature": "const uef_target_profile_t* uef_target_profile_find(const char* family_key)"
+      },
+      "phase": 0,
+      "implementation_status": "FAMILY_SCAFFOLD_ONLY",
+      "phase1_profiles": [
+        "stm32l4plus"
+      ],
+      "list_phase1_profiles": {
+        "c_function": "uef_target_phase1_profiles",
+        "signature": "const uef_target_profile_t* const* uef_target_phase1_profiles(size_t* count)"
+      },
+      "list_all_profiles": {
+        "c_function": "uef_target_profiles",
+        "signature": "const uef_target_profile_t* const* uef_target_profiles(size_t* count)"
+      },
+      "target_family_catalogue": {
+        "path": "registry/targets/families/registry.json",
+        "description": "UEF-owned family roadmap; entries are not exact-part ChipSpecs or generation-ready.",
+        "schema_version": "1.0",
+        "registry_schema_path": "registry/targets/families/registry.schema.json"
+      },
+      "phase1_sdmmc_target_families": [
+        "stm32h7xx-single-core",
+        "stm32f7xx",
+        "stm32l4plus"
+      ],
+      "phase1_profile_note": "STM32H7 and STM32F7 profile records are introduced in Phase 0 and are Phase 1 SDMMC candidates; STM32L4+ is the newly registered Phase 1 family scaffold."
+    },
+    "chip_base_catalogue": {
+      "path": "registry/targets/chips/registry.json",
+      "schema_path": "registry/targets/chips/record.schema.json",
+      "schema_version": "1.0",
+      "description": "Vendor-sourced exact-part identity/base facts; separate from complete generation-ready ChipSpecs.",
+      "generation_ready": false,
+      "registry_schema_path": "registry/targets/chips/registry.schema.json"
+    }
+  },
+  "umath_api": {
+    "status_header": "uef/umath/status.h",
+    "scalar_type_header": "uef/umath/scalar.h",
+    "umbrella_header": "uef/umath/umath.h",
+    "module_registry": "registry/modules/registry.json",
+    "scalar_type": "umath_scalar_t",
+    "default_scalar_type": "uef_f32_t",
+    "storage": "caller-owned fixed or dimensioned buffers; no dynamic allocation",
+    "matrix_layout": "contiguous row-major",
+    "quaternion_storage": "scalar-first Hamilton w,x,y,z; active right-handed local-to-parent rotation",
+    "implemented_modules": [
+      "umath/core",
+      "umath/fixed",
+      "umath/vector2",
+      "umath/vector3",
+      "umath/vector4",
+      "umath/complex",
+      "umath/matrix/core",
+      "umath/matrix/cholesky",
+      "umath/quaternion",
+      "umath/geometry/transform3",
+      "umath/polynomial/core"
+    ],
+    "catalogue": "UMATH_CATALOGUE.md",
+    "phase0_scaffold_modules": [
+      "umath/autodiff/dual",
+      "umath/differentiation/jacobian",
+      "umath/interpolation/splines",
+      "umath/lie/se3",
+      "umath/lie/so3",
+      "umath/matrix/ldlt",
+      "umath/matrix/lu",
+      "umath/matrix/qr",
+      "umath/matrix/svd",
+      "umath/matrix/symmetric_eigen",
+      "umath/numerical/integration",
+      "umath/optimization/least_squares",
+      "umath/polynomial/roots",
+      "umath/probability/distributions",
+      "umath/probability/multivariate_normal",
+      "umath/signal/fft",
+      "umath/signal/windows",
+      "umath/special/functions",
+      "umath/statistics/streaming"
+    ],
+    "phase1_scaffold_modules": [
+      "umath/lie/se2",
+      "umath/lie/so2",
+      "umath/random/prng"
+    ],
+    "future_scaffold_modules": [
+      "umath/future/matrix/sparse_csr"
+    ]
   }
 }

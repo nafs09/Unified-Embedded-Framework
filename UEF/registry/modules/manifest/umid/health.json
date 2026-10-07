@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/umid/health.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_time.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uhal/target.h",
+    "include/uef/uhal/target_config.h",
+    "include/uef/uhal/uhal_irq.h",
+    "include/uef/umid/umid_health.h"
+  ]
+}

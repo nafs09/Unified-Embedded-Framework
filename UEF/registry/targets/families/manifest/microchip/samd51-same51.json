@@ -1,0 +1,32 @@
+{
+  "id": "samd51-same51",
+  "vendor": "Microchip",
+  "family": "SAMD/SAME",
+  "series": "SAMD51/SAME51",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M4F"
+  ],
+  "core_notes": "Phase 3; exact records remain distinct.",
+  "roadmap_phase": 3,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ATSAMD51J20A",
+    "ATSAME51J20A"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "SERCOM",
+    "DMA",
+    "event system"
+  ],
+  "source_references": [
+    "microchip"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

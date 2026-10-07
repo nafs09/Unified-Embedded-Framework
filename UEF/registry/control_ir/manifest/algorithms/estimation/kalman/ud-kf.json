@@ -1,0 +1,64 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "estimation",
+  "family": "estimation/kalman",
+  "description": "UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Define factor convention, measurement update, pivot/conditioning behavior, and factor recovery. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Define factor convention, measurement update, pivot/conditioning behavior, and factor recovery.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/estimators/kalman/ud_kf",
+  "scaffold_header": "include/uef/ucon/future/estimators/kalman/ud_kf.h",
+  "scaffold_source": "src/ucon/future/estimators/kalman/ud_kf.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check linear model and U-D factor dimensions.",
+      "todo": "Pin unit-upper/diagonal convention and pivot policy. Algorithm-specific focus: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate and U-D covariance factors.",
+      "todo": "Define factor conversion/validation from caller covariance. Algorithm-specific focus: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset estimate and factors.",
+      "todo": "Specify covariance retention. Algorithm-specific focus: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors."
+    },
+    {
+      "name": "predict_factor",
+      "purpose": "Propagate covariance using the U-D factor recursion.",
+      "todo": "Specify process-noise factorization and positive diagonal checks. Algorithm-specific focus: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors."
+    },
+    {
+      "name": "correct_factor",
+      "purpose": "Apply measurement update directly to U-D factors.",
+      "todo": "Define scalar/vector measurement ordering and conditioning policy. Algorithm-specific focus: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one factorized linear Kalman cycle.",
+      "todo": "Avoid silently reconstructing and refactoring a full covariance. Algorithm-specific focus: UD-factorized Kalman filter that propagates covariance as unit-upper and diagonal factors."
+    }
+  ]
+}

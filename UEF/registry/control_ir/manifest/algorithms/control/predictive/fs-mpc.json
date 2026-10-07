@@ -1,0 +1,68 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/predictive",
+  "description": "Finite candidate enumeration for switching systems; current project priority.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Finite candidate enumeration for switching systems; current project priority. Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/predictive/fs_mpc.h",
+  "scaffold_source": "src/ucon/control/predictive/fs_mpc.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/predictive/fs_mpc",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_candidates",
+      "purpose": "Validate discrete switch candidates and plant/cost dimensions.",
+      "todo": "Define candidate ordering and allowed switch transitions. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize fixed candidate/prediction workspace.",
+      "todo": "Define current switch state and previous candidate. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear switch/prediction history.",
+      "todo": "Specify re-entry when the current switch state is unknown. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    },
+    {
+      "name": "predict_candidates",
+      "purpose": "Predict the plant for each enumerated candidate.",
+      "todo": "Bound candidate count and define model/sample timing. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    },
+    {
+      "name": "score_candidates",
+      "purpose": "Compute objective and constraint status for each prediction.",
+      "todo": "Define cost scaling, ties, infeasible candidates, and numeric rejection. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    },
+    {
+      "name": "select_candidate",
+      "purpose": "Choose the lowest-cost admissible switching action.",
+      "todo": "Return no-feasible-candidate distinctly; never select an invalid candidate. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    },
+    {
+      "name": "step",
+      "purpose": "Run enumeration and publish the selected abstract action/status.",
+      "todo": "Keep gate sequencing and dead-time outside this method. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+    }
+  ]
+}

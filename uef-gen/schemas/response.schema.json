@@ -4,7 +4,7 @@
   "type": "object",
   "required": ["contract_version", "ok", "diagnostics"],
   "properties": {
-    "contract_version": {"const": "1.0"},
+    "contract_version": {"const": "1.1"},
     "ok": {"type": "boolean"},
     "output_directory": {"type": "string"},
     "manifest": {"type": "object"},

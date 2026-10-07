@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "estimation",
+  "family": "estimation/tracking",
+  "description": "Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model.",
+  "implementation_notes": "Implement the constant-acceleration alpha-beta-gamma tracker. Define position/velocity/acceleration units, variable-dt support, noise/gain tuning, initialization, and outlier policy. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/tracking/alpha_beta_gamma.h",
+  "scaffold_source": "src/ucon/estimators/tracking/alpha_beta_gamma.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/tracking/alpha_beta_gamma",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Implement the constant-acceleration alpha-beta-gamma tracker. Define position/velocity/acceleration units, variable-dt support, noise/gain tuning, initialization, and outlier policy."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check motion model, sample interval, and process/measurement noise.",
+      "todo": "Define state ordering and acceleration/noise assumptions. Algorithm-specific focus: Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize position/velocity/acceleration estimate and covariance if used.",
+      "todo": "Define initial measurement and uncertainty policy. Algorithm-specific focus: Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear tracking history.",
+      "todo": "Specify handling of gaps and reacquisition. Algorithm-specific focus: Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate the kinematic state across the supplied interval.",
+      "todo": "Handle variable dt only if explicitly supported. Algorithm-specific focus: Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply the new position/measurement and compute residual diagnostics.",
+      "todo": "Define outlier rejection and missing-sample behavior. Algorithm-specific focus: Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one prediction/correction cycle.",
+      "todo": "Preserve estimate on invalid timestamp or arithmetic failure. Algorithm-specific focus: Alpha-beta-gamma position/velocity/acceleration tracker using a declared constant-acceleration motion model."
+    }
+  ]
+}

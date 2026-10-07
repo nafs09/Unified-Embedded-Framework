@@ -1,0 +1,37 @@
+/*
+ * {{ node.model.symbol_prefix }}_sbus.c
+ * TODO: configure inverted 100 kbaud 8E2 UART receive and connect a bounded
+ * byte source to this decoder. Verify frame-lost/failsafe policy per receiver.
+ */
+#include <stddef.h>
+#include "{{ node.model.symbol_prefix }}_sbus.h"
+
+uef_status_t {{ node.model.symbol_prefix }}_sbus_init(
+    {{ node.model.symbol_prefix }}_sbus_t *instance,
+    upal_uart_t *uart)
+{
+    if (instance == NULL || uart == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    return uproto_sbus_init(&instance->protocol, uart);
+}
+
+void {{ node.model.symbol_prefix }}_sbus_process(
+    {{ node.model.symbol_prefix }}_sbus_t *instance)
+{
+    if (instance != NULL) {
+        uproto_sbus_process(&instance->protocol);
+    }
+}
+
+bool {{ node.model.symbol_prefix }}_sbus_read(
+    {{ node.model.symbol_prefix }}_sbus_t *instance,
+    uproto_sbus_frame_t *frame)
+{
+    if (instance == NULL || frame == NULL ||
+        !uproto_sbus_available(&instance->protocol)) {
+        return false;
+    }
+    uproto_sbus_get(&instance->protocol, frame);
+    return true;
+}

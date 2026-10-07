@@ -1,0 +1,27 @@
+{
+  "domain": "uproto",
+  "outputs": [
+    {
+      "template": "uproto/ppm/ppm.h.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_ppm.h"
+    },
+    {
+      "template": "uproto/ppm/ppm.c.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_ppm.c"
+    }
+  ],
+  "modules": [
+    "uproto/ppm"
+  ],
+  "features": [
+    "timer_capture",
+    "pulse_width_decode"
+  ],
+  "manual_actions": [
+    {
+      "code": "uproto_timer_capture_binding",
+      "message": "Bind same-polarity timer capture edges to the PPM interval hook, handle timer rollover and input polarity, configure the receiver's documented pulse and sync ranges, and serialize ISR/task access before hardware use.",
+      "required_before_hardware_use": true
+    }
+  ]
+}

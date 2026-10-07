@@ -1,0 +1,31 @@
+{
+  "id": "rp2040",
+  "vendor": "Raspberry Pi",
+  "family": "RP2040",
+  "series": "RP2040",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Dual Cortex-M0+"
+  ],
+  "core_notes": "Phase 2; no backend yet.",
+  "roadmap_phase": 2,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "RP2040"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "PIO",
+    "dual-core",
+    "no hardware divide"
+  ],
+  "source_references": [
+    "rpi"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/uproto/future/lin/lin.c"
+  ],
+  "dependencies": [
+    "upal/uart"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part XV.3 lists LIN; break/sync support, master/slave role, schedule, checksum profile, and timing contract remain open.",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uproto/future/lin/lin.h",
+    "include/uef/uproto/future/scaffold_call.h"
+  ]
+}

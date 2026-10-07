@@ -1,5 +1,5 @@
 /// @file src/upal/flash/flash.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_flash.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_flash.h.
 ///
 /// Implementation intent: Implement unlock, erase, program, verify, and relock sequences with
 ///   power-loss and alignment constraints documented.

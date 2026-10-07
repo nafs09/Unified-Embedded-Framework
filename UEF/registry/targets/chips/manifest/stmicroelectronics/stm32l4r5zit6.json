@@ -1,0 +1,62 @@
+{
+  "id": "stm32l4r5zit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-l4plus",
+  "series": "STM32L4+",
+  "part_number": "STM32L4R5ZIT6",
+  "aliases": [
+    "STM32L4R5ZI"
+  ],
+  "roadmap_phase": 1,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 120000000
+  },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 655360,
+    "notes": "2 MiB flash and 640 KiB SRAM."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "SDMMC",
+    "USB",
+    "ADC",
+    "DAC",
+    "COMP",
+    "OPAMP",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "OCTOSPI",
+    "FMC"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32L4R5ZI product/package page",
+      "url": "https://www.st.com/content/st_com/en/products/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus/stm32-ultra-low-power-mcus/stm32l4-plus-series/stm32l4r5-s5/stm32l4r5zi.html"
+    },
+    {
+      "title": "ST STM32L4R5/S5 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32l4r5zi.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 1 representative for the registered L4+ SDMMC family scaffold."
+}

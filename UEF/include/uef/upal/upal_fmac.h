@@ -1,5 +1,5 @@
 /// @file include/uef/upal/upal_fmac.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UPAL_FMAC_H
 #define UPAL_FMAC_H

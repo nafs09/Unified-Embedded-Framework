@@ -1,0 +1,69 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "electrical",
+  "family": "electrical/motor_control",
+  "description": "Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region. Family contract work: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary. Specify motor type/parameters, torque convention, voltage/current limits, lookup or online solve, and field-weakening handoff. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary.",
+    "Specify motor type/parameters, torque convention, voltage/current limits, lookup or online solve, and field-weakening handoff.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/electrical/motor_control/mtpa_control",
+  "scaffold_header": "include/uef/ucon/future/electrical/motor_control/mtpa_control.h",
+  "scaffold_source": "src/ucon/future/electrical/motor_control/mtpa_control.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check motor model, transform, sample timing, and current/voltage limits.",
+      "todo": "State motor type and angle-source validity. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize d/q loops, flux/torque estimate, and modulation state.",
+      "todo": "Define alignment and sensor-offset ownership. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset control/estimator history without issuing gate actions.",
+      "todo": "Define a safe restart state. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    },
+    {
+      "name": "estimate_motor_state",
+      "purpose": "Update flux, torque, angle, or speed estimates.",
+      "todo": "State model validity and low-speed operating limits. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    },
+    {
+      "name": "compute_current_command",
+      "purpose": "Compute d/q or switching-state command.",
+      "todo": "Define decoupling, saturation, and current-limit policy. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    },
+    {
+      "name": "modulate",
+      "purpose": "Map abstract command into declared modulation values.",
+      "todo": "Do not assume gate polarity, dead time, or timer setup. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    },
+    {
+      "name": "step",
+      "purpose": "Coordinate one synchronized motor-control update.",
+      "todo": "Bound work and preserve outputs on invalid measurements. Algorithm-specific focus: Maximum-torque-per-ampere current-reference selection for a declared motor model and operating region."
+    }
+  ]
+}

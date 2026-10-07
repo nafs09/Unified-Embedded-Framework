@@ -1,5 +1,5 @@
 /// @file src/upal/spi/spi.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_spi.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_spi.h.
 ///
 /// Implementation intent: Implement full-duplex transfers, chip-select timing, and DMA
 ///   completion without changing caller-owned buffer lifetime.

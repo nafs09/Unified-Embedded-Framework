@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/classical",
+  "description": "Delay-compensated wrapper around a declared plant model and inner controller.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Delay-compensated wrapper around a declared plant model and inner controller. Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/control/classical/smith_predictor.h",
+  "scaffold_source": "src/ucon/control/classical/smith_predictor.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/control/classical/smith_predictor",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check coefficients, sample time, limits, and recurrence history.",
+      "todo": "Document coefficient convention and valid degenerate cases. Algorithm-specific focus: Delay-compensated wrapper around a declared plant model and inner controller."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize recurrence/controller state.",
+      "todo": "Define zero-state and optional steady-state preload. Algorithm-specific focus: Delay-compensated wrapper around a declared plant model and inner controller."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear or preload recurrence history.",
+      "todo": "Define behavior after coefficient changes. Algorithm-specific focus: Delay-compensated wrapper around a declared plant model and inner controller."
+    },
+    {
+      "name": "compute_candidate",
+      "purpose": "Evaluate one discrete-time controller recurrence.",
+      "todo": "Check intermediate values before committing history. Algorithm-specific focus: Delay-compensated wrapper around a declared plant model and inner controller."
+    },
+    {
+      "name": "apply_limits",
+      "purpose": "Apply method-owned output and anti-windup behavior.",
+      "todo": "Specify ordering relative to feedforward and downstream actuator tracking. Algorithm-specific focus: Delay-compensated wrapper around a declared plant model and inner controller."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one sample and atomically commit output/history.",
+      "todo": "Specify aliasing and numeric-failure behavior. Algorithm-specific focus: Delay-compensated wrapper around a declared plant model and inner controller."
+    }
+  ]
+}

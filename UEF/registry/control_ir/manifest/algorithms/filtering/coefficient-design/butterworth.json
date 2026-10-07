@@ -1,0 +1,63 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "filtering/coefficient_design",
+  "description": "LP, HP, BP, BS; order 1–8; biquad cascade",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: LP, HP, BP, BS; order 1–8; biquad cascade Family contract work: declare sample units/rate, coefficient source and scaling, exact delay/state layout, startup fill, reset behavior, and saturation/overflow bounds. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/filtering/coefficient_design/butterworth.h",
+  "scaffold_source": "src/ucon/filtering/coefficient_design/butterworth.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/filtering/coefficient_design/butterworth",
+  "scaffold_reason": "Standard low-pass, high-pass, band-pass, and band-stop designs are common embedded filters.",
+  "project_relevance": [
+    "common"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare sample units/rate, coefficient source and scaling, exact delay/state layout, startup fill, reset behavior, and saturation/overflow bounds."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_spec",
+      "purpose": "Check response type, edges, ripple/attenuation, and order.",
+      "todo": "Declare normalized-frequency units and impossible-spec result. Algorithm-specific focus: LP, HP, BP, BS; order 1–8; biquad cascade"
+    },
+    {
+      "name": "estimate_order",
+      "purpose": "Determine or validate the order for the chosen response.",
+      "todo": "Distinguish caller-fixed order from automatic order selection. Algorithm-specific focus: LP, HP, BP, BS; order 1–8; biquad cascade"
+    },
+    {
+      "name": "compute_poles_zeros",
+      "purpose": "Compute prototype roots and requested response transform.",
+      "todo": "Specify bilinear/prewarp or alternative transform and precision limits. Algorithm-specific focus: LP, HP, BP, BS; order 1–8; biquad cascade"
+    },
+    {
+      "name": "pair_sections",
+      "purpose": "Pair roots into fixed first/second-order sections.",
+      "todo": "Define conjugate pairing, ordering, stability, and coefficient range. Algorithm-specific focus: LP, HP, BP, BS; order 1–8; biquad cascade"
+    },
+    {
+      "name": "normalize_coefficients",
+      "purpose": "Normalize gain at a declared reference frequency.",
+      "todo": "Prevent overflow/underflow and verify stability. Algorithm-specific focus: LP, HP, BP, BS; order 1–8; biquad cascade"
+    },
+    {
+      "name": "design",
+      "purpose": "Publish coefficients only after complete successful design.",
+      "todo": "Define output layout and no-partial-write behavior. Algorithm-specific focus: LP, HP, BP, BS; order 1–8; biquad cascade"
+    }
+  ]
+}

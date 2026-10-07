@@ -1,5 +1,5 @@
 /// @file src/umid/gnss.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_gnss.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_gnss.h.
 ///
 /// Implementation intent: Parse bounded NMEA/UBX frames incrementally and publish a fix only
 ///   after checksum and field validation.

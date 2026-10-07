@@ -1,5 +1,5 @@
 /// @file src/umid/encoder.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_encoder.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_encoder.h.
 ///
 /// Implementation intent: Convert timer counts using the configured pulses-per-revolution and
 ///   handle counter wrap when estimating velocity.

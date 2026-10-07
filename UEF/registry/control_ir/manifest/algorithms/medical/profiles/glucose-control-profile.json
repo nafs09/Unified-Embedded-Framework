@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "medical/profiles",
+  "description": "Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary. Family contract work: define only the reusable software boundary and explicit external safety/supervision inputs; keep clinical models, therapy settings, and device-specific limits application-owned. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/medical/profiles/glucose_control_profile.h",
+  "scaffold_source": "src/ucon/medical/profiles/glucose_control_profile.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/medical/profiles/glucose_control_profile",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: define only the reusable software boundary and explicit external safety/supervision inputs; keep clinical models, therapy settings, and device-specific limits application-owned."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_inputs",
+      "purpose": "Check units, timestamps, model identity, and supplied supervisor limits.",
+      "todo": "Never infer clinical settings or therapy limits. Algorithm-specific focus: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize reusable profile state and external model interface.",
+      "todo": "Require explicit safe seed and configuration provenance. Algorithm-specific focus: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset history only under explicit external supervision.",
+      "todo": "Define stale-data and therapy-state handoff. Algorithm-specific focus: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary."
+    },
+    {
+      "name": "update_estimate",
+      "purpose": "Consume the declared application-owned physiology/device model output.",
+      "todo": "Do not invent patient or device dynamics. Algorithm-specific focus: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary."
+    },
+    {
+      "name": "compute_candidate",
+      "purpose": "Compute a candidate subject to caller-supplied constraints.",
+      "todo": "Require independent safety supervision and report limiting conditions. Algorithm-specific focus: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary."
+    },
+    {
+      "name": "step",
+      "purpose": "Return candidate/status for external approval and actuation.",
+      "todo": "No generic UCON profile establishes clinical safety. Algorithm-specific focus: Compose a declared glucose estimator/model, PID or MPC loop, delivery constraints, and an independent supervisory boundary."
+    }
+  ]
+}

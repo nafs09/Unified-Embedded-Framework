@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/umath/random/prng.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/random/prng.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "scaffold_stage": "phase1",
+  "scaffold_reason": "Project-priority mathematical scaffold; functions remain UMATH_NOT_IMPLEMENTED and are blocked from generation until implemented.",
+  "contract_status": "catalogue_only",
+  "phase": 1
+}

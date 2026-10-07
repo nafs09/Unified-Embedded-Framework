@@ -1,5 +1,5 @@
 /// @file src/umid/pressure.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_pressure.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_pressure.h.
 ///
 /// Implementation intent: Decode the selected sensor format and apply only documented
 ///   compensation coefficients.

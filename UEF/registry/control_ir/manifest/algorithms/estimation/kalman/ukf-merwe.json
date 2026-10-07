@@ -1,0 +1,69 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman",
+  "description": "Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Pin the exact scaled-transform parameters and clarify how this configuration differs from the generic UKF catalogue key. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/kalman/ukf_merwe.h",
+  "scaffold_source": "src/ucon/estimators/kalman/ukf_merwe.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/kalman/ukf_merwe",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Pin the exact scaled-transform parameters and clarify how this configuration differs from the generic UKF catalogue key."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check nonlinear models and Merwe sigma-point configuration.",
+      "todo": "Pin alpha, beta, kappa, state dimension, and admissible weights. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate, covariance, and sigma workspace.",
+      "todo": "Define covariance factorization failure. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset estimate/covariance history.",
+      "todo": "Specify retained configuration/context. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    },
+    {
+      "name": "generate_merwe_points",
+      "purpose": "Generate van der Merwe scaled sigma points and weights.",
+      "todo": "Follow the declared scaling convention and state-dimension factor. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate sigma points through the process model.",
+      "todo": "Define noise augmentation and covariance recovery. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply measurement transform and update estimate/covariance.",
+      "todo": "Define innovation solve, gating, and conditioning. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one Merwe-parameterized UKF cycle.",
+      "todo": "Share implementation with UKF only if semantics remain explicit. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+    }
+  ]
+}

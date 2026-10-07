@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "src/uproto/future/msp/msp.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part XV.3 lists MSP; version, framing limits, command registry, and response policy remain to be specified.",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uproto/future/msp/msp.h",
+    "include/uef/uproto/future/scaffold_call.h"
+  ]
+}

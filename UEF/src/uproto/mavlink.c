@@ -1,5 +1,5 @@
 /// @file src/uproto/mavlink.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uproto/uproto_mavlink.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uproto/uproto_mavlink.h.
 ///
 /// Implementation intent: Bind a selected MAVLink dialect and generated library; do not
 ///   duplicate upstream protocol definitions here.

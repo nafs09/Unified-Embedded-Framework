@@ -1,0 +1,68 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman",
+  "description": "Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/kalman/ukf.h",
+  "scaffold_source": "src/ucon/estimators/kalman/ukf.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/kalman/ukf",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Validate nonlinear model and sigma-point configuration.",
+      "todo": "Pin alpha/beta/kappa or the selected alternative and admissible weights. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate, covariance, and sigma-point workspace.",
+      "todo": "Define scaling and covariance factorization failure. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset estimate and covariance history.",
+      "todo": "Define model-context retention. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    },
+    {
+      "name": "generate_sigma_points",
+      "purpose": "Generate sigma points and mean/covariance weights.",
+      "todo": "Specify Cholesky orientation and negative-weight safeguards. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate sigma points through the process model.",
+      "todo": "Define additive/nonadditive process-noise handling. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    },
+    {
+      "name": "correct",
+      "purpose": "Propagate through the measurement model and update estimate/covariance.",
+      "todo": "Define innovation solve, gating, and conditioning. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    },
+    {
+      "name": "step",
+      "purpose": "Run a predict/correct cycle.",
+      "todo": "Keep UKF parameterization explicit. Algorithm-specific focus: Unscented Kalman filter using a declared sigma-point rule, weights, nonlinear propagation, and covariance update."
+    }
+  ]
+}

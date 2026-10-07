@@ -1,0 +1,58 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "infrastructure/blocks",
+  "description": "Stateful discrete-time infrastructure.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Stateful discrete-time infrastructure. Family contract work: declare port count and dimensions, scheduling/rate semantics, initial values, reset/mode-switch rules, and exact ownership of input/output storage. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/infrastructure/blocks/unit_delay.h",
+  "scaffold_source": "src/ucon/infrastructure/blocks/unit_delay.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/infrastructure/blocks/unit_delay",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare port count and dimensions, scheduling/rate semantics, initial values, reset/mode-switch rules, and exact ownership of input/output storage."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check port counts, dimensions, bounds, and scheduling/reset rules.",
+      "todo": "Define ordering and meaning of every port. Algorithm-specific focus: Stateful discrete-time infrastructure."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize bounded block state and caller-selected values.",
+      "todo": "Specify deterministic startup. Algorithm-specific focus: Stateful discrete-time infrastructure."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear or preload state according to exact block semantics.",
+      "todo": "Define reset priority with a simultaneous sample. Algorithm-specific focus: Stateful discrete-time infrastructure."
+    },
+    {
+      "name": "compute_output",
+      "purpose": "Evaluate block law for the declared mode and sample timing.",
+      "todo": "Define saturation and non-finite handling. Algorithm-specific focus: Stateful discrete-time infrastructure."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one invocation and publish outputs/status.",
+      "todo": "Avoid hidden scheduling, allocation, or cross-instance state. Algorithm-specific focus: Stateful discrete-time infrastructure."
+    }
+  ]
+}

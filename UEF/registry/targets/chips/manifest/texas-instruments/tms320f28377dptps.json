@@ -1,0 +1,58 @@
+{
+  "id": "tms320f28377dptps",
+  "vendor": "Texas Instruments",
+  "family_id": "c2000-delfino",
+  "series": "C2000 Delfino",
+  "part_number": "TMS320F28377DPTPS",
+  "aliases": [
+    "TMS320F28377D"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Dual C28x",
+    "isa": "TI C28x",
+    "count": 2,
+    "fpu": "single",
+    "max_frequency_hz": 200000000
+  },
+  "package": {
+    "name": "HLQFP176",
+    "pin_count": 176
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 208896
+  },
+  "peripheral_groups": [
+    "DMA",
+    "CLA",
+    "ADC",
+    "ePWM",
+    "CAN",
+    "USB",
+    "EMIF",
+    "SPI",
+    "I2C",
+    "SCI"
+  ],
+  "source_references": [
+    {
+      "title": "TI TMS320F28377D product page",
+      "url": "https://www.ti.com/product/TMS320F28377D"
+    },
+    {
+      "title": "TI TMS320F2837xD data sheet",
+      "url": "https://www.ti.com/lit/ds/sprs880m/sprs880m.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core_count",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Dual-C28x Delfino exemplar; CLA accelerators are not counted as general CPU cores."
+}

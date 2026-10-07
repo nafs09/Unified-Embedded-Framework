@@ -1,0 +1,61 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/classical",
+  "description": "Deadbeat step-response; precomputed gain sequence",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Deadbeat step-response; precomputed gain sequence Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/control/classical/deadbeat.h",
+  "scaffold_source": "src/ucon/future/control/classical/deadbeat.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/control/classical/deadbeat",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check coefficients, sample time, limits, and recurrence history.",
+      "todo": "Document coefficient convention and valid degenerate cases. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize recurrence/controller state.",
+      "todo": "Define zero-state and optional steady-state preload. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear or preload recurrence history.",
+      "todo": "Define behavior after coefficient changes. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+    },
+    {
+      "name": "compute_candidate",
+      "purpose": "Evaluate one discrete-time controller recurrence.",
+      "todo": "Check intermediate values before committing history. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+    },
+    {
+      "name": "apply_limits",
+      "purpose": "Apply method-owned output and anti-windup behavior.",
+      "todo": "Specify ordering relative to feedforward and downstream actuator tracking. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+    },
+    {
+      "name": "step",
+      "purpose": "Run one sample and atomically commit output/history.",
+      "todo": "Specify aliasing and numeric-failure behavior. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+    }
+  ]
+}

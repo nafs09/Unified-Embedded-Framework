@@ -1,5 +1,5 @@
 /// @file include/uef/umid/umid_health.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UMID_HEALTH_H
 #define UMID_HEALTH_H
@@ -35,7 +35,10 @@ void     umid_health_report(uef_u8_t id, umid_health_status_t s,
                               uef_u32_t fault_code);
 
 umid_health_status_t umid_health_system_status(void);
+/* The borrowed pointer is only safe when updates are externally serialized. */
 const umid_health_entry_t* umid_health_entry(uef_u8_t id);
+/* Copy one coherent entry while holding the registry critical section. */
+bool umid_health_entry_copy(uef_u8_t id, umid_health_entry_t* out);
 uef_u8_t umid_health_count(void);
 
 #ifdef __cplusplus

@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/filtering/coefficient_design/fir_windowed.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/filtering/coefficient_design/fir_windowed.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "FIR_WINDOWED",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Windowed FIR design is a common finite-memory filtering option for sensor and measurement paths.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_fir_windowed_validate_spec",
+    "ucon_fir_windowed_estimate_order",
+    "ucon_fir_windowed_compute_poles_zeros",
+    "ucon_fir_windowed_pair_sections",
+    "ucon_fir_windowed_normalize_coefficients",
+    "ucon_fir_windowed_design"
+  ],
+  "project_relevance": [
+    "common"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

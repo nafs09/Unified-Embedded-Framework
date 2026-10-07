@@ -1,5 +1,5 @@
 /// @file src/umid/range.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_range.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_range.h.
 ///
 /// Implementation intent: Normalize distance samples and reject invalid or stale sensor
 ///   readings.

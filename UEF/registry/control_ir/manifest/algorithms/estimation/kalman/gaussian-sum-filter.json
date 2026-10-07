@@ -1,0 +1,74 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "estimation",
+  "family": "estimation/kalman",
+  "description": "Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Bound component count and define pruning, merging, normalization, and mode/component labels. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Bound component count and define pruning, merging, normalization, and mode/component labels.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/estimators/kalman/gaussian_sum_filter",
+  "scaffold_header": "include/uef/ucon/future/estimators/kalman/gaussian_sum_filter.h",
+  "scaffold_source": "src/ucon/future/estimators/kalman/gaussian_sum_filter.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check component model, mixture count, and reduction bounds.",
+      "todo": "Set a fixed maximum component count. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize normalized Gaussian components and weights.",
+      "todo": "Define prior mixture and covariance requirements. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset mixture state.",
+      "todo": "Specify component-label stability. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "predict_components",
+      "purpose": "Propagate each Gaussian component through the selected model/filter.",
+      "todo": "Bound model/component work. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "update_component_weights",
+      "purpose": "Apply measurement likelihoods and normalize mixture weights.",
+      "todo": "Handle likelihood underflow/all-zero weight explicitly. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "reduce_mixture",
+      "purpose": "Prune/merge components to the configured fixed maximum.",
+      "todo": "Define distance, threshold, and moment-preservation rule. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "summarize_estimate",
+      "purpose": "Combine mixture into requested state/uncertainty output.",
+      "todo": "Define multimodal summary semantics. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    },
+    {
+      "name": "step",
+      "purpose": "Run prediction, update, reduction, and summary in a fixed order.",
+      "todo": "Preserve prior mixture on numeric failure. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+    }
+  ]
+}

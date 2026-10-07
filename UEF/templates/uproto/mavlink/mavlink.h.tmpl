@@ -1,0 +1,31 @@
+/*
+ * {{ node.model.symbol_prefix }}_mavlink.h
+ * Generated instance wrapper. Message dialect headers remain an explicit
+ * project dependency and are never copied into UEF by this template.
+ */
+#ifndef {{ node.model.symbol_prefix | upper }}_MAVLINK_INSTANCE_H
+#define {{ node.model.symbol_prefix | upper }}_MAVLINK_INSTANCE_H
+
+#include "uef/uproto/uproto_mavlink.h"
+
+typedef struct {
+    uproto_mavlink_t protocol;
+} {{ node.model.symbol_prefix }}_mavlink_t;
+
+uef_status_t {{ node.model.symbol_prefix }}_mavlink_init(
+    {{ node.model.symbol_prefix }}_mavlink_t *instance,
+    uproto_stream_t transport,
+    uef_u8_t system_id,
+    uef_u8_t component_id,
+    uef_u8_t target_system_id,
+    uef_u8_t target_component_id);
+uef_status_t {{ node.model.symbol_prefix }}_mavlink_send(
+    {{ node.model.symbol_prefix }}_mavlink_t *instance,
+    const uef_u8_t *packed_message,
+    uef_u32_t length);
+bool {{ node.model.symbol_prefix }}_mavlink_receive(
+    {{ node.model.symbol_prefix }}_mavlink_t *instance,
+    uef_u8_t *message_buffer,
+    uef_u32_t *length);
+
+#endif

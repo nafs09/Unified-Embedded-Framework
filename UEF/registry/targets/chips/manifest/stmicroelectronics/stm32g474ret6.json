@@ -1,0 +1,63 @@
+{
+  "id": "stm32g474ret6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-g4",
+  "series": "STM32G4",
+  "part_number": "STM32G474RET6",
+  "aliases": [
+    "STM32G474RE"
+  ],
+  "roadmap_phase": 0,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 170000000
+  },
+  "package": {
+    "name": "LQFP64",
+    "pin_count": 64
+  },
+  "memory": {
+    "flash_bytes": 524288,
+    "sram_bytes": 131072,
+    "notes": "512 KiB flash and 128 KiB SRAM."
+  },
+  "peripheral_groups": [
+    "DMAMUX",
+    "HRTIM",
+    "FDCAN",
+    "CORDIC",
+    "FMAC",
+    "OPAMP",
+    "COMP",
+    "ADC",
+    "DAC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "USB"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32G474RET6 Nucleo board manual",
+      "url": "https://www.st.com/resource/en/user_manual/dm00556337-stm32g4-nucleo-64-boards-mb1367-stmicroelectronics.pdf"
+    },
+    {
+      "title": "ST STM32G474RE product/package page",
+      "url": "https://estore.st.com/en/products/microcontrollers-microprocessors/stm32-32-bit-arm-174-cortex-174-mcus/stm32-mainstream-mcus/stm32g4-series/stm32g4x4/stm32g474re.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Strong Phase 0 reference for mixed-signal and motor-control work; no pin, DMA or clock map is asserted."
+}

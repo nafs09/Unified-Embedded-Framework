@@ -6,23 +6,23 @@ from typing import Any
 from uef_gen.diagnostics import Diagnostic, error
 from uef_gen.generation.pipeline import generate_project
 
-CONTRACT_VERSION = "1.0"
+CONTRACT_VERSION = "1.1"
 CONTROL_IR_SCHEMA_VERSION = "1.0"
 
 
 def handle_request(request: dict[str, Any]) -> dict[str, Any]:
     """Validate one versioned JSON request and return one JSON-safe response.
 
-    Keep this transport boundary independent of NEXUS so CI and other host tools
-    can use the same stable contract. New UCON ownership fields must be versioned
-    with the UEF/NEXUS migration rather than silently changing this payload.
+    Keep this transport boundary independent of the NEXUS UI so CI and other
+    host tools can use the same stable contract. ControlIR remains NEXUS-owned;
+    uef-gen validates it and renders only templates declared by the UEF checkout.
     """
     if not isinstance(request, dict):
         return _response(False, [error("request_invalid", "Request root must be an object")])
     if request.get("contract_version") != CONTRACT_VERSION:
         return _response(
             False,
-            [error("unsupported_contract_version", "Expected contract_version 1.0")],
+            [error("unsupported_contract_version", "Expected contract_version 1.1")],
         )
     if request.get("operation") != "generate":
         return _response(
@@ -78,7 +78,21 @@ def handle_request(request: dict[str, Any]) -> dict[str, Any]:
                 )
             ],
         )
-    result = generate_project(config, control_ir, Path(output), Path(work))
+    project_directory = request.get("project_directory")
+    if project_directory is not None and (
+        not isinstance(project_directory, str) or not project_directory.strip()
+    ):
+        return _response(
+            False,
+            [error("request_path_invalid", "project_directory must be a non-empty string when supplied")],
+        )
+    result = generate_project(
+        config,
+        control_ir,
+        Path(output),
+        Path(work),
+        project_directory=Path(project_directory) if project_directory else None,
+    )
     return _response(
         result.ok,
         result.diagnostics,

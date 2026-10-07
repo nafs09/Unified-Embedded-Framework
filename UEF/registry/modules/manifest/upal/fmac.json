@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/upal/fmac/fmac.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "requires_cap": [
+    "fmac"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/upal/upal_fmac.h"
+  ]
+}

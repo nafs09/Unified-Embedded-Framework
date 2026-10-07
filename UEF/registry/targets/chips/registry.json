@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "catalogue_kind": "uef_chip_base_records",
+  "canonical_owner": "UEF",
+  "description": "Vendor-sourced exact-part identity and base capabilities. These are not board profiles or generation-ready ChipSpecs.",
+  "record_policy": {
+    "records_are_exact_order_codes": true,
+    "generation_available_for_all_records": false,
+    "full_resource_maps_included": false,
+    "generation_blockers": [
+      "package pin and alternate-function mapping",
+      "peripheral instance, clock, reset and capability map",
+      "reference-manual-backed DMA and IRQ maps",
+      "memory region, startup, linker and errata review",
+      "selected board schematic, clock sources and pin reservations"
+    ]
+  },
+  "entries": [
+    {
+      "id": "esp32-d0wdq6-v3",
+      "path": "registry/targets/chips/manifest/espressif/esp32-d0wdq6-v3.json"
+    },
+    {
+      "id": "esp8684h4",
+      "path": "registry/targets/chips/manifest/espressif/esp8684h4.json"
+    },
+    {
+      "id": "esp32-c3fh4",
+      "path": "registry/targets/chips/manifest/espressif/esp32-c3fh4.json"
+    },
+    {
+      "id": "esp32-c6fh4",
+      "path": "registry/targets/chips/manifest/espressif/esp32-c6fh4.json"
+    },
+    {
+      "id": "esp32-s2fn4",
+      "path": "registry/targets/chips/manifest/espressif/esp32-s2fn4.json"
+    },
+    {
+      "id": "esp32-s3fn8",
+      "path": "registry/targets/chips/manifest/espressif/esp32-s3fn8.json"
+    },
+    {
+      "id": "gd32vf103cbt6",
+      "path": "registry/targets/chips/manifest/gigadevice/gd32vf103cbt6.json"
+    },
+    {
+      "id": "atsamd21g18a-au",
+      "path": "registry/targets/chips/manifest/microchip/atsamd21g18a-au.json"
+    },
+    {
+      "id": "atsamd51j20a-au",
+      "path": "registry/targets/chips/manifest/microchip/atsamd51j20a-au.json"
+    },
+    {
+      "id": "atsame51j20a-au",
+      "path": "registry/targets/chips/manifest/microchip/atsame51j20a-au.json"
+    },
+    {
+      "id": "atsame70q21b-cnt",
+      "path": "registry/targets/chips/manifest/microchip/atsame70q21b-cnt.json"
+    },
+    {
+      "id": "nrf52840-qiaa",
+      "path": "registry/targets/chips/manifest/nordic-semiconductor/nrf52840-qiaa.json"
+    },
+    {
+      "id": "nrf5340-qkaa",
+      "path": "registry/targets/chips/manifest/nordic-semiconductor/nrf5340-qkaa.json"
+    },
+    {
+      "id": "mimxrt1062cvl5b",
+      "path": "registry/targets/chips/manifest/nxp/mimxrt1062cvl5b.json"
+    },
+    {
+      "id": "mimxrt1176cvm8a",
+      "path": "registry/targets/chips/manifest/nxp/mimxrt1176cvm8a.json"
+    },
+    {
+      "id": "lpc55s69jev98",
+      "path": "registry/targets/chips/manifest/nxp/lpc55s69jev98.json"
+    },
+    {
+      "id": "rp2040",
+      "path": "registry/targets/chips/manifest/raspberry-pi/rp2040.json"
+    },
+    {
+      "id": "r7fa6m4af3cfb-aa0",
+      "path": "registry/targets/chips/manifest/renesas/r7fa6m4af3cfb-aa0.json"
+    },
+    {
+      "id": "stm32c071cbt6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32c071cbt6.json"
+    },
+    {
+      "id": "stm32f303ret6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32f303ret6.json"
+    },
+    {
+      "id": "stm32f407vgt6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32f407vgt6.json"
+    },
+    {
+      "id": "stm32f722ret6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32f722ret6.json"
+    },
+    {
+      "id": "stm32f746zgt6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32f746zgt6.json"
+    },
+    {
+      "id": "stm32g0b1ret6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32g0b1ret6.json"
+    },
+    {
+      "id": "stm32g474ret6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32g474ret6.json"
+    },
+    {
+      "id": "stm32h563zit6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32h563zit6.json"
+    },
+    {
+      "id": "stm32h743vit6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32h743vit6.json"
+    },
+    {
+      "id": "stm32h745zit6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32h745zit6.json"
+    },
+    {
+      "id": "stm32l476rgt6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32l476rgt6.json"
+    },
+    {
+      "id": "stm32l4r5zit6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32l4r5zit6.json"
+    },
+    {
+      "id": "stm32u575zit6",
+      "path": "registry/targets/chips/manifest/stmicroelectronics/stm32u575zit6.json"
+    },
+    {
+      "id": "tms320f28377dptps",
+      "path": "registry/targets/chips/manifest/texas-instruments/tms320f28377dptps.json"
+    },
+    {
+      "id": "tms320f28388dptpsr",
+      "path": "registry/targets/chips/manifest/texas-instruments/tms320f28388dptpsr.json"
+    },
+    {
+      "id": "tms320f28027ptt",
+      "path": "registry/targets/chips/manifest/texas-instruments/tms320f28027ptt.json"
+    },
+    {
+      "id": "tms320f28069pzpsg4",
+      "path": "registry/targets/chips/manifest/texas-instruments/tms320f28069pzpsg4.json"
+    },
+    {
+      "id": "ch32v003f4p6",
+      "path": "registry/targets/chips/manifest/wch/ch32v003f4p6.json"
+    },
+    {
+      "id": "ch32v203c8t6",
+      "path": "registry/targets/chips/manifest/wch/ch32v203c8t6.json"
+    },
+    {
+      "id": "ch32v307vct6",
+      "path": "registry/targets/chips/manifest/wch/ch32v307vct6.json"
+    }
+  ]
+}

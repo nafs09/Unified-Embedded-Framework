@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/uproto/future/uavcan_v1/uavcan_v1.c"
+  ],
+  "dependencies": [
+    "upal/fdcan_fd"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part XV.3 requires a distinct UAVCAN v1/CAN-FD adapter; select the external stack, DSDL pipeline, and static-memory contract first.",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uproto/future/scaffold_call.h",
+    "include/uef/uproto/future/uavcan_v1/uavcan_v1.h"
+  ]
+}

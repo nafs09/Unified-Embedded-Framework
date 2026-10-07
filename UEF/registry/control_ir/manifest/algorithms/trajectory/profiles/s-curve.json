@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "trajectory/profiles",
+  "description": "Jerk-limited and polynomial motion references.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Jerk-limited and polynomial motion references. Family contract work: declare coordinate frame, boundary conditions, continuity/derivative limits, time parameterization, feasibility result, and interruption/replanning behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/trajectory/profiles/s_curve.h",
+  "scaffold_source": "src/ucon/trajectory/profiles/s_curve.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/trajectory/profiles/s_curve",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare coordinate frame, boundary conditions, continuity/derivative limits, time parameterization, feasibility result, and interruption/replanning behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_limits",
+      "purpose": "Check boundary conditions, dimensions, and motion/continuity limits.",
+      "todo": "Declare coordinate/time units and infeasibility behavior. Algorithm-specific focus: Jerk-limited and polynomial motion references."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize profile/segment state.",
+      "todo": "Define start-state acquisition and fixed workspace. Algorithm-specific focus: Jerk-limited and polynomial motion references."
+    },
+    {
+      "name": "reset",
+      "purpose": "Cancel active profile and clear elapsed-time history.",
+      "todo": "Specify whether the last reference is retained. Algorithm-specific focus: Jerk-limited and polynomial motion references."
+    },
+    {
+      "name": "plan",
+      "purpose": "Compute/validate trajectory coefficients or profile phases.",
+      "todo": "Bound solver work and avoid partial output on infeasibility. Algorithm-specific focus: Jerk-limited and polynomial motion references."
+    },
+    {
+      "name": "sample",
+      "purpose": "Evaluate position and required derivatives at a declared time.",
+      "todo": "Define endpoint, segment-boundary, and continuity semantics. Algorithm-specific focus: Jerk-limited and polynomial motion references."
+    },
+    {
+      "name": "step",
+      "purpose": "Advance with the supplied timebase and publish reference values.",
+      "todo": "Handle irregular/missed intervals explicitly. Algorithm-specific focus: Jerk-limited and polynomial motion references."
+    }
+  ]
+}

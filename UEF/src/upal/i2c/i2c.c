@@ -1,5 +1,5 @@
 /// @file src/upal/i2c/i2c.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_i2c.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_i2c.h.
 ///
 /// Implementation intent: Implement address validation, combined write-read restart semantics,
 ///   and bounded recovery from bus errors.

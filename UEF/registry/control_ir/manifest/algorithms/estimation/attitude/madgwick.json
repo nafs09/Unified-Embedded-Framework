@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/attitude",
+  "description": "Common embedded attitude/sensor-fusion filters.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Common embedded attitude/sensor-fusion filters. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/attitude/madgwick.h",
+  "scaffold_source": "src/ucon/estimators/attitude/madgwick.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/attitude/madgwick",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check sensor dimensions, frames, and attitude representation.",
+      "todo": "Pin quaternion order/sign or rotation-group convention and units. Algorithm-specific focus: Common embedded attitude/sensor-fusion filters."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize nominal attitude and estimator state.",
+      "todo": "Define seed validity and zero/near-zero normalization behavior. Algorithm-specific focus: Common embedded attitude/sensor-fusion filters."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset sensor/attitude history.",
+      "todo": "Specify whether the caller must provide a new attitude seed. Algorithm-specific focus: Common embedded attitude/sensor-fusion filters."
+    },
+    {
+      "name": "propagate",
+      "purpose": "Propagate attitude from timestamped angular-rate data.",
+      "todo": "Define frame, integration, bias handling, and normalization. Algorithm-specific focus: Common embedded attitude/sensor-fusion filters."
+    },
+    {
+      "name": "update",
+      "purpose": "Apply configured vector observations or estimator correction.",
+      "todo": "Define vector validity, weighting, observability, and rejection policy. Algorithm-specific focus: Common embedded attitude/sensor-fusion filters."
+    },
+    {
+      "name": "step",
+      "purpose": "Coordinate propagation and measurement update.",
+      "todo": "Keep frame conversions/timestamps explicit and preserve state on failure. Algorithm-specific focus: Common embedded attitude/sensor-fusion filters."
+    }
+  ]
+}

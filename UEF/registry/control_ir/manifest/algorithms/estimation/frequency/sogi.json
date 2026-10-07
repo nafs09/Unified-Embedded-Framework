@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/frequency",
+  "description": "Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/frequency/sogi.h",
+  "scaffold_source": "src/ucon/estimators/frequency/sogi.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/frequency/sogi",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check tuning frequency, damping/gain, and sample period.",
+      "todo": "Define coefficient discretization and admissible tuning range. Algorithm-specific focus: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize in-phase/quadrature filter states.",
+      "todo": "Specify startup state and fixed coefficients. Algorithm-specific focus: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear both orthogonal-signal histories.",
+      "todo": "Define transition when tuning frequency changes. Algorithm-specific focus: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input."
+    },
+    {
+      "name": "update_states",
+      "purpose": "Advance the second-order generalized-integrator recurrence.",
+      "todo": "Pin recurrence, state scaling, and overflow policy. Algorithm-specific focus: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input."
+    },
+    {
+      "name": "get_quadrature",
+      "purpose": "Publish the filtered signal and its orthogonal component.",
+      "todo": "Define phase/sign and amplitude conventions. Algorithm-specific focus: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input."
+    },
+    {
+      "name": "step",
+      "purpose": "Process one synchronized input sample.",
+      "todo": "No PLL/FLL phase detector is implied by standalone SOGI. Algorithm-specific focus: Second-order generalized integrator that creates an orthogonal signal pair from a configured single-phase input."
+    }
+  ]
+}

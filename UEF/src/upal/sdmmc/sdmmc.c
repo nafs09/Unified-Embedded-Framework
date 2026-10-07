@@ -1,5 +1,5 @@
 /// @file src/upal/sdmmc/sdmmc.c
-/// @brief Source scaffold for the Phase 0 SD/MMC driver contract.
+/// @brief Source scaffold for the Phase 1 initial-release SD/MMC driver contract.
 ///
 /// The board must provide controller registers, clocking, pin mux, DMA request mapping, and
 /// card-detect wiring. These definitions intentionally fail until that board layer is selected.

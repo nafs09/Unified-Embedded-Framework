@@ -1,5 +1,5 @@
 /// @file src/upal/qspi/qspi.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_qspi.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_qspi.h.
 ///
 /// Implementation intent: Implement command/address/data phases, memory-mapped transitions,
 ///   erase geometry, and page-boundary checks.

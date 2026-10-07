@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/control/classical/repetitive.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/control/classical/repetitive.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "REPETITIVE",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_repetitive_validate_config",
+    "ucon_repetitive_init",
+    "ucon_repetitive_reset",
+    "ucon_repetitive_compute_candidate",
+    "ucon_repetitive_apply_limits",
+    "ucon_repetitive_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

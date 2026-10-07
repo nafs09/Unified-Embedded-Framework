@@ -1,0 +1,67 @@
+{
+  "priority": "DEFERRED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman/power_conversion",
+  "description": "Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified.",
+  "implementation_notes": "This key is intentionally deferred and is not a usable method. Purpose: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Confirm the acronym and intended plant (likely an LLC series-resonant converter), then specify states, unknown parameters, switching-averaged or switched model, measurements, observability/excitation assumptions, and operating envelope. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.h",
+  "scaffold_source": "src/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "project_relevance": [],
+  "contract_status": "deferred_underspecified",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Confirm the acronym and intended plant (likely an LLC series-resonant converter), then specify states, unknown parameters, switching-averaged or switched model, measurements, observability/excitation assumptions, and operating envelope."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "confirm_scope",
+      "purpose": "Resolve the intended LLC/SRC expansion and estimator purpose.",
+      "todo": "This is a design gate; do not infer a converter model from the name. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    },
+    {
+      "name": "validate_model",
+      "purpose": "Validate caller-declared converter states, process model, sensors, and parameters.",
+      "todo": "The state and measurement vectors are not specified yet. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize the selected state, covariance, and workspace.",
+      "todo": "Choose switched/averaged model and define operating-point seed. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset history under a documented converter operating-state policy.",
+      "todo": "Define mode-transition and discontinuity behavior. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate using the specified resonant-converter process model.",
+      "todo": "Add switching phase and parameter variation only after defining the model. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply declared voltage/current measurements and diagnostics.",
+      "todo": "Establish observability, timing, gating, and excitation conditions. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    },
+    {
+      "name": "step",
+      "purpose": "Run the reviewed converter-specific EKF update.",
+      "todo": "Keep deferred until its model and numerical contract are complete. Algorithm-specific focus: Provisional converter-specific EKF candidate: the key appears to refer to an LLC series-resonant converter, but its state, parameter, and measurement model are unspecified."
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uef/registry/targets/chips/record.schema.json",
+  "title": "UEF exact-part chip-base record",
+  "type": "object",
+  "required": [
+    "id",
+    "vendor",
+    "family_id",
+    "series",
+    "part_number",
+    "core",
+    "package",
+    "memory",
+    "source_references",
+    "source_verified_fields",
+    "generation_available"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "vendor": {
+      "type": "string"
+    },
+    "family_id": {
+      "type": "string"
+    },
+    "series": {
+      "type": "string"
+    },
+    "part_number": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "roadmap_phase": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 4
+    },
+    "core": {
+      "type": "object",
+      "required": [
+        "name",
+        "count",
+        "fpu",
+        "max_frequency_hz"
+      ]
+    },
+    "package": {
+      "type": "object",
+      "required": [
+        "name",
+        "pin_count"
+      ]
+    },
+    "memory": {
+      "type": "object",
+      "required": [
+        "flash_bytes",
+        "sram_bytes"
+      ]
+    },
+    "peripheral_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "url"
+        ]
+      },
+      "minItems": 1
+    },
+    "source_verified_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "generation_available": {
+      "const": false
+    }
+  }
+}

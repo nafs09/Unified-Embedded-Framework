@@ -1,0 +1,66 @@
+{
+  "id": "stm32f746zgt6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-f7",
+  "series": "STM32F7",
+  "part_number": "STM32F746ZGT6",
+  "aliases": [
+    "STM32F746ZG"
+  ],
+  "roadmap_phase": 0,
+  "additional_phase_targets": [
+    1
+  ],
+  "core": {
+    "name": "Cortex-M7",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 216000000
+  },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 344064,
+    "backup_sram_bytes": 4096,
+    "notes": "320 KiB SRAM including data TCM, 16 KiB instruction TCM and separate 4 KiB backup SRAM."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "USB_OTG_FS",
+    "USB_OTG_HS",
+    "SDMMC",
+    "ETHERNET_MAC",
+    "ADC",
+    "DAC",
+    "TIM",
+    "SPI",
+    "I2C",
+    "USART",
+    "LCD_TFT",
+    "CAMERA"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32F746ZG product/package page",
+      "url": "https://estore.st.com/en/products/microcontrollers-microprocessors/stm32-32-bit-arm-174-cortex-174-mcus/stm32-high-performance-mcus/stm32f7-series/stm32f7x6/stm32f746zg.html"
+    },
+    {
+      "title": "ST STM32F746xx datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32f746zg.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 0 representative and Phase 1 SDMMC candidate; D-cache and peripheral routing are not encoded."
+}

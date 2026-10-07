@@ -1,0 +1,62 @@
+{
+  "priority": "DEFERRED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "electrical/power_conversion",
+  "description": "Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet.",
+  "implementation_notes": "This key is intentionally deferred and is not a usable method. Purpose: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet. Family contract work: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary. Specify converter topology, half-cycle boundary and timing source, predictive plant equation, candidate switch actions, constraints, and current-limit/fault behavior before implementation. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/electrical/power_conversion/half_cycle_predictive_current_control.h",
+  "scaffold_source": "src/ucon/future/electrical/power_conversion/half_cycle_predictive_current_control.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/electrical/power_conversion/half_cycle_predictive_current_control",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "project_relevance": [],
+  "contract_status": "deferred_underspecified",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary.",
+    "Specify converter topology, half-cycle boundary and timing source, predictive plant equation, candidate switch actions, constraints, and current-limit/fault behavior before implementation."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_topology",
+      "purpose": "Confirm topology, sensing polarity, and half-cycle timing definition.",
+      "todo": "The current key does not define these inputs. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize a cycle-synchronous controller state.",
+      "todo": "Specify phase acquisition and safe hardware handoff. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear cycle/prediction history.",
+      "todo": "Never emit a switch command when timing/topology is invalid. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+    },
+    {
+      "name": "predict_candidates",
+      "purpose": "Predict current for the explicitly allowed switch actions.",
+      "todo": "Write plant equations and sample instant before implementation. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+    },
+    {
+      "name": "select_switch_action",
+      "purpose": "Select an admissible action using the specified objective.",
+      "todo": "Define tie-breaking, dead-time, current limits, and fault response. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one half-cycle update and return abstract command/status.",
+      "todo": "Keep gate sequencing/interlocks outside portable UCON. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/trajectory/profiles/bezier_traj.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/trajectory/profiles/bezier_traj.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "BEZIER_TRAJ",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Cubic Bezier references support smooth flight-path generation.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_bezier_traj_validate_limits",
+    "ucon_bezier_traj_init",
+    "ucon_bezier_traj_reset",
+    "ucon_bezier_traj_plan",
+    "ucon_bezier_traj_sample",
+    "ucon_bezier_traj_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

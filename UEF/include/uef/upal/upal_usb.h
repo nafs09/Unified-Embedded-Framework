@@ -1,7 +1,7 @@
 /// @file include/uef/upal/upal_usb.h
 /// @brief Reserved public boundary for the planned USB OTG transport module.
 ///
-/// The V1.1 specification lists this header/module in its file tree but does
+/// The V1.2 specification lists this header/module in its file tree but does
 /// not define USB functions or structures. CDC/HID profiles are planned for a
 /// later phase, so this header intentionally declares no guessed API.
 
@@ -16,7 +16,7 @@
 extern "C" {
 #endif
 
-/* Add the USB controller/profile contract when the V1.1 planned API is defined. */
+/* Add the USB controller/profile contract when the V1.2 planned API is defined. */
 
 #ifdef __cplusplus
 }

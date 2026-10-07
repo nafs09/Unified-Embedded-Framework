@@ -1,0 +1,31 @@
+{
+  "id": "ra6m4",
+  "vendor": "Renesas",
+  "family": "RA",
+  "series": "RA6M4",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M33"
+  ],
+  "core_notes": "Exact target not prioritized.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "R7FA6M4AF3CFB"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "TrustZone",
+    "DMAC/DTC",
+    "clock/pins"
+  ],
+  "source_references": [
+    "uef_spec"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

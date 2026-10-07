@@ -1,0 +1,26 @@
+{
+  "id": "stm32-c5",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32C5",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M33"
+  ],
+  "core_notes": "Verify security/peripherals per part.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

@@ -1,0 +1,33 @@
+{
+  "id": "imx-rt1060",
+  "vendor": "NXP",
+  "family": "i.MX RT",
+  "series": "i.MX RT1060",
+  "parent_series": "imx-rt10xx",
+  "aliases": [],
+  "architectures": [
+    "Cortex-M7"
+  ],
+  "core_notes": "Phase 2 roadmap entry; the representative order code is an example, not a registered target.",
+  "roadmap_phase": 2,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "MIMXRT1062"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "crossbar",
+    "FlexSPI",
+    "eDMA",
+    "external memory and cache"
+  ],
+  "source_references": [
+    "nxp_rt",
+    "nxp_rt1062"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

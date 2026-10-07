@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/uos/baremetal/uos_baremetal.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "backend": "BAREMETAL",
+  "variant_of": "uos",
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_time.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/uos/uos.h"
+  ]
+}

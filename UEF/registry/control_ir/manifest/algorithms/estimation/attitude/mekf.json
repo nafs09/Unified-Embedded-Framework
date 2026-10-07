@@ -1,0 +1,68 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/attitude",
+  "description": "Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/attitude/mekf.h",
+  "scaffold_source": "src/ucon/estimators/attitude/mekf.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/attitude/mekf",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check quaternion nominal state and three-component attitude error.",
+      "todo": "Pin quaternion order, multiplication side, and frame. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize unit quaternion, optional bias, and error covariance.",
+      "todo": "Reject zero quaternion and define normalization. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset covariance and attitude correction history.",
+      "todo": "Specify nominal-attitude retention. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate nominal quaternion and covariance from angular rate.",
+      "todo": "Define bias/noise mapping, integration, and renormalization. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply measurements through the three-dimensional error state.",
+      "todo": "Define measurement gate and covariance update. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    },
+    {
+      "name": "inject_error",
+      "purpose": "Apply attitude correction and reset local error coordinates.",
+      "todo": "Specify injection side and reset Jacobian. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    },
+    {
+      "name": "step",
+      "purpose": "Run timestamped propagation and available sensor corrections.",
+      "todo": "Keep frame and sensor-time transformations explicit. Algorithm-specific focus: Attitude-specific multiplicative EKF; quaternion nominal attitude with a three-component attitude-error state."
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "sources": [
+    "src/ucon/estimators/bayesian/particle.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/bayesian/particle.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "PARTICLE",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "A particle filter is retained as a nonlinear-estimation option for complex or non-Gaussian project models.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_particle_validate_model",
+    "ucon_particle_init",
+    "ucon_particle_reset",
+    "ucon_particle_propagate_particles",
+    "ucon_particle_update_weights",
+    "ucon_particle_resample",
+    "ucon_particle_summarize_estimate",
+    "ucon_particle_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

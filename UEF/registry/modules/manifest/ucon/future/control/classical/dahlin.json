@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/control/classical/dahlin.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/control/classical/dahlin.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "DAHLIN",
+  "priority": "DEFERRED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "contract_status": "deferred_underspecified",
+  "outlined_functions": [
+    "ucon_dahlin_validate_plant",
+    "ucon_dahlin_design_coefficients",
+    "ucon_dahlin_verify_closed_loop",
+    "ucon_dahlin_init",
+    "ucon_dahlin_reset",
+    "ucon_dahlin_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

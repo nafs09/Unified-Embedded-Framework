@@ -1,12 +1,9 @@
 """Validate generated project paths, source lists, encodings, and includes."""
 
 from __future__ import annotations
-
 import re
 from pathlib import Path
-
 from uef_gen.diagnostics import Diagnostic, error
-
 
 _SOURCE_SUFFIXES = {".c", ".h", ".cc", ".cpp", ".hpp"}
 _INCLUDE_PATTERN = re.compile(
@@ -14,12 +11,7 @@ _INCLUDE_PATTERN = re.compile(
     re.MULTILINE,
 )
 
-
-def validate_generated_project(
-    root: Path,
-    files: list[str],
-    sources: list[str],
-) -> list[Diagnostic]:
+def validate_generated_project(root: Path, files: list[str], sources: list[str]) -> list[Diagnostic]:
     """Return diagnostics for missing/escaping artifacts and unresolved local includes."""
     diagnostics: list[Diagnostic] = []
     resolved_root = root.resolve()
@@ -53,7 +45,7 @@ def validate_generated_project(
                 )
             )
 
-    include_dirs = [root / "include", root / "uef" / "include"]
+    include_dirs = [root, root / "include", root / "uef" / "include", root / "uos"]
     for relative in files:
         source = root / relative
         if source.suffix.casefold() not in _SOURCE_SUFFIXES or not source.is_file():

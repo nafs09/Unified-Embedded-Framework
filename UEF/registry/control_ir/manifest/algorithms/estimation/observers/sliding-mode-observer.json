@@ -1,0 +1,64 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "estimation",
+  "family": "estimation/observers",
+  "description": "Sliding-mode state observer with an explicit output injection and convergence assumptions.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Sliding-mode state observer with an explicit output injection and convergence assumptions. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Define sliding surface, discontinuous or boundary-layer injection, sampling effects, and chattering bounds. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
+    "Define sliding surface, discontinuous or boundary-layer injection, sampling effects, and chattering bounds.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/estimators/observers/sliding_mode_observer",
+  "scaffold_header": "include/uef/ucon/future/estimators/observers/sliding_mode_observer.h",
+  "scaffold_source": "src/ucon/future/estimators/observers/sliding_mode_observer.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check plant matrices, dimensions, gain layout, and disturbance model.",
+      "todo": "State detectability/observability assumptions and gain ownership. Algorithm-specific focus: Sliding-mode state observer with an explicit output injection and convergence assumptions."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate and observer/disturbance states.",
+      "todo": "Define initial estimate and any required output history. Algorithm-specific focus: Sliding-mode state observer with an explicit output injection and convergence assumptions."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear observer history or preload a documented state.",
+      "todo": "Specify bumpless reset and disturbance estimate handling. Algorithm-specific focus: Sliding-mode state observer with an explicit output injection and convergence assumptions."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate the model and predicted state.",
+      "todo": "Define sample time and discretization. Algorithm-specific focus: Sliding-mode state observer with an explicit output injection and convergence assumptions."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply measured output/residual and observer injection.",
+      "todo": "Specify residual sign, disturbance channels, and gain convention. Algorithm-specific focus: Sliding-mode state observer with an explicit output injection and convergence assumptions."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one observer update and report estimate/residual validity.",
+      "todo": "Bound work and preserve prior state after numeric failure. Algorithm-specific focus: Sliding-mode state observer with an explicit output injection and convergence assumptions."
+    }
+  ]
+}

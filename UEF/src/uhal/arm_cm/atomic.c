@@ -1,105 +1,105 @@
 /// @file src/uhal/arm_cm/atomic.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uhal/uhal_atomic.h.
+/// @brief Full-barrier 32-bit atomic operations for a single Cortex-M core.
 ///
-/// Implementation intent: Use architecture-safe exclusive instructions or C11 atomics with
-///   documented ISR and memory-order guarantees.
-///
-/// Every public function in the paired header has a linkable definition below.
-/// Unimplemented status-returning functions report UEF_NOT_SUPPORTED; value functions
-/// return a neutral value until the target behavior is implemented.
+/// The critical-section fallback keeps this backend usable on Cortex-M0/M0+ as
+/// well as cores with exclusive-access instructions. Each operation masks
+/// interrupts only for the single load/update/store sequence; callers must not
+/// use these operations from NMI or fault handlers.
+#include <stddef.h>
+#include <stdint.h>
+
 #include <uef/uhal/uhal_atomic.h>
+#include <uef/uhal/uhal_irq.h>
 
-bool uhal_atomic_cas_u32(
-    volatile uef_u32_t* target,
-    uef_u32_t expected,
-    uef_u32_t desired
-) {
-    /* TODO(UEF Cortex-M):
-     * Use the Cortex-M atomic/exclusive instructions or a correctly scoped critical
-     * section, preserve the documented memory ordering, and handle alignment and interrupt
-     * nesting. Implement this contract for the selected Cortex-M CMSIS device without
-     * assuming a particular vendor register map. Keep interrupt and register side effects
-     * documented, bounded, and safe for the active target.
-     */
-    (void)target;
-    (void)expected;
-    (void)desired;
-    return false;
+static bool target_is_valid(const volatile uef_u32_t* target) {
+    return target != NULL &&
+           (((uintptr_t)target % _Alignof(uef_u32_t)) == 0u);
 }
 
-uef_u32_t uhal_atomic_fetch_add_u32(
-    volatile uef_u32_t* target,
-    uef_u32_t val
-) {
-    /* TODO(UEF Cortex-M):
-     * Use the Cortex-M atomic/exclusive instructions or a correctly scoped critical
-     * section, preserve the documented memory ordering, and handle alignment and interrupt
-     * nesting. Implement this contract for the selected Cortex-M CMSIS device without
-     * assuming a particular vendor register map. Keep interrupt and register side effects
-     * documented, bounded, and safe for the active target.
-     */
-    (void)target;
-    (void)val;
-    return 0;
+static uhal_critical_t atomic_begin(void) {
+    const uhal_critical_t saved = uhal_critical_enter();
+    __DMB();
+    return saved;
 }
 
-uef_u32_t uhal_atomic_fetch_and_u32(
-    volatile uef_u32_t* target,
-    uef_u32_t val
-) {
-    /* TODO(UEF Cortex-M):
-     * Use the Cortex-M atomic/exclusive instructions or a correctly scoped critical
-     * section, preserve the documented memory ordering, and handle alignment and interrupt
-     * nesting. Implement this contract for the selected Cortex-M CMSIS device without
-     * assuming a particular vendor register map. Keep interrupt and register side effects
-     * documented, bounded, and safe for the active target.
-     */
-    (void)target;
-    (void)val;
-    return 0;
+static void atomic_end(uhal_critical_t saved) {
+    __DMB();
+    uhal_critical_exit(saved);
 }
 
-uef_u32_t uhal_atomic_fetch_or_u32(
-    volatile uef_u32_t* target,
-    uef_u32_t val
-) {
-    /* TODO(UEF Cortex-M):
-     * Use the Cortex-M atomic/exclusive instructions or a correctly scoped critical
-     * section, preserve the documented memory ordering, and handle alignment and interrupt
-     * nesting. Implement this contract for the selected Cortex-M CMSIS device without
-     * assuming a particular vendor register map. Keep interrupt and register side effects
-     * documented, bounded, and safe for the active target.
-     */
-    (void)target;
-    (void)val;
-    return 0;
+bool uhal_atomic_cas_u32(volatile uef_u32_t* target,
+                         uef_u32_t expected,
+                         uef_u32_t desired) {
+    if (!target_is_valid(target)) {
+        return false;
+    }
+
+    const uhal_critical_t saved = atomic_begin();
+    const bool matched = *target == expected;
+    if (matched) {
+        *target = desired;
+    }
+    atomic_end(saved);
+    return matched;
 }
 
-uef_u32_t uhal_atomic_load_u32(
-    const volatile uef_u32_t* src
-) {
-    /* TODO(UEF Cortex-M):
-     * Use the Cortex-M atomic/exclusive instructions or a correctly scoped critical
-     * section, preserve the documented memory ordering, and handle alignment and interrupt
-     * nesting. Implement this contract for the selected Cortex-M CMSIS device without
-     * assuming a particular vendor register map. Keep interrupt and register side effects
-     * documented, bounded, and safe for the active target.
-     */
-    (void)src;
-    return 0;
+uef_u32_t uhal_atomic_fetch_add_u32(volatile uef_u32_t* target,
+                                    uef_u32_t value) {
+    if (!target_is_valid(target)) {
+        return 0u;
+    }
+
+    const uhal_critical_t saved = atomic_begin();
+    const uef_u32_t previous = *target;
+    *target = previous + value;
+    atomic_end(saved);
+    return previous;
 }
 
-void uhal_atomic_store_u32(
-    volatile uef_u32_t* dst,
-    uef_u32_t val
-) {
-    /* TODO(UEF Cortex-M):
-     * Use the Cortex-M atomic/exclusive instructions or a correctly scoped critical
-     * section, preserve the documented memory ordering, and handle alignment and interrupt
-     * nesting. Implement this contract for the selected Cortex-M CMSIS device without
-     * assuming a particular vendor register map. Keep interrupt and register side effects
-     * documented, bounded, and safe for the active target.
-     */
-    (void)dst;
-    (void)val;
+uef_u32_t uhal_atomic_fetch_and_u32(volatile uef_u32_t* target,
+                                    uef_u32_t value) {
+    if (!target_is_valid(target)) {
+        return 0u;
+    }
+
+    const uhal_critical_t saved = atomic_begin();
+    const uef_u32_t previous = *target;
+    *target = previous & value;
+    atomic_end(saved);
+    return previous;
+}
+
+uef_u32_t uhal_atomic_fetch_or_u32(volatile uef_u32_t* target,
+                                   uef_u32_t value) {
+    if (!target_is_valid(target)) {
+        return 0u;
+    }
+
+    const uhal_critical_t saved = atomic_begin();
+    const uef_u32_t previous = *target;
+    *target = previous | value;
+    atomic_end(saved);
+    return previous;
+}
+
+uef_u32_t uhal_atomic_load_u32(const volatile uef_u32_t* source) {
+    if (!target_is_valid(source)) {
+        return 0u;
+    }
+
+    const uhal_critical_t saved = atomic_begin();
+    const uef_u32_t value = *source;
+    atomic_end(saved);
+    return value;
+}
+
+void uhal_atomic_store_u32(volatile uef_u32_t* destination,
+                           uef_u32_t value) {
+    if (!target_is_valid(destination)) {
+        return;
+    }
+
+    const uhal_critical_t saved = atomic_begin();
+    *destination = value;
+    atomic_end(saved);
 }

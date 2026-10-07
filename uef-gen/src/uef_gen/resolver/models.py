@@ -1,11 +1,8 @@
 from __future__ import annotations
-
 from dataclasses import dataclass, field
 from typing import Any
-
 from uef_gen.chips.specs import ChipCapabilities, ChipSpec
 from uef_gen.diagnostics import Diagnostic
-
 
 @dataclass(frozen=True)
 class ResolvedPeripheral:
@@ -17,14 +14,13 @@ class ResolvedPeripheral:
     irq_names: tuple[str, ...]
     key: str = ""
 
-
 @dataclass(frozen=True)
 class ResolvedTask:
     name: str
     period_us: int
     priority: int
     stack_bytes: int
-
+    execution_context: str = "task"
 
 @dataclass(frozen=True)
 class ResolvedProject:

@@ -1,0 +1,59 @@
+{
+  "id": "stm32l476rgt6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-l4",
+  "series": "STM32L4",
+  "part_number": "STM32L476RGT6",
+  "aliases": [
+    "STM32L476RG"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 80000000
+  },
+  "package": {
+    "name": "LQFP64",
+    "pin_count": 64
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 131072,
+    "notes": "1 MiB flash and 128 KiB SRAM."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "SDMMC",
+    "USB",
+    "ADC",
+    "DAC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "QSPI"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32L476RG product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32l476rg.html"
+    },
+    {
+      "title": "ST STM32L476 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32l476rg.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Catalogue-only common L4 example; it is not the Phase 1 L4+ SDMMC profile."
+}

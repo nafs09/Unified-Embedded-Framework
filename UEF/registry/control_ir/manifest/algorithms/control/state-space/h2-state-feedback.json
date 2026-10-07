@@ -1,0 +1,59 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "control",
+  "family": "control/state_space",
+  "description": "H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model. Family contract work: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior. Keep synthesis outside the runtime kernel unless explicitly required; specify gain dimensions, cost scaling, and state validity. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior.",
+    "Keep synthesis outside the runtime kernel unless explicitly required; specify gain dimensions, cost scaling, and state validity.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/control/state_space/h2_state_feedback",
+  "scaffold_header": "include/uef/ucon/future/control/state_space/h2_state_feedback.h",
+  "scaffold_source": "src/ucon/future/control/state_space/h2_state_feedback.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_config",
+      "purpose": "Check matrix dimensions, gain layout, and state/input units.",
+      "todo": "Declare whether gain synthesis is offline or part of this module. Algorithm-specific focus: H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize controller and optional integral/observer interface state.",
+      "todo": "Define initial-state requirements and workspace. Algorithm-specific focus: H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset dynamic control memory.",
+      "todo": "Specify bumpless restart and estimator coordination. Algorithm-specific focus: H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model."
+    },
+    {
+      "name": "compute_feedback",
+      "purpose": "Evaluate the declared state/output-feedback law.",
+      "todo": "Define reference/feedforward terms, sign, and saturation order. Algorithm-specific focus: H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model."
+    },
+    {
+      "name": "step",
+      "purpose": "Evaluate feedback and publish a bounded command.",
+      "todo": "Preserve output on dimension/numeric failure and state work bounds. Algorithm-specific focus: H2-optimal state-feedback law using gains synthesized offline for a declared plant and performance model."
+    }
+  ]
+}

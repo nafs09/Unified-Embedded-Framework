@@ -1,0 +1,30 @@
+{
+  "id": "stm32-n6",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32N6",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M55"
+  ],
+  "core_notes": "AI-capable; catalogue only.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "startup",
+    "memory",
+    "accelerator"
+  ],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

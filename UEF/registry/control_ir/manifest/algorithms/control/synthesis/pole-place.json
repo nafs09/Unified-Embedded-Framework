@@ -1,0 +1,56 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "control/synthesis",
+  "description": "Ackermann/Bass-Gura; K from offline pole assignment",
+  "implementation_notes": "Offline gain-synthesis utility, not a runtime controller step. Define plant form, controllability/rank tolerance, supported pole-placement method, and achieved-pole verification before implementing.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/future/control/synthesis/pole_place.h",
+  "scaffold_source": "src/ucon/future/control/synthesis/pole_place.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "future",
+  "scaffold_module": "ucon/future/control/synthesis/pole_place",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Offline gain-synthesis utility, not a runtime controller step. Define plant form, controllability/rank tolerance, supported pole-placement method, and achieved-pole verification before implementing."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_plant",
+      "purpose": "Check plant matrices, requested poles, and controllability assumptions.",
+      "todo": "This is offline gain synthesis, not a runtime controller step. Algorithm-specific focus: Ackermann/Bass-Gura; K from offline pole assignment"
+    },
+    {
+      "name": "build_controllability_basis",
+      "purpose": "Construct the declared controllability representation.",
+      "todo": "Define numerical rank tolerance and conditioning limits. Algorithm-specific focus: Ackermann/Bass-Gura; K from offline pole assignment"
+    },
+    {
+      "name": "synthesize_gain",
+      "purpose": "Compute the state-feedback gain for the requested pole assignment.",
+      "todo": "Select and document the supported pole-placement method. Algorithm-specific focus: Ackermann/Bass-Gura; K from offline pole assignment"
+    },
+    {
+      "name": "verify_closed_loop",
+      "purpose": "Check achieved closed-loop eigenvalues and residuals.",
+      "todo": "Return an explicit failure if requested poles are not realizable. Algorithm-specific focus: Ackermann/Bass-Gura; K from offline pole assignment"
+    },
+    {
+      "name": "publish_gain",
+      "purpose": "Publish the fixed gain matrix and synthesis diagnostics.",
+      "todo": "No online state feedback is performed by this synthesis entry. Algorithm-specific focus: Ackermann/Bass-Gura; K from offline pole assignment"
+    }
+  ]
+}

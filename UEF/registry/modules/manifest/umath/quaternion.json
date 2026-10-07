@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "src/umath/quaternion.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/quaternion.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h",
+    "include/uef/umath/vector3.h"
+  ],
+  "dependencies": [
+    "umath/core",
+    "umath/vector3"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

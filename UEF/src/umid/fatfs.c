@@ -1,5 +1,5 @@
 /// @file src/umid/fatfs.c
-/// @brief Optional FatFS diskio adapter over the UPAL SDMMC block interface.
+/// @brief Optional Phase 1 FatFS diskio adapter over the UPAL SDMMC block interface.
 
 #include <uef/umid/umid_fatfs.h>
 

@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/nonlinear/backstepping.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/nonlinear/backstepping.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "BACKSTEPPING",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Recursive nonlinear control is a relevant option for the multirotor control stack.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_backstepping_validate_model",
+    "ucon_backstepping_init",
+    "ucon_backstepping_reset",
+    "ucon_backstepping_compute_surface",
+    "ucon_backstepping_compute_control",
+    "ucon_backstepping_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

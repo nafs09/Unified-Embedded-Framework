@@ -1,0 +1,56 @@
+{
+  "id": "esp32-d0wdq6-v3",
+  "vendor": "Espressif",
+  "family_id": "esp32",
+  "series": "ESP32",
+  "part_number": "ESP32-D0WDQ6-V3",
+  "aliases": [
+    "ESP32-D0WDQ6"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Xtensa LX6",
+    "isa": "Xtensa",
+    "count": 2,
+    "fpu": "single",
+    "max_frequency_hz": 240000000
+  },
+  "package": {
+    "name": "QFN48",
+    "pin_count": 48
+  },
+  "memory": {
+    "flash_bytes": 0,
+    "sram_bytes": 532480
+  },
+  "peripheral_groups": [
+    "GDMA",
+    "GPIO",
+    "SPI",
+    "I2C",
+    "I2S",
+    "UART",
+    "SDIO",
+    "TWAI",
+    "ADC",
+    "DAC",
+    "Wi-Fi",
+    "Bluetooth"
+  ],
+  "source_references": [
+    {
+      "title": "Espressif ESP32 series datasheet",
+      "url": "https://documentation.espressif.com/esp32_datasheet_en.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core_count",
+    "frequency",
+    "package",
+    "on_chip_SRAM",
+    "no_in_package_flash"
+  ],
+  "generation_available": false,
+  "record_note": "Bare SoC variant without in-package flash; board design must provide boot flash and RF support."
+}

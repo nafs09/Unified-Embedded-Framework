@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/kalman",
+  "description": "Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/kalman/linear_kf.h",
+  "scaffold_source": "src/ucon/estimators/kalman/linear_kf.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/kalman/linear_kf",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check state/measurement dimensions, model callbacks, and covariance assumptions.",
+      "todo": "Reject invalid shapes before state changes; specify PSD and conditioning policy. Algorithm-specific focus: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate, covariance, and fixed workspace.",
+      "todo": "Define initial-state ownership, covariance seed, and factorization failure. Algorithm-specific focus: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing."
+    },
+    {
+      "name": "reset",
+      "purpose": "Reset estimator history under a documented seed policy.",
+      "todo": "Specify whether nominal estimate/model context is retained. Algorithm-specific focus: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate estimate and uncertainty over one declared interval.",
+      "todo": "Define discretization, process-noise timing, and stable covariance update. Algorithm-specific focus: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply a timestamped measurement and compute innovation diagnostics.",
+      "todo": "Define gating, missing-channel behavior, and failure atomicity. Algorithm-specific focus: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing."
+    },
+    {
+      "name": "step",
+      "purpose": "Run prediction and optional correction in a fixed documented order.",
+      "todo": "Handle asynchronous samples explicitly; do not synthesize missing measurements. Algorithm-specific focus: Discrete linear Kalman filter for a declared state-space model, process-noise covariance, measurement model, and update timing."
+    }
+  ]
+}

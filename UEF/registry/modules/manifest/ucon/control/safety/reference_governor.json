@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/safety/reference_governor.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/safety/reference_governor.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "REFERENCE_GOVERNOR",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "A reference governor adds a reusable constraint-handling layer for flight references.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_reference_governor_validate_model",
+    "ucon_reference_governor_init",
+    "ucon_reference_governor_reset",
+    "ucon_reference_governor_check_candidate",
+    "ucon_reference_governor_shape_reference",
+    "ucon_reference_governor_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

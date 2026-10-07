@@ -1,0 +1,28 @@
+/*
+ * {{ node.model.symbol_prefix }}_dshot.h
+ * Generated protocol instance wrapper; reusable DSHOT framing stays in UEF.
+ * Review the generated manual-action list before connecting real hardware.
+ */
+#ifndef {{ node.model.symbol_prefix | upper }}_DSHOT_INSTANCE_H
+#define {{ node.model.symbol_prefix | upper }}_DSHOT_INSTANCE_H
+
+#include "uef/uproto/uproto_dshot.h"
+
+typedef struct {
+    uproto_dshot_t protocol;
+} {{ node.model.symbol_prefix }}_dshot_t;
+
+{% if node.subtype == "DSHOT_UART" or node.config_params.transport == "uart" %}
+uef_status_t {{ node.model.symbol_prefix }}_dshot_init(
+    {{ node.model.symbol_prefix }}_dshot_t *instance,
+    upal_uart_t *uart);
+{% elif node.config_params.transport == "timer_dma" %}
+uef_status_t {{ node.model.symbol_prefix }}_dshot_init(
+    {{ node.model.symbol_prefix }}_dshot_t *instance,
+    upal_timer_t *timer,
+    uef_u8_t timer_channel);
+{% else %}
+#error "DSHOT requires config_params.transport to be 'timer_dma' or 'uart'"
+{% endif %}
+
+#endif

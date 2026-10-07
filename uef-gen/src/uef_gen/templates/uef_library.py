@@ -1,4 +1,4 @@
-"""Render a reviewed Jinja template shipped in the verified UEF snapshot."""
+"""Render a reviewed Jinja template directly from the located UEF checkout."""
 
 from __future__ import annotations
 
@@ -12,11 +12,11 @@ class UefTemplateError(ValueError):
 
 def render_uef_template(template_root: Path, template_name: str,
                         values: dict[str, Any]) -> str:
-    """Render one relative path beneath ``templates/ucon``.
+    """Render one relative path beneath the UEF ``templates`` directory.
 
-    Template names are relative to the UCON catalogue. Resolving the candidate
-    before loading prevents an extension from escaping the content-verified
-    snapshot with ``..`` path segments.
+    Template names are relative to UEF's template root. Resolving the candidate
+    before loading prevents a UEF manifest entry from escaping that tree with
+    ``..`` path segments.
     """
     root = template_root.resolve()
     candidate = (root / template_name).resolve()

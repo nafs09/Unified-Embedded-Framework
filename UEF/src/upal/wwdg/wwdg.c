@@ -1,5 +1,5 @@
 /// @file src/upal/wwdg/wwdg.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_wwdg.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_wwdg.h.
 ///
 /// Implementation intent: Enforce the configured refresh window and keep early-warning ISR work
 ///   bounded.

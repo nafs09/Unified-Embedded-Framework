@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/estimators/frequency/sliding_dft.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/estimators/frequency/sliding_dft.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "SLIDING_DFT",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_sliding_dft_validate_config",
+    "ucon_sliding_dft_init",
+    "ucon_sliding_dft_reset",
+    "ucon_sliding_dft_update_bins",
+    "ucon_sliding_dft_estimate_frequency",
+    "ucon_sliding_dft_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

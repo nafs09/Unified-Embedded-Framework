@@ -1,0 +1,37 @@
+{
+  "sources": [
+    "src/ucon/control/predictive/ilqr.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/predictive/ilqr.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "ILQR",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Iterative LQR is included for the project's predictive/optimal-control design space.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_ilqr_validate_problem",
+    "ucon_ilqr_init",
+    "ucon_ilqr_reset",
+    "ucon_ilqr_prepare_problem",
+    "ucon_ilqr_solve_problem",
+    "ucon_ilqr_verify_solution",
+    "ucon_ilqr_step"
+  ],
+  "project_relevance": [
+    "qcwdrsstc"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

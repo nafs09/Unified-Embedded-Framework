@@ -1,5 +1,5 @@
 /// @file include/uef/uapp/uapp_fault.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UAPP_FAULT_H
 #define UAPP_FAULT_H

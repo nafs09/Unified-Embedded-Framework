@@ -1,0 +1,30 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{c,h,cc,cpp,cxx,hpp,hxx}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+cpp_indent_case_contents_when_block = true
+cpp_new_line_before_open_brace_namespace = same_line
+cpp_new_line_before_open_brace_type = same_line
+cpp_new_line_before_open_brace_function = same_line
+cpp_new_line_before_open_brace_control_flow = same_line
+
+[*.{json,jsonc,yml,yaml,toml,cmake}]
+indent_style = space
+indent_size = 2
+tab_width = 2
+
+[CMakeLists.txt]
+indent_style = space
+indent_size = 2
+tab_width = 2

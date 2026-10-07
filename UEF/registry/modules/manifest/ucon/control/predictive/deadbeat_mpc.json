@@ -1,0 +1,37 @@
+{
+  "sources": [
+    "src/ucon/control/predictive/deadbeat_mpc.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/predictive/deadbeat_mpc.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "DEADBEAT_MPC",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Deadbeat predictive control is relevant to fast switched or resonant power stages.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_deadbeat_mpc_validate_problem",
+    "ucon_deadbeat_mpc_init",
+    "ucon_deadbeat_mpc_reset",
+    "ucon_deadbeat_mpc_prepare_problem",
+    "ucon_deadbeat_mpc_solve_problem",
+    "ucon_deadbeat_mpc_verify_solution",
+    "ucon_deadbeat_mpc_step"
+  ],
+  "project_relevance": [
+    "qcwdrsstc"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

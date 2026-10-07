@@ -1,0 +1,64 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "electrical",
+  "family": "electrical/power_conversion",
+  "description": "Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions.",
+  "implementation_notes": "This is a proposed roadmap item; the current UEF specification does not define its API or equations. Purpose: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions. Family contract work: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary. Define power-stage topology, phase-shift sign/range, transformer/inductor model, dead-time, and saturation behavior. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "spec_section": "UEF roadmap extension proposal; not defined by current Part XVI",
+  "catalogue_origin": "UEF_ROADMAP_EXTENSION",
+  "contract_status": "roadmap_proposal",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary.",
+    "Define power-stage topology, phase-shift sign/range, transformer/inductor model, dead-time, and saturation behavior.",
+    "Roadmap proposal only; do not treat this entry as specified or selectable by uef-gen."
+  ],
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "project_relevance": [],
+  "scaffold_module": "ucon/future/electrical/power_conversion/phase_shift_full_bridge_control",
+  "scaffold_header": "include/uef/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.h",
+  "scaffold_source": "src/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.c",
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_topology",
+      "purpose": "Check converter topology, sensor polarity, and switch map.",
+      "todo": "The algorithm key does not define a power-stage model. Algorithm-specific focus: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize current/reference and switching-cycle state.",
+      "todo": "Define cycle phase and hardware interlock requirements. Algorithm-specific focus: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear controller history without producing a gate action.",
+      "todo": "Safe-state handling belongs to caller/target supervision. Algorithm-specific focus: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions."
+    },
+    {
+      "name": "predict_current",
+      "purpose": "Predict current/state under allowed switch actions.",
+      "todo": "Derive equations and sample timing from the selected topology. Algorithm-specific focus: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions."
+    },
+    {
+      "name": "select_command",
+      "purpose": "Choose an action under the named objective/constraints.",
+      "todo": "Define dead time, current limits, and deterministic tie-breaking. Algorithm-specific focus: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one bounded converter update and return an abstract command.",
+      "todo": "Keep physical gate sequencing in the target boundary. Algorithm-specific focus: Phase-shift modulation/control outline for a full-bridge converter with explicit phase and dead-time conventions."
+    }
+  ]
+}

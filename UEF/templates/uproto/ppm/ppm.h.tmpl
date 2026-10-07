@@ -1,0 +1,25 @@
+/*
+ * {{ node.model.symbol_prefix }}_ppm.h
+ * Per-instance PPM hook; timer capture setup stays in board integration.
+ */
+#ifndef {{ node.model.symbol_prefix | upper }}_PPM_INSTANCE_H
+#define {{ node.model.symbol_prefix | upper }}_PPM_INSTANCE_H
+
+#include "uef/uproto/uproto_ppm.h"
+
+typedef struct {
+    uproto_ppm_t decoder;
+} {{ node.model.symbol_prefix }}_ppm_t;
+
+uef_status_t {{ node.model.symbol_prefix }}_ppm_init(
+    {{ node.model.symbol_prefix }}_ppm_t *instance,
+    const uproto_ppm_config_t *config);
+uef_status_t {{ node.model.symbol_prefix }}_ppm_capture_interval(
+    {{ node.model.symbol_prefix }}_ppm_t *instance,
+    uef_u32_t interval_us,
+    uef_u64_t timestamp_us);
+bool {{ node.model.symbol_prefix }}_ppm_read_frame(
+    {{ node.model.symbol_prefix }}_ppm_t *instance,
+    uproto_ppm_frame_t *frame);
+
+#endif

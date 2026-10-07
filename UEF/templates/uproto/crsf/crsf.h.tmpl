@@ -1,0 +1,23 @@
+/*
+ * {{ node.model.symbol_prefix }}_crsf.h
+ * Generated instance wrapper; CRSF frame handling remains in UEF.
+ */
+#ifndef {{ node.model.symbol_prefix | upper }}_CRSF_INSTANCE_H
+#define {{ node.model.symbol_prefix | upper }}_CRSF_INSTANCE_H
+
+#include "uef/uproto/uproto_crsf.h"
+
+typedef struct {
+    uproto_crsf_t protocol;
+} {{ node.model.symbol_prefix }}_crsf_t;
+
+uef_status_t {{ node.model.symbol_prefix }}_crsf_init(
+    {{ node.model.symbol_prefix }}_crsf_t *instance,
+    upal_uart_t *uart);
+void {{ node.model.symbol_prefix }}_crsf_process(
+    {{ node.model.symbol_prefix }}_crsf_t *instance);
+bool {{ node.model.symbol_prefix }}_crsf_read_rc(
+    {{ node.model.symbol_prefix }}_crsf_t *instance,
+    uproto_crsf_rc_t *sample);
+
+#endif

@@ -1,0 +1,22 @@
+/*
+ * {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}.h
+ * Generated CAN-stack instance wrapper. The selected upstream stack is a
+ * project dependency; the UEF transport adapter remains the reusable layer.
+ */
+#ifndef {{ node.model.symbol_prefix | upper }}_{{ node.subtype | upper }}_INSTANCE_H
+#define {{ node.model.symbol_prefix | upper }}_{{ node.subtype | upper }}_INSTANCE_H
+
+#include "uef/uproto/uproto_uavcan.h"
+
+typedef struct {
+    uproto_uavcan_t protocol;
+} {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_t;
+
+uef_status_t {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_init(
+    {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_t *instance,
+    upal_can_t *can,
+    uef_u8_t node_id);
+void {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_spin(
+    {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_t *instance);
+
+#endif

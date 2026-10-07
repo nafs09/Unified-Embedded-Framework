@@ -1,5 +1,5 @@
 /// @file src/uproto/uavcan.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uproto/uproto_uavcan.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uproto/uproto_uavcan.h.
 ///
 /// Implementation intent: Bind the selected DroneCAN/UAVCAN v0 transport and define bounded
 ///   transfer-ID and payload handling.

@@ -1,0 +1,32 @@
+{
+  "id": "stm32-h5",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32H5",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M33"
+  ],
+  "core_notes": "Phase 2; do not inherit H7 assumptions.",
+  "roadmap_phase": 2,
+  "catalogue_status": "future_roadmap",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32H563ZI"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "GPDMA",
+    "TrustZone",
+    "memory"
+  ],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

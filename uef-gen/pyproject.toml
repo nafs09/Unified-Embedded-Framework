@@ -21,4 +21,4 @@ uef-gen = "uef_gen.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-uef_gen = ["schemas/*.json", "uef_source/*.json", "uef_source/**/*"]
+uef_gen = ["schemas/*.json"]

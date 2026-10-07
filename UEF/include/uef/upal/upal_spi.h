@@ -1,5 +1,5 @@
 /// @file include/uef/upal/upal_spi.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UPAL_SPI_H
 #define UPAL_SPI_H

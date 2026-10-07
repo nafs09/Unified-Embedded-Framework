@@ -9,7 +9,12 @@
 #include <stdlib.h>
 
 void uapp_fault_report(uef_u32_t fault_code, const char* detail) {
-    /* Application recovery/logging policy is supplied by the product layer. */
+    /* TODO(UAPP nonfatal fault reporting): Add a bounded callback or fixed-capacity
+     * fault sink, define detail-string lifetime/truncation and concurrent-call rules,
+     * and connect recovery policy without allocating or blocking in an ISR. The
+     * current public signature has no sink/context registration, so this function
+     * intentionally does not claim that a recoverable fault was recorded.
+     */
     (void)fault_code;
     (void)detail;
 }

@@ -1,0 +1,34 @@
+{
+  "sources": [
+    "src/ucon/future/trajectory/optimization/minimum_snap_traj.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/future/trajectory/optimization/minimum_snap_traj.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "MINIMUM_SNAP_TRAJ",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_minimum_snap_traj_validate_limits",
+    "ucon_minimum_snap_traj_init",
+    "ucon_minimum_snap_traj_reset",
+    "ucon_minimum_snap_traj_plan",
+    "ucon_minimum_snap_traj_sample",
+    "ucon_minimum_snap_traj_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

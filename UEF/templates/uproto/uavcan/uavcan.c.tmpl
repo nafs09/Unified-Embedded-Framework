@@ -1,0 +1,26 @@
+/*
+ * {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}.c
+ * TODO: link the selected upstream dialect/stack, provide static stack
+ * storage, and implement bounded CAN RX/TX callbacks for this board.
+ */
+#include <stddef.h>
+#include "{{ node.model.symbol_prefix }}_{{ node.subtype | lower }}.h"
+
+uef_status_t {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_init(
+    {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_t *instance,
+    upal_can_t *can,
+    uef_u8_t node_id)
+{
+    if (instance == NULL || can == NULL) {
+        return UEF_INVALID_ARG;
+    }
+    return uproto_uavcan_init(&instance->protocol, can, node_id);
+}
+
+void {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_spin(
+    {{ node.model.symbol_prefix }}_{{ node.subtype | lower }}_t *instance)
+{
+    if (instance != NULL) {
+        uproto_uavcan_spin(&instance->protocol);
+    }
+}

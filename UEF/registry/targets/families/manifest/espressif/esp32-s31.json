@@ -1,0 +1,31 @@
+{
+  "id": "esp32-s31",
+  "vendor": "Espressif",
+  "family": "ESP32",
+  "series": "ESP32-S31",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "requires device datasheet"
+  ],
+  "core_notes": "Selector-listed; technical docs not assumed.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "vendor_listed_check_device",
+  "representative_parts": [
+    "ESP32-S31"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "verify architecture",
+    "orderability",
+    "ESP-IDF"
+  ],
+  "source_references": [
+    "esp_selector"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

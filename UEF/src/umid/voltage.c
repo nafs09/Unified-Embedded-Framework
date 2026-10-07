@@ -1,5 +1,5 @@
 /// @file src/umid/voltage.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_voltage.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_voltage.h.
 ///
 /// Implementation intent: Convert ADC values through the divider ratio and reference voltage,
 ///   preserving calibrated units.

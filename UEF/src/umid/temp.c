@@ -1,5 +1,5 @@
 /// @file src/umid/temp.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_temperature.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_temperature.h.
 ///
 /// Implementation intent: Keep thermocouple, thermistor, RTD, and MCU-temperature conversion
 ///   paths distinct and unit-labeled.

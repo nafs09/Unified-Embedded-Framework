@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/filtering/coefficient_design/chebyshev2.c"
+  ],
+  "headers": [
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/filtering/coefficient_design/chebyshev2.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "CHEBYSHEV2",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "A standard stop-band-ripple filter design is a common signal-conditioning option.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_chebyshev2_validate_spec",
+    "ucon_chebyshev2_estimate_order",
+    "ucon_chebyshev2_compute_poles_zeros",
+    "ucon_chebyshev2_pair_sections",
+    "ucon_chebyshev2_normalize_coefficients",
+    "ucon_chebyshev2_design"
+  ],
+  "project_relevance": [
+    "common"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

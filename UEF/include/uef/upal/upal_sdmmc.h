@@ -1,5 +1,5 @@
 /// @file include/uef/upal/upal_sdmmc.h
-/// @brief Declares the Phase 0 SD/MMC block-transfer boundary.
+/// @brief Declares the Phase 1 SD/MMC block-transfer boundary.
 
 #ifndef UEF_UPAL_SDMMC_H
 #define UEF_UPAL_SDMMC_H

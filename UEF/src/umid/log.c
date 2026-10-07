@@ -1,5 +1,5 @@
 /// @file src/umid/log.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_log.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_log.h.
 ///
 /// Implementation intent: Format into bounded caller-owned storage, enqueue without heap
 ///   allocation, and drain through the UART in a low-priority context.

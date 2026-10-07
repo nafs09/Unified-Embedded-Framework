@@ -1,0 +1,63 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "ucon",
+  "family": "estimation/observers",
+  "description": "Linear observer and disturbance-observer building blocks.",
+  "implementation_notes": "A catalogue summary is not a complete numerical/API contract. Purpose: Linear observer and disturbance-observer building blocks. Family contract work: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates. Before coding, define typed configuration and fixed-size state, dimensions and units, initialization/reset, aliasing, coefficient/model ownership, numeric conditioning and overflow behavior, deterministic worst-case work and memory, and state/output preservation on failure. Specify a direct C API first; add a UEF-owned generated wrapper only after the same behavior is implemented and reviewed. Keep registered=false and outputs empty.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/estimators/observers/dob.h",
+  "scaffold_source": "src/ucon/estimators/observers/dob.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/estimators/observers/dob",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "project_relevance": [
+    "first_pass"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_model",
+      "purpose": "Check plant matrices, dimensions, gain layout, and disturbance model.",
+      "todo": "State detectability/observability assumptions and gain ownership. Algorithm-specific focus: Linear observer and disturbance-observer building blocks."
+    },
+    {
+      "name": "init",
+      "purpose": "Initialize estimate and observer/disturbance states.",
+      "todo": "Define initial estimate and any required output history. Algorithm-specific focus: Linear observer and disturbance-observer building blocks."
+    },
+    {
+      "name": "reset",
+      "purpose": "Clear observer history or preload a documented state.",
+      "todo": "Specify bumpless reset and disturbance estimate handling. Algorithm-specific focus: Linear observer and disturbance-observer building blocks."
+    },
+    {
+      "name": "predict",
+      "purpose": "Propagate the model and predicted state.",
+      "todo": "Define sample time and discretization. Algorithm-specific focus: Linear observer and disturbance-observer building blocks."
+    },
+    {
+      "name": "correct",
+      "purpose": "Apply measured output/residual and observer injection.",
+      "todo": "Specify residual sign, disturbance channels, and gain convention. Algorithm-specific focus: Linear observer and disturbance-observer building blocks."
+    },
+    {
+      "name": "step",
+      "purpose": "Run one observer update and report estimate/residual validity.",
+      "todo": "Bound work and preserve prior state after numeric failure. Algorithm-specific focus: Linear observer and disturbance-observer building blocks."
+    }
+  ]
+}

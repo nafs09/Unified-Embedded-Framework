@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/umath/signal/windows.c"
+  ],
+  "headers": [
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/signal/windows.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core",
+    "umath/special/functions"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Project-priority mathematical scaffold; functions remain UMATH_NOT_IMPLEMENTED and are blocked from generation until implemented.",
+  "contract_status": "catalogue_only",
+  "phase": 0
+}

@@ -1,0 +1,39 @@
+{
+  "id": "stm32-f7",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32F7",
+  "parent_series": null,
+  "aliases": [
+    "stm32f7xx"
+  ],
+  "architectures": [
+    "Cortex-M7"
+  ],
+  "core_notes": "Phase 0 profile; SDMMC is Phase 1.",
+  "roadmap_phase": 0,
+  "catalogue_status": "phase0_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32F746ZG",
+    "STM32F722RE"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "M7 cache",
+    "USB HS",
+    "SDMMC"
+  ],
+  "source_references": [
+    "st_f7",
+    "st"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "stm32f7xx",
+  "additional_phase_targets": [
+    1
+  ]
+}

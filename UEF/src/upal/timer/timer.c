@@ -1,5 +1,5 @@
 /// @file src/upal/timer/timer.c
-/// @brief Source scaffold for the V1.1 public contract in uef/upal/upal_timer.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/upal/upal_timer.h.
 ///
 /// Implementation intent: Implement timebase, PWM, capture, and DMA output while checking timer
 ///   clock and counter-width assumptions.

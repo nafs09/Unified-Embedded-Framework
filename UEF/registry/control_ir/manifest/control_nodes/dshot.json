@@ -1,0 +1,28 @@
+{
+  "domain": "uproto",
+  "outputs": [
+    {
+      "template": "uproto/dshot/dshot.h.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_dshot.h"
+    },
+    {
+      "template": "uproto/dshot/dshot.c.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_dshot.c"
+    }
+  ],
+  "modules": [
+    "uproto/dshot"
+  ],
+  "features": [
+    "timer_dma",
+    "uart_transport",
+    "telemetry"
+  ],
+  "manual_actions": [
+    {
+      "code": "uproto_transport_binding",
+      "message": "Bind the generated DSHOT wrapper to the selected timer/DMA or UART instance, then measure symbol timing and idle levels on the target.",
+      "required_before_hardware_use": true
+    }
+  ]
+}

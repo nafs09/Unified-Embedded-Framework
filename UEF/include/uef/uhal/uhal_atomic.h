@@ -1,5 +1,5 @@
 /// @file include/uef/uhal/uhal_atomic.h
-/// @brief Public interface from the UEF Architecture and API Specification V1.1.
+/// @brief Public interface from the UEF Architecture and API Specification V1.2.
 
 #ifndef UHAL_ATOMIC_H
 #define UHAL_ATOMIC_H
@@ -10,7 +10,11 @@ extern "C" {
 
 #include "uef/ucore/uef_types.h"
 
-/* Compare-and-swap — LDREX/STREX on Cortex-M3+ */
+/* Full-barrier 32-bit operations on naturally aligned uef_u32_t objects.
+ * The Cortex-M backend currently serializes each operation with a brief PRIMASK
+ * critical section, so it is safe across tasks and maskable ISRs on one core.
+ * Calls from NMI/fault handlers and multicore sharing are outside this contract.
+ */
 bool     uhal_atomic_cas_u32(volatile uef_u32_t* target,
                                uef_u32_t expected, uef_u32_t desired);
 uef_u32_t uhal_atomic_fetch_add_u32(volatile uef_u32_t* target, uef_u32_t val);

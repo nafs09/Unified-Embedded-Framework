@@ -1,0 +1,61 @@
+{
+  "id": "esp32-s3fn8",
+  "vendor": "Espressif",
+  "family_id": "esp32-s3",
+  "series": "ESP32-S3",
+  "part_number": "ESP32-S3FN8",
+  "aliases": [],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Xtensa LX7",
+    "isa": "Xtensa",
+    "count": 2,
+    "fpu": "single",
+    "max_frequency_hz": 240000000
+  },
+  "package": {
+    "name": "QFN56",
+    "pin_count": 56
+  },
+  "memory": {
+    "flash_bytes": 8388608,
+    "sram_bytes": 524288,
+    "rtc_sram_bytes": 16384,
+    "notes": "8 MiB in-package Quad SPI flash, 512 KiB SRAM and 16 KiB RTC SRAM."
+  },
+  "peripheral_groups": [
+    "GDMA",
+    "USB",
+    "SDMMC",
+    "TWAI",
+    "MCPWM",
+    "SPI",
+    "I2C",
+    "I2S",
+    "UART",
+    "ADC",
+    "TOUCH",
+    "WIFI",
+    "BLUETOOTH_LE"
+  ],
+  "source_references": [
+    {
+      "title": "Espressif ESP32-S3 series datasheet",
+      "url": "https://documentation.espressif.com/esp32_s3_datasheet_en.pdf"
+    },
+    {
+      "title": "Espressif ESP32-S3 chip/package page",
+      "url": "https://www.espressif.com/en/chip/esp32-s3-en"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "in_package_flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "ESP-IDF target, not Cortex-M. Radio and ESP-IDF build/startup need a dedicated backend."
+}

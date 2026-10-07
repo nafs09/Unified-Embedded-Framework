@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/upal/fdcan_fd/fdcan_fd.c"
+  ],
+  "dependencies": [
+    "uhal",
+    "upal/dma"
+  ],
+  "requires_cap": [
+    "fdcan"
+  ],
+  "phase": 1,
+  "scaffold_only": true,
+  "headers": [
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/upal/upal_fdcan_fd.h"
+  ]
+}

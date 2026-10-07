@@ -1,0 +1,35 @@
+{
+  "id": "stm32-f4",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32F4",
+  "parent_series": null,
+  "aliases": [
+    "stm32f4xx"
+  ],
+  "architectures": [
+    "Cortex-M4F"
+  ],
+  "core_notes": "Phase 0 family scaffold only.",
+  "roadmap_phase": 0,
+  "catalogue_status": "phase0_family_scaffold",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "STM32F407VG"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "DMA",
+    "bxCAN/FDCAN",
+    "clocks/pins"
+  ],
+  "source_references": [
+    "st",
+    "st_mpu"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": true,
+  "uef_c_profile_key": "stm32f4xx"
+}

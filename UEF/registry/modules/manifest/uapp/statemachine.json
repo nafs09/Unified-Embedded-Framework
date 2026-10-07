@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "src/uapp/statemachine.c"
+  ],
+  "dependencies": [],
+  "headers": [
+    "include/uef/uapp/uapp_statemachine.h",
+    "include/uef/ucore/uef_types.h"
+  ]
+}

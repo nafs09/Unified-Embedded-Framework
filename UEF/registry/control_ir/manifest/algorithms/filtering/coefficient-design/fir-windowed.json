@@ -1,0 +1,63 @@
+{
+  "priority": "PLANNED",
+  "registered": false,
+  "direct_use": false,
+  "renderable": false,
+  "domain": "filtering",
+  "family": "filtering/coefficient_design",
+  "description": "Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR.",
+  "implementation_notes": "Design windowed-sinc FIR coefficients only; runtime convolution is the separate FIR entry. Define pass/stop edges, window selection, normalization, tap count, fixed output capacity, and design failure behavior. Define typed state/configuration, units, numerical limits, bounded work/memory, and state preservation before registration.",
+  "outputs": [],
+  "modules": [],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [],
+  "scaffold_header": "include/uef/ucon/filtering/coefficient_design/fir_windowed.h",
+  "scaffold_source": "src/ucon/filtering/coefficient_design/fir_windowed.c",
+  "spec_section": "Part XVI",
+  "scaffold_stage": "initial",
+  "scaffold_module": "ucon/filtering/coefficient_design/fir_windowed",
+  "scaffold_reason": "Windowed FIR design is a common finite-memory filtering option for sensor and measurement paths.",
+  "project_relevance": [
+    "common"
+  ],
+  "contract_status": "catalogue_only",
+  "review_gaps": [
+    "No typed configuration/state API or executable algorithm behavior exists; generated operation bodies intentionally return UCON_NOT_IMPLEMENTED.",
+    "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
+    "Design windowed-sinc FIR coefficients only; runtime convolution is the separate FIR entry. Define pass/stop edges, window selection, normalization, tap count, fixed output capacity, and design failure behavior."
+  ],
+  "scaffold_outline_version": 4,
+  "scaffold_operations": [
+    {
+      "name": "validate_spec",
+      "purpose": "Check response type, edges, ripple/attenuation, and order.",
+      "todo": "Declare normalized-frequency units and impossible-spec result. Algorithm-specific focus: Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR."
+    },
+    {
+      "name": "estimate_order",
+      "purpose": "Determine or validate the order for the chosen response.",
+      "todo": "Distinguish caller-fixed order from automatic order selection. Algorithm-specific focus: Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR."
+    },
+    {
+      "name": "compute_poles_zeros",
+      "purpose": "Compute prototype roots and requested response transform.",
+      "todo": "Specify bilinear/prewarp or alternative transform and precision limits. Algorithm-specific focus: Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR."
+    },
+    {
+      "name": "pair_sections",
+      "purpose": "Pair roots into fixed first/second-order sections.",
+      "todo": "Define conjugate pairing, ordering, stability, and coefficient range. Algorithm-specific focus: Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR."
+    },
+    {
+      "name": "normalize_coefficients",
+      "purpose": "Normalize gain at a declared reference frequency.",
+      "todo": "Prevent overflow/underflow and verify stability. Algorithm-specific focus: Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR."
+    },
+    {
+      "name": "design",
+      "purpose": "Publish coefficients only after complete successful design.",
+      "todo": "Define output layout and no-partial-write behavior. Algorithm-specific focus: Windowed-sinc FIR coefficient design using a selected window; runtime convolution is provided by FIR."
+    }
+  ]
+}

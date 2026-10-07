@@ -1,5 +1,5 @@
 /// @file src/umid/imu.c
-/// @brief Source scaffold for the V1.1 public contract in uef/umid/umid_imu.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/umid/umid_imu.h.
 ///
 /// Implementation intent: Implement sensor-specific register setup, calibration, and
 ///   timestamped samples; keep bus errors visible to callers.

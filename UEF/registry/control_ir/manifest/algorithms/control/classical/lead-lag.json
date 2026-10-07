@@ -1,0 +1,37 @@
+{
+  "priority": "FIRST_PASS",
+  "registered": true,
+  "direct_use": true,
+  "renderable": true,
+  "domain": "ucon",
+  "family": "control/classical",
+  "description": "Discrete lead-lag compensator, with cascaded sections supported by composition.",
+  "implementation_notes": "Implemented in the generic C API and exposed through a thin named wrapper. The application still supplies validated typed configuration and maps ControlIR ports to wrapper arguments.",
+  "outputs": [
+    {
+      "template": "ucon/wrappers/lead_lag.h.tmpl",
+      "output": "ucon/{{ node.model.symbol_prefix }}_lead_lag.h"
+    }
+  ],
+  "modules": [
+    "ucon/core",
+    "ucon/control/lead_lag"
+  ],
+  "numerics": [],
+  "features": [],
+  "manual_actions": [
+    {
+      "code": "ucon_configuration_and_port_binding",
+      "message": "Populate the typed UCON configuration from ControlIR design values, connect graph input/output ports to the generated wrapper, and verify units, sample time, limits, and anti-windup tracking before target use.",
+      "required_before_hardware_use": true
+    }
+  ],
+  "spec_section": "Part XVI",
+  "api_header": "uef/ucon/control/lead_lag.h",
+  "api_functions": [
+    "ucon_lead_lag_init",
+    "ucon_lead_lag_reset",
+    "ucon_lead_lag_step"
+  ],
+  "contract_status": "implemented_review_required"
+}

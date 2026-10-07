@@ -1,0 +1,27 @@
+{
+  "id": "stm32-v8",
+  "vendor": "STMicroelectronics",
+  "family": "STM32",
+  "series": "STM32V8",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M85"
+  ],
+  "core_notes": "Preannouncement; non-selectable watch entry.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "preannounced",
+  "representative_parts": [],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "await orderable docs"
+  ],
+  "source_references": [
+    "st"
+  ],
+  "exact_part_specs_registered": [],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uef_c_profile_registered": false
+}

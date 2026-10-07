@@ -1,0 +1,36 @@
+{
+  "sources": [
+    "src/ucon/control/nonlinear/clf_qp.c"
+  ],
+  "headers": [
+    "include/uef/ucon/control/nonlinear/clf_qp.h",
+    "include/uef/ucon/detail/algorithm_call.h",
+    "include/uef/ucon/ucon_status.h",
+    "include/uef/ucon/ucon_types.h",
+    "include/uef/ucore/uef_types.h",
+    "include/uef/umath/scalar.h",
+    "include/uef/umath/status.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "CLF_QP",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "A CLF QP is a relevant constrained stabilization option for flight-control studies.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_clf_qp_validate_model",
+    "ucon_clf_qp_init",
+    "ucon_clf_qp_reset",
+    "ucon_clf_qp_compute_surface",
+    "ucon_clf_qp_compute_control",
+    "ucon_clf_qp_step"
+  ],
+  "project_relevance": [
+    "drone"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

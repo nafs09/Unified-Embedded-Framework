@@ -1,0 +1,28 @@
+{
+  "domain": "uproto",
+  "outputs": [
+    {
+      "template": "uproto/mavlink/mavlink.h.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_mavlink.h"
+    },
+    {
+      "template": "uproto/mavlink/mavlink.c.tmpl",
+      "output": "uproto/{{ node.model.symbol_prefix }}_mavlink.c"
+    }
+  ],
+  "modules": [
+    "uproto/mavlink"
+  ],
+  "features": [
+    "stream_read",
+    "stream_write",
+    "external_dialect"
+  ],
+  "manual_actions": [
+    {
+      "code": "uproto_external_dialect_required",
+      "message": "Select and add the MAVLink dialect/message definitions required by this vehicle, then bind the UEF stream hooks and verify framing, IDs, and message permissions.",
+      "required_before_hardware_use": true
+    }
+  ]
+}

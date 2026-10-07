@@ -1,5 +1,5 @@
 /// @file src/uproto/sbus.c
-/// @brief Source scaffold for the V1.1 public contract in uef/uproto/uproto_sbus.h.
+/// @brief Source scaffold for the V1.2 public contract in uef/uproto/uproto_sbus.h.
 ///
 /// Implementation intent: Decode the fixed SBUS frame, validate framing flags, and publish
 ///   channels only after a complete frame.

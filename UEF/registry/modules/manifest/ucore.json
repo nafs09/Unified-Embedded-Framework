@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/ucore/assert.c",
+    "src/ucore/bitops.c",
+    "src/ucore/checksum.c",
+    "src/ucore/status.c"
+  ],
+  "headers": [
+    "include/uef/ucore/bitops.h",
+    "include/uef/ucore/checksum.h",
+    "include/uef/ucore/uef_assert.h",
+    "include/uef/ucore/uef_status.h",
+    "include/uef/ucore/uef_types.h"
+  ],
+  "dependencies": []
+}
