@@ -13,47 +13,62 @@ extern "C" {
 /// Roadmap priority: FIRST_PASS.
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
-/// Check state/measurement dimensions, model callbacks, and covariance assumptions.
-/// TODO(SCALAR_KF.validate_model): Reject invalid shapes before state changes; specify PSD
-/// and conditioning policy. Algorithm-specific focus:
-/// One-state linear Kalman filter for a scalar process and
-/// measurement model; keep it distinct from alpha-beta
-/// tracking filters.
+/// Validate the one-state scalar process and measurement model.
+/// TODO(SCALAR_KF.validate_model): 1) Check finite transition/input/measurement gains and
+/// nonnegative process variance/P0 plus valid measurement
+/// variance. 2) Confirm scalar sample-time and
+/// missing-measurement conventions. 3) Reject a nonfinite or
+/// nonpositive innovation variance before any state write;
+/// keep this API distinct from alpha-beta tracking.
+/// Algorithm-specific focus: One-state linear Kalman filter
+/// for a scalar process and measurement model; keep it
+/// distinct from alpha-beta tracking filters.
 ucon_status_t ucon_scalar_kf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
-/// Initialize estimate, covariance, and fixed workspace.
-/// TODO(SCALAR_KF.init): Define initial-state ownership, covariance seed, and factorization
-/// failure. Algorithm-specific focus: One-state linear Kalman filter
-/// for a scalar process and measurement model; keep it distinct from
-/// alpha-beta tracking filters.
+/// Initialize scalar estimate, variance, and timestamp state.
+/// TODO(SCALAR_KF.init): 1) Copy x0 and P0 into local candidates. 2) Check finite estimate
+/// and nonnegative finite variance and initialize freshness/diagnostic
+/// flags. 3) Publish only after validation succeeds. Algorithm-specific
+/// focus: One-state linear Kalman filter for a scalar process and
+/// measurement model; keep it distinct from alpha-beta tracking
+/// filters.
 ucon_status_t ucon_scalar_kf_init(const ucon_algorithm_scaffold_call_t *call);
 
-/// Reset estimator history under a documented seed policy.
-/// TODO(SCALAR_KF.reset): Specify whether nominal estimate/model context is retained.
-/// Algorithm-specific focus: One-state linear Kalman filter for a
-/// scalar process and measurement model; keep it distinct from
+/// Reset scalar history under the documented caller seed policy.
+/// TODO(SCALAR_KF.reset): 1) Clear timestamp, last innovation, and measurement freshness. 2)
+/// Restore explicit x0/P0 seeds while retaining model coefficients. 3)
+/// Reject absent/invalid seeds without partially resetting the live
+/// estimate. Algorithm-specific focus: One-state linear Kalman filter
+/// for a scalar process and measurement model; keep it distinct from
 /// alpha-beta tracking filters.
 ucon_status_t ucon_scalar_kf_reset(const ucon_algorithm_scaffold_call_t *call);
 
-/// Propagate estimate and uncertainty over one declared interval.
-/// TODO(SCALAR_KF.predict): Define discretization, process-noise timing, and stable
-/// covariance update. Algorithm-specific focus: One-state linear
+/// Propagate scalar state and uncertainty for one interval.
+/// TODO(SCALAR_KF.predict): 1) Compute x_pred=a*x+b*u with the declared input alignment. 2)
+/// Compute P_pred=a*a*P+Q_d using the selected noise timing. 3)
+/// Check finite/nonnegative results, then commit estimate and
+/// variance together. Algorithm-specific focus: One-state linear
 /// Kalman filter for a scalar process and measurement model; keep it
 /// distinct from alpha-beta tracking filters.
 ucon_status_t ucon_scalar_kf_predict(const ucon_algorithm_scaffold_call_t *call);
 
-/// Apply a timestamped measurement and compute innovation diagnostics.
-/// TODO(SCALAR_KF.correct): Define gating, missing-channel behavior, and failure atomicity.
-/// Algorithm-specific focus: One-state linear Kalman filter for a
-/// scalar process and measurement model; keep it distinct from
-/// alpha-beta tracking filters.
+/// Apply one scalar measurement with gating and stable variance update.
+/// TODO(SCALAR_KF.correct): 1) Compute innovation ν=z−h*x_pred and S=h*h*P_pred+R; reject
+/// invalid S. 2) Compute K=P_pred*h/S and apply the configured
+/// normalized-innovation gate. 3) Update x and scalar Joseph
+/// variance (1−K*h)^2 P_pred+K^2 R; commit only a finite nonnegative
+/// candidate. Algorithm-specific focus: One-state linear Kalman
+/// filter for a scalar process and measurement model; keep it
+/// distinct from alpha-beta tracking filters.
 ucon_status_t ucon_scalar_kf_correct(const ucon_algorithm_scaffold_call_t *call);
 
-/// Run prediction and optional correction in a fixed documented order.
-/// TODO(SCALAR_KF.step): Handle asynchronous samples explicitly; do not synthesize missing
-/// measurements. Algorithm-specific focus: One-state linear Kalman
-/// filter for a scalar process and measurement model; keep it distinct
-/// from alpha-beta tracking filters.
+/// Run one timestamped scalar prediction and optional correction.
+/// TODO(SCALAR_KF.step): 1) Validate sample time and derive dt. 2) Predict exactly once. 3)
+/// Correct only when the measurement-present flag is set; do not
+/// substitute zero for a missing sample. 4) Publish estimate, variance,
+/// and timestamp atomically after success. Algorithm-specific focus:
+/// One-state linear Kalman filter for a scalar process and measurement
+/// model; keep it distinct from alpha-beta tracking filters.
 ucon_status_t ucon_scalar_kf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

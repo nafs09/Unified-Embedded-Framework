@@ -16,9 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(NMPC_RTI.validate_problem): Define one-SQP-step assumptions and fixed workspace.
- * Algorithm-specific focus: One SQP/RTI preparation and
- * feedback step per control sample.
+/* TODO(NMPC_RTI.validate_problem): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check nonlinear model,
+ * horizon, constraints, and QP backend. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define one-SQP-step
+ * assumptions and fixed workspace. Algorithm-specific focus:
+ * One SQP/RTI preparation and feedback step per control
+ * sample.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nmpc_rti_validate_problem(const ucon_algorithm_scaffold_call_t *call)
@@ -29,8 +37,15 @@ ucon_status_t ucon_nmpc_rti_validate_problem(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NMPC_RTI.init): Define feasible warm start and model context. Algorithm-specific
- * focus: One SQP/RTI preparation and feedback step per control sample.
+/* TODO(NMPC_RTI.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize trajectory, multipliers, and linearization workspace. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define feasible warm start and model context.
+ * Algorithm-specific focus: One SQP/RTI preparation and feedback step
+ * per control sample.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nmpc_rti_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,8 +56,15 @@ ucon_status_t ucon_nmpc_rti_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NMPC_RTI.reset): Specify recovery after a missed sample. Algorithm-specific focus: One
- * SQP/RTI preparation and feedback step per control sample.
+/* TODO(NMPC_RTI.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear warm start and preparation/feedback phase state. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Specify recovery after a missed sample.
+ * Algorithm-specific focus: One SQP/RTI preparation and feedback step
+ * per control sample.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nmpc_rti_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -53,9 +75,16 @@ ucon_status_t ucon_nmpc_rti_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NMPC_RTI.prepare_step): Define preparation budget and data snapshot.
- * Algorithm-specific focus: One SQP/RTI preparation and feedback
- * step per control sample.
+/* TODO(NMPC_RTI.prepare_step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Linearize/discretize the nonlinear problem and assemble one
+ * bounded QP. 3) Check numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define
+ * preparation budget and data snapshot. Algorithm-specific
+ * focus: One SQP/RTI preparation and feedback step per control
+ * sample.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nmpc_rti_prepare_step(const ucon_algorithm_scaffold_call_t *call)
@@ -66,9 +95,16 @@ ucon_status_t ucon_nmpc_rti_prepare_step(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NMPC_RTI.feedback_step): Define deadline, solver status, and missed-preparation
- * behavior. Algorithm-specific focus: One SQP/RTI preparation
- * and feedback step per control sample.
+/* TODO(NMPC_RTI.feedback_step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or
+ * state. 2) Solve/apply the prepared QP correction and verify
+ * constraints. 3) Check numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define
+ * deadline, solver status, and missed-preparation behavior.
+ * Algorithm-specific focus: One SQP/RTI preparation and
+ * feedback step per control sample.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nmpc_rti_feedback_step(const ucon_algorithm_scaffold_call_t *call)
@@ -79,8 +115,15 @@ ucon_status_t ucon_nmpc_rti_feedback_step(const ucon_algorithm_scaffold_call_t *
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NMPC_RTI.step): Never reuse stale preparation silently. Algorithm-specific focus: One
- * SQP/RTI preparation and feedback step per control sample.
+/* TODO(NMPC_RTI.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Coordinate one real-time iteration using the declared preparation
+ * result. 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Never reuse stale preparation
+ * silently. Algorithm-specific focus: One SQP/RTI preparation and
+ * feedback step per control sample.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nmpc_rti_step(const ucon_algorithm_scaffold_call_t *call)

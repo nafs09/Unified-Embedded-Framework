@@ -28,37 +28,38 @@
     "Define the augmented disturbance state, observer bandwidth, input gain/sign, controller law, saturation, and whether ESO is reused or composed as a distinct module.",
     "Specify the augmented disturbance state, observer bandwidth, input gain/sign, controller law, saturation, and whether the generic ESO is reused or composed as a distinct instance."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
       "purpose": "Check plant/input gain and disturbance-state model.",
-      "todo": "State bandwidth, sign, and matched-disturbance assumptions. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check plant/input gain and disturbance-state model. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: State bandwidth, sign, and matched-disturbance assumptions. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
     },
     {
       "name": "init",
       "purpose": "Initialize observer and controller state.",
-      "todo": "Define state seed and bounded observer transient. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize observer and controller state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define state seed and bounded observer transient. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
     },
     {
       "name": "reset",
       "purpose": "Reset disturbance estimate and controller history.",
-      "todo": "Specify bumpless restart behavior. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Reset disturbance estimate and controller history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify bumpless restart behavior. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
     },
     {
       "name": "update_observer",
       "purpose": "Update extended-state/disturbance estimate.",
-      "todo": "Define discretization, noise sensitivity, and estimation limits. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Update extended-state/disturbance estimate. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define discretization, noise sensitivity, and estimation limits. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
     },
     {
       "name": "compute_control",
       "purpose": "Compute a bounded command from reference and estimates.",
-      "todo": "Define compensation sign, actuator saturation, and fallback interface. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute a bounded command from reference and estimates. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define compensation sign, actuator saturation, and fallback interface. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
     },
     {
       "name": "step",
       "purpose": "Run observer and controller in the specified order.",
-      "todo": "Commit state only after all checks succeed. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run observer and controller in the specified order. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Commit state only after all checks succeed. Algorithm-specific focus: Active disturbance rejection controller composed around a declared extended-state observer (ESO)."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/control/disturbance_rejection/adrc.h.tmpl"
 }

@@ -28,42 +28,42 @@
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
     "Use the third-degree spherical-radial cubature rule specified in Part XVI. Remove the stale Gauss-Hermite wording from the specification before claiming consistency."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
-      "purpose": "Validate nonlinear models and covariance dimensions.",
-      "todo": "Use the third-degree spherical-radial cubature rule, never Gauss-Hermite points. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Validate nonlinear models and covariance dimensions for the third-degree rule.",
+      "todo": "1) Check f/h/J-independent callback dimensions, covariance/noise shapes, and finite values. 2) Require a factorable PSD covariance and bound n so 2n points fit fixed workspace. 3) Specify spherical-radial ordering/weight convention; do not substitute Gauss-Hermite points. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     },
     {
       "name": "init",
-      "purpose": "Initialize estimate, covariance, and fixed point workspace.",
-      "todo": "Define positive-semidefinite covariance and factorization failure. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Initialize estimate, covariance, and fixed cubature-point workspace.",
+      "todo": "1) Copy x0/P0 to candidates and verify dimensions and finite entries. 2) Factor P0 using the declared PSD/rank policy and check capacity for 2n points. 3) Initialize timestamp/diagnostics and publish only after all steps succeed. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     },
     {
       "name": "reset",
-      "purpose": "Reset estimate/covariance history.",
-      "todo": "Define model-context retention. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Reset state and covariance without changing the model bank.",
+      "todo": "1) Clear timestamp, measurement freshness, and innovation diagnostics. 2) Restore caller-provided x0/P0 and retain model callbacks/configuration. 3) Re-factor the seed covariance and commit only when the factor is valid. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     },
     {
       "name": "generate_cubature_points",
-      "purpose": "Generate points from the covariance factor.",
-      "todo": "Pin the 2*n point ordering and equal weights for this cubature rule. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Generate the third-degree spherical-radial 2n-point set.",
+      "todo": "1) Factor P=L Lᵀ using the pinned orientation. 2) For each column i emit x+√n L_i then x−√n L_i in fixed order. 3) Assign equal weight 1/(2n), check finite points, and never generate a 2n+1 or Gauss-Hermite set. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     },
     {
       "name": "predict",
-      "purpose": "Propagate points through the process model and recover predicted moments.",
-      "todo": "Preserve covariance symmetry/PSD and bound point count. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Propagate cubature points and recover predicted state/covariance moments.",
+      "todo": "1) Generate points from the prior and evaluate f for each point with the same input/time interval. 2) Compute the equal-weight mean and covariance of propagated deviations, then add declared Q_d. 3) Validate finite/PSD covariance, symmetrize round-off only, and commit the predicted candidate. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     },
     {
       "name": "correct",
-      "purpose": "Compute measurement moments, innovation, and cross covariance.",
-      "todo": "Define solve/gating/rejected-measurement policy. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Compute measurement moments, innovation covariance, and state/measurement cross covariance.",
+      "todo": "1) Generate points from the predicted state and evaluate h for each. 2) Accumulate predicted measurement mean, S including R, and P_xz using equal weights. 3) Factor S, solve for gain, apply the configured innovation gate, and update state/covariance. 4) Preserve the prediction on solve, gate, or PSD failure. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     },
     {
       "name": "step",
-      "purpose": "Run prediction and optional measurement correction.",
-      "todo": "Do not publish partial state after factorization failure. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
+      "purpose": "Run one cubature prediction and optional correction transaction.",
+      "todo": "1) Validate time/order and stage prediction using exactly 2n points. 2) Correct only present channels using the same fixed point rule. 3) Check every intermediate and covariance before publication. 4) Commit timestamp/state/diagnostics together or preserve the last complete state. Algorithm-specific focus: Cubature Kalman filter using the third-degree spherical-radial cubature rule; it is not a Gauss-Hermite filter."
     }
   ]
 }

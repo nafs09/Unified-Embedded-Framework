@@ -14,41 +14,80 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check sensor dimensions, frames, timing, and noise parameters.
-/// TODO(INS_GNSS.validate_config): Distinguish raw observables from position/velocity fixes.
+/// TODO(INS_GNSS.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check sensor dimensions,
+/// frames, timing, and noise parameters. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Distinguish raw
+/// observables from position/velocity fixes.
 /// Algorithm-specific focus: Strapdown inertial propagation
 /// with a loosely coupled position/velocity GNSS update.
 ucon_status_t ucon_ins_gnss_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize navigation state, covariance, and sensor history.
-/// TODO(INS_GNSS.init): Define alignment and initial-uncertainty requirements.
+/// TODO(INS_GNSS.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize navigation state, covariance, and sensor history. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define alignment and initial-uncertainty requirements.
 /// Algorithm-specific focus: Strapdown inertial propagation with a
 /// loosely coupled position/velocity GNSS update.
 ucon_status_t ucon_ins_gnss_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset filter history for the selected coupling mode.
-/// TODO(INS_GNSS.reset): Define recovery after invalid IMU/GNSS intervals. Algorithm-specific
-/// focus: Strapdown inertial propagation with a loosely coupled
-/// position/velocity GNSS update.
+/// TODO(INS_GNSS.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Reset filter history for the selected coupling mode. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define recovery after invalid IMU/GNSS intervals.
+/// Algorithm-specific focus: Strapdown inertial propagation with a
+/// loosely coupled position/velocity GNSS update.
 ucon_status_t ucon_ins_gnss_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate state/covariance over one IMU interval.
-/// TODO(INS_GNSS.propagate_imu): Define integration, bias, gravity/coordinate model, and gap
+/// TODO(INS_GNSS.propagate_imu): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Propagate state/covariance over one IMU
+/// interval. 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// integration, bias, gravity/coordinate model, and gap
 /// handling. Algorithm-specific focus: Strapdown inertial
 /// propagation with a loosely coupled position/velocity GNSS
 /// update.
 ucon_status_t ucon_ins_gnss_propagate_imu(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply a fix or raw-observable measurement update.
-/// TODO(INS_GNSS.update_gnss): Define lever arm, time alignment, validity, and
-/// rejected-satellite behavior. Algorithm-specific focus:
-/// Strapdown inertial propagation with a loosely coupled
-/// position/velocity GNSS update.
+/// TODO(INS_GNSS.update_gnss): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Apply a fix or raw-observable measurement update. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define lever arm, time
+/// alignment, validity, and rejected-satellite behavior.
+/// Algorithm-specific focus: Strapdown inertial propagation with
+/// a loosely coupled position/velocity GNSS update.
 ucon_status_t ucon_ins_gnss_update_gnss(const ucon_algorithm_scaffold_call_t *call);
 
 /// Coordinate IMU propagation with available GNSS updates.
-/// TODO(INS_GNSS.step): Bound measurements and preserve the prior solution on failure.
-/// Algorithm-specific focus: Strapdown inertial propagation with a
-/// loosely coupled position/velocity GNSS update.
+/// TODO(INS_GNSS.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Coordinate IMU propagation with available GNSS updates. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Bound measurements and preserve the prior solution on
+/// failure. Algorithm-specific focus: Strapdown inertial propagation
+/// with a loosely coupled position/velocity GNSS update.
 ucon_status_t ucon_ins_gnss_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

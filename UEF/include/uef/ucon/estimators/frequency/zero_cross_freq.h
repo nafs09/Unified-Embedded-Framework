@@ -14,44 +14,89 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check hysteresis, minimum/maximum period, and sample rate.
-/// TODO(ZERO_CROSS_FREQ.validate_config): Define units, polarity, and valid crossing
-/// interval. Algorithm-specific focus: Frequency
-/// estimator based on qualified zero-crossing events,
-/// hysteresis, and a declared period/window estimator.
+/// TODO(ZERO_CROSS_FREQ.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check hysteresis,
+/// minimum/maximum period, and sample rate. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define units, polarity, and valid
+/// crossing interval. Algorithm-specific focus:
+/// Frequency estimator based on qualified
+/// zero-crossing events, hysteresis, and a declared
+/// period/window estimator.
 ucon_status_t ucon_zero_cross_freq_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize crossing detector and period history.
-/// TODO(ZERO_CROSS_FREQ.init): Specify first-crossing acquisition and invalid initial
-/// estimate. Algorithm-specific focus: Frequency estimator based
-/// on qualified zero-crossing events, hysteresis, and a declared
-/// period/window estimator.
+/// TODO(ZERO_CROSS_FREQ.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Initialize crossing detector and period history. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify first-crossing
+/// acquisition and invalid initial estimate. Algorithm-specific
+/// focus: Frequency estimator based on qualified zero-crossing
+/// events, hysteresis, and a declared period/window estimator.
 ucon_status_t ucon_zero_cross_freq_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear event history and frequency validity.
-/// TODO(ZERO_CROSS_FREQ.reset): Define reacquisition after a gap. Algorithm-specific focus:
+/// TODO(ZERO_CROSS_FREQ.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Clear event history and frequency validity. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define
+/// reacquisition after a gap. Algorithm-specific focus:
 /// Frequency estimator based on qualified zero-crossing events,
 /// hysteresis, and a declared period/window estimator.
 ucon_status_t ucon_zero_cross_freq_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Detect a qualified threshold crossing with hysteresis.
-/// TODO(ZERO_CROSS_FREQ.detect_crossing): Specify interpolation/timestamp precision and rearm
-/// behavior. Algorithm-specific focus: Frequency
-/// estimator based on qualified zero-crossing events,
-/// hysteresis, and a declared period/window estimator.
+/// TODO(ZERO_CROSS_FREQ.detect_crossing): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Detect a qualified
+/// threshold crossing with hysteresis. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Specify interpolation/timestamp
+/// precision and rearm behavior. Algorithm-specific
+/// focus: Frequency estimator based on qualified
+/// zero-crossing events, hysteresis, and a declared
+/// period/window estimator.
 ucon_status_t ucon_zero_cross_freq_detect_crossing(const ucon_algorithm_scaffold_call_t *call);
 
 /// Update period/frequency from accepted crossing timestamps.
-/// TODO(ZERO_CROSS_FREQ.update_period): Define averaging, rejection, and frequency bounds.
+/// TODO(ZERO_CROSS_FREQ.update_period): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Update period/frequency
+/// from accepted crossing timestamps. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define
+/// averaging, rejection, and frequency bounds.
 /// Algorithm-specific focus: Frequency estimator based
 /// on qualified zero-crossing events, hysteresis, and a
 /// declared period/window estimator.
 ucon_status_t ucon_zero_cross_freq_update_period(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one sample and report estimate validity.
-/// TODO(ZERO_CROSS_FREQ.step): Do not report frequency before enough valid events exist.
-/// Algorithm-specific focus: Frequency estimator based on
-/// qualified zero-crossing events, hysteresis, and a declared
-/// period/window estimator.
+/// TODO(ZERO_CROSS_FREQ.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Process one sample and report estimate validity. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Do not report frequency
+/// before enough valid events exist. Algorithm-specific focus:
+/// Frequency estimator based on qualified zero-crossing events,
+/// hysteresis, and a declared period/window estimator.
 ucon_status_t ucon_zero_cross_freq_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

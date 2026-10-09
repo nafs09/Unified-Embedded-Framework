@@ -2,6 +2,7 @@
 /// @brief Allocation-free scalar polynomial evaluation and calculus.
 #ifndef UEF_UMATH_POLYNOMIAL_H
 #define UEF_UMATH_POLYNOMIAL_H
+#include <uef/umath/config.h>
 
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>

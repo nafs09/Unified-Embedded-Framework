@@ -6,6 +6,7 @@
 - [x] Keep one header/source pair per unregistered catalog algorithm, grouped by domain/family rather than aggregating unrelated algorithms into family files.
 - [x] Place first-pass and project-relevant planned placeholders in normal family directories; put the remaining planned and every deferred placeholder under `ucon/future/`.
 - [x] Give each placeholder a detailed `TODO(UCON-KEY)` covering the catalog's algorithm summary, declared features/numerics/modules/actions, and the contract decisions still required.
+- [x] Generate a TODO-only wrapper-template scaffold for every unregistered `FIRST_PASS` algorithm, including its function-level implementation checklist; keep it out of manifest outputs until the typed API and ControlIR mapping are reviewed.
 - [x] Register each placeholder's unique file pair and module in UEF metadata, and mark the module as non-selectable scaffolding.
 - [x] Have uef-gen verify the manifest/file/module registration and reject unregistered algorithms before staging output.
 

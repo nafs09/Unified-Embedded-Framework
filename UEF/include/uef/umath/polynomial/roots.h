@@ -2,6 +2,7 @@
 /// @brief Planned bounded real and complex polynomial root solvers.
 #ifndef UEF_UMATH_POLYNOMIAL_ROOTS_H
 #define UEF_UMATH_POLYNOMIAL_ROOTS_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/umath/complex.h>
 #ifdef __cplusplus

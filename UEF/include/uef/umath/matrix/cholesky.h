@@ -2,6 +2,7 @@
 /// @brief In-place Cholesky factorization and triangular solve.
 #ifndef UEF_UMATH_MATRIX_CHOLESKY_H
 #define UEF_UMATH_MATRIX_CHOLESKY_H
+#include <uef/umath/config.h>
 
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>

@@ -14,12 +14,12 @@ uef_status_t upal_timer_init_timebase(
     const upal_timer_hw_t* hw,
     uef_u32_t period_us
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Validate
-     * channel/pin mapping and period bounds; define capture rollover, PWM scaling, and DMA
-     * sample lifetime.
-     */
+    /* TODO(upal_timer_init_timebase):
+ * 1) Validate timer clock, requested tick, PSC/ARR width and IRQ ownership
+ * 2) compute divisors safely and configure update event
+ * 3) report actual rate and reject unsupported error/tolerance.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
     (void)hw;
     (void)period_us;
@@ -32,12 +32,12 @@ uef_status_t upal_timer_pwm_init(
     uhal_gpio_pin_t pin,
     uef_u8_t af
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Validate
-     * channel/pin mapping and period bounds; define capture rollover, PWM scaling, and DMA
-     * sample lifetime.
-     */
+    /* TODO(upal_timer_pwm_init):
+ * 1) Validate channel/frequency/duty/polarity/deadtime and pin
+ * 2) compute PSC/ARR/CCR and configure preload while output is disabled
+ * 3) clear flags and enable only after read-back.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
     (void)channel;
     (void)pin;
@@ -50,12 +50,12 @@ void upal_timer_pwm_set_duty(
     uef_u8_t channel,
     uef_u32_t duty
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Validate
-     * channel/pin mapping and period bounds; define capture rollover, PWM scaling, and DMA
-     * sample lifetime.
-     */
+    /* TODO(upal_timer_pwm_set_duty):
+ * 1) Validate initialized channel and finite duty/endpoints
+ * 2) compute bounded compare from active ARR and write shadow CCR atomically
+ * 3) avoid frequency changes or unsafe mid-cycle update.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
     (void)channel;
     (void)duty;
@@ -67,12 +67,12 @@ uef_status_t upal_timer_capture_init(
     uhal_gpio_pin_t pin,
     uef_u8_t af
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Validate
-     * channel/pin mapping and period bounds; define capture rollover, PWM scaling, and DMA
-     * sample lifetime.
-     */
+    /* TODO(upal_timer_capture_init):
+ * 1) Validate channel/edge/filter/clock/overflow policy and pin
+ * 2) configure capture and clear stale overcapture
+ * 3) initialize wrap state before enabling IRQ/DMA.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
     (void)channel;
     (void)pin;
@@ -88,11 +88,12 @@ uef_status_t upal_timer_dma_output_start(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Reject invalid state, arm the peripheral and DMA in the documented order, and roll
-     * back partially configured resources on failure. Validate channel/pin mapping and
-     * period bounds; define capture rollover, PWM scaling, and DMA sample lifetime.
-     */
+    /* TODO(upal_timer_dma_output_start):
+ * 1) Validate buffer/count/rate/cache/alignment and channel ownership
+ * 2) preload initial value and arm DMA before timer requests
+ * 3) define terminal behavior and unwind safely on error.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
     (void)channel;
     (void)values;
@@ -105,43 +106,47 @@ uef_status_t upal_timer_dma_output_start(
 void upal_timer_start(
     upal_timer_t* t
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Reject invalid state, arm the peripheral and DMA in the documented order, and roll
-     * back partially configured resources on failure. Validate channel/pin mapping and
-     * period bounds; define capture rollover, PWM scaling, and DMA sample lifetime.
-     */
+    /* TODO(upal_timer_start):
+ * 1) Require configured instance and clear intended flags
+ * 2) enable only the selected counter/channel
+ * 3) update state without disturbing shared timer users.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
 }
 
 void upal_timer_stop(
     upal_timer_t* t
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Disable new requests first, stop/abort any active transfer, clear owned flags, and
-     * leave the module in a documented restartable state. Validate channel/pin mapping and
-     * period bounds; define capture rollover, PWM scaling, and DMA sample lifetime.
-     */
+    /* TODO(upal_timer_stop):
+ * 1) Disable update/DMA requests then stop counter
+ * 2) wait boundedly for in-flight DMA
+ * 3) clear owned flags, preserve documented capture data, and make repeated calls safe.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
 }
 
 void upal_timer_up_irq_handler(
     upal_timer_t* t
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Validate channel/pin mapping and period bounds;
-     * define capture rollover, PWM scaling, and DMA sample lifetime.
-     */
+    /* TODO(upal_timer_up_irq_handler):
+ * 1) Snapshot update source/generation and clear flag
+ * 2) atomically extend overflow/timebase count
+ * 3) defer callbacks and handle only enabled events.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
 }
 
 void upal_timer_cc_irq_handler(
     upal_timer_t* t
 ) {
-    /* TODO(UEF UPAL TIMER):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Validate channel/pin mapping and period bounds;
-     * define capture rollover, PWM scaling, and DMA sample lifetime.
-     */
+    /* TODO(upal_timer_cc_irq_handler):
+ * 1) Snapshot enabled capture/compare flags and values before clearing
+ * 2) extend capture across overflow and detect overcapture
+ * 3) update owning channel and defer callback as required.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)t;
 }

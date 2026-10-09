@@ -12,21 +12,21 @@
 uef_status_t upal_iwdg_init(
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL IWDG):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Convert timeout
-     * to the hardware prescaler/reload range and reject values the selected clock cannot
-     * represent.
-     */
+    /* TODO(upal_iwdg_init):
+ * 1) Validate timeout against watchdog clock/prescaler/reload limits
+ * 2) configure and wait boundedly for register updates before starting
+ * 3) report effective window/timeout and publish running state.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)timeout_ms;
     return UEF_NOT_SUPPORTED;
 }
 
 void upal_iwdg_refresh(void) {
-    /* TODO(UEF UPAL IWDG):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Convert timeout to
-     * the hardware prescaler/reload range and reject values the selected clock cannot
-     * represent.
-     */
+    /* TODO(upal_iwdg_refresh):
+ * 1) Require initialized watchdog and enforce any supported refresh window
+ * 2) write exact reload key
+ * 3) record missed-deadline diagnostics without blocking or hiding failure.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
 }

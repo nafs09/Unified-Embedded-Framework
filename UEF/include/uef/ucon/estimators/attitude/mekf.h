@@ -14,47 +14,90 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check quaternion nominal state and three-component attitude error.
-/// TODO(MEKF.validate_model): Pin quaternion order, multiplication side, and frame.
-/// Algorithm-specific focus: Attitude-specific multiplicative EKF;
-/// quaternion nominal attitude with a three-component
-/// attitude-error state.
+/// TODO(MEKF.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check quaternion nominal state and three-component attitude
+/// error. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Pin quaternion
+/// order, multiplication side, and frame. Algorithm-specific
+/// focus: Attitude-specific multiplicative EKF; quaternion nominal
+/// attitude with a three-component attitude-error state.
 ucon_status_t ucon_mekf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize unit quaternion, optional bias, and error covariance.
-/// TODO(MEKF.init): Reject zero quaternion and define normalization. Algorithm-specific
-/// focus: Attitude-specific multiplicative EKF; quaternion nominal attitude
-/// with a three-component attitude-error state.
+/// TODO(MEKF.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize unit
+/// quaternion, optional bias, and error covariance. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Reject zero
+/// quaternion and define normalization. Algorithm-specific focus:
+/// Attitude-specific multiplicative EKF; quaternion nominal attitude with a
+/// three-component attitude-error state.
 ucon_status_t ucon_mekf_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset covariance and attitude correction history.
-/// TODO(MEKF.reset): Specify nominal-attitude retention. Algorithm-specific focus:
-/// Attitude-specific multiplicative EKF; quaternion nominal attitude with a
-/// three-component attitude-error state.
+/// TODO(MEKF.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Reset
+/// covariance and attitude correction history. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Specify
+/// nominal-attitude retention. Algorithm-specific focus: Attitude-specific
+/// multiplicative EKF; quaternion nominal attitude with a three-component
+/// attitude-error state.
 ucon_status_t ucon_mekf_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate nominal quaternion and covariance from angular rate.
-/// TODO(MEKF.predict): Define bias/noise mapping, integration, and renormalization.
-/// Algorithm-specific focus: Attitude-specific multiplicative EKF;
-/// quaternion nominal attitude with a three-component attitude-error
-/// state.
+/// TODO(MEKF.predict): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Propagate nominal quaternion and covariance from angular rate. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define bias/noise mapping, integration, and
+/// renormalization. Algorithm-specific focus: Attitude-specific
+/// multiplicative EKF; quaternion nominal attitude with a three-component
+/// attitude-error state.
 ucon_status_t ucon_mekf_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply measurements through the three-dimensional error state.
-/// TODO(MEKF.correct): Define measurement gate and covariance update. Algorithm-specific
+/// TODO(MEKF.correct): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Apply measurements through the three-dimensional error state. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Define measurement gate and covariance update. Algorithm-specific
 /// focus: Attitude-specific multiplicative EKF; quaternion nominal
 /// attitude with a three-component attitude-error state.
 ucon_status_t ucon_mekf_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply attitude correction and reset local error coordinates.
-/// TODO(MEKF.inject_error): Specify injection side and reset Jacobian. Algorithm-specific
-/// focus: Attitude-specific multiplicative EKF; quaternion nominal
-/// attitude with a three-component attitude-error state.
+/// TODO(MEKF.inject_error): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Apply attitude correction and reset local error coordinates. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify injection side and reset
+/// Jacobian. Algorithm-specific focus: Attitude-specific
+/// multiplicative EKF; quaternion nominal attitude with a
+/// three-component attitude-error state.
 ucon_status_t ucon_mekf_inject_error(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run timestamped propagation and available sensor corrections.
-/// TODO(MEKF.step): Keep frame and sensor-time transformations explicit. Algorithm-specific
-/// focus: Attitude-specific multiplicative EKF; quaternion nominal attitude
-/// with a three-component attitude-error state.
+/// TODO(MEKF.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Run timestamped
+/// propagation and available sensor corrections. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Keep frame and sensor-time
+/// transformations explicit. Algorithm-specific focus: Attitude-specific
+/// multiplicative EKF; quaternion nominal attitude with a three-component
+/// attitude-error state.
 ucon_status_t ucon_mekf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

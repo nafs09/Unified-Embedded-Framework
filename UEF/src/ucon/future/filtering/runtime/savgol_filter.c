@@ -16,10 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(SAVGOL_FILTER.validate_config): State coefficient stability and initialization
- * assumptions. Algorithm-specific focus: Savitzky-Golay
- * local polynomial smoother or derivative estimator with
- * fixed window and order.
+/* TODO(SAVGOL_FILTER.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check coefficient count,
+ * sample rate, and fixed state size. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: State
+ * coefficient stability and initialization assumptions.
+ * Algorithm-specific focus: Savitzky-Golay local
+ * polynomial smoother or derivative estimator with fixed
+ * window and order.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_savgol_filter_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,10 +38,16 @@ ucon_status_t ucon_savgol_filter_validate_config(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SAVGOL_FILTER.init): Define zero, constant-input, or caller-supplied initial
- * conditions. Algorithm-specific focus: Savitzky-Golay local
- * polynomial smoother or derivative estimator with fixed window and
- * order.
+/* TODO(SAVGOL_FILTER.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize history and ring-buffer indices. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define zero, constant-input, or caller-supplied
+ * initial conditions. Algorithm-specific focus: Savitzky-Golay
+ * local polynomial smoother or derivative estimator with fixed
+ * window and order.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_savgol_filter_init(const ucon_algorithm_scaffold_call_t *call)
@@ -44,9 +58,16 @@ ucon_status_t ucon_savgol_filter_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SAVGOL_FILTER.reset): Define whether coefficients can change while running.
- * Algorithm-specific focus: Savitzky-Golay local polynomial
- * smoother or derivative estimator with fixed window and order.
+/* TODO(SAVGOL_FILTER.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Clear or preload filter history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Define whether coefficients can change while
+ * running. Algorithm-specific focus: Savitzky-Golay local
+ * polynomial smoother or derivative estimator with fixed window
+ * and order.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_savgol_filter_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -57,7 +78,15 @@ ucon_status_t ucon_savgol_filter_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SAVGOL_FILTER.update_state): Check accumulator scaling and invalid-sample policy.
+/* TODO(SAVGOL_FILTER.update_state): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Advance bounded
+ * filter/window state for one sample. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Check
+ * accumulator scaling and invalid-sample policy.
  * Algorithm-specific focus: Savitzky-Golay local polynomial
  * smoother or derivative estimator with fixed window and
  * order.
@@ -71,10 +100,18 @@ ucon_status_t ucon_savgol_filter_update_state(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SAVGOL_FILTER.process_sample): Define latency, warm-up, saturation, and non-finite
- * behavior. Algorithm-specific focus: Savitzky-Golay
- * local polynomial smoother or derivative estimator with
- * fixed window and order.
+/* TODO(SAVGOL_FILTER.process_sample): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute output using the
+ * declared recurrence/window. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define latency,
+ * warm-up, saturation, and non-finite behavior.
+ * Algorithm-specific focus: Savitzky-Golay local
+ * polynomial smoother or derivative estimator with fixed
+ * window and order.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_savgol_filter_process_sample(const ucon_algorithm_scaffold_call_t *call)

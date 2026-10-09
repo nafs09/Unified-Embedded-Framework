@@ -16,10 +16,19 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(OUT_OF_SEQUENCE_KF.validate_config): Bound memory and define supported delay range.
- * Algorithm-specific focus: Kalman update for
- * delayed measurements whose timestamps precede the
- * current estimate.
+/* TODO(OUT_OF_SEQUENCE_KF.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check fixed
+ * history depth, timestamp precision, and
+ * replay/retrodiction policy. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Bound memory and define supported
+ * delay range. Algorithm-specific focus: Kalman
+ * update for delayed measurements whose timestamps
+ * precede the current estimate.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_out_of_sequence_kf_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +39,17 @@ ucon_status_t ucon_out_of_sequence_kf_validate_config(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(OUT_OF_SEQUENCE_KF.init): Define initial timestamp and history seed.
- * Algorithm-specific focus: Kalman update for delayed
- * measurements whose timestamps precede the current estimate.
+/* TODO(OUT_OF_SEQUENCE_KF.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Initialize current estimate and
+ * time-indexed state/covariance history. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define initial timestamp
+ * and history seed. Algorithm-specific focus: Kalman update
+ * for delayed measurements whose timestamps precede the
+ * current estimate.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_out_of_sequence_kf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +60,16 @@ ucon_status_t ucon_out_of_sequence_kf_init(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(OUT_OF_SEQUENCE_KF.reset): Specify restart after clock discontinuity.
- * Algorithm-specific focus: Kalman update for delayed
- * measurements whose timestamps precede the current estimate.
+/* TODO(OUT_OF_SEQUENCE_KF.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Clear history and timestamp ordering
+ * state. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Specify
+ * restart after clock discontinuity. Algorithm-specific
+ * focus: Kalman update for delayed measurements whose
+ * timestamps precede the current estimate.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_out_of_sequence_kf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +80,20 @@ ucon_status_t ucon_out_of_sequence_kf_reset(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(OUT_OF_SEQUENCE_KF.insert_measurement): Define duplicate/equal-time ordering and
- * too-old rejection. Algorithm-specific focus:
- * Kalman update for delayed measurements whose
- * timestamps precede the current estimate.
+/* TODO(OUT_OF_SEQUENCE_KF.insert_measurement): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Insert a
+ * delayed sample at its declared acquisition
+ * timestamp. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics
+ * together only after success; preserve prior
+ * values on failure. Operation-specific
+ * requirements: Define duplicate/equal-time
+ * ordering and too-old rejection.
+ * Algorithm-specific focus: Kalman update for
+ * delayed measurements whose timestamps precede
+ * the current estimate.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_out_of_sequence_kf_insert_measurement(const ucon_algorithm_scaffold_call_t *call)
@@ -70,8 +104,19 @@ ucon_status_t ucon_out_of_sequence_kf_insert_measurement(const ucon_algorithm_sc
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(OUT_OF_SEQUENCE_KF.replay_or_retrocorrect): Specify deterministic replay,
- * process-input history, and work limit.
+/* TODO(OUT_OF_SEQUENCE_KF.replay_or_retrocorrect): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Recompute the bounded affected
+ * state interval or apply declared
+ * retrodiction. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Specify
+ * deterministic replay, process-input
+ * history, and work limit.
  * Algorithm-specific focus: Kalman update
  * for delayed measurements whose timestamps
  * precede the current estimate.
@@ -85,9 +130,17 @@ ucon_status_t ucon_out_of_sequence_kf_replay_or_retrocorrect(const ucon_algorith
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(OUT_OF_SEQUENCE_KF.step): Never silently apply stale data at the current time.
- * Algorithm-specific focus: Kalman update for delayed
- * measurements whose timestamps precede the current estimate.
+/* TODO(OUT_OF_SEQUENCE_KF.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Accept in-order/delayed data and
+ * publish current estimate/status. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Never silently apply stale
+ * data at the current time. Algorithm-specific focus: Kalman
+ * update for delayed measurements whose timestamps precede the
+ * current estimate.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_out_of_sequence_kf_step(const ucon_algorithm_scaffold_call_t *call)

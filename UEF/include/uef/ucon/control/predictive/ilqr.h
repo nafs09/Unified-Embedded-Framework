@@ -14,42 +14,87 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check plant, horizon, objective, constraints, and solver contract.
-/// TODO(ILQR.validate_problem): Reject inconsistent bounds and define fixed memory/iteration
+/// TODO(ILQR.validate_problem): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Check plant, horizon, objective, constraints, and
+/// solver contract. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements:
+/// Reject inconsistent bounds and define fixed memory/iteration
 /// budgets. Algorithm-specific focus: Iterative LQR; backward
 /// pass + forward pass
 ucon_status_t ucon_ilqr_validate_problem(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize warm start, references, and solver workspace.
-/// TODO(ILQR.init): Define first-solve seed and caller-owned data. Algorithm-specific focus:
-/// Iterative LQR; backward pass + forward pass
+/// TODO(ILQR.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize warm
+/// start, references, and solver workspace. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Define first-solve seed and
+/// caller-owned data. Algorithm-specific focus: Iterative LQR; backward pass
+/// + forward pass
 ucon_status_t ucon_ilqr_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear warm-start, disturbance, and optimizer history.
-/// TODO(ILQR.reset): Specify reusable factorization/active-set behavior. Algorithm-specific
-/// focus: Iterative LQR; backward pass + forward pass
+/// TODO(ILQR.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Clear
+/// warm-start, disturbance, and optimizer history. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Specify
+/// reusable factorization/active-set behavior. Algorithm-specific focus:
+/// Iterative LQR; backward pass + forward pass
 ucon_status_t ucon_ilqr_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Build/update the finite-horizon prediction and optimization problem.
-/// TODO(ILQR.prepare_problem): State discretization, terminal conditions, scaling, and time
-/// budget. Algorithm-specific focus: Iterative LQR; backward pass
-/// + forward pass
+/// TODO(ILQR.prepare_problem): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Build/update the finite-horizon prediction and optimization
+/// problem. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: State
+/// discretization, terminal conditions, scaling, and time budget.
+/// Algorithm-specific focus: Iterative LQR; backward pass +
+/// forward pass
 ucon_status_t ucon_ilqr_prepare_problem(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run the selected bounded optimization method.
-/// TODO(ILQR.solve_problem): Report infeasible, nonconverged, numeric, and iteration-limit
-/// outcomes distinctly. Algorithm-specific focus: Iterative LQR;
-/// backward pass + forward pass
+/// TODO(ILQR.solve_problem): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Run the selected bounded optimization method. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Report infeasible,
+/// nonconverged, numeric, and iteration-limit outcomes distinctly.
+/// Algorithm-specific focus: Iterative LQR; backward pass + forward
+/// pass
 ucon_status_t ucon_ilqr_solve_problem(const ucon_algorithm_scaffold_call_t *call);
 
 /// Check candidate bounds and configured residual tolerances.
-/// TODO(ILQR.verify_solution): Never apply an unchecked solution or hide a missed deadline.
-/// Algorithm-specific focus: Iterative LQR; backward pass +
-/// forward pass
+/// TODO(ILQR.verify_solution): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check candidate bounds and configured residual tolerances.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Never apply an unchecked
+/// solution or hide a missed deadline. Algorithm-specific focus:
+/// Iterative LQR; backward pass + forward pass
 ucon_status_t ucon_ilqr_verify_solution(const ucon_algorithm_scaffold_call_t *call);
 
 /// Prepare, solve, verify, and publish the first admissible input.
-/// TODO(ILQR.step): Fallback must be caller-configured; do not invent a command.
-/// Algorithm-specific focus: Iterative LQR; backward pass + forward pass
+/// TODO(ILQR.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Prepare, solve,
+/// verify, and publish the first admissible input. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Fallback must be
+/// caller-configured; do not invent a command. Algorithm-specific focus:
+/// Iterative LQR; backward pass + forward pass
 ucon_status_t ucon_ilqr_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

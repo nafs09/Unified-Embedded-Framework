@@ -28,7 +28,11 @@ class PyOCDDeployment(IDeployment):
         )
 
     def halt(self) -> bool:
-        raise NotImplementedError("TODO(pyocd-halt): halt the core and confirm it stopped before writes.")
+        raise NotImplementedError(
+            "TODO(pyocd-halt): Request halt through the selected pyOCD session, wait with a finite "
+            "timeout for the target state to become halted, and fail before any flash write if the "
+            "state cannot be confirmed."
+        )
 
     def unlock_flash(self) -> bool:
         raise NotImplementedError(
@@ -55,7 +59,10 @@ class PyOCDDeployment(IDeployment):
         )
 
     def reset(self, run: bool = True) -> bool:
-        raise NotImplementedError("TODO(pyocd-reset): reset/resume only after successful verification.")
+        raise NotImplementedError(
+            "TODO(pyocd-reset): Require successful verification for the selected artifact, reset the "
+            "target through the session, resume only when run is true, and report reset/state timeout."
+        )
 
     def disconnect(self) -> None:
         raise NotImplementedError(

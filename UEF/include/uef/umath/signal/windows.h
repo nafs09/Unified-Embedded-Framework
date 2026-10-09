@@ -2,6 +2,7 @@
 /// @brief Planned finite-length window coefficient generators.
 #ifndef UEF_UMATH_SIGNAL_WINDOWS_H
 #define UEF_UMATH_SIGNAL_WINDOWS_H
+#include <uef/umath/config.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>

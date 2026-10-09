@@ -16,13 +16,23 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(FRACTIONAL_ORDER_SMC.validate_config): Select finite-memory discretization; ideal
- * unbounded fractional memory is not
- * implementable. Algorithm-specific focus:
- * Sliding-mode controller using a finite-memory
- * discrete approximation of a fractional-order
- * operator; approximation and switching law
- * remain unspecified.
+/* TODO(FRACTIONAL_ORDER_SMC.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check
+ * fractional order, surface, sample period, and
+ * coefficient table. 3) Check numeric results,
+ * declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: Select
+ * finite-memory discretization; ideal unbounded
+ * fractional memory is not implementable.
+ * Algorithm-specific focus: Sliding-mode
+ * controller using a finite-memory discrete
+ * approximation of a fractional-order operator;
+ * approximation and switching law remain
+ * unspecified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fractional_order_smc_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -33,11 +43,18 @@ ucon_status_t ucon_fractional_order_smc_validate_config(const ucon_algorithm_sca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FRACTIONAL_ORDER_SMC.init): Specify memory length and initial-history assumption.
- * Algorithm-specific focus: Sliding-mode controller using a
- * finite-memory discrete approximation of a fractional-order
- * operator; approximation and switching law remain
- * unspecified.
+/* TODO(FRACTIONAL_ORDER_SMC.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize fixed
+ * fractional-memory history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Specify memory length and
+ * initial-history assumption. Algorithm-specific focus:
+ * Sliding-mode controller using a finite-memory discrete
+ * approximation of a fractional-order operator;
+ * approximation and switching law remain unspecified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fractional_order_smc_init(const ucon_algorithm_scaffold_call_t *call)
@@ -48,7 +65,14 @@ ucon_status_t ucon_fractional_order_smc_init(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FRACTIONAL_ORDER_SMC.reset): Define zero-fill versus caller-supplied history.
+/* TODO(FRACTIONAL_ORDER_SMC.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Clear bounded fractional
+ * history. 3) Check numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements:
+ * Define zero-fill versus caller-supplied history.
  * Algorithm-specific focus: Sliding-mode controller using a
  * finite-memory discrete approximation of a
  * fractional-order operator; approximation and switching
@@ -63,8 +87,19 @@ ucon_status_t ucon_fractional_order_smc_reset(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FRACTIONAL_ORDER_SMC.update_fractional_memory): Document coefficients, truncation,
- * scaling, and work bound.
+/* TODO(FRACTIONAL_ORDER_SMC.update_fractional_memory): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Advance the
+ * selected finite-memory approximation.
+ * 3) Check numeric results, declared
+ * constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after
+ * success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Document coefficients,
+ * truncation, scaling, and work bound.
  * Algorithm-specific focus: Sliding-mode
  * controller using a finite-memory
  * discrete approximation of a
@@ -81,7 +116,19 @@ ucon_status_t ucon_fractional_order_smc_update_fractional_memory(const ucon_algo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FRACTIONAL_ORDER_SMC.compute_switching_control): Specify boundary layer and
+/* TODO(FRACTIONAL_ORDER_SMC.compute_switching_control): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Compute
+ * reaching/switching term from declared
+ * surface. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics
+ * together only after success; preserve
+ * prior values on failure.
+ * Operation-specific requirements:
+ * Specify boundary layer and
  * actuator/chattering policy.
  * Algorithm-specific focus:
  * Sliding-mode controller using a
@@ -99,11 +146,19 @@ ucon_status_t ucon_fractional_order_smc_compute_switching_control(const ucon_alg
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FRACTIONAL_ORDER_SMC.step): Keep deferred until approximation/stability claims are
- * specified. Algorithm-specific focus: Sliding-mode
- * controller using a finite-memory discrete approximation of
- * a fractional-order operator; approximation and switching
- * law remain unspecified.
+/* TODO(FRACTIONAL_ORDER_SMC.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Run one fractional
+ * sliding-mode update. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Keep deferred until
+ * approximation/stability claims are specified.
+ * Algorithm-specific focus: Sliding-mode controller using a
+ * finite-memory discrete approximation of a fractional-order
+ * operator; approximation and switching law remain
+ * unspecified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fractional_order_smc_step(const ucon_algorithm_scaffold_call_t *call)

@@ -16,11 +16,21 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(SENSORLESS_FOC_OBSERVER.validate_config): State motor type and angle-source validity.
- * Algorithm-specific focus: Sensorless
- * motor-state observer supplying the
- * electrical angle/speed needed by a declared
- * FOC profile.
+/* TODO(SENSORLESS_FOC_OBSERVER.validate_config): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Check motor model, transform,
+ * sample timing, and current/voltage limits.
+ * 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior
+ * values on failure. Operation-specific
+ * requirements: State motor type and
+ * angle-source validity. Algorithm-specific
+ * focus: Sensorless motor-state observer
+ * supplying the electrical angle/speed needed
+ * by a declared FOC profile.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sensorless_foc_observer_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -31,7 +41,15 @@ ucon_status_t ucon_sensorless_foc_observer_validate_config(const ucon_algorithm_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SENSORLESS_FOC_OBSERVER.init): Define alignment and sensor-offset ownership.
+/* TODO(SENSORLESS_FOC_OBSERVER.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize d/q loops,
+ * flux/torque estimate, and modulation state. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Define alignment and sensor-offset ownership.
  * Algorithm-specific focus: Sensorless motor-state
  * observer supplying the electrical angle/speed needed by
  * a declared FOC profile.
@@ -45,7 +63,15 @@ ucon_status_t ucon_sensorless_foc_observer_init(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SENSORLESS_FOC_OBSERVER.reset): Define a safe restart state. Algorithm-specific focus:
+/* TODO(SENSORLESS_FOC_OBSERVER.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Reset control/estimator
+ * history without issuing gate actions. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define a
+ * safe restart state. Algorithm-specific focus:
  * Sensorless motor-state observer supplying the
  * electrical angle/speed needed by a declared FOC
  * profile.
@@ -59,11 +85,23 @@ ucon_status_t ucon_sensorless_foc_observer_reset(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SENSORLESS_FOC_OBSERVER.estimate_motor_state): State model validity and low-speed
- * operating limits. Algorithm-specific
- * focus: Sensorless motor-state observer
- * supplying the electrical angle/speed
- * needed by a declared FOC profile.
+/* TODO(SENSORLESS_FOC_OBSERVER.estimate_motor_state): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Update flux,
+ * torque, angle, or speed estimates. 3)
+ * Check numeric results, declared
+ * constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after
+ * success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: State model validity and
+ * low-speed operating limits.
+ * Algorithm-specific focus: Sensorless
+ * motor-state observer supplying the
+ * electrical angle/speed needed by a
+ * declared FOC profile.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sensorless_foc_observer_estimate_motor_state(const ucon_algorithm_scaffold_call_t *call)
@@ -74,12 +112,23 @@ ucon_status_t ucon_sensorless_foc_observer_estimate_motor_state(const ucon_algor
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SENSORLESS_FOC_OBSERVER.compute_current_command): Define decoupling, saturation, and
- * current-limit policy.
- * Algorithm-specific focus: Sensorless
- * motor-state observer supplying the
- * electrical angle/speed needed by a
- * declared FOC profile.
+/* TODO(SENSORLESS_FOC_OBSERVER.compute_current_command): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Compute d/q or
+ * switching-state command. 3) Check
+ * numeric results, declared
+ * constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state,
+ * and diagnostics together only after
+ * success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Define decoupling,
+ * saturation, and current-limit
+ * policy. Algorithm-specific focus:
+ * Sensorless motor-state observer
+ * supplying the electrical angle/speed
+ * needed by a declared FOC profile.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sensorless_foc_observer_compute_current_command(const ucon_algorithm_scaffold_call_t *call)
@@ -90,10 +139,19 @@ ucon_status_t ucon_sensorless_foc_observer_compute_current_command(const ucon_al
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SENSORLESS_FOC_OBSERVER.modulate): Do not assume gate polarity, dead time, or timer
- * setup. Algorithm-specific focus: Sensorless
- * motor-state observer supplying the electrical
- * angle/speed needed by a declared FOC profile.
+/* TODO(SENSORLESS_FOC_OBSERVER.modulate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Map abstract command
+ * into declared modulation values. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Do not assume gate polarity, dead
+ * time, or timer setup. Algorithm-specific focus:
+ * Sensorless motor-state observer supplying the
+ * electrical angle/speed needed by a declared FOC
+ * profile.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sensorless_foc_observer_modulate(const ucon_algorithm_scaffold_call_t *call)
@@ -104,10 +162,18 @@ ucon_status_t ucon_sensorless_foc_observer_modulate(const ucon_algorithm_scaffol
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SENSORLESS_FOC_OBSERVER.step): Bound work and preserve outputs on invalid
- * measurements. Algorithm-specific focus: Sensorless
- * motor-state observer supplying the electrical
- * angle/speed needed by a declared FOC profile.
+/* TODO(SENSORLESS_FOC_OBSERVER.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Coordinate one
+ * synchronized motor-control update. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Bound work
+ * and preserve outputs on invalid measurements.
+ * Algorithm-specific focus: Sensorless motor-state
+ * observer supplying the electrical angle/speed needed by
+ * a declared FOC profile.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sensorless_foc_observer_step(const ucon_algorithm_scaffold_call_t *call)

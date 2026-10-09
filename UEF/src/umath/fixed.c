@@ -1,8 +1,9 @@
 /// @file src/umath/fixed.c
 /// @brief Saturating fixed-point operations with explicit Q-format scaling.
-#include <math.h>
 #include <limits.h>
+#include <math.h>
 #include <uef/umath/fixed.h>
+#include <uef/umath/internal/scalar_math.h>
 
 static int16_t clamp_q15(int64_t value)
 {
@@ -39,16 +40,32 @@ uef_q16_t umath_q16_sub_sat(uef_q16_t a, uef_q16_t b)
 uef_q16_t umath_q16_mul_sat(uef_q16_t a, uef_q16_t b)
 { return clamp_q31(((int64_t)a * (int64_t)b) / (INT64_C(1) << UMATH_Q16_FRAC_BITS)); }
 
-static umath_status_t fixed_from_scalar(double value, double scale,
-                                        double minimum, double maximum,
+/* Compare the positive endpoint without first rounding INT32_MAX to 2^31 in
+ * single precision. Once the scaled value is in range, the int32 conversion
+ * is defined and half-way values round away from zero. */
+#define UEF_UMATH_SCALAR_ABOVE_MAX(value, maximum) \
+    _Generic((value), \
+        uef_f32_t: ((maximum) < INT32_C(16777216) ? \
+            ((value) > (umath_scalar_t)(maximum)) : \
+            ((value) >= (umath_scalar_t)((int64_t)(maximum) + INT64_C(1)))), \
+        uef_f64_t: ((value) > (umath_scalar_t)(maximum)))
+
+static umath_status_t fixed_from_scalar(umath_scalar_t value,
+                                        umath_scalar_t scale,
+                                        int32_t minimum, int32_t maximum,
                                         int32_t *result)
 {
-    double scaled, rounded;
-    if (result == NULL || !isfinite(value)) return UMATH_INVALID_ARGUMENT;
+    umath_scalar_t scaled, rounded;
+    if (result == NULL || !umath_scalar_is_finite(value)) {
+        return UMATH_INVALID_ARGUMENT;
+    }
     scaled = value * scale;
     if (!isfinite(scaled)) return UMATH_NUMERIC_FAILURE;
-    if (scaled < minimum || scaled > maximum) return UMATH_NUMERIC_FAILURE;
-    rounded = scaled < 0.0 ? ceil(scaled - 0.5) : floor(scaled + 0.5);
+    if (scaled < (umath_scalar_t)minimum ||
+        UEF_UMATH_SCALAR_ABOVE_MAX(scaled, maximum)) return UMATH_NUMERIC_FAILURE;
+    rounded = scaled < UMATH_SCALAR_C(0) ?
+        UEF_UMATH_SCALAR_UNARY_MATH(ceil, scaled - UMATH_SCALAR_C(0.5)) :
+        UEF_UMATH_SCALAR_UNARY_MATH(floor, scaled + UMATH_SCALAR_C(0.5));
     *result = (int32_t)rounded;
     return UMATH_OK;
 }
@@ -56,33 +73,39 @@ static umath_status_t fixed_from_scalar(double value, double scale,
 umath_status_t umath_q15_from_scalar(umath_scalar_t value, uef_q15_t *result)
 {
     int32_t converted;
-    const umath_status_t status = fixed_from_scalar((double)value, 32768.0,
+    umath_status_t status;
+    if (result == NULL) return UMATH_INVALID_ARGUMENT;
+    status = fixed_from_scalar(value, UMATH_SCALAR_C(32768),
         INT16_MIN, INT16_MAX, &converted);
-    if (status == UMATH_OK && result != NULL) *result = (uef_q15_t)converted;
-    return result == NULL ? UMATH_INVALID_ARGUMENT : status;
+    if (status == UMATH_OK) *result = (uef_q15_t)converted;
+    return status;
 }
 
 umath_status_t umath_q31_from_scalar(umath_scalar_t value, uef_q31_t *result)
 {
     int32_t converted;
-    const umath_status_t status = fixed_from_scalar((double)value, 2147483648.0,
+    umath_status_t status;
+    if (result == NULL) return UMATH_INVALID_ARGUMENT;
+    status = fixed_from_scalar(value, UMATH_SCALAR_C(2147483648),
         INT32_MIN, INT32_MAX, &converted);
-    if (status == UMATH_OK && result != NULL) *result = (uef_q31_t)converted;
-    return result == NULL ? UMATH_INVALID_ARGUMENT : status;
+    if (status == UMATH_OK) *result = (uef_q31_t)converted;
+    return status;
 }
 
 umath_status_t umath_q16_from_scalar(umath_scalar_t value, uef_q16_t *result)
 {
     int32_t converted;
-    const umath_status_t status = fixed_from_scalar((double)value, 65536.0,
+    umath_status_t status;
+    if (result == NULL) return UMATH_INVALID_ARGUMENT;
+    status = fixed_from_scalar(value, UMATH_SCALAR_C(65536),
         INT32_MIN, INT32_MAX, &converted);
-    if (status == UMATH_OK && result != NULL) *result = (uef_q16_t)converted;
-    return result == NULL ? UMATH_INVALID_ARGUMENT : status;
+    if (status == UMATH_OK) *result = (uef_q16_t)converted;
+    return status;
 }
 
 umath_scalar_t umath_q15_to_scalar(uef_q15_t value)
-{ return (umath_scalar_t)((double)value / 32768.0); }
+{ return (umath_scalar_t)value / UMATH_SCALAR_C(32768); }
 umath_scalar_t umath_q31_to_scalar(uef_q31_t value)
-{ return (umath_scalar_t)((double)value / 2147483648.0); }
+{ return (umath_scalar_t)value / UMATH_SCALAR_C(2147483648); }
 umath_scalar_t umath_q16_to_scalar(uef_q16_t value)
-{ return (umath_scalar_t)((double)value / 65536.0); }
+{ return (umath_scalar_t)value / UMATH_SCALAR_C(65536); }

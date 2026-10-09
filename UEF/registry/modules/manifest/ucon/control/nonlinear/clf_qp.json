@@ -3,13 +3,7 @@
     "src/ucon/control/nonlinear/clf_qp.c"
   ],
   "headers": [
-    "include/uef/ucon/control/nonlinear/clf_qp.h",
-    "include/uef/ucon/detail/algorithm_call.h",
-    "include/uef/ucon/ucon_status.h",
-    "include/uef/ucon/ucon_types.h",
-    "include/uef/ucore/uef_types.h",
-    "include/uef/umath/scalar.h",
-    "include/uef/umath/status.h"
+    "include/uef/ucon/control/nonlinear/clf_qp.h"
   ],
   "dependencies": [
     "ucon/core"

@@ -12,6 +12,8 @@
       "future_headers_root": "include/uef/ucon/future",
       "future_sources_root": "src/ucon/future",
       "one_algorithm_per_header_and_source": true,
+      "first_pass_template_scaffold_root": "templates/ucon/first_pass",
+      "first_pass_template_scaffolds_are_todo_only": true,
       "generator": "tools/generate_ucon_scaffolds.py",
       "future_policy": "Unselected PLANNED and all DEFERRED entries are repository-only and not selectable by uef-gen",
       "initial_planned_algorithms": [

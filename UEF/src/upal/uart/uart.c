@@ -16,12 +16,12 @@ uef_status_t upal_uart_init(
     uef_u8_t* rx_buf,
     uef_u32_t rx_buf_size
 ) {
-    /* TODO(UEF UPAL UART):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Define receive
-     * ring-buffer overrun behavior, IDLE/DMA accounting, transmit buffer lifetime, and
-     * callback/ISR ownership.
-     */
+    /* TODO(upal_uart_init):
+ * 1) Validate baud/clock error, framing, pins, ring buffers, DMA/IRQ resources
+ * 2) reset/configure and clear stale RX/errors
+ * 3) initialize ring state before enabling IRQs and verify read-back.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
     (void)hw;
     (void)baud;
@@ -37,12 +37,12 @@ uef_status_t upal_uart_tx_dma(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL UART):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Define receive
-     * ring-buffer overrun behavior, IDLE/DMA accounting, transmit buffer lifetime, and
-     * callback/ISR ownership.
-     */
+    /* TODO(upal_uart_tx_dma):
+ * 1) Validate source/lifetime/length and DMA/cache/queue state
+ * 2) reserve/copy as needed then arm DMA/TX requests
+ * 3) complete once with exact sent count and release ownership on all paths.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
     (void)data;
     (void)len;
@@ -57,12 +57,12 @@ uef_status_t upal_uart_tx_blocking(
     uef_u32_t len,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL UART):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Define receive
-     * ring-buffer overrun behavior, IDLE/DMA accounting, transmit buffer lifetime, and
-     * callback/ISR ownership.
-     */
+    /* TODO(upal_uart_tx_blocking):
+ * 1) Validate buffer/length and deadline
+ * 2) poll TX-ready per unit while checking framing errors
+ * 3) wait final transmission-complete and return exact status/count.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
     (void)data;
     (void)len;
@@ -73,12 +73,12 @@ uef_status_t upal_uart_tx_blocking(
 uef_u32_t upal_uart_rx_available(
     const upal_uart_t* u
 ) {
-    /* TODO(UEF UPAL UART):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Define receive
-     * ring-buffer overrun behavior, IDLE/DMA accounting, transmit buffer lifetime, and
-     * callback/ISR ownership.
-     */
+    /* TODO(upal_uart_rx_available):
+ * 1) Snapshot producer/consumer indices atomically
+ * 2) compute wrap-safe occupancy
+ * 3) expose overflow diagnostics without consuming bytes.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
     return 0;
 }
@@ -88,11 +88,12 @@ uef_u32_t upal_uart_rx_read(
     uef_u8_t* dst,
     uef_u32_t max_len
 ) {
-    /* TODO(UEF UPAL UART):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Define receive ring-buffer overrun behavior,
-     * IDLE/DMA accounting, transmit buffer lifetime, and callback/ISR ownership.
-     */
+    /* TODO(upal_uart_rx_read):
+ * 1) Validate destination/capacity
+ * 2) copy at most available bytes across ring wrap
+ * 3) commit consumer index only after copy and return exact count.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
     (void)dst;
     (void)max_len;
@@ -102,34 +103,35 @@ uef_u32_t upal_uart_rx_read(
 void upal_uart_irq_handler(
     upal_uart_t* u
 ) {
-    /* TODO(UEF UPAL UART):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Define receive ring-buffer overrun behavior,
-     * IDLE/DMA accounting, transmit buffer lifetime, and callback/ISR ownership.
-     */
+    /* TODO(upal_uart_irq_handler):
+ * 1) Snapshot status/data in hardware-required order
+ * 2) drain RX and service TX queues within bounded ISR work, clearing only owned flags
+ * 3) count errors/overflow and defer callbacks.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
 }
 
 void upal_uart_dma_rx_handler(
     upal_uart_t* u
 ) {
-    /* TODO(UEF UPAL UART):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Define receive
-     * ring-buffer overrun behavior, IDLE/DMA accounting, transmit buffer lifetime, and
-     * callback/ISR ownership.
-     */
+    /* TODO(upal_uart_dma_rx_handler):
+ * 1) Match DMA completion/error to buffer generation and remaining count
+ * 2) invalidate cache and publish/copy received bytes
+ * 3) report partial/overrun and rearm only after ownership release.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
 }
 
 void upal_uart_dma_tx_handler(
     upal_uart_t* u
 ) {
-    /* TODO(UEF UPAL UART):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Define receive
-     * ring-buffer overrun behavior, IDLE/DMA accounting, transmit buffer lifetime, and
-     * callback/ISR ownership.
-     */
+    /* TODO(upal_uart_dma_tx_handler):
+ * 1) Match DMA flags to TX generation and capture sent count
+ * 2) wait for UART transmission-complete before releasing source
+ * 3) notify exactly once on complete/error/abort.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)u;
 }

@@ -14,37 +14,78 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check response type, edges, ripple/attenuation, and order.
-/// TODO(BESSEL.validate_spec): Declare normalized-frequency units and impossible-spec result.
-/// Algorithm-specific focus: LP; order 2–8; maximally flat group
-/// delay
+/// TODO(BESSEL.validate_spec): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check response type, edges, ripple/attenuation, and order.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Declare normalized-frequency
+/// units and impossible-spec result. Algorithm-specific focus:
+/// LP; order 2–8; maximally flat group delay
 ucon_status_t ucon_bessel_validate_spec(const ucon_algorithm_scaffold_call_t *call);
 
 /// Determine or validate the order for the chosen response.
-/// TODO(BESSEL.estimate_order): Distinguish caller-fixed order from automatic order
+/// TODO(BESSEL.estimate_order): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Determine or validate the order for the chosen
+/// response. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements:
+/// Distinguish caller-fixed order from automatic order
 /// selection. Algorithm-specific focus: LP; order 2–8; maximally
 /// flat group delay
 ucon_status_t ucon_bessel_estimate_order(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute prototype roots and requested response transform.
-/// TODO(BESSEL.compute_poles_zeros): Specify bilinear/prewarp or alternative transform and
-/// precision limits. Algorithm-specific focus: LP; order
-/// 2–8; maximally flat group delay
+/// TODO(BESSEL.compute_poles_zeros): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute prototype roots and
+/// requested response transform. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify
+/// bilinear/prewarp or alternative transform and precision
+/// limits. Algorithm-specific focus: LP; order 2–8;
+/// maximally flat group delay
 ucon_status_t ucon_bessel_compute_poles_zeros(const ucon_algorithm_scaffold_call_t *call);
 
 /// Pair roots into fixed first/second-order sections.
-/// TODO(BESSEL.pair_sections): Define conjugate pairing, ordering, stability, and coefficient
-/// range. Algorithm-specific focus: LP; order 2–8; maximally flat
-/// group delay
+/// TODO(BESSEL.pair_sections): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Pair roots into fixed first/second-order sections. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define conjugate pairing,
+/// ordering, stability, and coefficient range. Algorithm-specific
+/// focus: LP; order 2–8; maximally flat group delay
 ucon_status_t ucon_bessel_pair_sections(const ucon_algorithm_scaffold_call_t *call);
 
 /// Normalize gain at a declared reference frequency.
-/// TODO(BESSEL.normalize_coefficients): Prevent overflow/underflow and verify stability.
+/// TODO(BESSEL.normalize_coefficients): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Normalize gain at a
+/// declared reference frequency. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Prevent
+/// overflow/underflow and verify stability.
 /// Algorithm-specific focus: LP; order 2–8; maximally
 /// flat group delay
 ucon_status_t ucon_bessel_normalize_coefficients(const ucon_algorithm_scaffold_call_t *call);
 
 /// Publish coefficients only after complete successful design.
-/// TODO(BESSEL.design): Define output layout and no-partial-write behavior.
+/// TODO(BESSEL.design): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Publish coefficients only after complete successful design. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define output layout and no-partial-write behavior.
 /// Algorithm-specific focus: LP; order 2–8; maximally flat group delay
 ucon_status_t ucon_bessel_design(const ucon_algorithm_scaffold_call_t *call);
 

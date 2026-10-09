@@ -16,7 +16,14 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(MEDIAN.validate_config): State coefficient stability and initialization assumptions.
+/* TODO(MEDIAN.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or
+ * state. 2) Check coefficient count, sample rate, and fixed
+ * state size. 3) Check numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: State
+ * coefficient stability and initialization assumptions.
  * Algorithm-specific focus: Common bounded-state signal
  * filters.
  * This stub must not read/write opaque state or output buffers.
@@ -29,7 +36,13 @@ ucon_status_t ucon_median_validate_config(const ucon_algorithm_scaffold_call_t *
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MEDIAN.init): Define zero, constant-input, or caller-supplied initial conditions.
+/* TODO(MEDIAN.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize history and ring-buffer indices. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define zero,
+ * constant-input, or caller-supplied initial conditions.
  * Algorithm-specific focus: Common bounded-state signal filters.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -41,8 +54,14 @@ ucon_status_t ucon_median_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MEDIAN.reset): Define whether coefficients can change while running.
- * Algorithm-specific focus: Common bounded-state signal filters.
+/* TODO(MEDIAN.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Clear
+ * or preload filter history. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define whether coefficients
+ * can change while running. Algorithm-specific focus: Common
+ * bounded-state signal filters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_median_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -53,8 +72,15 @@ ucon_status_t ucon_median_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MEDIAN.update_state): Check accumulator scaling and invalid-sample policy.
- * Algorithm-specific focus: Common bounded-state signal filters.
+/* TODO(MEDIAN.update_state): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Advance bounded filter/window state for one sample. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Check accumulator scaling and
+ * invalid-sample policy. Algorithm-specific focus: Common
+ * bounded-state signal filters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_median_update_state(const ucon_algorithm_scaffold_call_t *call)
@@ -65,8 +91,15 @@ ucon_status_t ucon_median_update_state(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MEDIAN.process_sample): Define latency, warm-up, saturation, and non-finite behavior.
- * Algorithm-specific focus: Common bounded-state signal filters.
+/* TODO(MEDIAN.process_sample): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Compute output using the declared recurrence/window. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define latency, warm-up,
+ * saturation, and non-finite behavior. Algorithm-specific focus:
+ * Common bounded-state signal filters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_median_process_sample(const ucon_algorithm_scaffold_call_t *call)

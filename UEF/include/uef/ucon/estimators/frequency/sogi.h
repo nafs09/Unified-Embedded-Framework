@@ -14,41 +14,78 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check tuning frequency, damping/gain, and sample period.
-/// TODO(SOGI.validate_config): Define coefficient discretization and admissible tuning range.
-/// Algorithm-specific focus: Second-order generalized integrator
-/// that creates an orthogonal signal pair from a configured
-/// single-phase input.
+/// TODO(SOGI.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check tuning frequency, damping/gain, and sample period. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define coefficient
+/// discretization and admissible tuning range. Algorithm-specific
+/// focus: Second-order generalized integrator that creates an
+/// orthogonal signal pair from a configured single-phase input.
 ucon_status_t ucon_sogi_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize in-phase/quadrature filter states.
-/// TODO(SOGI.init): Specify startup state and fixed coefficients. Algorithm-specific focus:
-/// Second-order generalized integrator that creates an orthogonal signal
-/// pair from a configured single-phase input.
+/// TODO(SOGI.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize
+/// in-phase/quadrature filter states. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify startup state and fixed
+/// coefficients. Algorithm-specific focus: Second-order generalized
+/// integrator that creates an orthogonal signal pair from a configured
+/// single-phase input.
 ucon_status_t ucon_sogi_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear both orthogonal-signal histories.
-/// TODO(SOGI.reset): Define transition when tuning frequency changes. Algorithm-specific
-/// focus: Second-order generalized integrator that creates an orthogonal
-/// signal pair from a configured single-phase input.
+/// TODO(SOGI.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Clear
+/// both orthogonal-signal histories. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define transition when tuning
+/// frequency changes. Algorithm-specific focus: Second-order generalized
+/// integrator that creates an orthogonal signal pair from a configured
+/// single-phase input.
 ucon_status_t ucon_sogi_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance the second-order generalized-integrator recurrence.
-/// TODO(SOGI.update_states): Pin recurrence, state scaling, and overflow policy.
-/// Algorithm-specific focus: Second-order generalized integrator
-/// that creates an orthogonal signal pair from a configured
-/// single-phase input.
+/// TODO(SOGI.update_states): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Advance the second-order generalized-integrator recurrence.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Pin recurrence, state scaling,
+/// and overflow policy. Algorithm-specific focus: Second-order
+/// generalized integrator that creates an orthogonal signal pair
+/// from a configured single-phase input.
 ucon_status_t ucon_sogi_update_states(const ucon_algorithm_scaffold_call_t *call);
 
 /// Publish the filtered signal and its orthogonal component.
-/// TODO(SOGI.get_quadrature): Define phase/sign and amplitude conventions. Algorithm-specific
-/// focus: Second-order generalized integrator that creates an
-/// orthogonal signal pair from a configured single-phase input.
+/// TODO(SOGI.get_quadrature): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Publish the filtered signal and its orthogonal component. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define phase/sign and
+/// amplitude conventions. Algorithm-specific focus: Second-order
+/// generalized integrator that creates an orthogonal signal pair
+/// from a configured single-phase input.
 ucon_status_t ucon_sogi_get_quadrature(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one synchronized input sample.
-/// TODO(SOGI.step): No PLL/FLL phase detector is implied by standalone SOGI.
-/// Algorithm-specific focus: Second-order generalized integrator that
-/// creates an orthogonal signal pair from a configured single-phase input.
+/// TODO(SOGI.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Process one
+/// synchronized input sample. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: No PLL/FLL phase detector is
+/// implied by standalone SOGI. Algorithm-specific focus: Second-order
+/// generalized integrator that creates an orthogonal signal pair from a
+/// configured single-phase input.
 ucon_status_t ucon_sogi_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

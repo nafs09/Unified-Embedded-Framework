@@ -2,6 +2,7 @@
 /// @brief Planned bounded eigensystem for real symmetric matrices.
 #ifndef UEF_UMATH_MATRIX_SYMMETRIC_EIGEN_H
 #define UEF_UMATH_MATRIX_SYMMETRIC_EIGEN_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

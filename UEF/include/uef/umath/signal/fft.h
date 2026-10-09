@@ -2,6 +2,7 @@
 /// @brief Planned caller-workspace DFT/FFT and one-sided real spectrum.
 #ifndef UEF_UMATH_SIGNAL_FFT_H
 #define UEF_UMATH_SIGNAL_FFT_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <stdbool.h>
 #include <uef/umath/complex.h>

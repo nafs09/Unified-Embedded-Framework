@@ -13,44 +13,76 @@ extern "C" {
 /// Roadmap priority: FIRST_PASS.
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
-/// Check nominal/error-state dimensions and Jacobian coordinates.
-/// TODO(ERROR_STATE_EKF.validate_model): Pin perturbation and injection convention.
-/// Algorithm-specific focus: Nominal state plus a
-/// lower-dimensional error state and covariance.
+/// Validate nominal-state and tangent error-state dimensions/conventions.
+/// TODO(ERROR_STATE_EKF.validate_model): 1) Pin the nominal-state representation, tangent
+/// ordering, and left/right box-plus/box-minus
+/// convention. 2) Check process/measurement Jacobian
+/// shapes, noise dimensions, and covariance PSD
+/// assumptions. 3) Define frame, injection, and
+/// reset-Jacobian callbacks; reject mismatches before
+/// state mutation. Algorithm-specific focus: Nominal
+/// state plus a lower-dimensional error state and
+/// covariance.
 ucon_status_t ucon_error_state_ekf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
-/// Initialize nominal state, error covariance, and workspace.
-/// TODO(ERROR_STATE_EKF.init): Define nominal normalization and initial error mean.
-/// Algorithm-specific focus: Nominal state plus a
-/// lower-dimensional error state and covariance.
+/// Initialize normalized nominal state, zero error mean, and tangent covariance.
+/// TODO(ERROR_STATE_EKF.init): 1) Copy and normalize the nominal state using its
+/// representation-specific rule; reject invalid norm/group state.
+/// 2) Set the local error mean to zero and validate/factor P0 in
+/// tangent coordinates. 3) Initialize timestamp/workspace and
+/// publish atomically. Algorithm-specific focus: Nominal state
+/// plus a lower-dimensional error state and covariance.
 ucon_status_t ucon_error_state_ekf_init(const ucon_algorithm_scaffold_call_t *call);
 
-/// Reset covariance and error history.
-/// TODO(ERROR_STATE_EKF.reset): Specify nominal-state retention. Algorithm-specific focus:
-/// Nominal state plus a lower-dimensional error state and
-/// covariance.
+/// Reset local error history under the nominal-state retention policy.
+/// TODO(ERROR_STATE_EKF.reset): 1) Clear timestamp, residual, and correction history. 2)
+/// Retain or replace the nominal state exactly as configured;
+/// reset local error mean to zero and seed covariance
+/// explicitly. 3) Revalidate normalization/factorization before
+/// commit. Algorithm-specific focus: Nominal state plus a
+/// lower-dimensional error state and covariance.
 ucon_status_t ucon_error_state_ekf_reset(const ucon_algorithm_scaffold_call_t *call);
 
-/// Propagate nominal state and error covariance.
-/// TODO(ERROR_STATE_EKF.predict): Define error dynamics and process-noise mapping.
-/// Algorithm-specific focus: Nominal state plus a
-/// lower-dimensional error state and covariance.
+/// Propagate nominal state and linearized tangent covariance.
+/// TODO(ERROR_STATE_EKF.predict): 1) Advance nominal state with the nonlinear process model
+/// and normalize/project it back to the declared manifold. 2)
+/// Evaluate tangent error transition Φ and process-noise map G
+/// in the pinned convention. 3) Compute P_pred=ΦPΦᵀ+GQGᵀ,
+/// validate PSD/finite values, and stage both
+/// nominal/covariance together. Algorithm-specific focus:
+/// Nominal state plus a lower-dimensional error state and
+/// covariance.
 ucon_status_t ucon_error_state_ekf_predict(const ucon_algorithm_scaffold_call_t *call);
 
-/// Update measurement innovation and error-state covariance.
-/// TODO(ERROR_STATE_EKF.correct): Define measurement mapping, gating, and failure atomicity.
+/// Compute a measurement residual and Kalman correction in tangent coordinates.
+/// TODO(ERROR_STATE_EKF.correct): 1) Evaluate h(nominal) and H in the declared
+/// measurement/tangent frames; form wrapped/manifold residual
+/// where required. 2) Factor innovation covariance, solve for
+/// gain, and apply the configured gate. 3) Compute delta-error
+/// and stage covariance update; pass the accepted correction
+/// to inject_error without committing half the update.
 /// Algorithm-specific focus: Nominal state plus a
 /// lower-dimensional error state and covariance.
 ucon_status_t ucon_error_state_ekf_correct(const ucon_algorithm_scaffold_call_t *call);
 
-/// Inject estimated error and reset local error coordinates.
-/// TODO(ERROR_STATE_EKF.inject_error): Specify manifold injection and reset Jacobian.
-/// Algorithm-specific focus: Nominal state plus a
-/// lower-dimensional error state and covariance.
+/// Apply the local correction and reset covariance coordinates.
+/// TODO(ERROR_STATE_EKF.inject_error): 1) Apply delta-error to the nominal state with the
+/// pinned box-plus operation and renormalize/validate the
+/// result. 2) Evaluate the reset Jacobian for the same
+/// perturbation convention and transform covariance into
+/// the new tangent coordinates. 3) Set local error mean
+/// to zero and atomically commit nominal
+/// state/covariance. Algorithm-specific focus: Nominal
+/// state plus a lower-dimensional error state and
+/// covariance.
 ucon_status_t ucon_error_state_ekf_inject_error(const ucon_algorithm_scaffold_call_t *call);
 
-/// Run prediction, optional correction, and injection.
-/// TODO(ERROR_STATE_EKF.step): Keep nominal and error coordinates consistent.
+/// Coordinate prediction, optional measurement update, and tangent reset.
+/// TODO(ERROR_STATE_EKF.step): 1) Validate timestamp and stage nominal/error prediction once.
+/// 2) Correct only valid measurement channels and gate before
+/// injection. 3) Inject accepted error and apply covariance reset
+/// Jacobian. 4) Commit nominal state, covariance, timestamp, and
+/// diagnostics together or preserve the last complete state.
 /// Algorithm-specific focus: Nominal state plus a
 /// lower-dimensional error state and covariance.
 ucon_status_t ucon_error_state_ekf_step(const ucon_algorithm_scaffold_call_t *call);

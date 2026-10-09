@@ -14,39 +14,74 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check sensor dimensions, frames, and attitude representation.
-/// TODO(MAHONY.validate_model): Pin quaternion order/sign or rotation-group convention and
-/// units. Algorithm-specific focus: Common embedded
+/// TODO(MAHONY.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Check sensor dimensions, frames, and attitude
+/// representation. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Pin
+/// quaternion order/sign or rotation-group convention and units.
+/// Algorithm-specific focus: Common embedded
 /// attitude/sensor-fusion filters.
 ucon_status_t ucon_mahony_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize nominal attitude and estimator state.
-/// TODO(MAHONY.init): Define seed validity and zero/near-zero normalization behavior.
-/// Algorithm-specific focus: Common embedded attitude/sensor-fusion
-/// filters.
+/// TODO(MAHONY.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize nominal attitude and estimator state. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Define seed
+/// validity and zero/near-zero normalization behavior. Algorithm-specific
+/// focus: Common embedded attitude/sensor-fusion filters.
 ucon_status_t ucon_mahony_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset sensor/attitude history.
-/// TODO(MAHONY.reset): Specify whether the caller must provide a new attitude seed.
-/// Algorithm-specific focus: Common embedded attitude/sensor-fusion
-/// filters.
+/// TODO(MAHONY.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Reset sensor/attitude history. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify whether the caller
+/// must provide a new attitude seed. Algorithm-specific focus: Common
+/// embedded attitude/sensor-fusion filters.
 ucon_status_t ucon_mahony_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate attitude from timestamped angular-rate data.
-/// TODO(MAHONY.propagate): Define frame, integration, bias handling, and normalization.
-/// Algorithm-specific focus: Common embedded attitude/sensor-fusion
-/// filters.
+/// TODO(MAHONY.propagate): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Propagate attitude from timestamped angular-rate data. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Define frame, integration, bias
+/// handling, and normalization. Algorithm-specific focus: Common
+/// embedded attitude/sensor-fusion filters.
 ucon_status_t ucon_mahony_propagate(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply configured vector observations or estimator correction.
-/// TODO(MAHONY.update): Define vector validity, weighting, observability, and rejection
-/// policy. Algorithm-specific focus: Common embedded
+/// TODO(MAHONY.update): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Apply configured vector observations or estimator correction. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define vector validity, weighting, observability, and
+/// rejection policy. Algorithm-specific focus: Common embedded
 /// attitude/sensor-fusion filters.
 ucon_status_t ucon_mahony_update(const ucon_algorithm_scaffold_call_t *call);
 
 /// Coordinate propagation and measurement update.
-/// TODO(MAHONY.step): Keep frame conversions/timestamps explicit and preserve state on
-/// failure. Algorithm-specific focus: Common embedded
-/// attitude/sensor-fusion filters.
+/// TODO(MAHONY.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Coordinate propagation and measurement update. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Keep frame
+/// conversions/timestamps explicit and preserve state on failure.
+/// Algorithm-specific focus: Common embedded attitude/sensor-fusion
+/// filters.
 ucon_status_t ucon_mahony_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

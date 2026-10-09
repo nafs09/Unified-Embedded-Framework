@@ -2,9 +2,9 @@
 /// @brief Checked scalar operations over the project-selected UMATH scalar.
 #ifndef UEF_UMATH_SCALAR_H
 #define UEF_UMATH_SCALAR_H
+#include <uef/umath/config.h>
 
 #include <stdbool.h>
-#include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
 
 #ifdef __cplusplus
@@ -14,6 +14,26 @@ extern "C" {
 /// Checked scalar APIs leave the output unchanged on failure. Null/non-finite inputs are invalid;
 /// a mathematically finite result outside the selected scalar range is UMATH_NUMERIC_FAILURE.
 bool umath_scalar_is_finite(umath_scalar_t value);
+/// Inline scalar-typed helpers for already validated arithmetic values.
+static inline umath_scalar_t umath_scalar_abs(umath_scalar_t value)
+{
+    return value < UMATH_SCALAR_C(0) ? -value : value;
+}
+static inline umath_scalar_t umath_scalar_min(umath_scalar_t left,
+                                              umath_scalar_t right)
+{
+    return left < right ? left : right;
+}
+static inline umath_scalar_t umath_scalar_max(umath_scalar_t left,
+                                              umath_scalar_t right)
+{
+    return left > right ? left : right;
+}
+static inline umath_scalar_t umath_scalar_sign(umath_scalar_t value)
+{
+    return value > UMATH_SCALAR_C(0) ? UMATH_SCALAR_C(1) :
+           value < UMATH_SCALAR_C(0) ? UMATH_SCALAR_C(-1) : UMATH_SCALAR_C(0);
+}
 umath_status_t umath_scalar_clamp(umath_scalar_t value,
                                   umath_scalar_t minimum,
                                   umath_scalar_t maximum,

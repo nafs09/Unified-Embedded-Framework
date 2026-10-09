@@ -16,10 +16,20 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(EXPLICIT_MPC.validate_region_table): Support multi-facet regions; do not assume one
- * inequality per region. Algorithm-specific focus:
- * Pre-solved piecewise-affine law, with a correct
- * multi-facet region representation.
+/* TODO(EXPLICIT_MPC.validate_region_table): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Validate all
+ * explicit regions, facets, gain dimensions, and
+ * coverage metadata. 3) Check numeric results,
+ * declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior
+ * values on failure. Operation-specific
+ * requirements: Support multi-facet regions; do not
+ * assume one inequality per region.
+ * Algorithm-specific focus: Pre-solved
+ * piecewise-affine law, with a correct multi-facet
+ * region representation.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_explicit_mpc_validate_region_table(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +40,15 @@ ucon_status_t ucon_explicit_mpc_validate_region_table(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EXPLICIT_MPC.init): Define outside-domain behavior. Algorithm-specific focus:
- * Pre-solved piecewise-affine law, with a correct multi-facet region
- * representation.
+/* TODO(EXPLICIT_MPC.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize lookup status and fixed table context. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define outside-domain behavior. Algorithm-specific
+ * focus: Pre-solved piecewise-affine law, with a correct multi-facet
+ * region representation.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_explicit_mpc_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +59,15 @@ ucon_status_t ucon_explicit_mpc_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EXPLICIT_MPC.reset): A region cache must never change correctness. Algorithm-specific
- * focus: Pre-solved piecewise-affine law, with a correct
- * multi-facet region representation.
+/* TODO(EXPLICIT_MPC.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset active-region/cache state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: A region cache must never change correctness.
+ * Algorithm-specific focus: Pre-solved piecewise-affine law, with a
+ * correct multi-facet region representation.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_explicit_mpc_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,7 +78,15 @@ ucon_status_t ucon_explicit_mpc_reset(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EXPLICIT_MPC.select_region): Define overlap priority and tolerance for boundary
+/* TODO(EXPLICIT_MPC.select_region): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Find the region whose every
+ * facet contains the current parameter vector. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Define overlap priority and tolerance for boundary
  * points. Algorithm-specific focus: Pre-solved
  * piecewise-affine law, with a correct multi-facet region
  * representation.
@@ -70,10 +100,18 @@ ucon_status_t ucon_explicit_mpc_select_region(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EXPLICIT_MPC.evaluate_affine_law): No online optimization solve is performed by
- * explicit MPC. Algorithm-specific focus: Pre-solved
- * piecewise-affine law, with a correct multi-facet
- * region representation.
+/* TODO(EXPLICIT_MPC.evaluate_affine_law): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Evaluate the selected
+ * region's precomputed affine control law. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: No online optimization solve is
+ * performed by explicit MPC. Algorithm-specific
+ * focus: Pre-solved piecewise-affine law, with a
+ * correct multi-facet region representation.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_explicit_mpc_evaluate_affine_law(const ucon_algorithm_scaffold_call_t *call)
@@ -84,8 +122,16 @@ ucon_status_t ucon_explicit_mpc_evaluate_affine_law(const ucon_algorithm_scaffol
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EXPLICIT_MPC.verify_command): Do not invent a fallback command. Algorithm-specific
- * focus: Pre-solved piecewise-affine law, with a correct
+/* TODO(EXPLICIT_MPC.verify_command): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check candidate bounds and
+ * report outside-domain/invalid-region status. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Do
+ * not invent a fallback command. Algorithm-specific focus:
+ * Pre-solved piecewise-affine law, with a correct
  * multi-facet region representation.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -97,9 +143,15 @@ ucon_status_t ucon_explicit_mpc_verify_command(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EXPLICIT_MPC.step): Use deterministic bounded region search. Algorithm-specific focus:
- * Pre-solved piecewise-affine law, with a correct multi-facet region
- * representation.
+/* TODO(EXPLICIT_MPC.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Select region, evaluate law, and publish control/status. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Use deterministic bounded region
+ * search. Algorithm-specific focus: Pre-solved piecewise-affine law,
+ * with a correct multi-facet region representation.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_explicit_mpc_step(const ucon_algorithm_scaffold_call_t *call)

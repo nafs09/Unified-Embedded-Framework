@@ -2,6 +2,7 @@
 /// @brief Scalar-first Hamilton quaternions for right-handed 3D rotations.
 #ifndef UEF_UMATH_QUATERNION_H
 #define UEF_UMATH_QUATERNION_H
+#include <uef/umath/config.h>
 
 #include <uef/umath/vector3.h>
 

@@ -2,6 +2,7 @@
 /// @brief Planned multivariate Gaussian log-density using a covariance Cholesky factor.
 #ifndef UEF_UMATH_PROBABILITY_MULTIVARIATE_NORMAL_H
 #define UEF_UMATH_PROBABILITY_MULTIVARIATE_NORMAL_H
+#include <uef/umath/config.h>
 
 #include <stddef.h>
 #include <uef/umath/scalar.h>

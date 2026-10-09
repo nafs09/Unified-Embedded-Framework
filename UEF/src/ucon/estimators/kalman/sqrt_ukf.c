@@ -16,9 +16,12 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(SQRT_UKF.validate_model): Pin scaled sigma-point weights and factor orientation.
- * Algorithm-specific focus: Square-root UKF; most numerically
- * stable
+/* TODO(SQRT_UKF.validate_model): 1) Pin factor orientation and the declared scaled-point
+ * rule/weights. 2) Check dimensions, finite noise factors,
+ * c=n+lambda, and fixed point workspace. 3) Define handling
+ * for negative covariance weights and rank loss before
+ * changing state. Algorithm-specific focus: Square-root UKF;
+ * most numerically stable
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ukf_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -29,8 +32,11 @@ ucon_status_t ucon_sqrt_ukf_validate_model(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_UKF.init): Define factorization and rank-deficiency failure. Algorithm-specific
- * focus: Square-root UKF; most numerically stable
+/* TODO(SQRT_UKF.init): 1) Validate x0/P0 and factor P0 using the pinned orientation. 2)
+ * Compute scaled weights and ensure every required QR/downdate workspace
+ * is bounded. 3) Initialize timestamp/diagnostics and publish only after
+ * all checks succeed. Algorithm-specific focus: Square-root UKF; most
+ * numerically stable
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ukf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,8 +47,10 @@ ucon_status_t ucon_sqrt_ukf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_UKF.reset): Define model-context retention. Algorithm-specific focus: Square-root
- * UKF; most numerically stable
+/* TODO(SQRT_UKF.reset): 1) Clear timestamp, freshness, and innovation history. 2) Restore
+ * caller seeds and refactor covariance without changing scaling/weight
+ * parameters. 3) Commit nominal state and factor atomically.
+ * Algorithm-specific focus: Square-root UKF; most numerically stable
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ukf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -53,9 +61,13 @@ ucon_status_t ucon_sqrt_ukf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_UKF.generate_sigma_points): Specify central weights and negative-weight
- * safeguards. Algorithm-specific focus: Square-root
- * UKF; most numerically stable
+/* TODO(SQRT_UKF.generate_sigma_points): 1) Compute c=n+lambda and scale the triangular factor
+ * by sqrt(c). 2) Emit the central point and paired
+ * plus/minus factor-column points in fixed order. 3)
+ * Assign configured mean/covariance weights and reject
+ * invalid c, nonfinite points, or unsupported
+ * negative-weight policy. Algorithm-specific focus:
+ * Square-root UKF; most numerically stable
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ukf_generate_sigma_points(const ucon_algorithm_scaffold_call_t *call)
@@ -66,9 +78,13 @@ ucon_status_t ucon_sqrt_ukf_generate_sigma_points(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_UKF.predict_factor): Specify QR/Cholesky update and process-noise handling.
- * Algorithm-specific focus: Square-root UKF; most numerically
- * stable
+/* TODO(SQRT_UKF.predict_factor): 1) Evaluate the process model for each sigma point and
+ * compute the weighted mean. 2) Stack weighted deviation
+ * columns with the process-noise factor and QR-factor for
+ * positive covariance weights. 3) Apply bounded rank-one
+ * Cholesky updates/downdates for signed weights; reject failed
+ * downdates and commit only a valid factor. Algorithm-specific
+ * focus: Square-root UKF; most numerically stable
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ukf_predict_factor(const ucon_algorithm_scaffold_call_t *call)
@@ -79,7 +95,12 @@ ucon_status_t ucon_sqrt_ukf_predict_factor(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_UKF.correct_factor): Define innovation solve/gating and rank-deficiency behavior.
+/* TODO(SQRT_UKF.correct_factor): 1) Transform sigma points through h and compute weighted
+ * measurement mean/cross covariance. 2) Build innovation
+ * factor from weighted deviations and measurement-noise
+ * factor, then solve triangular systems for gain/NIS. 3) Gate
+ * and downdate state factor using the declared signed-weight
+ * policy; preserve prediction on rank/numeric failure.
  * Algorithm-specific focus: Square-root UKF; most numerically
  * stable
  * This stub must not read/write opaque state or output buffers.
@@ -92,7 +113,10 @@ ucon_status_t ucon_sqrt_ukf_correct_factor(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_UKF.step): Do not form an unchecked full covariance as a hidden shortcut.
+/* TODO(SQRT_UKF.step): 1) Validate timestamp and generate the configured scaled points. 2)
+ * Predict once and stage the QR/downdate factor. 3) Correct only present
+ * channels with triangular solves. 4) Commit state/factor/diagnostics
+ * together; do not form an unchecked full covariance as a shortcut.
  * Algorithm-specific focus: Square-root UKF; most numerically stable
  * This stub must not read/write opaque state or output buffers.
  */

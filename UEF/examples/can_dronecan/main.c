@@ -6,6 +6,11 @@
 #include "uef/uproto/uproto_uavcan.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(can-dronecan main): Initialize the selected CAN controller with verified
+     * bitrate/timing and filters, then bind a statically sized node/transport instance
+     * from the selected DroneCAN/UAVCAN stack. Run bounded receive/spin work in task
+     * context, publish node health, and enter a defined stopped/degraded state on bus-off
+     * or stack errors; document node ID and buffer ownership in board configuration.
+     */
     return 0;
 }

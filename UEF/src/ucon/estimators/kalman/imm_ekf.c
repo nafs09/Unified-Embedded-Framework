@@ -16,11 +16,16 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(IMM_EKF.validate_model_bank): Bound model count and require normalized nonnegative
- * probabilities. Algorithm-specific focus: Interacting
- * multiple-model estimator using a declared bank of EKF
- * models, mode-transition probabilities, mixing, and
- * probability update.
+/* TODO(IMM_EKF.validate_model_bank): 1) Bound model count and verify all model dimensions,
+ * timestamps, and required EKF callbacks. 2) Check
+ * transition entries are finite/nonnegative and each
+ * source row follows the declared normalized convention.
+ * 3) Validate state mappings and likelihood floor; reject
+ * an unusable bank before initialization.
+ * Algorithm-specific focus: Interacting multiple-model
+ * estimator using a declared bank of EKF models,
+ * mode-transition probabilities, mixing, and probability
+ * update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_validate_model_bank(const ucon_algorithm_scaffold_call_t *call)
@@ -31,10 +36,13 @@ ucon_status_t ucon_imm_ekf_validate_model_bank(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.init): Define state mappings and zero-probability behavior. Algorithm-specific
- * focus: Interacting multiple-model estimator using a declared bank of
- * EKF models, mode-transition probabilities, mixing, and probability
- * update.
+/* TODO(IMM_EKF.init): 1) Validate each model seed and map it into the common state
+ * coordinates. 2) Require finite nonnegative mode probabilities with
+ * positive total and normalize once. 3) Initialize per-mode
+ * diagnostics/workspace and publish the full bank atomically.
+ * Algorithm-specific focus: Interacting multiple-model estimator using a
+ * declared bank of EKF models, mode-transition probabilities, mixing, and
+ * probability update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -45,9 +53,13 @@ ucon_status_t ucon_imm_ekf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.reset): Define caller ownership of model context. Algorithm-specific focus:
- * Interacting multiple-model estimator using a declared bank of EKF
- * models, mode-transition probabilities, mixing, and probability update.
+/* TODO(IMM_EKF.reset): 1) Clear global timestamp, likelihoods, and mode-transition history.
+ * 2) Apply the caller seed policy to every model and the initial
+ * probability vector. 3) Validate all model resets first, then commit
+ * the whole bank or leave every prior mode unchanged. Algorithm-specific
+ * focus: Interacting multiple-model estimator using a declared bank of
+ * EKF models, mode-transition probabilities, mixing, and probability
+ * update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -58,11 +70,15 @@ ucon_status_t ucon_imm_ekf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.mix_mode_states): Specify cross-model mappings and covariance mixing.
- * Algorithm-specific focus: Interacting multiple-model
- * estimator using a declared bank of EKF models,
- * mode-transition probabilities, mixing, and probability
- * update.
+/* TODO(IMM_EKF.mix_mode_states): 1) Compute destination normalizers c_j=sum_i(mu_i*p_ij) and
+ * reject degenerate totals. 2) Compute mixing weights
+ * μ_ij=μ_i*p_ij/c_j and map source means/covariances into
+ * destination coordinates. 3) Form mixed mean and covariance
+ * including between-mean spread; stage all destination priors
+ * before writing. Algorithm-specific focus: Interacting
+ * multiple-model estimator using a declared bank of EKF
+ * models, mode-transition probabilities, mixing, and
+ * probability update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_mix_mode_states(const ucon_algorithm_scaffold_call_t *call)
@@ -73,10 +89,13 @@ ucon_status_t ucon_imm_ekf_mix_mode_states(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.predict_modes): Bound work and define failed-mode policy. Algorithm-specific
- * focus: Interacting multiple-model estimator using a declared
- * bank of EKF models, mode-transition probabilities, mixing, and
- * probability update.
+/* TODO(IMM_EKF.predict_modes): 1) Run each model's EKF prediction exactly once from its mixed
+ * prior using aligned input/dt. 2) Record per-mode status and
+ * keep candidate results isolated. 3) Apply the configured
+ * failed-mode rule; never silently reuse stale state as a
+ * successful prediction. Algorithm-specific focus: Interacting
+ * multiple-model estimator using a declared bank of EKF models,
+ * mode-transition probabilities, mixing, and probability update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_predict_modes(const ucon_algorithm_scaffold_call_t *call)
@@ -87,10 +106,14 @@ ucon_status_t ucon_imm_ekf_predict_modes(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.correct_modes): Define likelihood floor and all-models-rejected behavior.
- * Algorithm-specific focus: Interacting multiple-model estimator
- * using a declared bank of EKF models, mode-transition
- * probabilities, mixing, and probability update.
+/* TODO(IMM_EKF.correct_modes): 1) Apply the same present measurement channels and timing to
+ * every viable model. 2) Compute each model's innovation
+ * covariance and log likelihood from its factorization,
+ * including the configured floor. 3) Mark gated/failed modes
+ * explicitly and report all-models-rejected without inventing
+ * likelihood. Algorithm-specific focus: Interacting
+ * multiple-model estimator using a declared bank of EKF models,
+ * mode-transition probabilities, mixing, and probability update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_correct_modes(const ucon_algorithm_scaffold_call_t *call)
@@ -101,11 +124,16 @@ ucon_status_t ucon_imm_ekf_correct_modes(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.update_probabilities): Report degeneracy and preserve probability
- * normalization. Algorithm-specific focus: Interacting
- * multiple-model estimator using a declared bank of EKF
- * models, mode-transition probabilities, mixing, and
- * probability update.
+/* TODO(IMM_EKF.update_probabilities): 1) Add log likelihood to transition-predicted log
+ * probabilities and normalize with log-sum-exp. 2) Detect
+ * all-zero/underflow degeneracy and apply only the
+ * declared fallback policy. 3) Combine mapped means and
+ * covariance including between-mode spread; verify
+ * probability sum and PSD before commit.
+ * Algorithm-specific focus: Interacting multiple-model
+ * estimator using a declared bank of EKF models,
+ * mode-transition probabilities, mixing, and probability
+ * update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_update_probabilities(const ucon_algorithm_scaffold_call_t *call)
@@ -116,10 +144,13 @@ ucon_status_t ucon_imm_ekf_update_probabilities(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(IMM_EKF.step): Commit consistently or report which model failed. Algorithm-specific
- * focus: Interacting multiple-model estimator using a declared bank of
- * EKF models, mode-transition probabilities, mixing, and probability
- * update.
+/* TODO(IMM_EKF.step): 1) Validate timestamp and compute mixed priors. 2) Predict and correct
+ * every viable mode into scratch state. 3) Update probabilities and
+ * combined moments only when the bank policy permits. 4) Commit all
+ * modes/probabilities/result together or return model-scoped diagnostics
+ * with prior state preserved. Algorithm-specific focus: Interacting
+ * multiple-model estimator using a declared bank of EKF models,
+ * mode-transition probabilities, mixing, and probability update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_imm_ekf_step(const ucon_algorithm_scaffold_call_t *call)

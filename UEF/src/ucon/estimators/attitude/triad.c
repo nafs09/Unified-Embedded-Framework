@@ -16,9 +16,16 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(TRIAD.validate_vectors): Define frame direction, normalization tolerance, and
- * handedness. Algorithm-specific focus: Attitude determination
- * from vector observations.
+/* TODO(TRIAD.validate_vectors): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or
+ * state. 2) Check two non-collinear reference and body vector
+ * pairs. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define
+ * frame direction, normalization tolerance, and handedness.
+ * Algorithm-specific focus: Attitude determination from vector
+ * observations.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_triad_validate_vectors(const ucon_algorithm_scaffold_call_t *call)
@@ -29,8 +36,14 @@ ucon_status_t ucon_triad_validate_vectors(const ucon_algorithm_scaffold_call_t *
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TRIAD.init): Define invalid-solution representation. Algorithm-specific focus:
- * Attitude determination from vector observations.
+/* TODO(TRIAD.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize
+ * fixed-size basis/output storage. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define invalid-solution
+ * representation. Algorithm-specific focus: Attitude determination from
+ * vector observations.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_triad_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,8 +54,14 @@ ucon_status_t ucon_triad_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TRIAD.reset): No temporal filter state is implied. Algorithm-specific focus: Attitude
- * determination from vector observations.
+/* TODO(TRIAD.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Clear
+ * solution and diagnostics. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: No temporal filter state is
+ * implied. Algorithm-specific focus: Attitude determination from vector
+ * observations.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_triad_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -53,9 +72,16 @@ ucon_status_t ucon_triad_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TRIAD.build_reference_triad): Specify cross-product order and degeneracy threshold.
- * Algorithm-specific focus: Attitude determination from
- * vector observations.
+/* TODO(TRIAD.build_reference_triad): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Construct the orthonormal
+ * reference basis. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Specify cross-product
+ * order and degeneracy threshold. Algorithm-specific
+ * focus: Attitude determination from vector observations.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_triad_build_reference_triad(const ucon_algorithm_scaffold_call_t *call)
@@ -66,9 +92,15 @@ ucon_status_t ucon_triad_build_reference_triad(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TRIAD.build_body_triad): Use the same handedness and vector ordering.
- * Algorithm-specific focus: Attitude determination from vector
- * observations.
+/* TODO(TRIAD.build_body_triad): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or
+ * state. 2) Construct the matching orthonormal body basis. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Use the same
+ * handedness and vector ordering. Algorithm-specific focus:
+ * Attitude determination from vector observations.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_triad_build_body_triad(const ucon_algorithm_scaffold_call_t *call)
@@ -79,8 +111,15 @@ ucon_status_t ucon_triad_build_body_triad(const ucon_algorithm_scaffold_call_t *
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TRIAD.solve_attitude): Define normalization and residual checks. Algorithm-specific
- * focus: Attitude determination from vector observations.
+/* TODO(TRIAD.solve_attitude): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Map the two bases into the declared attitude representation.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define normalization and
+ * residual checks. Algorithm-specific focus: Attitude
+ * determination from vector observations.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_triad_solve_attitude(const ucon_algorithm_scaffold_call_t *call)

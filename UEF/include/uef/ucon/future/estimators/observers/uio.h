@@ -14,38 +14,72 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check plant matrices, dimensions, gain layout, and disturbance model.
-/// TODO(UIO.validate_model): State detectability/observability assumptions and gain
-/// ownership. Algorithm-specific focus: Unknown input observer;
-/// decoupled from unknown inputs
+/// TODO(UIO.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check plant matrices, dimensions, gain layout, and
+/// disturbance model. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: State
+/// detectability/observability assumptions and gain ownership.
+/// Algorithm-specific focus: Unknown input observer; decoupled from
+/// unknown inputs
 ucon_status_t ucon_uio_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize estimate and observer/disturbance states.
-/// TODO(UIO.init): Define initial estimate and any required output history.
-/// Algorithm-specific focus: Unknown input observer; decoupled from unknown
-/// inputs
+/// TODO(UIO.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize estimate
+/// and observer/disturbance states. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define initial estimate and any required
+/// output history. Algorithm-specific focus: Unknown input observer;
+/// decoupled from unknown inputs
 ucon_status_t ucon_uio_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear observer history or preload a documented state.
-/// TODO(UIO.reset): Specify bumpless reset and disturbance estimate handling.
-/// Algorithm-specific focus: Unknown input observer; decoupled from unknown
-/// inputs
+/// TODO(UIO.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Clear observer
+/// history or preload a documented state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify bumpless reset and
+/// disturbance estimate handling. Algorithm-specific focus: Unknown input
+/// observer; decoupled from unknown inputs
 ucon_status_t ucon_uio_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate the model and predicted state.
-/// TODO(UIO.predict): Define sample time and discretization. Algorithm-specific focus:
-/// Unknown input observer; decoupled from unknown inputs
+/// TODO(UIO.predict): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Propagate the model and predicted state. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define sample time
+/// and discretization. Algorithm-specific focus: Unknown input observer;
+/// decoupled from unknown inputs
 ucon_status_t ucon_uio_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply measured output/residual and observer injection.
-/// TODO(UIO.correct): Specify residual sign, disturbance channels, and gain convention.
+/// TODO(UIO.correct): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Apply
+/// measured output/residual and observer injection. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Specify
+/// residual sign, disturbance channels, and gain convention.
 /// Algorithm-specific focus: Unknown input observer; decoupled from
 /// unknown inputs
 ucon_status_t ucon_uio_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one observer update and report estimate/residual validity.
-/// TODO(UIO.step): Bound work and preserve prior state after numeric failure.
-/// Algorithm-specific focus: Unknown input observer; decoupled from unknown
-/// inputs
+/// TODO(UIO.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Run one observer
+/// update and report estimate/residual validity. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Bound work and preserve prior
+/// state after numeric failure. Algorithm-specific focus: Unknown input
+/// observer; decoupled from unknown inputs
 ucon_status_t ucon_uio_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

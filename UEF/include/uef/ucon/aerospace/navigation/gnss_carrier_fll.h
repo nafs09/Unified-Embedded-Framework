@@ -14,46 +14,91 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check sensor dimensions, frames, timing, and noise parameters.
-/// TODO(GNSS_CARRIER_FLL.validate_config): Distinguish raw observables from position/velocity
-/// fixes. Algorithm-specific focus: Code-delay and
-/// carrier phase/frequency tracking from prompt
-/// correlator outputs; RF sampling and correlators
-/// are separate.
+/// TODO(GNSS_CARRIER_FLL.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check sensor
+/// dimensions, frames, timing, and noise parameters.
+/// 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Distinguish raw
+/// observables from position/velocity fixes.
+/// Algorithm-specific focus: Code-delay and carrier
+/// phase/frequency tracking from prompt correlator
+/// outputs; RF sampling and correlators are separate.
 ucon_status_t ucon_gnss_carrier_fll_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize navigation state, covariance, and sensor history.
-/// TODO(GNSS_CARRIER_FLL.init): Define alignment and initial-uncertainty requirements.
+/// TODO(GNSS_CARRIER_FLL.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Initialize navigation state, covariance, and sensor
+/// history. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// alignment and initial-uncertainty requirements.
 /// Algorithm-specific focus: Code-delay and carrier
 /// phase/frequency tracking from prompt correlator outputs; RF
 /// sampling and correlators are separate.
 ucon_status_t ucon_gnss_carrier_fll_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset filter history for the selected coupling mode.
-/// TODO(GNSS_CARRIER_FLL.reset): Define recovery after invalid IMU/GNSS intervals.
-/// Algorithm-specific focus: Code-delay and carrier
+/// TODO(GNSS_CARRIER_FLL.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Reset filter history for the selected
+/// coupling mode. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Define recovery after invalid IMU/GNSS
+/// intervals. Algorithm-specific focus: Code-delay and carrier
 /// phase/frequency tracking from prompt correlator outputs; RF
 /// sampling and correlators are separate.
 ucon_status_t ucon_gnss_carrier_fll_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate state/covariance over one IMU interval.
-/// TODO(GNSS_CARRIER_FLL.propagate_imu): Define integration, bias, gravity/coordinate model,
-/// and gap handling. Algorithm-specific focus:
-/// Code-delay and carrier phase/frequency tracking from
-/// prompt correlator outputs; RF sampling and
-/// correlators are separate.
+/// TODO(GNSS_CARRIER_FLL.propagate_imu): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Propagate
+/// state/covariance over one IMU interval. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define integration, bias,
+/// gravity/coordinate model, and gap handling.
+/// Algorithm-specific focus: Code-delay and carrier
+/// phase/frequency tracking from prompt correlator
+/// outputs; RF sampling and correlators are separate.
 ucon_status_t ucon_gnss_carrier_fll_propagate_imu(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply a fix or raw-observable measurement update.
-/// TODO(GNSS_CARRIER_FLL.update_gnss): Define lever arm, time alignment, validity, and
-/// rejected-satellite behavior. Algorithm-specific focus:
-/// Code-delay and carrier phase/frequency tracking from
-/// prompt correlator outputs; RF sampling and correlators
-/// are separate.
+/// TODO(GNSS_CARRIER_FLL.update_gnss): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Apply a fix or
+/// raw-observable measurement update. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define lever
+/// arm, time alignment, validity, and rejected-satellite
+/// behavior. Algorithm-specific focus: Code-delay and
+/// carrier phase/frequency tracking from prompt
+/// correlator outputs; RF sampling and correlators are
+/// separate.
 ucon_status_t ucon_gnss_carrier_fll_update_gnss(const ucon_algorithm_scaffold_call_t *call);
 
 /// Coordinate IMU propagation with available GNSS updates.
-/// TODO(GNSS_CARRIER_FLL.step): Bound measurements and preserve the prior solution on
-/// failure. Algorithm-specific focus: Code-delay and carrier
+/// TODO(GNSS_CARRIER_FLL.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Coordinate IMU propagation with available GNSS
+/// updates. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Bound
+/// measurements and preserve the prior solution on failure.
+/// Algorithm-specific focus: Code-delay and carrier
 /// phase/frequency tracking from prompt correlator outputs; RF
 /// sampling and correlators are separate.
 ucon_status_t ucon_gnss_carrier_fll_step(const ucon_algorithm_scaffold_call_t *call);

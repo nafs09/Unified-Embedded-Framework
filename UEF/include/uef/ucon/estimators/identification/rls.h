@@ -14,43 +14,80 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check regressor dimension, covariance seed, forgetting factor, and bounds.
-/// TODO(RLS.validate_config): Define lambda range and covariance conditioning assumptions.
+/// TODO(RLS.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check regressor dimension, covariance seed, forgetting
+/// factor, and bounds. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements:
+/// Define lambda range and covariance conditioning assumptions.
 /// Algorithm-specific focus: Recursive least-squares parameter
 /// estimator with an explicit regressor, covariance
 /// initialization, and optional forgetting factor.
 ucon_status_t ucon_rls_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize parameter vector and information/covariance matrix.
-/// TODO(RLS.init): Define P0 scaling and parameter seeding. Algorithm-specific focus:
-/// Recursive least-squares parameter estimator with an explicit regressor,
-/// covariance initialization, and optional forgetting factor.
+/// TODO(RLS.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize parameter
+/// vector and information/covariance matrix. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Define P0 scaling and
+/// parameter seeding. Algorithm-specific focus: Recursive least-squares
+/// parameter estimator with an explicit regressor, covariance initialization,
+/// and optional forgetting factor.
 ucon_status_t ucon_rls_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset recursive memory and diagnostics.
-/// TODO(RLS.reset): Define parameter retention versus reinitialization. Algorithm-specific
-/// focus: Recursive least-squares parameter estimator with an explicit
-/// regressor, covariance initialization, and optional forgetting factor.
+/// TODO(RLS.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Reset recursive
+/// memory and diagnostics. 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define parameter retention versus
+/// reinitialization. Algorithm-specific focus: Recursive least-squares
+/// parameter estimator with an explicit regressor, covariance
+/// initialization, and optional forgetting factor.
 ucon_status_t ucon_rls_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply one gain, parameter, and covariance recursion.
-/// TODO(RLS.update): Specify symmetrization, regularization, and parameter projection.
+/// TODO(RLS.update): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Apply
+/// one gain, parameter, and covariance recursion. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Specify
+/// symmetrization, regularization, and parameter projection.
 /// Algorithm-specific focus: Recursive least-squares parameter estimator
 /// with an explicit regressor, covariance initialization, and optional
 /// forgetting factor.
 ucon_status_t ucon_rls_update(const ucon_algorithm_scaffold_call_t *call);
 
 /// Report residual and excitation/conditioning status.
-/// TODO(RLS.get_diagnostics): Do not claim identification under insufficient excitation.
-/// Algorithm-specific focus: Recursive least-squares parameter
-/// estimator with an explicit regressor, covariance
-/// initialization, and optional forgetting factor.
+/// TODO(RLS.get_diagnostics): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Report residual and excitation/conditioning status. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Do not claim identification
+/// under insufficient excitation. Algorithm-specific focus:
+/// Recursive least-squares parameter estimator with an explicit
+/// regressor, covariance initialization, and optional forgetting
+/// factor.
 ucon_status_t ucon_rls_get_diagnostics(const ucon_algorithm_scaffold_call_t *call);
 
 /// Consume one regressor/output pair and atomically publish parameters.
-/// TODO(RLS.step): Define invalid sample behavior and bounded update count.
-/// Algorithm-specific focus: Recursive least-squares parameter estimator with
-/// an explicit regressor, covariance initialization, and optional forgetting
-/// factor.
+/// TODO(RLS.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Consume one
+/// regressor/output pair and atomically publish parameters. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Define invalid
+/// sample behavior and bounded update count. Algorithm-specific focus:
+/// Recursive least-squares parameter estimator with an explicit regressor,
+/// covariance initialization, and optional forgetting factor.
 ucon_status_t ucon_rls_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

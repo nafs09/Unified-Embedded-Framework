@@ -12,12 +12,13 @@
 uef_status_t upal_fmac_init(
     const upal_fmac_cfg_t* cfg
 ) {
-    /* TODO(UEF UPAL FMAC):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Document
-     * coefficient/sample ordering and fixed-point scaling, handle FIFO saturation, and keep
-     * interrupt-side work bounded.
-     */
+    /* TODO(upal_fmac_init):
+ * 1) Validate coefficient/sample dimensions, fixed-point format, and target RAM
+ *     *    partition
+ * 2) configure/reset accelerator and load coefficients/state
+ * 3) clear FIFO/error flags and publish ready after bounded readiness check.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)cfg;
     return UEF_NOT_SUPPORTED;
 }
@@ -26,12 +27,12 @@ uef_status_t upal_fmac_write(
     const uef_q15_t* input,
     uef_u32_t count
 ) {
-    /* TODO(UEF UPAL FMAC):
-     * Validate the full payload and peripheral state, then report completion only after the
-     * hardware accepts or finishes the transfer as promised. Document coefficient/sample
-     * ordering and fixed-point scaling, handle FIFO saturation, and keep interrupt-side
-     * work bounded.
-     */
+    /* TODO(upal_fmac_write):
+ * 1) Validate input pointer/count and available FIFO/RAM space
+ * 2) convert samples to configured Q15 order/scaling and write only accepted entries
+ * 3) report short write or saturation without silent loss.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)input;
     (void)count;
     return UEF_NOT_SUPPORTED;
@@ -41,20 +42,23 @@ uef_u32_t upal_fmac_read(
     uef_q15_t* output,
     uef_u32_t max_count
 ) {
-    /* TODO(UEF UPAL FMAC):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Document coefficient/sample ordering and
-     * fixed-point scaling, handle FIFO saturation, and keep interrupt-side work bounded.
-     */
+    /* TODO(upal_fmac_read):
+ * 1) Validate output and capacity, snapshot available output count, and read no more
+ *     *    than caller capacity
+ * 2) convert using configured Q15 scaling/order
+ * 3) preserve unread results and report overflow/underflow distinctly.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)output;
     (void)max_count;
     return 0;
 }
 
 void upal_fmac_irq_handler(void) {
-    /* TODO(UEF UPAL FMAC):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Document coefficient/sample ordering and
-     * fixed-point scaling, handle FIFO saturation, and keep interrupt-side work bounded.
-     */
+    /* TODO(upal_fmac_irq_handler):
+ * 1) Snapshot ready/overrun/underrun/error flags and clear target-defined sources
+ * 2) update only this accelerator state and stop unsafe processing on arithmetic error
+ * 3) defer non-ISR-safe callbacks.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
 }

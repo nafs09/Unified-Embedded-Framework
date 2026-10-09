@@ -14,42 +14,76 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check plant/input gain and disturbance-state model.
-/// TODO(ADRC.validate_model): State bandwidth, sign, and matched-disturbance assumptions.
-/// Algorithm-specific focus: Active disturbance rejection
-/// controller composed around a declared extended-state observer
-/// (ESO).
+/// TODO(ADRC.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check plant/input gain and disturbance-state model. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: State bandwidth, sign, and
+/// matched-disturbance assumptions. Algorithm-specific focus:
+/// Active disturbance rejection controller composed around a
+/// declared extended-state observer (ESO).
 ucon_status_t ucon_adrc_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize observer and controller state.
-/// TODO(ADRC.init): Define state seed and bounded observer transient. Algorithm-specific
-/// focus: Active disturbance rejection controller composed around a declared
-/// extended-state observer (ESO).
+/// TODO(ADRC.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize observer
+/// and controller state. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define state seed and bounded observer
+/// transient. Algorithm-specific focus: Active disturbance rejection
+/// controller composed around a declared extended-state observer (ESO).
 ucon_status_t ucon_adrc_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset disturbance estimate and controller history.
-/// TODO(ADRC.reset): Specify bumpless restart behavior. Algorithm-specific focus: Active
-/// disturbance rejection controller composed around a declared
-/// extended-state observer (ESO).
+/// TODO(ADRC.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Reset
+/// disturbance estimate and controller history. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Specify bumpless
+/// restart behavior. Algorithm-specific focus: Active disturbance rejection
+/// controller composed around a declared extended-state observer (ESO).
 ucon_status_t ucon_adrc_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Update extended-state/disturbance estimate.
-/// TODO(ADRC.update_observer): Define discretization, noise sensitivity, and estimation
-/// limits. Algorithm-specific focus: Active disturbance rejection
-/// controller composed around a declared extended-state observer
-/// (ESO).
+/// TODO(ADRC.update_observer): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Update extended-state/disturbance estimate. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define discretization, noise
+/// sensitivity, and estimation limits. Algorithm-specific focus:
+/// Active disturbance rejection controller composed around a
+/// declared extended-state observer (ESO).
 ucon_status_t ucon_adrc_update_observer(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute a bounded command from reference and estimates.
-/// TODO(ADRC.compute_control): Define compensation sign, actuator saturation, and fallback
-/// interface. Algorithm-specific focus: Active disturbance
-/// rejection controller composed around a declared extended-state
-/// observer (ESO).
+/// TODO(ADRC.compute_control): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Compute a bounded command from reference and estimates. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define compensation sign,
+/// actuator saturation, and fallback interface.
+/// Algorithm-specific focus: Active disturbance rejection
+/// controller composed around a declared extended-state observer
+/// (ESO).
 ucon_status_t ucon_adrc_compute_control(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run observer and controller in the specified order.
-/// TODO(ADRC.step): Commit state only after all checks succeed. Algorithm-specific focus:
-/// Active disturbance rejection controller composed around a declared
-/// extended-state observer (ESO).
+/// TODO(ADRC.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Run observer and
+/// controller in the specified order. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Commit state only after all
+/// checks succeed. Algorithm-specific focus: Active disturbance rejection
+/// controller composed around a declared extended-state observer (ESO).
 ucon_status_t ucon_adrc_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

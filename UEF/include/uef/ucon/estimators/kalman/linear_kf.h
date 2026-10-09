@@ -13,47 +13,65 @@ extern "C" {
 /// Roadmap priority: FIRST_PASS.
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
-/// Check state/measurement dimensions, model callbacks, and covariance assumptions.
-/// TODO(LINEAR_KF.validate_model): Reject invalid shapes before state changes; specify PSD
-/// and conditioning policy. Algorithm-specific focus:
-/// Discrete linear Kalman filter for a declared state-space
-/// model, process-noise covariance, measurement model, and
-/// update timing.
+/// Validate the discrete linear state-space model and noise matrices.
+/// TODO(LINEAR_KF.validate_model): 1) Check A/B/H dimensions against n-state, p-input, and
+/// m-measurement ordering. 2) Require finite coefficients and
+/// symmetric PSD P0/Q with valid R for the selected
+/// innovation solve. 3) Define variable-dt handling and
+/// reject inconsistent shapes before touching state.
+/// Algorithm-specific focus: Discrete linear Kalman filter
+/// for a declared state-space model, process-noise
+/// covariance, measurement model, and update timing.
 ucon_status_t ucon_linear_kf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
-/// Initialize estimate, covariance, and fixed workspace.
-/// TODO(LINEAR_KF.init): Define initial-state ownership, covariance seed, and factorization
-/// failure. Algorithm-specific focus: Discrete linear Kalman filter for
-/// a declared state-space model, process-noise covariance, measurement
-/// model, and update timing.
+/// Initialize estimate, covariance, and bounded matrix workspace.
+/// TODO(LINEAR_KF.init): 1) Copy x0/P0 into candidate storage and verify exact dimensions. 2)
+/// Check finite entries and covariance symmetry/PSD, then initialize
+/// timestamp and scratch buffers. 3) Publish the initial state only
+/// after all validation succeeds. Algorithm-specific focus: Discrete
+/// linear Kalman filter for a declared state-space model, process-noise
+/// covariance, measurement model, and update timing.
 ucon_status_t ucon_linear_kf_init(const ucon_algorithm_scaffold_call_t *call);
 
-/// Reset estimator history under a documented seed policy.
-/// TODO(LINEAR_KF.reset): Specify whether nominal estimate/model context is retained.
+/// Reset the estimate and measurement history under the seed policy.
+/// TODO(LINEAR_KF.reset): 1) Clear accepted timestamp, innovation, and channel-validity
+/// history. 2) Restore the declared x0/P0 seed while retaining
+/// immutable A/B/H/Q/R configuration. 3) Commit atomically or preserve
+/// the previous estimate when the reset seed is invalid.
 /// Algorithm-specific focus: Discrete linear Kalman filter for a
 /// declared state-space model, process-noise covariance, measurement
 /// model, and update timing.
 ucon_status_t ucon_linear_kf_reset(const ucon_algorithm_scaffold_call_t *call);
 
-/// Propagate estimate and uncertainty over one declared interval.
-/// TODO(LINEAR_KF.predict): Define discretization, process-noise timing, and stable
-/// covariance update. Algorithm-specific focus: Discrete linear
-/// Kalman filter for a declared state-space model, process-noise
-/// covariance, measurement model, and update timing.
-ucon_status_t ucon_linear_kf_predict(const ucon_algorithm_scaffold_call_t *call);
-
-/// Apply a timestamped measurement and compute innovation diagnostics.
-/// TODO(LINEAR_KF.correct): Define gating, missing-channel behavior, and failure atomicity.
+/// Apply the linear state transition and process-noise covariance update.
+/// TODO(LINEAR_KF.predict): 1) Compute x_pred=A x+B u using the declared input timing. 2)
+/// Compute P_pred=A P Aᵀ+Q_d, with Q_d formed for the documented
+/// sample interval. 3) Check finite values/PSD, symmetrize only
+/// round-off error, and commit both predicted values together.
 /// Algorithm-specific focus: Discrete linear Kalman filter for a
 /// declared state-space model, process-noise covariance, measurement
 /// model, and update timing.
+ucon_status_t ucon_linear_kf_predict(const ucon_algorithm_scaffold_call_t *call);
+
+/// Apply selected measurement rows and calculate innovation diagnostics.
+/// TODO(LINEAR_KF.correct): 1) Gather present rows of z/H/R and skip absent channels. 2) Form
+/// ν=z−H x_pred and S=H P_pred Hᵀ+R; factor S and solve for K
+/// without explicit inversion. 3) Apply configured gating, update x,
+/// and compute Joseph-form P. 4) Validate candidate
+/// dimensions/numbers before committing; preserve prediction if
+/// rejected or failed. Algorithm-specific focus: Discrete linear
+/// Kalman filter for a declared state-space model, process-noise
+/// covariance, measurement model, and update timing.
 ucon_status_t ucon_linear_kf_correct(const ucon_algorithm_scaffold_call_t *call);
 
-/// Run prediction and optional correction in a fixed documented order.
-/// TODO(LINEAR_KF.step): Handle asynchronous samples explicitly; do not synthesize missing
-/// measurements. Algorithm-specific focus: Discrete linear Kalman
-/// filter for a declared state-space model, process-noise covariance,
-/// measurement model, and update timing.
+/// Run one ordered linear prediction and optional measurement correction.
+/// TODO(LINEAR_KF.step): 1) Check timestamp monotonicity and derive the supported interval.
+/// 2) Predict once using the input aligned to that interval. 3) Correct
+/// only with explicitly valid measurement channels. 4) Commit
+/// timestamp/state/diagnostics together; do not invent samples for
+/// asynchronous sensors. Algorithm-specific focus: Discrete linear
+/// Kalman filter for a declared state-space model, process-noise
+/// covariance, measurement model, and update timing.
 ucon_status_t ucon_linear_kf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

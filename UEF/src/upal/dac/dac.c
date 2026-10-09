@@ -13,11 +13,12 @@ uef_status_t upal_dac_init(
     upal_dac_t* d,
     const upal_dac_hw_t* hw
 ) {
-    /* TODO(UEF UPAL DAC):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Validate channel
-     * and 12-bit values, and define sample-buffer lifetime and DMA completion behavior.
-     */
+    /* TODO(upal_dac_init):
+ * 1) Validate channel, resolution, trigger, pin, and DMA settings
+ * 2) enable/reset and configure output buffer/trigger before request enable
+ * 3) clear underrun flags and publish ready on success.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)d;
     (void)hw;
     return UEF_NOT_SUPPORTED;
@@ -28,11 +29,12 @@ void upal_dac_write(
     uef_u8_t channel,
     uef_u16_t value_12bit
 ) {
-    /* TODO(UEF UPAL DAC):
-     * Validate the full payload and peripheral state, then report completion only after the
-     * hardware accepts or finishes the transfer as promised. Validate channel and 12-bit
-     * values, and define sample-buffer lifetime and DMA completion behavior.
-     */
+    /* TODO(upal_dac_write):
+ * 1) Validate channel and representable sample
+ * 2) convert to target register alignment and perform required holding-register write
+ * 3) preserve other channel config and report underrun/state errors.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)d;
     (void)channel;
     (void)value_12bit;
@@ -47,11 +49,12 @@ uef_status_t upal_dac_dma_start(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL DAC):
-     * Reject invalid state, arm the peripheral and DMA in the documented order, and roll
-     * back partially configured resources on failure. Validate channel and 12-bit values,
-     * and define sample-buffer lifetime and DMA completion behavior.
-     */
+    /* TODO(upal_dac_dma_start):
+ * 1) Validate source/count/alignment/trigger rate and DMA reachability
+ * 2) prepare cache and arm DMA before DAC trigger/output
+ * 3) store generation and unwind setup on failure.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)d;
     (void)channel;
     (void)samples;
@@ -66,11 +69,12 @@ void upal_dac_dma_stop(
     upal_dac_t* d,
     uef_u8_t channel
 ) {
-    /* TODO(UEF UPAL DAC):
-     * Disable new requests first, stop/abort any active transfer, clear owned flags, and
-     * leave the module in a documented restartable state. Validate channel and 12-bit
-     * values, and define sample-buffer lifetime and DMA completion behavior.
-     */
+    /* TODO(upal_dac_dma_stop):
+ * 1) Disable new trigger requests and stop DMA
+ * 2) wait boundedly for in-flight write then clear owned flags
+ * 3) release cache and mark stopped idempotently.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)d;
     (void)channel;
 }

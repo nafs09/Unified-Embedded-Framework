@@ -2,6 +2,7 @@
 /// @brief Complex arithmetic with checked division and transcendental operations.
 #include <math.h>
 #include <uef/umath/complex.h>
+#include <uef/umath/internal/scalar_math.h>
 #include <uef/umath/scalar.h>
 
 umath_complex_t umath_complex_add(umath_complex_t a, umath_complex_t b)
@@ -35,27 +36,41 @@ umath_status_t umath_complex_div(umath_complex_t a, umath_complex_t b,
                                  umath_complex_t *quotient)
 {
     umath_complex_t result;
-    double real, imag;
+    umath_accumulator_t real, imag;
+    umath_scalar_t real_scalar, imag_scalar;
     if (quotient == NULL || !umath_scalar_is_finite(a.real) ||
         !umath_scalar_is_finite(a.imag) || !umath_scalar_is_finite(b.real) ||
         !umath_scalar_is_finite(b.imag)) {
         return UMATH_INVALID_ARGUMENT;
     }
     if (b.real == 0 && b.imag == 0) return UMATH_SINGULAR;
-    if (fabs((double)b.real) >= fabs((double)b.imag)) {
-        const double ratio = (double)b.imag / (double)b.real;
-        const double denominator = (double)b.real + (double)b.imag * ratio;
-        real = ((double)a.real + (double)a.imag * ratio) / denominator;
-        imag = ((double)a.imag - (double)a.real * ratio) / denominator;
+    if (UEF_UMATH_ACCUM_UNARY_MATH(fabs, (umath_accumulator_t)b.real) >=
+        UEF_UMATH_ACCUM_UNARY_MATH(fabs, (umath_accumulator_t)b.imag)) {
+        const umath_accumulator_t ratio =
+            (umath_accumulator_t)b.imag / (umath_accumulator_t)b.real;
+        const umath_accumulator_t denominator = (umath_accumulator_t)b.real +
+            (umath_accumulator_t)b.imag * ratio;
+        real = ((umath_accumulator_t)a.real +
+                (umath_accumulator_t)a.imag * ratio) / denominator;
+        imag = ((umath_accumulator_t)a.imag -
+                (umath_accumulator_t)a.real * ratio) / denominator;
     } else {
-        const double ratio = (double)b.real / (double)b.imag;
-        const double denominator = (double)b.imag + (double)b.real * ratio;
-        real = ((double)a.real * ratio + (double)a.imag) / denominator;
-        imag = ((double)a.imag * ratio - (double)a.real) / denominator;
+        const umath_accumulator_t ratio =
+            (umath_accumulator_t)b.real / (umath_accumulator_t)b.imag;
+        const umath_accumulator_t denominator = (umath_accumulator_t)b.imag +
+            (umath_accumulator_t)b.real * ratio;
+        real = ((umath_accumulator_t)a.real * ratio +
+                (umath_accumulator_t)a.imag) / denominator;
+        imag = ((umath_accumulator_t)a.imag * ratio -
+                (umath_accumulator_t)a.real) / denominator;
     }
     if (!isfinite(real) || !isfinite(imag)) return UMATH_NUMERIC_FAILURE;
-    result.real = (umath_scalar_t)real;
-    result.imag = (umath_scalar_t)imag;
+    real_scalar = (umath_scalar_t)real;
+    imag_scalar = (umath_scalar_t)imag;
+    if (!umath_scalar_is_finite(real_scalar) ||
+        !umath_scalar_is_finite(imag_scalar)) return UMATH_NUMERIC_FAILURE;
+    result.real = real_scalar;
+    result.imag = imag_scalar;
     *quotient = result;
     return UMATH_OK;
 }
@@ -63,27 +78,42 @@ umath_status_t umath_complex_div(umath_complex_t a, umath_complex_t b,
 umath_status_t umath_complex_magnitude(umath_complex_t value,
                                        umath_scalar_t *magnitude)
 {
-    const double result = hypot((double)value.real, (double)value.imag);
-    if (magnitude == NULL || !umath_scalar_is_finite(value.real) ||
+    const umath_accumulator_t result = UEF_UMATH_ACCUM_BINARY_MATH(
+        hypot, (umath_accumulator_t)value.real, (umath_accumulator_t)value.imag);
+    umath_scalar_t converted;
+    if (magnitude == NULL) return UMATH_INVALID_ARGUMENT;
+    if (!umath_scalar_is_finite(value.real) ||
         !umath_scalar_is_finite(value.imag) || !isfinite(result)) {
         return UMATH_NUMERIC_FAILURE;
     }
-    *magnitude = (umath_scalar_t)result;
+    converted = (umath_scalar_t)result;
+    if (!umath_scalar_is_finite(converted)) return UMATH_NUMERIC_FAILURE;
+    *magnitude = converted;
     return UMATH_OK;
 }
 
 umath_status_t umath_complex_exp(umath_complex_t value,
                                  umath_complex_t *exponential)
 {
-    const double scale = exp((double)value.real);
-    const double real = scale * cos((double)value.imag);
-    const double imag = scale * sin((double)value.imag);
+    umath_accumulator_t scale, real, imag;
+    umath_complex_t result;
     if (exponential == NULL || !umath_scalar_is_finite(value.real) ||
-        !umath_scalar_is_finite(value.imag) || !isfinite(real) || !isfinite(imag)) {
+        !umath_scalar_is_finite(value.imag)) {
+        return UMATH_INVALID_ARGUMENT;
+    }
+    scale = UEF_UMATH_ACCUM_UNARY_MATH(exp, (umath_accumulator_t)value.real);
+    real = scale * UEF_UMATH_ACCUM_UNARY_MATH(
+        cos, (umath_accumulator_t)value.imag);
+    imag = scale * UEF_UMATH_ACCUM_UNARY_MATH(
+        sin, (umath_accumulator_t)value.imag);
+    if (!isfinite(real) || !isfinite(imag)) {
         return UMATH_NUMERIC_FAILURE;
     }
-    exponential->real = (umath_scalar_t)real;
-    exponential->imag = (umath_scalar_t)imag;
+    result.real = (umath_scalar_t)real;
+    result.imag = (umath_scalar_t)imag;
+    if (!umath_scalar_is_finite(result.real) ||
+        !umath_scalar_is_finite(result.imag)) return UMATH_NUMERIC_FAILURE;
+    *exponential = result;
     return UMATH_OK;
 }
 
@@ -91,14 +121,18 @@ umath_status_t umath_complex_log(umath_complex_t value,
                                  umath_complex_t *logarithm)
 {
     umath_complex_t result;
-    const double magnitude = hypot((double)value.real, (double)value.imag);
+    umath_accumulator_t magnitude;
     if (logarithm == NULL || !umath_scalar_is_finite(value.real) ||
         !umath_scalar_is_finite(value.imag)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    if (magnitude == 0.0) return UMATH_SINGULAR;
-    result.real = (umath_scalar_t)log(magnitude);
-    result.imag = (umath_scalar_t)atan2((double)value.imag, (double)value.real);
+    magnitude = UEF_UMATH_ACCUM_BINARY_MATH(
+        hypot, (umath_accumulator_t)value.real, (umath_accumulator_t)value.imag);
+    if (!isfinite(magnitude)) return UMATH_NUMERIC_FAILURE;
+    if (magnitude == UMATH_ACCUMULATOR_C(0)) return UMATH_SINGULAR;
+    result.real = (umath_scalar_t)UEF_UMATH_ACCUM_UNARY_MATH(log, magnitude);
+    result.imag = (umath_scalar_t)UEF_UMATH_ACCUM_BINARY_MATH(
+        atan2, (umath_accumulator_t)value.imag, (umath_accumulator_t)value.real);
     if (!umath_scalar_is_finite(result.real) || !umath_scalar_is_finite(result.imag)) {
         return UMATH_NUMERIC_FAILURE;
     }

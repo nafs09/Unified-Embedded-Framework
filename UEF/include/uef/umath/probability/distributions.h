@@ -2,6 +2,7 @@
 /// @brief Planned stable log-domain and common probability-density operations.
 #ifndef UEF_UMATH_PROBABILITY_DISTRIBUTIONS_H
 #define UEF_UMATH_PROBABILITY_DISTRIBUTIONS_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

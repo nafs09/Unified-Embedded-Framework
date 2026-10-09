@@ -2,6 +2,7 @@
 /// @brief Planned spatial rigid-pose and tangent operations for robotics/estimation.
 #ifndef UEF_UMATH_LIE_SE3_H
 #define UEF_UMATH_LIE_SE3_H
+#include <uef/umath/config.h>
 #include <uef/umath/transform3.h>
 #ifdef __cplusplus
 extern "C" {

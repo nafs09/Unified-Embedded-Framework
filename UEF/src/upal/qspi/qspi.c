@@ -13,12 +13,12 @@ uef_status_t upal_qspi_init(
     upal_qspi_t* q,
     const upal_qspi_hw_t* hw
 ) {
-    /* TODO(UEF UPAL QSPI):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Validate
-     * address/page/sector boundaries and memory-mapped ownership; wait for flash busy
-     * completion and check command errors.
-     */
+    /* TODO(upal_qspi_init):
+ * 1) Validate pins, flash geometry, prescaler/dummy cycles and DMA/cache policy
+ * 2) reset/configure and exit memory-mapped mode before setup
+ * 3) verify identity/readiness with bounded waits.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)q;
     (void)hw;
     return UEF_NOT_SUPPORTED;
@@ -27,12 +27,12 @@ uef_status_t upal_qspi_init(
 uef_status_t upal_qspi_enter_memory_mapped(
     upal_qspi_t* q
 ) {
-    /* TODO(UEF UPAL QSPI):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Validate
-     * address/page/sector boundaries and memory-mapped ownership; wait for flash busy
-     * completion and check command errors.
-     */
+    /* TODO(upal_qspi_enter_memory_mapped):
+ * 1) Require initialized idle state and validate read opcode/address/dummy cycles
+ * 2) configure timeout/command and clear stale flags
+ * 3) enable aperture and verify accessibility.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)q;
     return UEF_NOT_SUPPORTED;
 }
@@ -40,12 +40,12 @@ uef_status_t upal_qspi_enter_memory_mapped(
 uef_status_t upal_qspi_exit_memory_mapped(
     upal_qspi_t* q
 ) {
-    /* TODO(UEF UPAL QSPI):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Validate
-     * address/page/sector boundaries and memory-mapped ownership; wait for flash busy
-     * completion and check command errors.
-     */
+    /* TODO(upal_qspi_exit_memory_mapped):
+ * 1) Stop new mapped accesses and wait for outstanding work
+ * 2) disable mapping and clear timeout/status
+ * 3) verify indirect-command mode is restored.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)q;
     return UEF_NOT_SUPPORTED;
 }
@@ -57,11 +57,13 @@ uef_status_t upal_qspi_read(
     uef_u32_t len,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL QSPI):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Validate address/page/sector boundaries and
-     * memory-mapped ownership; wait for flash busy completion and check command errors.
-     */
+    /* TODO(upal_qspi_read):
+ * 1) Validate range arithmetic, destination and state
+ * 2) select indirect or mapped read with cache invalidation as required
+ * 3) transfer bounded chunks and report count/error while restoring supported prior
+ *     *    mode.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)q;
     (void)addr;
     (void)buf;
@@ -75,12 +77,12 @@ uef_status_t upal_qspi_erase_sector(
     uef_u32_t addr,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL QSPI):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Validate
-     * address/page/sector boundaries and memory-mapped ownership; wait for flash busy
-     * completion and check command errors.
-     */
+    /* TODO(upal_qspi_erase_sector):
+ * 1) Validate sector alignment/range/geometry and protection
+ * 2) issue write-enable/erase then poll busy with monotonic deadline
+ * 3) check status, verify if requested, and restore mode/lock.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)q;
     (void)addr;
     (void)timeout_ms;
@@ -94,12 +96,12 @@ uef_status_t upal_qspi_write_page(
     uef_u32_t len,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL QSPI):
-     * Validate the full payload and peripheral state, then report completion only after the
-     * hardware accepts or finishes the transfer as promised. Validate address/page/sector
-     * boundaries and memory-mapped ownership; wait for flash busy completion and check
-     * command errors.
-     */
+    /* TODO(upal_qspi_write_page):
+ * 1) Validate range/source and prohibit page crossing
+ * 2) issue write-enable and program one bounded page
+ * 3) poll completion, inspect ECC/protection, and verify/report partial offset.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)q;
     (void)addr;
     (void)data;

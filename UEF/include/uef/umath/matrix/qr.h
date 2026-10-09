@@ -2,6 +2,7 @@
 /// @brief Planned Householder QR factorization and least-squares solve.
 #ifndef UEF_UMATH_MATRIX_QR_H
 #define UEF_UMATH_MATRIX_QR_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

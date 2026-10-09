@@ -14,46 +14,88 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check motion model, sample interval, and process/measurement noise.
-/// TODO(ALPHA_BETA_GAMMA.validate_config): Define state ordering and acceleration/noise
-/// assumptions. Algorithm-specific focus:
-/// Alpha-beta-gamma position/velocity/acceleration
-/// tracker using a declared constant-acceleration
-/// motion model.
+/// TODO(ALPHA_BETA_GAMMA.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check motion
+/// model, sample interval, and process/measurement
+/// noise. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define
+/// state ordering and acceleration/noise assumptions.
+/// Algorithm-specific focus: Alpha-beta-gamma
+/// position/velocity/acceleration tracker using a
+/// declared constant-acceleration motion model.
 ucon_status_t ucon_alpha_beta_gamma_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize position/velocity/acceleration estimate and covariance if used.
-/// TODO(ALPHA_BETA_GAMMA.init): Define initial measurement and uncertainty policy.
+/// TODO(ALPHA_BETA_GAMMA.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Initialize position/velocity/acceleration estimate
+/// and covariance if used. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements:
+/// Define initial measurement and uncertainty policy.
 /// Algorithm-specific focus: Alpha-beta-gamma
 /// position/velocity/acceleration tracker using a declared
 /// constant-acceleration motion model.
 ucon_status_t ucon_alpha_beta_gamma_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear tracking history.
-/// TODO(ALPHA_BETA_GAMMA.reset): Specify handling of gaps and reacquisition.
-/// Algorithm-specific focus: Alpha-beta-gamma
-/// position/velocity/acceleration tracker using a declared
-/// constant-acceleration motion model.
+/// TODO(ALPHA_BETA_GAMMA.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Clear tracking history. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify handling of gaps
+/// and reacquisition. Algorithm-specific focus:
+/// Alpha-beta-gamma position/velocity/acceleration tracker
+/// using a declared constant-acceleration motion model.
 ucon_status_t ucon_alpha_beta_gamma_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate the kinematic state across the supplied interval.
-/// TODO(ALPHA_BETA_GAMMA.predict): Handle variable dt only if explicitly supported.
-/// Algorithm-specific focus: Alpha-beta-gamma
-/// position/velocity/acceleration tracker using a declared
-/// constant-acceleration motion model.
+/// TODO(ALPHA_BETA_GAMMA.predict): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Propagate the kinematic state
+/// across the supplied interval. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Handle variable dt only
+/// if explicitly supported. Algorithm-specific focus:
+/// Alpha-beta-gamma position/velocity/acceleration tracker
+/// using a declared constant-acceleration motion model.
 ucon_status_t ucon_alpha_beta_gamma_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply the new position/measurement and compute residual diagnostics.
-/// TODO(ALPHA_BETA_GAMMA.correct): Define outlier rejection and missing-sample behavior.
+/// TODO(ALPHA_BETA_GAMMA.correct): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Apply the new
+/// position/measurement and compute residual diagnostics. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// outlier rejection and missing-sample behavior.
 /// Algorithm-specific focus: Alpha-beta-gamma
 /// position/velocity/acceleration tracker using a declared
 /// constant-acceleration motion model.
 ucon_status_t ucon_alpha_beta_gamma_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one prediction/correction cycle.
-/// TODO(ALPHA_BETA_GAMMA.step): Preserve estimate on invalid timestamp or arithmetic failure.
-/// Algorithm-specific focus: Alpha-beta-gamma
-/// position/velocity/acceleration tracker using a declared
-/// constant-acceleration motion model.
+/// TODO(ALPHA_BETA_GAMMA.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Run one prediction/correction cycle. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Preserve estimate on invalid
+/// timestamp or arithmetic failure. Algorithm-specific focus:
+/// Alpha-beta-gamma position/velocity/acceleration tracker using
+/// a declared constant-acceleration motion model.
 ucon_status_t ucon_alpha_beta_gamma_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

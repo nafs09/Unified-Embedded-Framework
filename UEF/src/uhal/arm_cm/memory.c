@@ -10,22 +10,25 @@
 #include <uef/uhal/uhal_memory.h>
 
 void uhal_mpu_configure(void) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_mpu_configure):
+ * 1) Load linker/board region definitions and validate alignment, size, priority, and
+ *     *    attributes
+ * 2) program regions in documented priority order under the startup privilege contract
+ * 3) apply barriers and verify before enabling caches.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
 }
 
 void uhal_backup_write(
     uef_u8_t index,
     uef_u32_t value
 ) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_backup_write):
+ * 1) Validate index and backup-domain access
+ * 2) write one register with target access width/synchronization
+ * 3) report unsupported indices without aliasing another slot.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)index;
     (void)value;
 }
@@ -33,11 +36,12 @@ void uhal_backup_write(
 uef_u32_t uhal_backup_read(
     uef_u8_t index
 ) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_backup_read):
+ * 1) Validate index and ensure backup-domain clock/access as required
+ * 2) read one target-width register coherently
+ * 3) return the documented neutral result for unsupported indices.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)index;
     return 0;
 }

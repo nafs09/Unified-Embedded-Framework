@@ -27,42 +27,43 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_candidates",
       "purpose": "Validate discrete switch candidates and plant/cost dimensions.",
-      "todo": "Define candidate ordering and allowed switch transitions. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Validate discrete switch candidates and plant/cost dimensions. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define candidate ordering and allowed switch transitions. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     },
     {
       "name": "init",
       "purpose": "Initialize fixed candidate/prediction workspace.",
-      "todo": "Define current switch state and previous candidate. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize fixed candidate/prediction workspace. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define current switch state and previous candidate. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     },
     {
       "name": "reset",
       "purpose": "Clear switch/prediction history.",
-      "todo": "Specify re-entry when the current switch state is unknown. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear switch/prediction history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify re-entry when the current switch state is unknown. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     },
     {
       "name": "predict_candidates",
       "purpose": "Predict the plant for each enumerated candidate.",
-      "todo": "Bound candidate count and define model/sample timing. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Predict the plant for each enumerated candidate. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Bound candidate count and define model/sample timing. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     },
     {
       "name": "score_candidates",
       "purpose": "Compute objective and constraint status for each prediction.",
-      "todo": "Define cost scaling, ties, infeasible candidates, and numeric rejection. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute objective and constraint status for each prediction. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define cost scaling, ties, infeasible candidates, and numeric rejection. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     },
     {
       "name": "select_candidate",
       "purpose": "Choose the lowest-cost admissible switching action.",
-      "todo": "Return no-feasible-candidate distinctly; never select an invalid candidate. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Choose the lowest-cost admissible switching action. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Return no-feasible-candidate distinctly; never select an invalid candidate. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     },
     {
       "name": "step",
       "purpose": "Run enumeration and publish the selected abstract action/status.",
-      "todo": "Keep gate sequencing and dead-time outside this method. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run enumeration and publish the selected abstract action/status. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep gate sequencing and dead-time outside this method. Algorithm-specific focus: Finite candidate enumeration for switching systems; current project priority."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/control/predictive/fs_mpc.h.tmpl"
 }

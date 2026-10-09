@@ -12,6 +12,18 @@ UEF owns reusable algorithm behavior and every reusable UCON template. NEXUS aut
 Each template emits a small named instance wrapper and forwards init/reset/step calls to the UEF generic C implementation. It does not synthesize a second control law. The consuming application maps graph ports, supplies validated configuration, and completes any manifest-declared manual actions.
 The selected module manifest supplies the generic implementation source and its public-header closure to the generated project; the template output is instance-specific glue, not another copy of the algorithm.
 
+## First-pass template scaffolds
+
+For every unregistered `FIRST_PASS` algorithm, the scaffold generator creates
+`templates/ucon/first_pass/<family>/<algorithm>.h.tmpl`. Each file carries the
+algorithm's per-operation TODO sequence plus the remaining wrapper/API/manifest
+steps. These files render comments only and are deliberately absent from manifest
+outputs, so they are planning scaffolds rather than usable or selectable wrappers.
+The registered PID and lead-lag wrappers above remain the only UCON instance
+templates available to uef-gen. Promote a scaffold only after the typed UEF API,
+ControlIR mapping, generated output contract, and direct/generated behavior have
+been reviewed together.
+
 ## Unregistered algorithms
 
 Every unregistered catalog key has its own header and source file in a family directory. Initial entries are placed beside implemented APIs under `include/uef/ucon/<family>/` and `src/ucon/<family>/`; for example, Kalman estimators use `estimators/kalman/<algorithm>.h` and `.c`. Later entries are under the corresponding `future/<family>/` path. `estimation/` in the catalog maps to the public directory name `estimators/`.

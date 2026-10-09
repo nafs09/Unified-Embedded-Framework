@@ -14,33 +14,66 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check transform/statistic/rate dimensions and numeric range.
-/// TODO(RMS_WINDOW.validate_config): Define sample layout, scale, rate, and fixed buffer
+/// TODO(RMS_WINDOW.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check
+/// transform/statistic/rate dimensions and numeric range.
+/// 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements:
+/// Define sample layout, scale, rate, and fixed buffer
 /// size. Algorithm-specific focus: Windowed
 /// root-mean-square estimator with bounded sample storage
 /// or running-sum state.
 ucon_status_t ucon_rms_window_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize window, phase, ring buffer, and accumulator.
-/// TODO(RMS_WINDOW.init): Define warm-up and reset behavior. Algorithm-specific focus:
-/// Windowed root-mean-square estimator with bounded sample storage or
-/// running-sum state.
+/// TODO(RMS_WINDOW.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize window, phase, ring buffer, and accumulator. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure. Operation-specific
+/// requirements: Define warm-up and reset behavior. Algorithm-specific
+/// focus: Windowed root-mean-square estimator with bounded sample
+/// storage or running-sum state.
 ucon_status_t ucon_rms_window_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear signal history and phase/index state.
-/// TODO(RMS_WINDOW.reset): State ownership of coefficient/window tables. Algorithm-specific
-/// focus: Windowed root-mean-square estimator with bounded sample
-/// storage or running-sum state.
+/// TODO(RMS_WINDOW.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Clear signal history and phase/index state. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: State ownership of coefficient/window tables.
+/// Algorithm-specific focus: Windowed root-mean-square estimator with
+/// bounded sample storage or running-sum state.
 ucon_status_t ucon_rms_window_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one bounded block or fixed-rate sample group.
-/// TODO(RMS_WINDOW.process_block): Define latency, overlap, scaling, and overflow behavior.
-/// Algorithm-specific focus: Windowed root-mean-square
-/// estimator with bounded sample storage or running-sum
-/// state.
+/// TODO(RMS_WINDOW.process_block): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Process one bounded block or
+/// fixed-rate sample group. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define latency, overlap,
+/// scaling, and overflow behavior. Algorithm-specific focus:
+/// Windowed root-mean-square estimator with bounded sample
+/// storage or running-sum state.
 ucon_status_t ucon_rms_window_process_block(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance the algorithm and publish output/validity metadata.
-/// TODO(RMS_WINDOW.step): Specify incomplete-block and dropped-sample behavior.
+/// TODO(RMS_WINDOW.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Advance the algorithm and publish output/validity metadata. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure. Operation-specific
+/// requirements: Specify incomplete-block and dropped-sample behavior.
 /// Algorithm-specific focus: Windowed root-mean-square estimator with
 /// bounded sample storage or running-sum state.
 ucon_status_t ucon_rms_window_step(const ucon_algorithm_scaffold_call_t *call);

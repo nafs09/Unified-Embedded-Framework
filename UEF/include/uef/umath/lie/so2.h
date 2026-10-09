@@ -2,6 +2,7 @@
 /// @brief Planned SO(2) matrix exponential and principal logarithm.
 #ifndef UEF_UMATH_LIE_SO2_H
 #define UEF_UMATH_LIE_SO2_H
+#include <uef/umath/config.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
 #ifdef __cplusplus

@@ -14,47 +14,103 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check units, timestamps, model identity, and supplied supervisor limits.
-/// TODO(GLUCOSE_CONTROL_PROFILE.validate_inputs): Never infer clinical settings or therapy
-/// limits. Algorithm-specific focus: Compose a
-/// declared glucose estimator/model, PID or
-/// MPC loop, delivery constraints, and an
-/// independent supervisory boundary.
+/// TODO(GLUCOSE_CONTROL_PROFILE.validate_inputs): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Check units, timestamps, model
+/// identity, and supplied supervisor limits.
+/// 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior
+/// values on failure. Operation-specific
+/// requirements: Never infer clinical settings
+/// or therapy limits. Algorithm-specific
+/// focus: Compose a declared glucose
+/// estimator/model, PID or MPC loop, delivery
+/// constraints, and an independent supervisory
+/// boundary.
 ucon_status_t ucon_glucose_control_profile_validate_inputs(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize reusable profile state and external model interface.
-/// TODO(GLUCOSE_CONTROL_PROFILE.init): Require explicit safe seed and configuration
-/// provenance. Algorithm-specific focus: Compose a
-/// declared glucose estimator/model, PID or MPC loop,
-/// delivery constraints, and an independent supervisory
-/// boundary.
+/// TODO(GLUCOSE_CONTROL_PROFILE.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Initialize reusable
+/// profile state and external model interface. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Require explicit safe seed and
+/// configuration provenance. Algorithm-specific focus:
+/// Compose a declared glucose estimator/model, PID or MPC
+/// loop, delivery constraints, and an independent
+/// supervisory boundary.
 ucon_status_t ucon_glucose_control_profile_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset history only under explicit external supervision.
-/// TODO(GLUCOSE_CONTROL_PROFILE.reset): Define stale-data and therapy-state handoff.
+/// TODO(GLUCOSE_CONTROL_PROFILE.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Reset history only under
+/// explicit external supervision. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define
+/// stale-data and therapy-state handoff.
 /// Algorithm-specific focus: Compose a declared glucose
 /// estimator/model, PID or MPC loop, delivery
 /// constraints, and an independent supervisory boundary.
 ucon_status_t ucon_glucose_control_profile_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Consume the declared application-owned physiology/device model output.
-/// TODO(GLUCOSE_CONTROL_PROFILE.update_estimate): Do not invent patient or device dynamics.
-/// Algorithm-specific focus: Compose a
-/// declared glucose estimator/model, PID or
-/// MPC loop, delivery constraints, and an
-/// independent supervisory boundary.
+/// TODO(GLUCOSE_CONTROL_PROFILE.update_estimate): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Consume the declared
+/// application-owned physiology/device model
+/// output. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior
+/// values on failure. Operation-specific
+/// requirements: Do not invent patient or
+/// device dynamics. Algorithm-specific focus:
+/// Compose a declared glucose estimator/model,
+/// PID or MPC loop, delivery constraints, and
+/// an independent supervisory boundary.
 ucon_status_t ucon_glucose_control_profile_update_estimate(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute a candidate subject to caller-supplied constraints.
-/// TODO(GLUCOSE_CONTROL_PROFILE.compute_candidate): Require independent safety supervision
-/// and report limiting conditions.
-/// Algorithm-specific focus: Compose a
-/// declared glucose estimator/model, PID or
-/// MPC loop, delivery constraints, and an
-/// independent supervisory boundary.
+/// TODO(GLUCOSE_CONTROL_PROFILE.compute_candidate): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Compute a candidate subject to
+/// caller-supplied constraints. 3) Check
+/// numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together
+/// only after success; preserve prior values
+/// on failure. Operation-specific
+/// requirements: Require independent safety
+/// supervision and report limiting
+/// conditions. Algorithm-specific focus:
+/// Compose a declared glucose
+/// estimator/model, PID or MPC loop,
+/// delivery constraints, and an independent
+/// supervisory boundary.
 ucon_status_t ucon_glucose_control_profile_compute_candidate(const ucon_algorithm_scaffold_call_t *call);
 
 /// Return candidate/status for external approval and actuation.
-/// TODO(GLUCOSE_CONTROL_PROFILE.step): No generic UCON profile establishes clinical safety.
+/// TODO(GLUCOSE_CONTROL_PROFILE.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Return candidate/status
+/// for external approval and actuation. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: No generic
+/// UCON profile establishes clinical safety.
 /// Algorithm-specific focus: Compose a declared glucose
 /// estimator/model, PID or MPC loop, delivery
 /// constraints, and an independent supervisory boundary.

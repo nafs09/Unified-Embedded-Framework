@@ -14,33 +14,63 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check coefficient count, sample rate, and fixed state size.
-/// TODO(FIR.validate_config): State coefficient stability and initialization assumptions.
-/// Algorithm-specific focus: Runtime filter kernels. Filter
-/// response families supply design-time coefficients.
+/// TODO(FIR.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check coefficient count, sample rate, and fixed state size.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: State coefficient stability
+/// and initialization assumptions. Algorithm-specific focus:
+/// Runtime filter kernels. Filter response families supply
+/// design-time coefficients.
 ucon_status_t ucon_fir_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize history and ring-buffer indices.
-/// TODO(FIR.init): Define zero, constant-input, or caller-supplied initial conditions.
-/// Algorithm-specific focus: Runtime filter kernels. Filter response families
-/// supply design-time coefficients.
+/// TODO(FIR.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize history
+/// and ring-buffer indices. 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define zero, constant-input, or
+/// caller-supplied initial conditions. Algorithm-specific focus: Runtime
+/// filter kernels. Filter response families supply design-time coefficients.
 ucon_status_t ucon_fir_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear or preload filter history.
-/// TODO(FIR.reset): Define whether coefficients can change while running. Algorithm-specific
-/// focus: Runtime filter kernels. Filter response families supply
-/// design-time coefficients.
+/// TODO(FIR.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Clear or preload
+/// filter history. 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure. Operation-specific
+/// requirements: Define whether coefficients can change while running.
+/// Algorithm-specific focus: Runtime filter kernels. Filter response
+/// families supply design-time coefficients.
 ucon_status_t ucon_fir_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance bounded filter/window state for one sample.
-/// TODO(FIR.update_state): Check accumulator scaling and invalid-sample policy.
-/// Algorithm-specific focus: Runtime filter kernels. Filter response
-/// families supply design-time coefficients.
+/// TODO(FIR.update_state): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Advance bounded filter/window state for one sample. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Check accumulator scaling and
+/// invalid-sample policy. Algorithm-specific focus: Runtime filter
+/// kernels. Filter response families supply design-time coefficients.
 ucon_status_t ucon_fir_update_state(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute output using the declared recurrence/window.
-/// TODO(FIR.process_sample): Define latency, warm-up, saturation, and non-finite behavior.
-/// Algorithm-specific focus: Runtime filter kernels. Filter
-/// response families supply design-time coefficients.
+/// TODO(FIR.process_sample): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Compute output using the declared recurrence/window. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Define latency, warm-up,
+/// saturation, and non-finite behavior. Algorithm-specific focus:
+/// Runtime filter kernels. Filter response families supply
+/// design-time coefficients.
 ucon_status_t ucon_fir_process_sample(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

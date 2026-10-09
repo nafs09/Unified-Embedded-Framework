@@ -6,6 +6,10 @@
 #include "uef/uproto/uproto_dshot.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(dshot-motor main): Initialize the selected timer-DMA or UART transport and
+     * verify its clock, symbol timing, pin polarity, and buffer ownership for the chosen
+     * DSHOT rate. Keep the ESC disarmed during setup, send only commands authorized by the
+     * application arming/failsafe policy, and stop output safely on transport failure.
+     */
     return 0;
 }

@@ -2,6 +2,7 @@
 /// @brief Explicit Q-format arithmetic and checked floating-point conversion.
 #ifndef UEF_UMATH_FIXED_H
 #define UEF_UMATH_FIXED_H
+#include <uef/umath/config.h>
 
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
@@ -16,6 +17,7 @@ extern "C" {
 #define UMATH_Q16_ONE (INT32_C(1) << UMATH_Q16_FRAC_BITS)
 
 /// Fixed-point multiply truncates fractional bits toward zero after the widened product.
+/// Scalar-to-fixed conversion rounds half away from zero and rejects out-of-range values.
 uef_q15_t umath_q15_add_sat(uef_q15_t a, uef_q15_t b);
 uef_q15_t umath_q15_sub_sat(uef_q15_t a, uef_q15_t b);
 uef_q15_t umath_q15_mul_sat(uef_q15_t a, uef_q15_t b);

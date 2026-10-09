@@ -16,7 +16,19 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(AVERAGE_CURRENT_MODE_CONTROL.validate_topology): The algorithm key does not define a
+/* TODO(AVERAGE_CURRENT_MODE_CONTROL.validate_topology): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Check converter
+ * topology, sensor polarity, and switch
+ * map. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics
+ * together only after success; preserve
+ * prior values on failure.
+ * Operation-specific requirements: The
+ * algorithm key does not define a
  * power-stage model. Algorithm-specific
  * focus: Average-current-mode
  * controller for a declared converter
@@ -31,10 +43,19 @@ ucon_status_t ucon_average_current_mode_control_validate_topology(const ucon_alg
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(AVERAGE_CURRENT_MODE_CONTROL.init): Define cycle phase and hardware interlock
- * requirements. Algorithm-specific focus:
- * Average-current-mode controller for a declared
- * converter topology and sampled current loop.
+/* TODO(AVERAGE_CURRENT_MODE_CONTROL.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Initialize
+ * current/reference and switching-cycle state. 3)
+ * Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define cycle
+ * phase and hardware interlock requirements.
+ * Algorithm-specific focus: Average-current-mode
+ * controller for a declared converter topology and
+ * sampled current loop.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_average_current_mode_control_init(const ucon_algorithm_scaffold_call_t *call)
@@ -45,7 +66,16 @@ ucon_status_t ucon_average_current_mode_control_init(const ucon_algorithm_scaffo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(AVERAGE_CURRENT_MODE_CONTROL.reset): Safe-state handling belongs to caller/target
+/* TODO(AVERAGE_CURRENT_MODE_CONTROL.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Clear
+ * controller history without producing a gate
+ * action. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements:
+ * Safe-state handling belongs to caller/target
  * supervision. Algorithm-specific focus:
  * Average-current-mode controller for a declared
  * converter topology and sampled current loop.
@@ -59,9 +89,20 @@ ucon_status_t ucon_average_current_mode_control_reset(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(AVERAGE_CURRENT_MODE_CONTROL.predict_current): Derive equations and sample timing from
- * the selected topology.
- * Algorithm-specific focus:
+/* TODO(AVERAGE_CURRENT_MODE_CONTROL.predict_current): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Predict
+ * current/state under allowed switch
+ * actions. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Derive equations and
+ * sample timing from the selected
+ * topology. Algorithm-specific focus:
  * Average-current-mode controller for a
  * declared converter topology and sampled
  * current loop.
@@ -75,8 +116,18 @@ ucon_status_t ucon_average_current_mode_control_predict_current(const ucon_algor
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(AVERAGE_CURRENT_MODE_CONTROL.select_command): Define dead time, current limits, and
- * deterministic tie-breaking.
+/* TODO(AVERAGE_CURRENT_MODE_CONTROL.select_command): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Choose an action under the
+ * named objective/constraints. 3) Check
+ * numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together
+ * only after success; preserve prior
+ * values on failure. Operation-specific
+ * requirements: Define dead time, current
+ * limits, and deterministic tie-breaking.
  * Algorithm-specific focus:
  * Average-current-mode controller for a
  * declared converter topology and sampled
@@ -91,10 +142,19 @@ ucon_status_t ucon_average_current_mode_control_select_command(const ucon_algori
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(AVERAGE_CURRENT_MODE_CONTROL.step): Keep physical gate sequencing in the target
- * boundary. Algorithm-specific focus:
- * Average-current-mode controller for a declared
- * converter topology and sampled current loop.
+/* TODO(AVERAGE_CURRENT_MODE_CONTROL.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Run one
+ * bounded converter update and return an abstract
+ * command. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Keep
+ * physical gate sequencing in the target boundary.
+ * Algorithm-specific focus: Average-current-mode
+ * controller for a declared converter topology and
+ * sampled current loop.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_average_current_mode_control_step(const ucon_algorithm_scaffold_call_t *call)

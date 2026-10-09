@@ -2,6 +2,7 @@
 /// @brief Planned deterministic, caller-owned pseudo-random streams.
 #ifndef UEF_UMATH_RANDOM_PRNG_H
 #define UEF_UMATH_RANDOM_PRNG_H
+#include <uef/umath/config.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
 #ifdef __cplusplus

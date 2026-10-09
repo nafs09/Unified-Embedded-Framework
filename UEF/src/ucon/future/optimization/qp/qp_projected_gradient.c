@@ -16,9 +16,19 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(QP_PROJECTED_GRADIENT.validate_problem): Reject unsupported/inconsistent problems
- * before state changes. Algorithm-specific
- * focus: Projected-gradient solver for a convex
+/* TODO(QP_PROJECTED_GRADIENT.validate_problem): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Check fixed dimensions, convexity,
+ * bounds, and workspace size. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: Reject
+ * unsupported/inconsistent problems before
+ * state changes. Algorithm-specific focus:
+ * Projected-gradient solver for a convex
  * quadratic objective with an explicitly
  * projectable feasible set.
  * This stub must not read/write opaque state or output buffers.
@@ -31,10 +41,17 @@ ucon_status_t ucon_qp_projected_gradient_validate_problem(const ucon_algorithm_s
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_PROJECTED_GRADIENT.init): Define deterministic scaling and warm start.
- * Algorithm-specific focus: Projected-gradient solver for a
- * convex quadratic objective with an explicitly projectable
- * feasible set.
+/* TODO(QP_PROJECTED_GRADIENT.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize primal/dual
+ * variables and fixed solver workspace. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * deterministic scaling and warm start. Algorithm-specific
+ * focus: Projected-gradient solver for a convex quadratic
+ * objective with an explicitly projectable feasible set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_projected_gradient_init(const ucon_algorithm_scaffold_call_t *call)
@@ -45,10 +62,17 @@ ucon_status_t ucon_qp_projected_gradient_init(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_PROJECTED_GRADIENT.reset): Document retained factorization/active-set data.
- * Algorithm-specific focus: Projected-gradient solver for
- * a convex quadratic objective with an explicitly
- * projectable feasible set.
+/* TODO(QP_PROJECTED_GRADIENT.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Clear iteration and
+ * warm-start state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Document retained
+ * factorization/active-set data. Algorithm-specific focus:
+ * Projected-gradient solver for a convex quadratic
+ * objective with an explicitly projectable feasible set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_projected_gradient_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -59,10 +83,18 @@ ucon_status_t ucon_qp_projected_gradient_reset(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_PROJECTED_GRADIENT.solve): Separate convergence, infeasibility, numeric failure,
- * and iteration limit. Algorithm-specific focus:
- * Projected-gradient solver for a convex quadratic
- * objective with an explicitly projectable feasible set.
+/* TODO(QP_PROJECTED_GRADIENT.solve): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Run the selected bounded
+ * optimization iteration. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Separate convergence,
+ * infeasibility, numeric failure, and iteration limit.
+ * Algorithm-specific focus: Projected-gradient solver for
+ * a convex quadratic objective with an explicitly
+ * projectable feasible set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_projected_gradient_solve(const ucon_algorithm_scaffold_call_t *call)
@@ -73,11 +105,20 @@ ucon_status_t ucon_qp_projected_gradient_solve(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_PROJECTED_GRADIENT.verify_solution): Do not declare success merely because the loop
- * terminated. Algorithm-specific focus:
- * Projected-gradient solver for a convex
- * quadratic objective with an explicitly
- * projectable feasible set.
+/* TODO(QP_PROJECTED_GRADIENT.verify_solution): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check
+ * primal/dual residuals and constraint
+ * tolerances. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics
+ * together only after success; preserve prior
+ * values on failure. Operation-specific
+ * requirements: Do not declare success merely
+ * because the loop terminated.
+ * Algorithm-specific focus: Projected-gradient
+ * solver for a convex quadratic objective with
+ * an explicitly projectable feasible set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_projected_gradient_verify_solution(const ucon_algorithm_scaffold_call_t *call)

@@ -16,9 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(GAIN_SCHEDULE.validate_schedule): Define grid order, extrapolation, and compatible
- * controller modes. Algorithm-specific focus:
- * Interpolation between configured linear controllers.
+/* TODO(GAIN_SCHEDULE.validate_schedule): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check schedule grid,
+ * gain dimensions, and scheduling-variable bounds. 3)
+ * Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Define grid order, extrapolation, and
+ * compatible controller modes. Algorithm-specific
+ * focus: Interpolation between configured linear
+ * controllers.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gain_schedule_validate_schedule(const ucon_algorithm_scaffold_call_t *call)
@@ -29,8 +38,15 @@ ucon_status_t ucon_gain_schedule_validate_schedule(const ucon_algorithm_scaffold
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_SCHEDULE.init): Define first selection without stale state. Algorithm-specific
- * focus: Interpolation between configured linear controllers.
+/* TODO(GAIN_SCHEDULE.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize active schedule cell and interpolation state. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define first selection without
+ * stale state. Algorithm-specific focus: Interpolation between
+ * configured linear controllers.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gain_schedule_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,7 +57,13 @@ ucon_status_t ucon_gain_schedule_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_SCHEDULE.reset): Specify transition behavior after grid changes.
+/* TODO(GAIN_SCHEDULE.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Reset transition and hysteresis state. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Specify transition behavior after grid changes.
  * Algorithm-specific focus: Interpolation between configured
  * linear controllers.
  * This stub must not read/write opaque state or output buffers.
@@ -54,7 +76,15 @@ ucon_status_t ucon_gain_schedule_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_SCHEDULE.select_gains): Define interpolation, hysteresis, and numeric bounds.
+/* TODO(GAIN_SCHEDULE.select_gains): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Interpolate/select gains
+ * from the declared scheduling variable. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * interpolation, hysteresis, and numeric bounds.
  * Algorithm-specific focus: Interpolation between
  * configured linear controllers.
  * This stub must not read/write opaque state or output buffers.
@@ -67,9 +97,17 @@ ucon_status_t ucon_gain_schedule_select_gains(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_SCHEDULE.transfer_state): Define bumpless transfer and incompatible-state
- * handling. Algorithm-specific focus: Interpolation
- * between configured linear controllers.
+/* TODO(GAIN_SCHEDULE.transfer_state): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Map controller state
+ * during a gain/mode transition. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * bumpless transfer and incompatible-state handling.
+ * Algorithm-specific focus: Interpolation between
+ * configured linear controllers.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gain_schedule_transfer_state(const ucon_algorithm_scaffold_call_t *call)
@@ -80,9 +118,15 @@ ucon_status_t ucon_gain_schedule_transfer_state(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_SCHEDULE.step): Keep schedule selection separate from plant parameter adaptation.
- * Algorithm-specific focus: Interpolation between configured linear
- * controllers.
+/* TODO(GAIN_SCHEDULE.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Apply the scheduled controller and publish selected-cell
+ * diagnostics. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Keep schedule selection
+ * separate from plant parameter adaptation. Algorithm-specific
+ * focus: Interpolation between configured linear controllers.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gain_schedule_step(const ucon_algorithm_scaffold_call_t *call)

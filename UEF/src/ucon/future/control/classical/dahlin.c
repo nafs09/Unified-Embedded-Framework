@@ -16,11 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(DAHLIN.validate_plant): Specify supported plant order and dead-time representation.
- * Algorithm-specific focus: Dahlin discrete controller design
- * for a declared sampled plant and target closed-loop response;
- * plant order, delay treatment, and response parameterization
- * remain to be specified.
+/* TODO(DAHLIN.validate_plant): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check sampled plant model, delay, and requested response
+ * parameter. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Specify supported
+ * plant order and dead-time representation. Algorithm-specific
+ * focus: Dahlin discrete controller design for a declared
+ * sampled plant and target closed-loop response; plant order,
+ * delay treatment, and response parameterization remain to be
+ * specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dahlin_validate_plant(const ucon_algorithm_scaffold_call_t *call)
@@ -31,7 +38,15 @@ ucon_status_t ucon_dahlin_validate_plant(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DAHLIN.design_coefficients): Pin discretization, target time constant, and coefficient
+/* TODO(DAHLIN.design_coefficients): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Derive the Dahlin controller
+ * coefficients for the declared response target. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Pin
+ * discretization, target time constant, and coefficient
  * convention. Algorithm-specific focus: Dahlin discrete
  * controller design for a declared sampled plant and target
  * closed-loop response; plant order, delay treatment, and
@@ -46,11 +61,19 @@ ucon_status_t ucon_dahlin_design_coefficients(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DAHLIN.verify_closed_loop): Reject invalid delay/response combinations.
- * Algorithm-specific focus: Dahlin discrete controller
- * design for a declared sampled plant and target closed-loop
- * response; plant order, delay treatment, and response
- * parameterization remain to be specified.
+/* TODO(DAHLIN.verify_closed_loop): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check stability and response
+ * constraints for the designed coefficients. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Reject
+ * invalid delay/response combinations. Algorithm-specific
+ * focus: Dahlin discrete controller design for a declared
+ * sampled plant and target closed-loop response; plant
+ * order, delay treatment, and response parameterization
+ * remain to be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dahlin_verify_closed_loop(const ucon_algorithm_scaffold_call_t *call)
@@ -61,10 +84,16 @@ ucon_status_t ucon_dahlin_verify_closed_loop(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DAHLIN.init): Define reset and initial output behavior. Algorithm-specific focus:
- * Dahlin discrete controller design for a declared sampled plant and
- * target closed-loop response; plant order, delay treatment, and response
- * parameterization remain to be specified.
+/* TODO(DAHLIN.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize controller recurrence state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define reset and
+ * initial output behavior. Algorithm-specific focus: Dahlin discrete
+ * controller design for a declared sampled plant and target closed-loop
+ * response; plant order, delay treatment, and response parameterization
+ * remain to be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dahlin_init(const ucon_algorithm_scaffold_call_t *call)
@@ -75,10 +104,16 @@ ucon_status_t ucon_dahlin_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DAHLIN.reset): Specify bumpless coefficient replacement. Algorithm-specific focus:
- * Dahlin discrete controller design for a declared sampled plant and
- * target closed-loop response; plant order, delay treatment, and response
- * parameterization remain to be specified.
+/* TODO(DAHLIN.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear/preload recurrence state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify bumpless coefficient
+ * replacement. Algorithm-specific focus: Dahlin discrete controller
+ * design for a declared sampled plant and target closed-loop response;
+ * plant order, delay treatment, and response parameterization remain to
+ * be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dahlin_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -89,7 +124,13 @@ ucon_status_t ucon_dahlin_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DAHLIN.step): Keep deferred until design range and numeric bounds are specified.
+/* TODO(DAHLIN.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Evaluate the designed discrete recurrence for one sample. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements: Keep
+ * deferred until design range and numeric bounds are specified.
  * Algorithm-specific focus: Dahlin discrete controller design for a
  * declared sampled plant and target closed-loop response; plant order,
  * delay treatment, and response parameterization remain to be specified.

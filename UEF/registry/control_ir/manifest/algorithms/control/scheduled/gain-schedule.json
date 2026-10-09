@@ -27,37 +27,38 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Define the scheduling variable, grid/interpolation, hysteresis, transition continuity, and controller-state transfer. This is scheduled control; do not imply online parameter adaptation."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_schedule",
       "purpose": "Check schedule grid, gain dimensions, and scheduling-variable bounds.",
-      "todo": "Define grid order, extrapolation, and compatible controller modes. Algorithm-specific focus: Interpolation between configured linear controllers."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check schedule grid, gain dimensions, and scheduling-variable bounds. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define grid order, extrapolation, and compatible controller modes. Algorithm-specific focus: Interpolation between configured linear controllers."
     },
     {
       "name": "init",
       "purpose": "Initialize active schedule cell and interpolation state.",
-      "todo": "Define first selection without stale state. Algorithm-specific focus: Interpolation between configured linear controllers."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize active schedule cell and interpolation state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define first selection without stale state. Algorithm-specific focus: Interpolation between configured linear controllers."
     },
     {
       "name": "reset",
       "purpose": "Reset transition and hysteresis state.",
-      "todo": "Specify transition behavior after grid changes. Algorithm-specific focus: Interpolation between configured linear controllers."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Reset transition and hysteresis state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify transition behavior after grid changes. Algorithm-specific focus: Interpolation between configured linear controllers."
     },
     {
       "name": "select_gains",
       "purpose": "Interpolate/select gains from the declared scheduling variable.",
-      "todo": "Define interpolation, hysteresis, and numeric bounds. Algorithm-specific focus: Interpolation between configured linear controllers."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Interpolate/select gains from the declared scheduling variable. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define interpolation, hysteresis, and numeric bounds. Algorithm-specific focus: Interpolation between configured linear controllers."
     },
     {
       "name": "transfer_state",
       "purpose": "Map controller state during a gain/mode transition.",
-      "todo": "Define bumpless transfer and incompatible-state handling. Algorithm-specific focus: Interpolation between configured linear controllers."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Map controller state during a gain/mode transition. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define bumpless transfer and incompatible-state handling. Algorithm-specific focus: Interpolation between configured linear controllers."
     },
     {
       "name": "step",
       "purpose": "Apply the scheduled controller and publish selected-cell diagnostics.",
-      "todo": "Keep schedule selection separate from plant parameter adaptation. Algorithm-specific focus: Interpolation between configured linear controllers."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply the scheduled controller and publish selected-cell diagnostics. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep schedule selection separate from plant parameter adaptation. Algorithm-specific focus: Interpolation between configured linear controllers."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/control/scheduled/gain_schedule.h.tmpl"
 }

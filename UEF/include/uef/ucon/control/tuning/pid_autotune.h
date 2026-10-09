@@ -14,49 +14,96 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check tuning mode, safe excitation bounds, and stop conditions.
-/// TODO(PID_AUTOTUNE.validate_experiment): Require explicit supervision; never launch an
-/// experiment implicitly. Algorithm-specific focus:
-/// Supervised PID tuning utility using a named relay
-/// or response-based experiment; it must not change
+/// TODO(PID_AUTOTUNE.validate_experiment): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check tuning
+/// mode, safe excitation bounds, and stop conditions.
+/// 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Require explicit
+/// supervision; never launch an experiment
+/// implicitly. Algorithm-specific focus: Supervised
+/// PID tuning utility using a named relay or
+/// response-based experiment; it must not change
 /// gains implicitly during operation.
 ucon_status_t ucon_pid_autotune_validate_experiment(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize experiment and result state.
-/// TODO(PID_AUTOTUNE.init): Define prior gain snapshot and abort behavior. Algorithm-specific
-/// focus: Supervised PID tuning utility using a named relay or
-/// response-based experiment; it must not change gains implicitly
-/// during operation.
-ucon_status_t ucon_pid_autotune_init(const ucon_algorithm_scaffold_call_t *call);
-
-/// Abort/rearm tuning and restore the documented gain state.
-/// TODO(PID_AUTOTUNE.reset): Specify what happens after invalid or interrupted data.
+/// TODO(PID_AUTOTUNE.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize experiment and result state. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Define prior gain snapshot and abort behavior.
 /// Algorithm-specific focus: Supervised PID tuning utility using a
 /// named relay or response-based experiment; it must not change
 /// gains implicitly during operation.
+ucon_status_t ucon_pid_autotune_init(const ucon_algorithm_scaffold_call_t *call);
+
+/// Abort/rearm tuning and restore the documented gain state.
+/// TODO(PID_AUTOTUNE.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Abort/rearm tuning and restore the documented gain state. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify what happens after
+/// invalid or interrupted data. Algorithm-specific focus:
+/// Supervised PID tuning utility using a named relay or
+/// response-based experiment; it must not change gains implicitly
+/// during operation.
 ucon_status_t ucon_pid_autotune_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Collect bounded input/output data for the selected tuning method.
-/// TODO(PID_AUTOTUNE.collect_response): Define sample synchronization, noise rejection, and
-/// excitation limits. Algorithm-specific focus:
-/// Supervised PID tuning utility using a named relay or
-/// response-based experiment; it must not change gains
-/// implicitly during operation.
-ucon_status_t ucon_pid_autotune_collect_response(const ucon_algorithm_scaffold_call_t *call);
-
-/// Compute gains from the named relay/response-based rule.
-/// TODO(PID_AUTOTUNE.estimate_parameters): State exact formula, validity range, and
-/// confidence/rejection criteria. Algorithm-specific
+/// TODO(PID_AUTOTUNE.collect_response): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Collect bounded
+/// input/output data for the selected tuning method. 3)
+/// Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define sample synchronization, noise
+/// rejection, and excitation limits. Algorithm-specific
 /// focus: Supervised PID tuning utility using a named
 /// relay or response-based experiment; it must not
 /// change gains implicitly during operation.
-ucon_status_t ucon_pid_autotune_estimate_parameters(const ucon_algorithm_scaffold_call_t *call);
+ucon_status_t ucon_pid_autotune_collect_response(const ucon_algorithm_scaffold_call_t *call);
 
-/// Return proposed gains for explicit caller review/application.
-/// TODO(PID_AUTOTUNE.publish_candidate): Do not write live controller gains automatically.
+/// Compute gains from the named relay/response-based rule.
+/// TODO(PID_AUTOTUNE.estimate_parameters): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Compute gains
+/// from the named relay/response-based rule. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: State exact formula, validity range,
+/// and confidence/rejection criteria.
 /// Algorithm-specific focus: Supervised PID tuning
 /// utility using a named relay or response-based
 /// experiment; it must not change gains implicitly
 /// during operation.
+ucon_status_t ucon_pid_autotune_estimate_parameters(const ucon_algorithm_scaffold_call_t *call);
+
+/// Return proposed gains for explicit caller review/application.
+/// TODO(PID_AUTOTUNE.publish_candidate): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Return proposed gains
+/// for explicit caller review/application. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Do not write live controller gains
+/// automatically. Algorithm-specific focus: Supervised
+/// PID tuning utility using a named relay or
+/// response-based experiment; it must not change gains
+/// implicitly during operation.
 ucon_status_t ucon_pid_autotune_publish_candidate(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

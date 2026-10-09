@@ -2,6 +2,7 @@
 /// @brief Planned planar rigid-pose and tangent operations.
 #ifndef UEF_UMATH_LIE_SE2_H
 #define UEF_UMATH_LIE_SE2_H
+#include <uef/umath/config.h>
 #include <uef/umath/vector2.h>
 #ifdef __cplusplus
 extern "C" {

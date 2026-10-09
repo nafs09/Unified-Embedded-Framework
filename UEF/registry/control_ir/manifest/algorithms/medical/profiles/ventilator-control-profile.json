@@ -27,37 +27,38 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: define only the reusable software boundary and explicit external safety/supervision inputs; keep clinical models, therapy settings, and device-specific limits application-owned."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_inputs",
       "purpose": "Check units, timestamps, model identity, and supplied supervisor limits.",
-      "todo": "Never infer clinical settings or therapy limits. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check units, timestamps, model identity, and supplied supervisor limits. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Never infer clinical settings or therapy limits. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
     },
     {
       "name": "init",
       "purpose": "Initialize reusable profile state and external model interface.",
-      "todo": "Require explicit safe seed and configuration provenance. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize reusable profile state and external model interface. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Require explicit safe seed and configuration provenance. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
     },
     {
       "name": "reset",
       "purpose": "Reset history only under explicit external supervision.",
-      "todo": "Define stale-data and therapy-state handoff. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Reset history only under explicit external supervision. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define stale-data and therapy-state handoff. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
     },
     {
       "name": "update_estimate",
       "purpose": "Consume the declared application-owned physiology/device model output.",
-      "todo": "Do not invent patient or device dynamics. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Consume the declared application-owned physiology/device model output. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Do not invent patient or device dynamics. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
     },
     {
       "name": "compute_candidate",
       "purpose": "Compute a candidate subject to caller-supplied constraints.",
-      "todo": "Require independent safety supervision and report limiting conditions. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute a candidate subject to caller-supplied constraints. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Require independent safety supervision and report limiting conditions. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
     },
     {
       "name": "step",
       "purpose": "Return candidate/status for external approval and actuation.",
-      "todo": "No generic UCON profile establishes clinical safety. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Return candidate/status for external approval and actuation. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: No generic UCON profile establishes clinical safety. Algorithm-specific focus: Compose breath-phase logic and pressure/flow/volume loops with separately declared oxygenation/PEEP supervision."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/medical/profiles/ventilator_control_profile.h.tmpl"
 }

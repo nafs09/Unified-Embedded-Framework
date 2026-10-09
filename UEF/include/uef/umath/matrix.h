@@ -2,6 +2,7 @@
 /// @brief Row-major dense matrix and caller-owned vector kernels.
 #ifndef UEF_UMATH_MATRIX_H
 #define UEF_UMATH_MATRIX_H
+#include <uef/umath/config.h>
 
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>

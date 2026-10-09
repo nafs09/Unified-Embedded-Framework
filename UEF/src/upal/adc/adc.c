@@ -20,11 +20,12 @@ uef_status_t upal_adc_init(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Preserve channel
-     * rank/order, calibrate before sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_init):
+ * 1) Validate instance, channels, sample times, clock, buffers, and DMA/IRQ resources
+ * 2) configure resolution/trigger/channel ranks after enabling/resetting ADC
+ * 3) clear stale flags and publish READY only after setup succeeds.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
     (void)hw;
     (void)channels;
@@ -40,11 +41,12 @@ uef_status_t upal_adc_init(
 uef_status_t upal_adc_calibrate(
     upal_adc_t* a
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Preserve channel
-     * rank/order, calibrate before sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_calibrate):
+ * 1) Require initialized idle ADC and select supported calibration mode
+ * 2) run target-required regulator/calibration sequence with bounded timeout
+ * 3) publish calibration status only after completion.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
     return UEF_NOT_SUPPORTED;
 }
@@ -52,11 +54,12 @@ uef_status_t upal_adc_calibrate(
 uef_status_t upal_adc_start(
     upal_adc_t* a
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Reject invalid state, arm the peripheral and DMA in the documented order, and roll
-     * back partially configured resources on failure. Preserve channel rank/order,
-     * calibrate before sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_start):
+ * 1) Validate state, destination/count, trigger, and DMA reachability
+ * 2) prepare cache ownership and arm DMA before ADC/trigger
+ * 3) record active generation and unwind partial setup on failure.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
     return UEF_NOT_SUPPORTED;
 }
@@ -64,11 +67,12 @@ uef_status_t upal_adc_start(
 void upal_adc_stop(
     upal_adc_t* a
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Disable new requests first, stop/abort any active transfer, clear owned flags, and
-     * leave the module in a documented restartable state. Preserve channel rank/order,
-     * calibrate before sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_stop):
+ * 1) Disable triggers and conversions before DMA
+ * 2) wait boundedly for the in-flight boundary and clear owned flags
+ * 3) release buffer/cache ownership and make stop idempotent.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
 }
 
@@ -77,11 +81,12 @@ uef_status_t upal_adc_read_blocking(
     uef_u16_t* results,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Preserve channel rank/order, calibrate before
-     * sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_read_blocking):
+ * 1) Validate channel/output/state and deadline
+ * 2) start one conversion and poll EOC with wrap-safe timeout/error checks
+ * 3) read and scale only after success, then publish output.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
     (void)results;
     (void)timeout_ms;
@@ -91,21 +96,23 @@ uef_status_t upal_adc_read_blocking(
 void upal_adc_irq_handler(
     upal_adc_t* a
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Preserve channel rank/order, calibrate before
-     * sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_irq_handler):
+ * 1) Snapshot ADC status and identify enabled EOC/EOS/overrun/fault sources
+ * 2) clear only owned flags and update conversion state
+ * 3) defer unsafe callbacks and stop/recover on overrun.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
 }
 
 void upal_adc_dma_handler(
     upal_adc_t* a
 ) {
-    /* TODO(UEF UPAL ADC):
-     * Reconcile DMA and peripheral completion flags, perform cache maintenance where
-     * required, and issue exactly one completion callback. Preserve channel rank/order,
-     * calibrate before sampling, and define which DMA half contains each scan.
-     */
+    /* TODO(upal_adc_dma_handler):
+ * 1) Match DMA flags to active conversion generation
+ * 2) on completion invalidate cache and finalize count/state
+ * 3) on error stop triggers and publish failure exactly once.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)a;
 }

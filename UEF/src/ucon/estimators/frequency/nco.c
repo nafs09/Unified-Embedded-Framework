@@ -16,10 +16,16 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(NCO.validate_config): Define phase units, wrap convention, and output scaling.
- * Algorithm-specific focus: Numerically controlled oscillator that
- * advances a bounded phase accumulator and produces a configured
- * periodic reference.
+/* TODO(NCO.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check phase representation, frequency range, and sample
+ * timing. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define phase units,
+ * wrap convention, and output scaling. Algorithm-specific focus:
+ * Numerically controlled oscillator that advances a bounded phase
+ * accumulator and produces a configured periodic reference.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nco_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +36,15 @@ ucon_status_t ucon_nco_validate_config(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NCO.init): Specify phase seed and deterministic startup. Algorithm-specific focus:
- * Numerically controlled oscillator that advances a bounded phase accumulator
- * and produces a configured periodic reference.
+/* TODO(NCO.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize phase
+ * accumulator and oscillator state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify phase seed and deterministic
+ * startup. Algorithm-specific focus: Numerically controlled oscillator that
+ * advances a bounded phase accumulator and produces a configured periodic
+ * reference.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nco_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +55,14 @@ ucon_status_t ucon_nco_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NCO.reset): Define whether reset preserves commanded frequency. Algorithm-specific
- * focus: Numerically controlled oscillator that advances a bounded phase
- * accumulator and produces a configured periodic reference.
+/* TODO(NCO.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Reset phase/output
+ * history. 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure. Operation-specific
+ * requirements: Define whether reset preserves commanded frequency.
+ * Algorithm-specific focus: Numerically controlled oscillator that advances
+ * a bounded phase accumulator and produces a configured periodic reference.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nco_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,7 +73,13 @@ ucon_status_t ucon_nco_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NCO.set_frequency): Convert using the exact timebase and reject overflow.
+/* TODO(NCO.set_frequency): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Set a bounded frequency/phase increment. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Convert using the exact timebase and reject overflow.
  * Algorithm-specific focus: Numerically controlled oscillator that
  * advances a bounded phase accumulator and produces a configured
  * periodic reference.
@@ -70,10 +93,16 @@ ucon_status_t ucon_nco_set_frequency(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NCO.advance_phase): Handle irregular dt only when explicitly enabled.
- * Algorithm-specific focus: Numerically controlled oscillator that
- * advances a bounded phase accumulator and produces a configured
- * periodic reference.
+/* TODO(NCO.advance_phase): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Advance and wrap phase for one elapsed sample interval. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Handle irregular dt only when
+ * explicitly enabled. Algorithm-specific focus: Numerically
+ * controlled oscillator that advances a bounded phase accumulator
+ * and produces a configured periodic reference.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nco_advance_phase(const ucon_algorithm_scaffold_call_t *call)
@@ -84,10 +113,16 @@ ucon_status_t ucon_nco_advance_phase(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(NCO.get_output): Define waveform, lookup/interpolation error, and amplitude units.
- * Algorithm-specific focus: Numerically controlled oscillator that
- * advances a bounded phase accumulator and produces a configured
- * periodic reference.
+/* TODO(NCO.get_output): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Generate the configured periodic output or phase representation. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define waveform, lookup/interpolation error, and
+ * amplitude units. Algorithm-specific focus: Numerically controlled
+ * oscillator that advances a bounded phase accumulator and produces a
+ * configured periodic reference.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_nco_get_output(const ucon_algorithm_scaffold_call_t *call)

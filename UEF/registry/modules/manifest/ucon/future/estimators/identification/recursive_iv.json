@@ -3,13 +3,7 @@
     "src/ucon/future/estimators/identification/recursive_iv.c"
   ],
   "headers": [
-    "include/uef/ucon/detail/algorithm_call.h",
-    "include/uef/ucon/future/estimators/identification/recursive_iv.h",
-    "include/uef/ucon/ucon_status.h",
-    "include/uef/ucon/ucon_types.h",
-    "include/uef/ucore/uef_types.h",
-    "include/uef/umath/scalar.h",
-    "include/uef/umath/status.h"
+    "include/uef/ucon/future/estimators/identification/recursive_iv.h"
   ],
   "dependencies": [
     "ucon/core"

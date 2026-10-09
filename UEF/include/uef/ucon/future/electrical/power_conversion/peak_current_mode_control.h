@@ -14,31 +14,69 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check converter topology, sensor polarity, and switch map.
-/// TODO(PEAK_CURRENT_MODE_CONTROL.validate_topology): The algorithm key does not define a
-/// power-stage model. Algorithm-specific
-/// focus: Peak-current-mode controller
-/// with a topology-specific peak threshold
-/// and cycle-by-cycle switch decision.
+/// TODO(PEAK_CURRENT_MODE_CONTROL.validate_topology): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions,
+/// and preconditions before writing
+/// outputs or state. 2) Check converter
+/// topology, sensor polarity, and switch
+/// map. 3) Check numeric results, declared
+/// constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and
+/// diagnostics together only after
+/// success; preserve prior values on
+/// failure. Operation-specific
+/// requirements: The algorithm key does
+/// not define a power-stage model.
+/// Algorithm-specific focus:
+/// Peak-current-mode controller with a
+/// topology-specific peak threshold and
+/// cycle-by-cycle switch decision.
 ucon_status_t ucon_peak_current_mode_control_validate_topology(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize current/reference and switching-cycle state.
-/// TODO(PEAK_CURRENT_MODE_CONTROL.init): Define cycle phase and hardware interlock
-/// requirements. Algorithm-specific focus:
+/// TODO(PEAK_CURRENT_MODE_CONTROL.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Initialize
+/// current/reference and switching-cycle state. 3)
+/// Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Define cycle phase and hardware
+/// interlock requirements. Algorithm-specific focus:
 /// Peak-current-mode controller with a
 /// topology-specific peak threshold and cycle-by-cycle
 /// switch decision.
 ucon_status_t ucon_peak_current_mode_control_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear controller history without producing a gate action.
-/// TODO(PEAK_CURRENT_MODE_CONTROL.reset): Safe-state handling belongs to caller/target
-/// supervision. Algorithm-specific focus:
-/// Peak-current-mode controller with a
+/// TODO(PEAK_CURRENT_MODE_CONTROL.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Clear controller
+/// history without producing a gate action. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Safe-state handling belongs to
+/// caller/target supervision. Algorithm-specific
+/// focus: Peak-current-mode controller with a
 /// topology-specific peak threshold and cycle-by-cycle
 /// switch decision.
 ucon_status_t ucon_peak_current_mode_control_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Predict current/state under allowed switch actions.
-/// TODO(PEAK_CURRENT_MODE_CONTROL.predict_current): Derive equations and sample timing from
+/// TODO(PEAK_CURRENT_MODE_CONTROL.predict_current): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Predict current/state under
+/// allowed switch actions. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only
+/// after success; preserve prior values on
+/// failure. Operation-specific requirements:
+/// Derive equations and sample timing from
 /// the selected topology. Algorithm-specific
 /// focus: Peak-current-mode controller with
 /// a topology-specific peak threshold and
@@ -46,7 +84,17 @@ ucon_status_t ucon_peak_current_mode_control_reset(const ucon_algorithm_scaffold
 ucon_status_t ucon_peak_current_mode_control_predict_current(const ucon_algorithm_scaffold_call_t *call);
 
 /// Choose an action under the named objective/constraints.
-/// TODO(PEAK_CURRENT_MODE_CONTROL.select_command): Define dead time, current limits, and
+/// TODO(PEAK_CURRENT_MODE_CONTROL.select_command): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Choose an action under the named
+/// objective/constraints. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define
+/// dead time, current limits, and
 /// deterministic tie-breaking.
 /// Algorithm-specific focus:
 /// Peak-current-mode controller with a
@@ -55,8 +103,16 @@ ucon_status_t ucon_peak_current_mode_control_predict_current(const ucon_algorith
 ucon_status_t ucon_peak_current_mode_control_select_command(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one bounded converter update and return an abstract command.
-/// TODO(PEAK_CURRENT_MODE_CONTROL.step): Keep physical gate sequencing in the target
-/// boundary. Algorithm-specific focus:
+/// TODO(PEAK_CURRENT_MODE_CONTROL.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Run one bounded
+/// converter update and return an abstract command. 3)
+/// Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Keep physical gate sequencing in the
+/// target boundary. Algorithm-specific focus:
 /// Peak-current-mode controller with a
 /// topology-specific peak threshold and cycle-by-cycle
 /// switch decision.

@@ -14,8 +14,17 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Resolve the intended LLC/SRC expansion and estimator purpose.
-/// TODO(RESONANT_EKF_LLC_SRC.confirm_scope): This is a design gate; do not infer a converter
-/// model from the name. Algorithm-specific focus:
+/// TODO(RESONANT_EKF_LLC_SRC.confirm_scope): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Resolve the
+/// intended LLC/SRC expansion and estimator
+/// purpose. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on
+/// failure. Operation-specific requirements: This
+/// is a design gate; do not infer a converter model
+/// from the name. Algorithm-specific focus:
 /// Provisional converter-specific EKF candidate:
 /// the key appears to refer to an LLC
 /// series-resonant converter, but its state,
@@ -24,25 +33,50 @@ extern "C" {
 ucon_status_t ucon_resonant_ekf_llc_src_confirm_scope(const ucon_algorithm_scaffold_call_t *call);
 
 /// Validate caller-declared converter states, process model, sensors, and parameters.
-/// TODO(RESONANT_EKF_LLC_SRC.validate_model): The state and measurement vectors are not
-/// specified yet. Algorithm-specific focus:
-/// Provisional converter-specific EKF candidate:
-/// the key appears to refer to an LLC
-/// series-resonant converter, but its state,
-/// parameter, and measurement model are
-/// unspecified.
+/// TODO(RESONANT_EKF_LLC_SRC.validate_model): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Validate
+/// caller-declared converter states, process
+/// model, sensors, and parameters. 3) Check
+/// numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: The state and
+/// measurement vectors are not specified yet.
+/// Algorithm-specific focus: Provisional
+/// converter-specific EKF candidate: the key
+/// appears to refer to an LLC series-resonant
+/// converter, but its state, parameter, and
+/// measurement model are unspecified.
 ucon_status_t ucon_resonant_ekf_llc_src_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize the selected state, covariance, and workspace.
-/// TODO(RESONANT_EKF_LLC_SRC.init): Choose switched/averaged model and define operating-point
-/// seed. Algorithm-specific focus: Provisional
-/// converter-specific EKF candidate: the key appears to
-/// refer to an LLC series-resonant converter, but its state,
-/// parameter, and measurement model are unspecified.
+/// TODO(RESONANT_EKF_LLC_SRC.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Initialize the selected
+/// state, covariance, and workspace. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Choose
+/// switched/averaged model and define operating-point seed.
+/// Algorithm-specific focus: Provisional converter-specific
+/// EKF candidate: the key appears to refer to an LLC
+/// series-resonant converter, but its state, parameter, and
+/// measurement model are unspecified.
 ucon_status_t ucon_resonant_ekf_llc_src_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset history under a documented converter operating-state policy.
-/// TODO(RESONANT_EKF_LLC_SRC.reset): Define mode-transition and discontinuity behavior.
+/// TODO(RESONANT_EKF_LLC_SRC.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Reset history under a
+/// documented converter operating-state policy. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements:
+/// Define mode-transition and discontinuity behavior.
 /// Algorithm-specific focus: Provisional converter-specific
 /// EKF candidate: the key appears to refer to an LLC
 /// series-resonant converter, but its state, parameter, and
@@ -50,17 +84,34 @@ ucon_status_t ucon_resonant_ekf_llc_src_init(const ucon_algorithm_scaffold_call_
 ucon_status_t ucon_resonant_ekf_llc_src_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate using the specified resonant-converter process model.
-/// TODO(RESONANT_EKF_LLC_SRC.predict): Add switching phase and parameter variation only after
-/// defining the model. Algorithm-specific focus:
-/// Provisional converter-specific EKF candidate: the key
-/// appears to refer to an LLC series-resonant converter,
-/// but its state, parameter, and measurement model are
+/// TODO(RESONANT_EKF_LLC_SRC.predict): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Propagate using the
+/// specified resonant-converter process model. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Add switching phase and parameter
+/// variation only after defining the model.
+/// Algorithm-specific focus: Provisional
+/// converter-specific EKF candidate: the key appears to
+/// refer to an LLC series-resonant converter, but its
+/// state, parameter, and measurement model are
 /// unspecified.
 ucon_status_t ucon_resonant_ekf_llc_src_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply declared voltage/current measurements and diagnostics.
-/// TODO(RESONANT_EKF_LLC_SRC.correct): Establish observability, timing, gating, and
-/// excitation conditions. Algorithm-specific focus:
+/// TODO(RESONANT_EKF_LLC_SRC.correct): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Apply declared
+/// voltage/current measurements and diagnostics. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Establish observability, timing, gating,
+/// and excitation conditions. Algorithm-specific focus:
 /// Provisional converter-specific EKF candidate: the key
 /// appears to refer to an LLC series-resonant converter,
 /// but its state, parameter, and measurement model are
@@ -68,11 +119,19 @@ ucon_status_t ucon_resonant_ekf_llc_src_predict(const ucon_algorithm_scaffold_ca
 ucon_status_t ucon_resonant_ekf_llc_src_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run the reviewed converter-specific EKF update.
-/// TODO(RESONANT_EKF_LLC_SRC.step): Keep deferred until its model and numerical contract are
-/// complete. Algorithm-specific focus: Provisional
-/// converter-specific EKF candidate: the key appears to
-/// refer to an LLC series-resonant converter, but its state,
-/// parameter, and measurement model are unspecified.
+/// TODO(RESONANT_EKF_LLC_SRC.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Run the reviewed
+/// converter-specific EKF update. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Keep deferred until its
+/// model and numerical contract are complete.
+/// Algorithm-specific focus: Provisional converter-specific
+/// EKF candidate: the key appears to refer to an LLC
+/// series-resonant converter, but its state, parameter, and
+/// measurement model are unspecified.
 ucon_status_t ucon_resonant_ekf_llc_src_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

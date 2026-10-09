@@ -14,35 +14,74 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check transform/statistic/rate dimensions and numeric range.
-/// TODO(SYNCHRONOUS_DEMOD.validate_config): Define sample layout, scale, rate, and fixed
-/// buffer size. Algorithm-specific focus:
-/// Synchronous demodulator using a phase-aligned
-/// reference and bounded low-pass accumulation.
+/// TODO(SYNCHRONOUS_DEMOD.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check
+/// transform/statistic/rate dimensions and numeric
+/// range. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define
+/// sample layout, scale, rate, and fixed buffer
+/// size. Algorithm-specific focus: Synchronous
+/// demodulator using a phase-aligned reference and
+/// bounded low-pass accumulation.
 ucon_status_t ucon_synchronous_demod_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize window, phase, ring buffer, and accumulator.
-/// TODO(SYNCHRONOUS_DEMOD.init): Define warm-up and reset behavior. Algorithm-specific focus:
-/// Synchronous demodulator using a phase-aligned reference and
-/// bounded low-pass accumulation.
+/// TODO(SYNCHRONOUS_DEMOD.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Initialize window, phase, ring buffer,
+/// and accumulator. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Define warm-up and reset behavior.
+/// Algorithm-specific focus: Synchronous demodulator using a
+/// phase-aligned reference and bounded low-pass accumulation.
 ucon_status_t ucon_synchronous_demod_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear signal history and phase/index state.
-/// TODO(SYNCHRONOUS_DEMOD.reset): State ownership of coefficient/window tables.
-/// Algorithm-specific focus: Synchronous demodulator using a
-/// phase-aligned reference and bounded low-pass accumulation.
+/// TODO(SYNCHRONOUS_DEMOD.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Clear signal history and phase/index
+/// state. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: State
+/// ownership of coefficient/window tables. Algorithm-specific
+/// focus: Synchronous demodulator using a phase-aligned
+/// reference and bounded low-pass accumulation.
 ucon_status_t ucon_synchronous_demod_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one bounded block or fixed-rate sample group.
-/// TODO(SYNCHRONOUS_DEMOD.process_block): Define latency, overlap, scaling, and overflow
-/// behavior. Algorithm-specific focus: Synchronous
-/// demodulator using a phase-aligned reference and
-/// bounded low-pass accumulation.
+/// TODO(SYNCHRONOUS_DEMOD.process_block): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Process one bounded
+/// block or fixed-rate sample group. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define latency, overlap, scaling, and
+/// overflow behavior. Algorithm-specific focus:
+/// Synchronous demodulator using a phase-aligned
+/// reference and bounded low-pass accumulation.
 ucon_status_t ucon_synchronous_demod_process_block(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance the algorithm and publish output/validity metadata.
-/// TODO(SYNCHRONOUS_DEMOD.step): Specify incomplete-block and dropped-sample behavior.
-/// Algorithm-specific focus: Synchronous demodulator using a
-/// phase-aligned reference and bounded low-pass accumulation.
+/// TODO(SYNCHRONOUS_DEMOD.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Advance the algorithm and publish
+/// output/validity metadata. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Specify incomplete-block and dropped-sample
+/// behavior. Algorithm-specific focus: Synchronous demodulator
+/// using a phase-aligned reference and bounded low-pass
+/// accumulation.
 ucon_status_t ucon_synchronous_demod_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

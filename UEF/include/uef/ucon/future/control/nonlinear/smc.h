@@ -14,37 +14,73 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check nonlinear model, surface/relative-degree data, and parameter bounds.
-/// TODO(SMC.validate_model): State operating-region and uncertainty assumptions.
-/// Algorithm-specific focus: 1st-order sliding mode;
-/// `{{SLIDING_SURFACE}}` block
+/// TODO(SMC.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check nonlinear model, surface/relative-degree data, and
+/// parameter bounds. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: State
+/// operating-region and uncertainty assumptions. Algorithm-specific
+/// focus: 1st-order sliding mode; `{{SLIDING_SURFACE}}` block
 ucon_status_t ucon_smc_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize virtual-control, adaptation, integral, and filter state.
-/// TODO(SMC.init): Define state seeds and bound startup transients. Algorithm-specific focus:
-/// 1st-order sliding mode; `{{SLIDING_SURFACE}}` block
+/// TODO(SMC.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize
+/// virtual-control, adaptation, integral, and filter state. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Define state
+/// seeds and bound startup transients. Algorithm-specific focus: 1st-order
+/// sliding mode; `{{SLIDING_SURFACE}}` block
 ucon_status_t ucon_smc_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset controller/adaptation history.
-/// TODO(SMC.reset): Specify parameter projection and bumpless restart. Algorithm-specific
-/// focus: 1st-order sliding mode; `{{SLIDING_SURFACE}}` block
+/// TODO(SMC.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Reset
+/// controller/adaptation history. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify parameter projection
+/// and bumpless restart. Algorithm-specific focus: 1st-order sliding mode;
+/// `{{SLIDING_SURFACE}}` block
 ucon_status_t ucon_smc_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate tracking error, surface, barrier, or Lyapunov terms.
-/// TODO(SMC.compute_surface): Declare sign, units, derivative source, and singularity
-/// handling. Algorithm-specific focus: 1st-order sliding mode;
+/// TODO(SMC.compute_surface): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Evaluate tracking error, surface, barrier, or Lyapunov
+/// terms. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Declare sign,
+/// units, derivative source, and singularity handling.
+/// Algorithm-specific focus: 1st-order sliding mode;
 /// `{{SLIDING_SURFACE}}` block
 ucon_status_t ucon_smc_compute_surface(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute the method-specific bounded control candidate.
-/// TODO(SMC.compute_control): Define actuator limits and chattering/boundary-layer policy.
-/// Algorithm-specific focus: 1st-order sliding mode;
-/// `{{SLIDING_SURFACE}}` block
+/// TODO(SMC.compute_control): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Compute the method-specific bounded control candidate. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define actuator limits and
+/// chattering/boundary-layer policy. Algorithm-specific focus:
+/// 1st-order sliding mode; `{{SLIDING_SURFACE}}` block
 ucon_status_t ucon_smc_compute_control(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one deterministic control update and report status/diagnostics.
-/// TODO(SMC.step): Commit state only after numeric and constraint checks succeed.
-/// Algorithm-specific focus: 1st-order sliding mode; `{{SLIDING_SURFACE}}`
-/// block
+/// TODO(SMC.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Run one
+/// deterministic control update and report status/diagnostics. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements: Commit
+/// state only after numeric and constraint checks succeed. Algorithm-specific
+/// focus: 1st-order sliding mode; `{{SLIDING_SURFACE}}` block
 ucon_status_t ucon_smc_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

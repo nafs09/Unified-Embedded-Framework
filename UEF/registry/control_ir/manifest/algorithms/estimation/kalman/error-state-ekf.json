@@ -27,42 +27,43 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
-      "purpose": "Check nominal/error-state dimensions and Jacobian coordinates.",
-      "todo": "Pin perturbation and injection convention. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Validate nominal-state and tangent error-state dimensions/conventions.",
+      "todo": "1) Pin the nominal-state representation, tangent ordering, and left/right box-plus/box-minus convention. 2) Check process/measurement Jacobian shapes, noise dimensions, and covariance PSD assumptions. 3) Define frame, injection, and reset-Jacobian callbacks; reject mismatches before state mutation. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     },
     {
       "name": "init",
-      "purpose": "Initialize nominal state, error covariance, and workspace.",
-      "todo": "Define nominal normalization and initial error mean. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Initialize normalized nominal state, zero error mean, and tangent covariance.",
+      "todo": "1) Copy and normalize the nominal state using its representation-specific rule; reject invalid norm/group state. 2) Set the local error mean to zero and validate/factor P0 in tangent coordinates. 3) Initialize timestamp/workspace and publish atomically. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     },
     {
       "name": "reset",
-      "purpose": "Reset covariance and error history.",
-      "todo": "Specify nominal-state retention. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Reset local error history under the nominal-state retention policy.",
+      "todo": "1) Clear timestamp, residual, and correction history. 2) Retain or replace the nominal state exactly as configured; reset local error mean to zero and seed covariance explicitly. 3) Revalidate normalization/factorization before commit. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     },
     {
       "name": "predict",
-      "purpose": "Propagate nominal state and error covariance.",
-      "todo": "Define error dynamics and process-noise mapping. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Propagate nominal state and linearized tangent covariance.",
+      "todo": "1) Advance nominal state with the nonlinear process model and normalize/project it back to the declared manifold. 2) Evaluate tangent error transition Φ and process-noise map G in the pinned convention. 3) Compute P_pred=ΦPΦᵀ+GQGᵀ, validate PSD/finite values, and stage both nominal/covariance together. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     },
     {
       "name": "correct",
-      "purpose": "Update measurement innovation and error-state covariance.",
-      "todo": "Define measurement mapping, gating, and failure atomicity. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Compute a measurement residual and Kalman correction in tangent coordinates.",
+      "todo": "1) Evaluate h(nominal) and H in the declared measurement/tangent frames; form wrapped/manifold residual where required. 2) Factor innovation covariance, solve for gain, and apply the configured gate. 3) Compute delta-error and stage covariance update; pass the accepted correction to inject_error without committing half the update. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     },
     {
       "name": "inject_error",
-      "purpose": "Inject estimated error and reset local error coordinates.",
-      "todo": "Specify manifold injection and reset Jacobian. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Apply the local correction and reset covariance coordinates.",
+      "todo": "1) Apply delta-error to the nominal state with the pinned box-plus operation and renormalize/validate the result. 2) Evaluate the reset Jacobian for the same perturbation convention and transform covariance into the new tangent coordinates. 3) Set local error mean to zero and atomically commit nominal state/covariance. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     },
     {
       "name": "step",
-      "purpose": "Run prediction, optional correction, and injection.",
-      "todo": "Keep nominal and error coordinates consistent. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
+      "purpose": "Coordinate prediction, optional measurement update, and tangent reset.",
+      "todo": "1) Validate timestamp and stage nominal/error prediction once. 2) Correct only valid measurement channels and gate before injection. 3) Inject accepted error and apply covariance reset Jacobian. 4) Commit nominal state, covariance, timestamp, and diagnostics together or preserve the last complete state. Algorithm-specific focus: Nominal state plus a lower-dimensional error state and covariance."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/estimators/kalman/error_state_ekf.h.tmpl"
 }

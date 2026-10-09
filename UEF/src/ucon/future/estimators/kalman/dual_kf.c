@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(DUAL_KF.validate_partition): Specify which unknown parameters are augmented and why
+/* TODO(DUAL_KF.validate_partition): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check state/parameter
+ * partition and coupled process/measurement models. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Specify which unknown parameters are augmented and why
  * the joint model is observable. Algorithm-specific focus:
  * Dual estimation scheme that jointly tracks plant state
  * and selected unknown parameters.
@@ -30,7 +38,13 @@ ucon_status_t ucon_dual_kf_validate_partition(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DUAL_KF.init): Define cross-covariance and parameter uncertainty seed.
+/* TODO(DUAL_KF.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize state/parameter estimates and covariance blocks. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define cross-covariance and parameter uncertainty seed.
  * Algorithm-specific focus: Dual estimation scheme that jointly tracks
  * plant state and selected unknown parameters.
  * This stub must not read/write opaque state or output buffers.
@@ -43,9 +57,15 @@ ucon_status_t ucon_dual_kf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DUAL_KF.reset): Specify retained plant state versus parameter estimate.
- * Algorithm-specific focus: Dual estimation scheme that jointly tracks
- * plant state and selected unknown parameters.
+/* TODO(DUAL_KF.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset joint estimation history. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify retained plant state
+ * versus parameter estimate. Algorithm-specific focus: Dual estimation
+ * scheme that jointly tracks plant state and selected unknown
+ * parameters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dual_kf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +76,18 @@ ucon_status_t ucon_dual_kf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DUAL_KF.predict_state_parameters): Pin parameter random-walk/fixed-model assumption.
- * Algorithm-specific focus: Dual estimation scheme
- * that jointly tracks plant state and selected
- * unknown parameters.
+/* TODO(DUAL_KF.predict_state_parameters): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Propagate physical
+ * state and parameter model. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Pin parameter random-walk/fixed-model
+ * assumption. Algorithm-specific focus: Dual
+ * estimation scheme that jointly tracks plant state
+ * and selected unknown parameters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dual_kf_predict_state_parameters(const ucon_algorithm_scaffold_call_t *call)
@@ -70,10 +98,18 @@ ucon_status_t ucon_dual_kf_predict_state_parameters(const ucon_algorithm_scaffol
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DUAL_KF.correct_joint_estimate): Define coupling and prevent unobservable drift.
- * Algorithm-specific focus: Dual estimation scheme that
- * jointly tracks plant state and selected unknown
- * parameters.
+/* TODO(DUAL_KF.correct_joint_estimate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Apply measurement
+ * information to state and parameter estimates. 3)
+ * Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Define coupling and prevent
+ * unobservable drift. Algorithm-specific focus: Dual
+ * estimation scheme that jointly tracks plant state and
+ * selected unknown parameters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_dual_kf_correct_joint_estimate(const ucon_algorithm_scaffold_call_t *call)
@@ -84,7 +120,13 @@ ucon_status_t ucon_dual_kf_correct_joint_estimate(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DUAL_KF.step): Do not imply parameter convergence without excitation.
+/* TODO(DUAL_KF.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Run
+ * bounded joint estimation and publish observability diagnostics. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Do not imply parameter convergence without excitation.
  * Algorithm-specific focus: Dual estimation scheme that jointly tracks
  * plant state and selected unknown parameters.
  * This stub must not read/write opaque state or output buffers.

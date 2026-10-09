@@ -2,6 +2,7 @@
 /// @brief Planned allocation-free compressed-sparse-row operations.
 #ifndef UEF_UMATH_FUTURE_MATRIX_SPARSE_CSR_H
 #define UEF_UMATH_FUTURE_MATRIX_SPARSE_CSR_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

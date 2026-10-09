@@ -28,32 +28,32 @@
   "scaffold_module": "ucon/future/filtering/runtime/savgol_filter",
   "scaffold_header": "include/uef/ucon/future/filtering/runtime/savgol_filter.h",
   "scaffold_source": "src/ucon/future/filtering/runtime/savgol_filter.c",
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check coefficient count, sample rate, and fixed state size.",
-      "todo": "State coefficient stability and initialization assumptions. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check coefficient count, sample rate, and fixed state size. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: State coefficient stability and initialization assumptions. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
     },
     {
       "name": "init",
       "purpose": "Initialize history and ring-buffer indices.",
-      "todo": "Define zero, constant-input, or caller-supplied initial conditions. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize history and ring-buffer indices. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define zero, constant-input, or caller-supplied initial conditions. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
     },
     {
       "name": "reset",
       "purpose": "Clear or preload filter history.",
-      "todo": "Define whether coefficients can change while running. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear or preload filter history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define whether coefficients can change while running. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
     },
     {
       "name": "update_state",
       "purpose": "Advance bounded filter/window state for one sample.",
-      "todo": "Check accumulator scaling and invalid-sample policy. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Advance bounded filter/window state for one sample. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Check accumulator scaling and invalid-sample policy. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
     },
     {
       "name": "process_sample",
       "purpose": "Compute output using the declared recurrence/window.",
-      "todo": "Define latency, warm-up, saturation, and non-finite behavior. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute output using the declared recurrence/window. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define latency, warm-up, saturation, and non-finite behavior. Algorithm-specific focus: Savitzky-Golay local polynomial smoother or derivative estimator with fixed window and order."
     }
   ]
 }

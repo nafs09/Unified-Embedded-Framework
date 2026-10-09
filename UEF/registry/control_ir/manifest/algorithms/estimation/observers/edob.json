@@ -28,37 +28,38 @@
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
     "Confirm what “extended” adds relative to DOB and ESO, then define the augmented state and disturbance model; do not implement a duplicate under a new name."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
       "purpose": "Check plant matrices, dimensions, gain layout, and disturbance model.",
-      "todo": "State detectability/observability assumptions and gain ownership. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check plant matrices, dimensions, gain layout, and disturbance model. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: State detectability/observability assumptions and gain ownership. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
     },
     {
       "name": "init",
       "purpose": "Initialize estimate and observer/disturbance states.",
-      "todo": "Define initial estimate and any required output history. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize estimate and observer/disturbance states. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define initial estimate and any required output history. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
     },
     {
       "name": "reset",
       "purpose": "Clear observer history or preload a documented state.",
-      "todo": "Specify bumpless reset and disturbance estimate handling. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear observer history or preload a documented state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify bumpless reset and disturbance estimate handling. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
     },
     {
       "name": "predict",
       "purpose": "Propagate the model and predicted state.",
-      "todo": "Define sample time and discretization. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Propagate the model and predicted state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define sample time and discretization. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
     },
     {
       "name": "correct",
       "purpose": "Apply measured output/residual and observer injection.",
-      "todo": "Specify residual sign, disturbance channels, and gain convention. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply measured output/residual and observer injection. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify residual sign, disturbance channels, and gain convention. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
     },
     {
       "name": "step",
       "purpose": "Run one observer update and report estimate/residual validity.",
-      "todo": "Bound work and preserve prior state after numeric failure. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run one observer update and report estimate/residual validity. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Bound work and preserve prior state after numeric failure. Algorithm-specific focus: Extended disturbance observer that augments a declared plant state model with disturbance state(s); exact extension must be specified."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/estimators/observers/edob.h.tmpl"
 }

@@ -1,6 +1,7 @@
 /// @file src/umath/vector2.c
 /// @brief Two-dimensional vector operations.
 #include <math.h>
+#include <uef/umath/internal/scalar_math.h>
 #include <uef/umath/scalar.h>
 #include <uef/umath/vector2.h>
 
@@ -34,9 +35,12 @@ umath_scalar_t umath_vec2_cross(umath_vec2_t a, umath_vec2_t b)
 
 umath_status_t umath_vec2_norm(umath_vec2_t value, umath_scalar_t *norm)
 {
-    const double result = hypot((double)value.x, (double)value.y);
-    if (norm == NULL || !isfinite(result) ||
-        !umath_scalar_is_finite((umath_scalar_t)result)) return UMATH_NUMERIC_FAILURE;
+    const umath_accumulator_t result = UEF_UMATH_ACCUM_BINARY_MATH(
+        hypot, (umath_accumulator_t)value.x, (umath_accumulator_t)value.y);
+    if (norm == NULL) return UMATH_INVALID_ARGUMENT;
+    if (!isfinite(result) || !umath_scalar_is_finite((umath_scalar_t)result)) {
+        return UMATH_NUMERIC_FAILURE;
+    }
     *norm = (umath_scalar_t)result;
     return UMATH_OK;
 }
@@ -45,9 +49,11 @@ umath_status_t umath_vec2_normalize(umath_vec2_t value, umath_vec2_t *unit)
 {
     umath_scalar_t norm;
     umath_vec2_t result;
-    if (unit == NULL || umath_vec2_norm(value, &norm) != UMATH_OK || norm <= 0) {
-        return UMATH_INVALID_ARGUMENT;
-    }
+    umath_status_t status;
+    if (unit == NULL) return UMATH_INVALID_ARGUMENT;
+    status = umath_vec2_norm(value, &norm);
+    if (status != UMATH_OK) return status;
+    if (norm <= 0) return UMATH_INVALID_ARGUMENT;
     result.x = value.x / norm;
     result.y = value.y / norm;
     *unit = result;

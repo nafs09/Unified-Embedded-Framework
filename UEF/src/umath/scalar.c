@@ -1,9 +1,10 @@
 /// @file src/umath/scalar.c
 /// @brief Portable checked scalar operations; target modules may provide verified accelerators.
-#include <math.h>
+#include <uef/umath/internal/scalar_math.h>
 #include <uef/umath/scalar.h>
 
-static umath_status_t store_finite(double value, umath_scalar_t *result)
+static umath_status_t store_finite(umath_accumulator_t value,
+                                   umath_scalar_t *result)
 {
     const umath_scalar_t converted = (umath_scalar_t)value;
     if (!isfinite(value) || !umath_scalar_is_finite(converted)) {
@@ -15,7 +16,7 @@ static umath_status_t store_finite(double value, umath_scalar_t *result)
 
 bool umath_scalar_is_finite(umath_scalar_t value)
 {
-    return isfinite((double)value) != 0;
+    return isfinite(value) != 0;
 }
 
 umath_status_t umath_scalar_clamp(umath_scalar_t value,
@@ -37,7 +38,8 @@ umath_status_t umath_sin(umath_scalar_t radians, umath_scalar_t *result)
     if (result == NULL || !umath_scalar_is_finite(radians)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(sin((double)radians), result);
+    return store_finite(UEF_UMATH_ACCUM_UNARY_MATH(
+        sin, (umath_accumulator_t)radians), result);
 }
 
 umath_status_t umath_cos(umath_scalar_t radians, umath_scalar_t *result)
@@ -45,7 +47,8 @@ umath_status_t umath_cos(umath_scalar_t radians, umath_scalar_t *result)
     if (result == NULL || !umath_scalar_is_finite(radians)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(cos((double)radians), result);
+    return store_finite(UEF_UMATH_ACCUM_UNARY_MATH(
+        cos, (umath_accumulator_t)radians), result);
 }
 
 umath_status_t umath_atan2(umath_scalar_t y, umath_scalar_t x,
@@ -55,7 +58,8 @@ umath_status_t umath_atan2(umath_scalar_t y, umath_scalar_t x,
         !umath_scalar_is_finite(y)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(atan2((double)y, (double)x), radians);
+    return store_finite(UEF_UMATH_ACCUM_BINARY_MATH(
+        atan2, (umath_accumulator_t)y, (umath_accumulator_t)x), radians);
 }
 
 umath_status_t umath_sqrt(umath_scalar_t value, umath_scalar_t *result)
@@ -63,7 +67,8 @@ umath_status_t umath_sqrt(umath_scalar_t value, umath_scalar_t *result)
     if (result == NULL || !umath_scalar_is_finite(value) || value < 0) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(sqrt((double)value), result);
+    return store_finite(UEF_UMATH_ACCUM_UNARY_MATH(
+        sqrt, (umath_accumulator_t)value), result);
 }
 
 umath_status_t umath_invsqrt(umath_scalar_t value, umath_scalar_t *result)
@@ -71,7 +76,8 @@ umath_status_t umath_invsqrt(umath_scalar_t value, umath_scalar_t *result)
     if (result == NULL || !umath_scalar_is_finite(value) || value <= 0) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(1.0 / sqrt((double)value), result);
+    return store_finite(UMATH_ACCUMULATOR_C(1) /
+        UEF_UMATH_ACCUM_UNARY_MATH(sqrt, (umath_accumulator_t)value), result);
 }
 
 umath_status_t umath_exp(umath_scalar_t value, umath_scalar_t *result)
@@ -79,7 +85,8 @@ umath_status_t umath_exp(umath_scalar_t value, umath_scalar_t *result)
     if (result == NULL || !umath_scalar_is_finite(value)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(exp((double)value), result);
+    return store_finite(UEF_UMATH_ACCUM_UNARY_MATH(
+        exp, (umath_accumulator_t)value), result);
 }
 
 umath_status_t umath_log(umath_scalar_t value, umath_scalar_t *result)
@@ -87,7 +94,8 @@ umath_status_t umath_log(umath_scalar_t value, umath_scalar_t *result)
     if (result == NULL || !umath_scalar_is_finite(value) || value <= 0) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(log((double)value), result);
+    return store_finite(UEF_UMATH_ACCUM_UNARY_MATH(
+        log, (umath_accumulator_t)value), result);
 }
 
 umath_status_t umath_hypot(umath_scalar_t x, umath_scalar_t y,
@@ -97,19 +105,21 @@ umath_status_t umath_hypot(umath_scalar_t x, umath_scalar_t y,
         !umath_scalar_is_finite(y)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    return store_finite(hypot((double)x, (double)y), result);
+    return store_finite(UEF_UMATH_ACCUM_BINARY_MATH(
+        hypot, (umath_accumulator_t)x, (umath_accumulator_t)y), result);
 }
 
 umath_status_t umath_wrap_angle_pi(umath_scalar_t radians,
                                    umath_scalar_t *wrapped)
 {
-    const double pi = 3.14159265358979323846;
-    const double two_pi = 2.0 * pi;
-    double value;
+    const umath_accumulator_t pi = UMATH_ACCUMULATOR_C(3.14159265358979323846);
+    const umath_accumulator_t two_pi = UMATH_ACCUMULATOR_C(2) * pi;
+    umath_accumulator_t value;
     if (wrapped == NULL || !umath_scalar_is_finite(radians)) {
         return UMATH_INVALID_ARGUMENT;
     }
-    value = fmod((double)radians, two_pi);
+    value = UEF_UMATH_ACCUM_BINARY_MATH(
+        fmod, (umath_accumulator_t)radians, two_pi);
     if (value >= pi) value -= two_pi;
     else if (value < -pi) value += two_pi;
     return store_finite(value, wrapped);

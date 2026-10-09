@@ -2,6 +2,7 @@
 /// @brief Planned Hermite, Bezier, and B-spline basis operations.
 #ifndef UEF_UMATH_INTERPOLATION_SPLINES_H
 #define UEF_UMATH_INTERPOLATION_SPLINES_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

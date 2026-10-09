@@ -16,10 +16,19 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(GAUSSIAN_SUM_FILTER.validate_model): Set a fixed maximum component count.
- * Algorithm-specific focus: Gaussian-sum filter
- * that maintains and reduces a finite mixture of
- * Gaussian state estimates.
+/* TODO(GAUSSIAN_SUM_FILTER.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check
+ * component model, mixture count, and reduction
+ * bounds. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Set a
+ * fixed maximum component count. Algorithm-specific
+ * focus: Gaussian-sum filter that maintains and
+ * reduces a finite mixture of Gaussian state
+ * estimates.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gaussian_sum_filter_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -30,10 +39,17 @@ ucon_status_t ucon_gaussian_sum_filter_validate_model(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.init): Define prior mixture and covariance requirements.
- * Algorithm-specific focus: Gaussian-sum filter that
- * maintains and reduces a finite mixture of Gaussian state
- * estimates.
+/* TODO(GAUSSIAN_SUM_FILTER.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Initialize normalized Gaussian
+ * components and weights. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define prior mixture and
+ * covariance requirements. Algorithm-specific focus:
+ * Gaussian-sum filter that maintains and reduces a finite
+ * mixture of Gaussian state estimates.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gaussian_sum_filter_init(const ucon_algorithm_scaffold_call_t *call)
@@ -44,7 +60,14 @@ ucon_status_t ucon_gaussian_sum_filter_init(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.reset): Specify component-label stability. Algorithm-specific
+/* TODO(GAUSSIAN_SUM_FILTER.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Reset mixture state. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Specify component-label stability. Algorithm-specific
  * focus: Gaussian-sum filter that maintains and reduces a
  * finite mixture of Gaussian state estimates.
  * This stub must not read/write opaque state or output buffers.
@@ -57,10 +80,20 @@ ucon_status_t ucon_gaussian_sum_filter_reset(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.predict_components): Bound model/component work.
- * Algorithm-specific focus: Gaussian-sum filter
- * that maintains and reduces a finite mixture
- * of Gaussian state estimates.
+/* TODO(GAUSSIAN_SUM_FILTER.predict_components): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Propagate each Gaussian component
+ * through the selected model/filter. 3) Check
+ * numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Bound
+ * model/component work. Algorithm-specific
+ * focus: Gaussian-sum filter that maintains and
+ * reduces a finite mixture of Gaussian state
+ * estimates.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gaussian_sum_filter_predict_components(const ucon_algorithm_scaffold_call_t *call)
@@ -71,11 +104,23 @@ ucon_status_t ucon_gaussian_sum_filter_predict_components(const ucon_algorithm_s
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.update_component_weights): Handle likelihood underflow/all-zero
- * weight explicitly. Algorithm-specific
- * focus: Gaussian-sum filter that
- * maintains and reduces a finite mixture
- * of Gaussian state estimates.
+/* TODO(GAUSSIAN_SUM_FILTER.update_component_weights): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Apply measurement
+ * likelihoods and normalize mixture
+ * weights. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Handle likelihood
+ * underflow/all-zero weight explicitly.
+ * Algorithm-specific focus: Gaussian-sum
+ * filter that maintains and reduces a
+ * finite mixture of Gaussian state
+ * estimates.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gaussian_sum_filter_update_component_weights(const ucon_algorithm_scaffold_call_t *call)
@@ -86,11 +131,19 @@ ucon_status_t ucon_gaussian_sum_filter_update_component_weights(const ucon_algor
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.reduce_mixture): Define distance, threshold, and
- * moment-preservation rule. Algorithm-specific
- * focus: Gaussian-sum filter that maintains and
- * reduces a finite mixture of Gaussian state
- * estimates.
+/* TODO(GAUSSIAN_SUM_FILTER.reduce_mixture): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Prune/merge
+ * components to the configured fixed maximum. 3)
+ * Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define distance,
+ * threshold, and moment-preservation rule.
+ * Algorithm-specific focus: Gaussian-sum filter
+ * that maintains and reduces a finite mixture of
+ * Gaussian state estimates.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gaussian_sum_filter_reduce_mixture(const ucon_algorithm_scaffold_call_t *call)
@@ -101,7 +154,17 @@ ucon_status_t ucon_gaussian_sum_filter_reduce_mixture(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.summarize_estimate): Define multimodal summary semantics.
+/* TODO(GAUSSIAN_SUM_FILTER.summarize_estimate): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Combine mixture into requested
+ * state/uncertainty output. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: Define
+ * multimodal summary semantics.
  * Algorithm-specific focus: Gaussian-sum filter
  * that maintains and reduces a finite mixture
  * of Gaussian state estimates.
@@ -115,10 +178,17 @@ ucon_status_t ucon_gaussian_sum_filter_summarize_estimate(const ucon_algorithm_s
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAUSSIAN_SUM_FILTER.step): Preserve prior mixture on numeric failure.
- * Algorithm-specific focus: Gaussian-sum filter that
- * maintains and reduces a finite mixture of Gaussian state
- * estimates.
+/* TODO(GAUSSIAN_SUM_FILTER.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Run prediction, update, reduction, and
+ * summary in a fixed order. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Preserve prior mixture on
+ * numeric failure. Algorithm-specific focus: Gaussian-sum
+ * filter that maintains and reduces a finite mixture of
+ * Gaussian state estimates.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gaussian_sum_filter_step(const ucon_algorithm_scaffold_call_t *call)

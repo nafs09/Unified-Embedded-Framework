@@ -16,7 +16,14 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(SVPWM.validate_config): State motor type and angle-source validity. Algorithm-specific
+/* TODO(SVPWM.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check motor model, transform, sample timing, and
+ * current/voltage limits. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements:
+ * State motor type and angle-source validity. Algorithm-specific
  * focus: Space-vector pulse-width modulation with declared bus
  * utilization and saturation behavior.
  * This stub must not read/write opaque state or output buffers.
@@ -29,7 +36,13 @@ ucon_status_t ucon_svpwm_validate_config(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SVPWM.init): Define alignment and sensor-offset ownership. Algorithm-specific focus:
+/* TODO(SVPWM.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize d/q
+ * loops, flux/torque estimate, and modulation state. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Define
+ * alignment and sensor-offset ownership. Algorithm-specific focus:
  * Space-vector pulse-width modulation with declared bus utilization and
  * saturation behavior.
  * This stub must not read/write opaque state or output buffers.
@@ -42,9 +55,14 @@ ucon_status_t ucon_svpwm_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SVPWM.reset): Define a safe restart state. Algorithm-specific focus: Space-vector
- * pulse-width modulation with declared bus utilization and saturation
- * behavior.
+/* TODO(SVPWM.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Reset
+ * control/estimator history without issuing gate actions. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Define a safe
+ * restart state. Algorithm-specific focus: Space-vector pulse-width
+ * modulation with declared bus utilization and saturation behavior.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_svpwm_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,10 +73,17 @@ ucon_status_t ucon_svpwm_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SVPWM.estimate_motor_state): State model validity and low-speed operating limits.
- * Algorithm-specific focus: Space-vector pulse-width
- * modulation with declared bus utilization and saturation
- * behavior.
+/* TODO(SVPWM.estimate_motor_state): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Update flux, torque, angle,
+ * or speed estimates. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: State model validity and
+ * low-speed operating limits. Algorithm-specific focus:
+ * Space-vector pulse-width modulation with declared bus
+ * utilization and saturation behavior.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_svpwm_estimate_motor_state(const ucon_algorithm_scaffold_call_t *call)
@@ -69,10 +94,18 @@ ucon_status_t ucon_svpwm_estimate_motor_state(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SVPWM.compute_current_command): Define decoupling, saturation, and current-limit
- * policy. Algorithm-specific focus: Space-vector
- * pulse-width modulation with declared bus utilization
- * and saturation behavior.
+/* TODO(SVPWM.compute_current_command): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute d/q or
+ * switching-state command. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define decoupling,
+ * saturation, and current-limit policy.
+ * Algorithm-specific focus: Space-vector pulse-width
+ * modulation with declared bus utilization and
+ * saturation behavior.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_svpwm_compute_current_command(const ucon_algorithm_scaffold_call_t *call)
@@ -83,7 +116,13 @@ ucon_status_t ucon_svpwm_compute_current_command(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SVPWM.modulate): Do not assume gate polarity, dead time, or timer setup.
+/* TODO(SVPWM.modulate): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Map
+ * abstract command into declared modulation values. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements: Do
+ * not assume gate polarity, dead time, or timer setup.
  * Algorithm-specific focus: Space-vector pulse-width modulation with
  * declared bus utilization and saturation behavior.
  * This stub must not read/write opaque state or output buffers.
@@ -96,9 +135,15 @@ ucon_status_t ucon_svpwm_modulate(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SVPWM.step): Bound work and preserve outputs on invalid measurements.
- * Algorithm-specific focus: Space-vector pulse-width modulation with
- * declared bus utilization and saturation behavior.
+/* TODO(SVPWM.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Coordinate one
+ * synchronized motor-control update. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Bound work and preserve outputs
+ * on invalid measurements. Algorithm-specific focus: Space-vector
+ * pulse-width modulation with declared bus utilization and saturation
+ * behavior.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_svpwm_step(const ucon_algorithm_scaffold_call_t *call)

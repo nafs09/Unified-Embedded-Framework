@@ -14,38 +14,76 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check at least two weighted non-collinear reference/observation pairs.
-/// TODO(QUEST.validate_vectors): Define frame direction, vector normalization, weights, and
-/// rank threshold. Algorithm-specific focus: Attitude
-/// determination from vector observations.
+/// TODO(QUEST.validate_vectors): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Check at least two weighted
+/// non-collinear reference/observation pairs. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Define frame direction,
+/// vector normalization, weights, and rank threshold.
+/// Algorithm-specific focus: Attitude determination from vector
+/// observations.
 ucon_status_t ucon_quest_validate_vectors(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize fixed-size attitude solution workspace.
-/// TODO(QUEST.init): Define output representation and invalid-solution state.
-/// Algorithm-specific focus: Attitude determination from vector
-/// observations.
+/// TODO(QUEST.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize fixed-size attitude solution workspace. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Define output
+/// representation and invalid-solution state. Algorithm-specific focus:
+/// Attitude determination from vector observations.
 ucon_status_t ucon_quest_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear solution/diagnostic state.
-/// TODO(QUEST.reset): Specify whether vector configuration is retained. Algorithm-specific
-/// focus: Attitude determination from vector observations.
+/// TODO(QUEST.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Clear
+/// solution/diagnostic state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify whether vector
+/// configuration is retained. Algorithm-specific focus: Attitude
+/// determination from vector observations.
 ucon_status_t ucon_quest_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Build the weighted attitude-determination matrix.
-/// TODO(QUEST.build_wahba_matrix): Pin convention and ensure input weights are
-/// finite/nonnegative. Algorithm-specific focus: Attitude
-/// determination from vector observations.
+/// TODO(QUEST.build_wahba_matrix): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Build the weighted
+/// attitude-determination matrix. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Pin convention and ensure
+/// input weights are finite/nonnegative. Algorithm-specific
+/// focus: Attitude determination from vector observations.
 ucon_status_t ucon_quest_build_wahba_matrix(const ucon_algorithm_scaffold_call_t *call);
 
 /// Solve the selected QUEST eigen/quaternion relation.
-/// TODO(QUEST.solve_attitude): Specify iteration/eigenvalue method and deterministic
-/// convergence bound. Algorithm-specific focus: Attitude
-/// determination from vector observations.
+/// TODO(QUEST.solve_attitude): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Solve the selected QUEST eigen/quaternion relation. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify iteration/eigenvalue
+/// method and deterministic convergence bound. Algorithm-specific
+/// focus: Attitude determination from vector observations.
 ucon_status_t ucon_quest_solve_attitude(const ucon_algorithm_scaffold_call_t *call);
 
 /// Check residual, normalization, and geometry quality.
-/// TODO(QUEST.verify_solution): Return an explicit degenerate-vector status.
-/// Algorithm-specific focus: Attitude determination from vector
-/// observations.
+/// TODO(QUEST.verify_solution): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Check residual, normalization, and geometry
+/// quality. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Return an
+/// explicit degenerate-vector status. Algorithm-specific focus:
+/// Attitude determination from vector observations.
 ucon_status_t ucon_quest_verify_solution(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

@@ -2,6 +2,7 @@
 /// @brief Fixed-storage row-major dense matrix kernels.
 #include <stdint.h>
 #include <math.h>
+#include <uef/umath/internal/scalar_math.h>
 #include <uef/umath/matrix.h>
 #include <uef/umath/scalar.h>
 
@@ -19,10 +20,11 @@ umath_status_t umath_matrix_vector(const umath_scalar_t *matrix,
     if (matrix == NULL || vector == NULL || output == NULL ||
         !valid_shape(rows, columns)) return UMATH_INVALID_ARGUMENT;
     for (row = 0U; row < rows; ++row) {
-        double sum = 0.0;
+        umath_accumulator_t sum = UMATH_ACCUMULATOR_C(0);
         for (column = 0U; column < columns; ++column) {
-            const double a = (double)matrix[row * columns + column];
-            const double b = (double)vector[column];
+            const umath_accumulator_t a =
+                (umath_accumulator_t)matrix[row * columns + column];
+            const umath_accumulator_t b = (umath_accumulator_t)vector[column];
             if (!isfinite(a) || !isfinite(b)) return UMATH_NUMERIC_FAILURE;
             sum += a * b;
         }
@@ -45,10 +47,12 @@ umath_status_t umath_matrix_multiply(const umath_scalar_t *left,
         !valid_shape(rows, columns)) return UMATH_INVALID_ARGUMENT;
     for (row = 0U; row < rows; ++row) {
         for (column = 0U; column < columns; ++column) {
-            double sum = 0.0;
+            umath_accumulator_t sum = UMATH_ACCUMULATOR_C(0);
             for (k = 0U; k < inner; ++k) {
-                const double a = (double)left[row * inner + k];
-                const double b = (double)right[k * columns + column];
+                const umath_accumulator_t a =
+                    (umath_accumulator_t)left[row * inner + k];
+                const umath_accumulator_t b =
+                    (umath_accumulator_t)right[k * columns + column];
                 if (!isfinite(a) || !isfinite(b)) return UMATH_NUMERIC_FAILURE;
                 sum += a * b;
             }
@@ -89,8 +93,9 @@ static umath_status_t matrix_binary(const umath_scalar_t *left,
         !valid_shape(rows, columns)) return UMATH_INVALID_ARGUMENT;
     count = rows * columns;
     for (index = 0U; index < count; ++index) {
-        const double a = (double)left[index], b = (double)right[index];
-        const double result = subtract ? a - b : a + b;
+        const umath_accumulator_t a = (umath_accumulator_t)left[index];
+        const umath_accumulator_t b = (umath_accumulator_t)right[index];
+        const umath_accumulator_t result = subtract ? a - b : a + b;
         if (!isfinite(a) || !isfinite(b) || !isfinite(result) ||
             !umath_scalar_is_finite((umath_scalar_t)result)) {
             return UMATH_NUMERIC_FAILURE;
@@ -122,7 +127,8 @@ umath_status_t umath_matrix_scale(const umath_scalar_t *input,
         !umath_scalar_is_finite(scale)) return UMATH_INVALID_ARGUMENT;
     count = rows * columns;
     for (index = 0U; index < count; ++index) {
-        const double value = (double)input[index] * (double)scale;
+        const umath_accumulator_t value =
+            (umath_accumulator_t)input[index] * (umath_accumulator_t)scale;
         if (!isfinite(value) || !umath_scalar_is_finite((umath_scalar_t)value)) {
             return UMATH_NUMERIC_FAILURE;
         }
@@ -139,9 +145,12 @@ umath_status_t umath_matrix_symmetrize(umath_scalar_t *matrix, size_t dimension)
     }
     for (row = 0U; row < dimension; ++row) {
         for (column = row + 1U; column < dimension; ++column) {
-            const double a = (double)matrix[row * dimension + column];
-            const double b = (double)matrix[column * dimension + row];
-            const double average = 0.5 * (a + b);
+            const umath_accumulator_t a =
+                (umath_accumulator_t)matrix[row * dimension + column];
+            const umath_accumulator_t b =
+                (umath_accumulator_t)matrix[column * dimension + row];
+            const umath_accumulator_t average =
+                UMATH_ACCUMULATOR_C(0.5) * (a + b);
             if (!isfinite(a) || !isfinite(b) || !isfinite(average) ||
                 !umath_scalar_is_finite((umath_scalar_t)average)) {
                 return UMATH_NUMERIC_FAILURE;

@@ -16,8 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(SLIDING_MODE_OBSERVER.validate_model): State detectability/observability assumptions
- * and gain ownership. Algorithm-specific focus:
+/* TODO(SLIDING_MODE_OBSERVER.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check plant
+ * matrices, dimensions, gain layout, and
+ * disturbance model. 3) Check numeric results,
+ * declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: State
+ * detectability/observability assumptions and
+ * gain ownership. Algorithm-specific focus:
  * Sliding-mode state observer with an explicit
  * output injection and convergence assumptions.
  * This stub must not read/write opaque state or output buffers.
@@ -30,10 +40,17 @@ ucon_status_t ucon_sliding_mode_observer_validate_model(const ucon_algorithm_sca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SLIDING_MODE_OBSERVER.init): Define initial estimate and any required output history.
- * Algorithm-specific focus: Sliding-mode state observer
- * with an explicit output injection and convergence
- * assumptions.
+/* TODO(SLIDING_MODE_OBSERVER.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize estimate and
+ * observer/disturbance states. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define initial estimate
+ * and any required output history. Algorithm-specific
+ * focus: Sliding-mode state observer with an explicit
+ * output injection and convergence assumptions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sliding_mode_observer_init(const ucon_algorithm_scaffold_call_t *call)
@@ -44,10 +61,17 @@ ucon_status_t ucon_sliding_mode_observer_init(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SLIDING_MODE_OBSERVER.reset): Specify bumpless reset and disturbance estimate
- * handling. Algorithm-specific focus: Sliding-mode state
- * observer with an explicit output injection and
- * convergence assumptions.
+/* TODO(SLIDING_MODE_OBSERVER.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Clear observer history or
+ * preload a documented state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify bumpless reset
+ * and disturbance estimate handling. Algorithm-specific
+ * focus: Sliding-mode state observer with an explicit
+ * output injection and convergence assumptions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sliding_mode_observer_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -58,10 +82,17 @@ ucon_status_t ucon_sliding_mode_observer_reset(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SLIDING_MODE_OBSERVER.predict): Define sample time and discretization.
- * Algorithm-specific focus: Sliding-mode state observer
- * with an explicit output injection and convergence
- * assumptions.
+/* TODO(SLIDING_MODE_OBSERVER.predict): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Propagate the model and
+ * predicted state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define sample time
+ * and discretization. Algorithm-specific focus:
+ * Sliding-mode state observer with an explicit output
+ * injection and convergence assumptions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sliding_mode_observer_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -72,10 +103,18 @@ ucon_status_t ucon_sliding_mode_observer_predict(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SLIDING_MODE_OBSERVER.correct): Specify residual sign, disturbance channels, and gain
- * convention. Algorithm-specific focus: Sliding-mode
- * state observer with an explicit output injection and
- * convergence assumptions.
+/* TODO(SLIDING_MODE_OBSERVER.correct): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Apply measured
+ * output/residual and observer injection. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Specify residual sign, disturbance
+ * channels, and gain convention. Algorithm-specific
+ * focus: Sliding-mode state observer with an explicit
+ * output injection and convergence assumptions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sliding_mode_observer_correct(const ucon_algorithm_scaffold_call_t *call)
@@ -86,10 +125,18 @@ ucon_status_t ucon_sliding_mode_observer_correct(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SLIDING_MODE_OBSERVER.step): Bound work and preserve prior state after numeric
- * failure. Algorithm-specific focus: Sliding-mode state
- * observer with an explicit output injection and
- * convergence assumptions.
+/* TODO(SLIDING_MODE_OBSERVER.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Run one observer update and
+ * report estimate/residual validity. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Bound work and
+ * preserve prior state after numeric failure.
+ * Algorithm-specific focus: Sliding-mode state observer
+ * with an explicit output injection and convergence
+ * assumptions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sliding_mode_observer_step(const ucon_algorithm_scaffold_call_t *call)

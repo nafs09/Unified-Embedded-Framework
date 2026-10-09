@@ -27,37 +27,38 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare navigation/body/world frames, angle and quaternion conventions, timestamp source, actuator or sensor units, and saturation/invalid-fix behavior."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check sensor dimensions, frames, timing, and noise parameters.",
-      "todo": "Distinguish raw observables from position/velocity fixes. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check sensor dimensions, frames, timing, and noise parameters. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Distinguish raw observables from position/velocity fixes. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
     },
     {
       "name": "init",
       "purpose": "Initialize navigation state, covariance, and sensor history.",
-      "todo": "Define alignment and initial-uncertainty requirements. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize navigation state, covariance, and sensor history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define alignment and initial-uncertainty requirements. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
     },
     {
       "name": "reset",
       "purpose": "Reset filter history for the selected coupling mode.",
-      "todo": "Define recovery after invalid IMU/GNSS intervals. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Reset filter history for the selected coupling mode. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define recovery after invalid IMU/GNSS intervals. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
     },
     {
       "name": "propagate_imu",
       "purpose": "Propagate state/covariance over one IMU interval.",
-      "todo": "Define integration, bias, gravity/coordinate model, and gap handling. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Propagate state/covariance over one IMU interval. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define integration, bias, gravity/coordinate model, and gap handling. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
     },
     {
       "name": "update_gnss",
       "purpose": "Apply a fix or raw-observable measurement update.",
-      "todo": "Define lever arm, time alignment, validity, and rejected-satellite behavior. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply a fix or raw-observable measurement update. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define lever arm, time alignment, validity, and rejected-satellite behavior. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
     },
     {
       "name": "step",
       "purpose": "Coordinate IMU propagation with available GNSS updates.",
-      "todo": "Bound measurements and preserve the prior solution on failure. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Coordinate IMU propagation with available GNSS updates. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Bound measurements and preserve the prior solution on failure. Algorithm-specific focus: Strapdown inertial propagation with a loosely coupled position/velocity GNSS update."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/aerospace/navigation/ins_gnss.h.tmpl"
 }

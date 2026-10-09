@@ -16,7 +16,14 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(FLL.validate_config): Declare units, phase wrap, and admissible update rate.
+/* TODO(FLL.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check sample period, detector/filter gains, and
+ * phase/frequency limits. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements:
+ * Declare units, phase wrap, and admissible update rate.
  * Algorithm-specific focus: Frequency-locked loop that updates
  * frequency from a declared phase/frequency detector and reports
  * units and lock quality.
@@ -30,9 +37,15 @@ ucon_status_t ucon_fll_validate_config(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.init): Define acquisition seed and startup behavior. Algorithm-specific focus:
- * Frequency-locked loop that updates frequency from a declared
- * phase/frequency detector and reports units and lock quality.
+/* TODO(FLL.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize phase,
+ * frequency, filter, and quality state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define acquisition seed and startup
+ * behavior. Algorithm-specific focus: Frequency-locked loop that updates
+ * frequency from a declared phase/frequency detector and reports units and
+ * lock quality.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fll_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,10 +56,15 @@ ucon_status_t ucon_fll_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.reset): Specify reacquisition and caller-seeded restart behavior.
- * Algorithm-specific focus: Frequency-locked loop that updates frequency
- * from a declared phase/frequency detector and reports units and lock
- * quality.
+/* TODO(FLL.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Clear tracking
+ * history and lock persistence. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify reacquisition and caller-seeded
+ * restart behavior. Algorithm-specific focus: Frequency-locked loop that
+ * updates frequency from a declared phase/frequency detector and reports
+ * units and lock quality.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fll_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -57,10 +75,16 @@ ucon_status_t ucon_fll_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.update_detector): Define input quality rejection and detector sign convention.
- * Algorithm-specific focus: Frequency-locked loop that updates
- * frequency from a declared phase/frequency detector and reports
- * units and lock quality.
+/* TODO(FLL.update_detector): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Compute the configured phase/frequency detector output. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define input quality rejection
+ * and detector sign convention. Algorithm-specific focus:
+ * Frequency-locked loop that updates frequency from a declared
+ * phase/frequency detector and reports units and lock quality.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fll_update_detector(const ucon_algorithm_scaffold_call_t *call)
@@ -71,7 +95,13 @@ ucon_status_t ucon_fll_update_detector(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.update_loop): Define anti-windup, frequency limits, and numeric failures.
+/* TODO(FLL.update_loop): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Apply bounded loop-filter or adaptation update. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define anti-windup, frequency limits, and numeric failures.
  * Algorithm-specific focus: Frequency-locked loop that updates
  * frequency from a declared phase/frequency detector and reports units
  * and lock quality.
@@ -85,10 +115,16 @@ ucon_status_t ucon_fll_update_loop(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.advance_phase): Specify phase representation and prevent overflow/unit ambiguity.
- * Algorithm-specific focus: Frequency-locked loop that updates
- * frequency from a declared phase/frequency detector and reports
- * units and lock quality.
+/* TODO(FLL.advance_phase): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Advance/wrap phase or NCO state for the elapsed interval. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify phase representation and
+ * prevent overflow/unit ambiguity. Algorithm-specific focus:
+ * Frequency-locked loop that updates frequency from a declared
+ * phase/frequency detector and reports units and lock quality.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fll_advance_phase(const ucon_algorithm_scaffold_call_t *call)
@@ -99,10 +135,16 @@ ucon_status_t ucon_fll_advance_phase(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.get_status): Use threshold persistence; small instantaneous phase error is not
- * lock proof. Algorithm-specific focus: Frequency-locked loop that
- * updates frequency from a declared phase/frequency detector and
- * reports units and lock quality.
+/* TODO(FLL.get_status): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Report estimate validity and configured lock/loss-of-lock status. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Use threshold persistence; small instantaneous phase
+ * error is not lock proof. Algorithm-specific focus: Frequency-locked
+ * loop that updates frequency from a declared phase/frequency detector
+ * and reports units and lock quality.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fll_get_status(const ucon_algorithm_scaffold_call_t *call)
@@ -113,9 +155,15 @@ ucon_status_t ucon_fll_get_status(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FLL.step): Leave output/state unchanged when the sample is invalid. Algorithm-specific
- * focus: Frequency-locked loop that updates frequency from a declared
- * phase/frequency detector and reports units and lock quality.
+/* TODO(FLL.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Process one
+ * timestamped sample in a documented update order. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Leave output/state unchanged
+ * when the sample is invalid. Algorithm-specific focus: Frequency-locked loop
+ * that updates frequency from a declared phase/frequency detector and reports
+ * units and lock quality.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fll_step(const ucon_algorithm_scaffold_call_t *call)

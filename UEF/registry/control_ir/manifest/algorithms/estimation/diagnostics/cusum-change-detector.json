@@ -28,37 +28,37 @@
   "scaffold_module": "ucon/future/estimators/diagnostics/cusum_change_detector",
   "scaffold_header": "include/uef/ucon/future/estimators/diagnostics/cusum_change_detector.h",
   "scaffold_source": "src/ucon/future/estimators/diagnostics/cusum_change_detector.c",
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check statistic scale, thresholds, and window/persistence limits.",
-      "todo": "Define units, warm-up, and threshold equality behavior. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check statistic scale, thresholds, and window/persistence limits. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define units, warm-up, and threshold equality behavior. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
     },
     {
       "name": "init",
       "purpose": "Initialize statistic, counters, and baseline state.",
-      "todo": "Define baseline ownership and startup grace period. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize statistic, counters, and baseline state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define baseline ownership and startup grace period. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
     },
     {
       "name": "reset",
       "purpose": "Clear detector history and rearm according to policy.",
-      "todo": "State whether reset also clears the reference baseline. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear detector history and rearm according to policy. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: State whether reset also clears the reference baseline. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
     },
     {
       "name": "update_statistic",
       "purpose": "Compute normalized residual or cumulative change statistic.",
-      "todo": "Handle missing data and zero variance without division by zero. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute normalized residual or cumulative change statistic. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Handle missing data and zero variance without division by zero. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
     },
     {
       "name": "update_decision",
       "purpose": "Apply threshold, persistence, clear, and latch rules.",
-      "todo": "Separate detection from fault isolation or safety action. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply threshold, persistence, clear, and latch rules. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Separate detection from fault isolation or safety action. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
     },
     {
       "name": "step",
       "purpose": "Process one timestamped input and publish statistic/status.",
-      "todo": "Keep counters bounded and preserve state on invalid input. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Process one timestamped input and publish statistic/status. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep counters bounded and preserve state on invalid input. Algorithm-specific focus: Sequential cumulative-sum detector for a configured change in a scalar or vector statistic."
     }
   ]
 }

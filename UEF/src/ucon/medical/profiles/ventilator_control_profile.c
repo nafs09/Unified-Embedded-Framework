@@ -16,7 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(VENTILATOR_CONTROL_PROFILE.validate_inputs): Never infer clinical settings or therapy
+/* TODO(VENTILATOR_CONTROL_PROFILE.validate_inputs): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Check units, timestamps, model
+ * identity, and supplied supervisor limits.
+ * 3) Check numeric results, declared
+ * constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: Never
+ * infer clinical settings or therapy
  * limits. Algorithm-specific focus: Compose
  * breath-phase logic and
  * pressure/flow/volume loops with
@@ -32,10 +43,18 @@ ucon_status_t ucon_ventilator_control_profile_validate_inputs(const ucon_algorit
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(VENTILATOR_CONTROL_PROFILE.init): Require explicit safe seed and configuration
- * provenance. Algorithm-specific focus: Compose
- * breath-phase logic and pressure/flow/volume loops
- * with separately declared oxygenation/PEEP
+/* TODO(VENTILATOR_CONTROL_PROFILE.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize reusable
+ * profile state and external model interface. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Require explicit safe seed and
+ * configuration provenance. Algorithm-specific focus:
+ * Compose breath-phase logic and pressure/flow/volume
+ * loops with separately declared oxygenation/PEEP
  * supervision.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -47,10 +66,19 @@ ucon_status_t ucon_ventilator_control_profile_init(const ucon_algorithm_scaffold
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(VENTILATOR_CONTROL_PROFILE.reset): Define stale-data and therapy-state handoff.
- * Algorithm-specific focus: Compose breath-phase
- * logic and pressure/flow/volume loops with
- * separately declared oxygenation/PEEP supervision.
+/* TODO(VENTILATOR_CONTROL_PROFILE.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Reset history only
+ * under explicit external supervision. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Define stale-data and therapy-state
+ * handoff. Algorithm-specific focus: Compose
+ * breath-phase logic and pressure/flow/volume loops
+ * with separately declared oxygenation/PEEP
+ * supervision.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ventilator_control_profile_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -61,7 +89,18 @@ ucon_status_t ucon_ventilator_control_profile_reset(const ucon_algorithm_scaffol
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(VENTILATOR_CONTROL_PROFILE.update_estimate): Do not invent patient or device dynamics.
+/* TODO(VENTILATOR_CONTROL_PROFILE.update_estimate): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Consume the declared
+ * application-owned physiology/device model
+ * output. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific requirements:
+ * Do not invent patient or device dynamics.
  * Algorithm-specific focus: Compose
  * breath-phase logic and
  * pressure/flow/volume loops with
@@ -77,10 +116,21 @@ ucon_status_t ucon_ventilator_control_profile_update_estimate(const ucon_algorit
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(VENTILATOR_CONTROL_PROFILE.compute_candidate): Require independent safety supervision
- * and report limiting conditions.
- * Algorithm-specific focus: Compose
- * breath-phase logic and
+/* TODO(VENTILATOR_CONTROL_PROFILE.compute_candidate): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Compute a
+ * candidate subject to caller-supplied
+ * constraints. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Require independent
+ * safety supervision and report limiting
+ * conditions. Algorithm-specific focus:
+ * Compose breath-phase logic and
  * pressure/flow/volume loops with
  * separately declared oxygenation/PEEP
  * supervision.
@@ -94,10 +144,19 @@ ucon_status_t ucon_ventilator_control_profile_compute_candidate(const ucon_algor
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(VENTILATOR_CONTROL_PROFILE.step): No generic UCON profile establishes clinical safety.
- * Algorithm-specific focus: Compose breath-phase logic
- * and pressure/flow/volume loops with separately
- * declared oxygenation/PEEP supervision.
+/* TODO(VENTILATOR_CONTROL_PROFILE.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Return candidate/status
+ * for external approval and actuation. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: No generic UCON profile establishes
+ * clinical safety. Algorithm-specific focus: Compose
+ * breath-phase logic and pressure/flow/volume loops
+ * with separately declared oxygenation/PEEP
+ * supervision.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ventilator_control_profile_step(const ucon_algorithm_scaffold_call_t *call)

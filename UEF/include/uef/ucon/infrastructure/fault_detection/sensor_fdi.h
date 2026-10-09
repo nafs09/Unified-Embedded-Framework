@@ -14,7 +14,15 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check residual channels, thresholds, persistence, and isolation masks.
-/// TODO(SENSOR_FDI.validate_config): Keep residual models and fault policy caller-owned.
+/// TODO(SENSOR_FDI.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check residual channels,
+/// thresholds, persistence, and isolation masks. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Keep
+/// residual models and fault policy caller-owned.
 /// Algorithm-specific focus: Generic residual monitoring,
 /// persistence, and configured fault-isolation masks; plant
 /// residual models and fault hypotheses are caller
@@ -22,37 +30,70 @@ extern "C" {
 ucon_status_t ucon_sensor_fdi_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize counters and diagnostic outputs.
-/// TODO(SENSOR_FDI.init): Define startup grace and initial fault state. Algorithm-specific
+/// TODO(SENSOR_FDI.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize counters and diagnostic outputs. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Define startup grace and initial fault state. Algorithm-specific
 /// focus: Generic residual monitoring, persistence, and configured
 /// fault-isolation masks; plant residual models and fault hypotheses
 /// are caller supplied.
 ucon_status_t ucon_sensor_fdi_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear/rearm diagnostic channels.
-/// TODO(SENSOR_FDI.reset): Specify whether latched faults require an explicit clear.
+/// TODO(SENSOR_FDI.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Clear/rearm diagnostic channels. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Specify whether latched faults require an explicit clear.
 /// Algorithm-specific focus: Generic residual monitoring,
 /// persistence, and configured fault-isolation masks; plant residual
 /// models and fault hypotheses are caller supplied.
 ucon_status_t ucon_sensor_fdi_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Consume caller-supplied residuals and validity flags.
-/// TODO(SENSOR_FDI.update_residuals): Separate missing/bad data from a physical fault
-/// indication. Algorithm-specific focus: Generic residual
-/// monitoring, persistence, and configured fault-isolation
-/// masks; plant residual models and fault hypotheses are
-/// caller supplied.
+/// TODO(SENSOR_FDI.update_residuals): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Consume caller-supplied
+/// residuals and validity flags. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Separate missing/bad
+/// data from a physical fault indication.
+/// Algorithm-specific focus: Generic residual monitoring,
+/// persistence, and configured fault-isolation masks;
+/// plant residual models and fault hypotheses are caller
+/// supplied.
 ucon_status_t ucon_sensor_fdi_update_residuals(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply persistence and configured isolation rules.
-/// TODO(SENSOR_FDI.update_fault_state): Do not claim root cause without explicit hypotheses.
-/// Algorithm-specific focus: Generic residual
-/// monitoring, persistence, and configured
-/// fault-isolation masks; plant residual models and
-/// fault hypotheses are caller supplied.
+/// TODO(SENSOR_FDI.update_fault_state): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Apply persistence and
+/// configured isolation rules. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Do not claim root
+/// cause without explicit hypotheses. Algorithm-specific
+/// focus: Generic residual monitoring, persistence, and
+/// configured fault-isolation masks; plant residual
+/// models and fault hypotheses are caller supplied.
 ucon_status_t ucon_sensor_fdi_update_fault_state(const ucon_algorithm_scaffold_call_t *call);
 
 /// Publish one bounded diagnostic update.
-/// TODO(SENSOR_FDI.step): Do not actuate or silently choose a fallback. Algorithm-specific
+/// TODO(SENSOR_FDI.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Publish one bounded diagnostic update. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Do not actuate or silently choose a fallback. Algorithm-specific
 /// focus: Generic residual monitoring, persistence, and configured
 /// fault-isolation masks; plant residual models and fault hypotheses
 /// are caller supplied.

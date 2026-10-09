@@ -16,10 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(EDOB.validate_model): State detectability/observability assumptions and gain
- * ownership. Algorithm-specific focus: Extended disturbance
- * observer that augments a declared plant state model with
- * disturbance state(s); exact extension must be specified.
+/* TODO(EDOB.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check plant matrices, dimensions, gain layout, and
+ * disturbance model. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: State
+ * detectability/observability assumptions and gain ownership.
+ * Algorithm-specific focus: Extended disturbance observer that
+ * augments a declared plant state model with disturbance state(s);
+ * exact extension must be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_edob_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -30,10 +37,15 @@ ucon_status_t ucon_edob_validate_model(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EDOB.init): Define initial estimate and any required output history.
- * Algorithm-specific focus: Extended disturbance observer that augments a
- * declared plant state model with disturbance state(s); exact extension must
- * be specified.
+/* TODO(EDOB.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize estimate
+ * and observer/disturbance states. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define initial estimate and any required
+ * output history. Algorithm-specific focus: Extended disturbance observer
+ * that augments a declared plant state model with disturbance state(s);
+ * exact extension must be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_edob_init(const ucon_algorithm_scaffold_call_t *call)
@@ -44,10 +56,15 @@ ucon_status_t ucon_edob_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EDOB.reset): Specify bumpless reset and disturbance estimate handling.
- * Algorithm-specific focus: Extended disturbance observer that augments a
- * declared plant state model with disturbance state(s); exact extension
- * must be specified.
+/* TODO(EDOB.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Clear observer
+ * history or preload a documented state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify bumpless reset and
+ * disturbance estimate handling. Algorithm-specific focus: Extended
+ * disturbance observer that augments a declared plant state model with
+ * disturbance state(s); exact extension must be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_edob_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -58,9 +75,15 @@ ucon_status_t ucon_edob_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EDOB.predict): Define sample time and discretization. Algorithm-specific focus:
- * Extended disturbance observer that augments a declared plant state
- * model with disturbance state(s); exact extension must be specified.
+/* TODO(EDOB.predict): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Propagate the model and predicted state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define sample time
+ * and discretization. Algorithm-specific focus: Extended disturbance
+ * observer that augments a declared plant state model with disturbance
+ * state(s); exact extension must be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_edob_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -71,7 +94,13 @@ ucon_status_t ucon_edob_predict(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EDOB.correct): Specify residual sign, disturbance channels, and gain convention.
+/* TODO(EDOB.correct): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Apply
+ * measured output/residual and observer injection. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Specify
+ * residual sign, disturbance channels, and gain convention.
  * Algorithm-specific focus: Extended disturbance observer that augments a
  * declared plant state model with disturbance state(s); exact extension
  * must be specified.
@@ -85,10 +114,15 @@ ucon_status_t ucon_edob_correct(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(EDOB.step): Bound work and preserve prior state after numeric failure.
- * Algorithm-specific focus: Extended disturbance observer that augments a
- * declared plant state model with disturbance state(s); exact extension must
- * be specified.
+/* TODO(EDOB.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Run one observer
+ * update and report estimate/residual validity. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Bound work and preserve prior
+ * state after numeric failure. Algorithm-specific focus: Extended
+ * disturbance observer that augments a declared plant state model with
+ * disturbance state(s); exact extension must be specified.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_edob_step(const ucon_algorithm_scaffold_call_t *call)

@@ -14,40 +14,81 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check frame, quaternion/rotation convention, and control limits.
-/// TODO(BDOT_DETUMBLE.validate_config): Declare handedness, component order, and sign
-/// continuity. Algorithm-specific focus: Magnetic
-/// detumbling law for spacecraft with magnetometer and
-/// magnetorquer interfaces.
+/// TODO(BDOT_DETUMBLE.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check frame,
+/// quaternion/rotation convention, and control limits.
+/// 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Declare handedness, component order,
+/// and sign continuity. Algorithm-specific focus:
+/// Magnetic detumbling law for spacecraft with
+/// magnetometer and magnetorquer interfaces.
 ucon_status_t ucon_bdot_detumble_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize desired-attitude and rate-control history.
-/// TODO(BDOT_DETUMBLE.init): Require a valid initial attitude. Algorithm-specific focus:
-/// Magnetic detumbling law for spacecraft with magnetometer and
-/// magnetorquer interfaces.
+/// TODO(BDOT_DETUMBLE.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Initialize desired-attitude and rate-control history. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Require a valid initial
+/// attitude. Algorithm-specific focus: Magnetic detumbling law for
+/// spacecraft with magnetometer and magnetorquer interfaces.
 ucon_status_t ucon_bdot_detumble_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear control/error history.
-/// TODO(BDOT_DETUMBLE.reset): Define safe re-entry after attitude-source loss.
+/// TODO(BDOT_DETUMBLE.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Clear control/error history. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Define safe re-entry after attitude-source loss.
 /// Algorithm-specific focus: Magnetic detumbling law for
 /// spacecraft with magnetometer and magnetorquer interfaces.
 ucon_status_t ucon_bdot_detumble_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute attitude/rate error in the declared frame.
-/// TODO(BDOT_DETUMBLE.compute_error): Handle quaternion double cover and rotation
-/// singularities. Algorithm-specific focus: Magnetic
-/// detumbling law for spacecraft with magnetometer and
-/// magnetorquer interfaces.
-ucon_status_t ucon_bdot_detumble_compute_error(const ucon_algorithm_scaffold_call_t *call);
-
-/// Compute a bounded torque/rate/magnetic command.
-/// TODO(BDOT_DETUMBLE.compute_command): Specify actuator model and output units.
+/// TODO(BDOT_DETUMBLE.compute_error): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute attitude/rate
+/// error in the declared frame. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Handle quaternion
+/// double cover and rotation singularities.
 /// Algorithm-specific focus: Magnetic detumbling law for
 /// spacecraft with magnetometer and magnetorquer
 /// interfaces.
+ucon_status_t ucon_bdot_detumble_compute_error(const ucon_algorithm_scaffold_call_t *call);
+
+/// Compute a bounded torque/rate/magnetic command.
+/// TODO(BDOT_DETUMBLE.compute_command): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute a bounded
+/// torque/rate/magnetic command. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify
+/// actuator model and output units. Algorithm-specific
+/// focus: Magnetic detumbling law for spacecraft with
+/// magnetometer and magnetorquer interfaces.
 ucon_status_t ucon_bdot_detumble_compute_command(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one timestamped attitude-control update.
-/// TODO(BDOT_DETUMBLE.step): Expose stale sensor and actuator-limit status.
+/// TODO(BDOT_DETUMBLE.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Run one timestamped attitude-control update. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Expose stale sensor and actuator-limit status.
 /// Algorithm-specific focus: Magnetic detumbling law for spacecraft
 /// with magnetometer and magnetorquer interfaces.
 ucon_status_t ucon_bdot_detumble_step(const ucon_algorithm_scaffold_call_t *call);

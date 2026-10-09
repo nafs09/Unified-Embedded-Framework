@@ -14,35 +14,71 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check matrix dimensions, gain layout, and state/input units.
-/// TODO(STATE_FEEDBACK.validate_config): Declare whether gain synthesis is offline or part of
-/// this module. Algorithm-specific focus: Runtime
-/// matrix law; gains supplied by design tooling or the
-/// project.
+/// TODO(STATE_FEEDBACK.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check matrix
+/// dimensions, gain layout, and state/input units. 3)
+/// Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Declare whether gain synthesis is
+/// offline or part of this module. Algorithm-specific
+/// focus: Runtime matrix law; gains supplied by design
+/// tooling or the project.
 ucon_status_t ucon_state_feedback_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize controller and optional integral/observer interface state.
-/// TODO(STATE_FEEDBACK.init): Define initial-state requirements and workspace.
+/// TODO(STATE_FEEDBACK.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Initialize controller and optional integral/observer
+/// interface state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements:
+/// Define initial-state requirements and workspace.
 /// Algorithm-specific focus: Runtime matrix law; gains supplied by
 /// design tooling or the project.
 ucon_status_t ucon_state_feedback_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset dynamic control memory.
-/// TODO(STATE_FEEDBACK.reset): Specify bumpless restart and estimator coordination.
-/// Algorithm-specific focus: Runtime matrix law; gains supplied
-/// by design tooling or the project.
+/// TODO(STATE_FEEDBACK.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Reset dynamic control memory. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Specify bumpless restart and estimator
+/// coordination. Algorithm-specific focus: Runtime matrix law;
+/// gains supplied by design tooling or the project.
 ucon_status_t ucon_state_feedback_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate the declared state/output-feedback law.
-/// TODO(STATE_FEEDBACK.compute_feedback): Define reference/feedforward terms, sign, and
-/// saturation order. Algorithm-specific focus: Runtime
-/// matrix law; gains supplied by design tooling or the
-/// project.
+/// TODO(STATE_FEEDBACK.compute_feedback): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Evaluate the declared
+/// state/output-feedback law. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define reference/feedforward terms,
+/// sign, and saturation order. Algorithm-specific
+/// focus: Runtime matrix law; gains supplied by design
+/// tooling or the project.
 ucon_status_t ucon_state_feedback_compute_feedback(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate feedback and publish a bounded command.
-/// TODO(STATE_FEEDBACK.step): Preserve output on dimension/numeric failure and state work
-/// bounds. Algorithm-specific focus: Runtime matrix law; gains
-/// supplied by design tooling or the project.
+/// TODO(STATE_FEEDBACK.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Evaluate feedback and publish a bounded command. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Preserve output on
+/// dimension/numeric failure and state work bounds.
+/// Algorithm-specific focus: Runtime matrix law; gains supplied by
+/// design tooling or the project.
 ucon_status_t ucon_state_feedback_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

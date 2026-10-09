@@ -13,46 +13,66 @@ extern "C" {
 /// Roadmap priority: FIRST_PASS.
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
-/// Check state/measurement dimensions, model callbacks, and covariance assumptions.
-/// TODO(EKF.validate_model): Reject invalid shapes before state changes; specify PSD and
-/// conditioning policy. Algorithm-specific focus: Extended Kalman
-/// filter with an explicit discrete nonlinear process model,
-/// measurement model, Jacobians, and covariance update.
+/// Validate the discrete process/measurement model and Jacobians.
+/// TODO(EKF.validate_model): 1) Require nonzero state/measurement dimensions and f, h, F, H
+/// callbacks; check every declared matrix shape and state ordering.
+/// 2) Check finite, symmetric PSD P0/Q and positive-definite R when
+/// the selected solve requires it. 3) Pin dt, noise-discretization,
+/// and callback-failure rules; reject before changing state.
+/// Algorithm-specific focus: Extended Kalman filter with an
+/// explicit discrete nonlinear process model, measurement model,
+/// Jacobians, and covariance update.
 ucon_status_t ucon_ekf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
-/// Initialize estimate, covariance, and fixed workspace.
-/// TODO(EKF.init): Define initial-state ownership, covariance seed, and factorization
-/// failure. Algorithm-specific focus: Extended Kalman filter with an explicit
-/// discrete nonlinear process model, measurement model, Jacobians, and
-/// covariance update.
+/// Initialize the estimate, covariance, timestamp, and fixed workspace.
+/// TODO(EKF.init): 1) Copy caller x0/P0 into scratch storage. 2) Validate lengths, finite
+/// values, covariance symmetry/PSD, and workspace capacity; factor the
+/// innovation covariance only when required by the chosen contract. 3)
+/// Initialize timestamp/diagnostics and publish the candidate only after
+/// every check succeeds. Algorithm-specific focus: Extended Kalman filter
+/// with an explicit discrete nonlinear process model, measurement model,
+/// Jacobians, and covariance update.
 ucon_status_t ucon_ekf_init(const ucon_algorithm_scaffold_call_t *call);
 
-/// Reset estimator history under a documented seed policy.
-/// TODO(EKF.reset): Specify whether nominal estimate/model context is retained.
+/// Reset filter history while applying the declared seed policy.
+/// TODO(EKF.reset): 1) Clear timestamp, measurement-validity, and innovation history. 2)
+/// Restore the caller-provided x0/P0 or require an explicit new seed; retain
+/// immutable model callbacks/configuration. 3) Commit reset state atomically
+/// and report missing/invalid seeds without altering the current estimate.
 /// Algorithm-specific focus: Extended Kalman filter with an explicit
 /// discrete nonlinear process model, measurement model, Jacobians, and
 /// covariance update.
 ucon_status_t ucon_ekf_reset(const ucon_algorithm_scaffold_call_t *call);
 
-/// Propagate estimate and uncertainty over one declared interval.
-/// TODO(EKF.predict): Define discretization, process-noise timing, and stable covariance
-/// update. Algorithm-specific focus: Extended Kalman filter with an
-/// explicit discrete nonlinear process model, measurement model,
-/// Jacobians, and covariance update.
-ucon_status_t ucon_ekf_predict(const ucon_algorithm_scaffold_call_t *call);
-
-/// Apply a timestamped measurement and compute innovation diagnostics.
-/// TODO(EKF.correct): Define gating, missing-channel behavior, and failure atomicity.
+/// Propagate the nonlinear estimate and covariance over one interval.
+/// TODO(EKF.predict): 1) Evaluate x_pred=f(x,u,dt) and F=∂f/∂x at the documented
+/// linearization point. 2) Form P_pred=F P Fᵀ+Q_d using the declared
+/// process-noise discretization. 3) Check finite values and PSD, correct
+/// only round-off asymmetry, then commit the prediction as one candidate.
 /// Algorithm-specific focus: Extended Kalman filter with an explicit
 /// discrete nonlinear process model, measurement model, Jacobians, and
 /// covariance update.
+ucon_status_t ucon_ekf_predict(const ucon_algorithm_scaffold_call_t *call);
+
+/// Apply valid measurement channels and produce innovation diagnostics.
+/// TODO(EKF.correct): 1) Select only channels marked present; evaluate h(x_pred) and H at the
+/// documented point. 2) Form ν=z−h(x_pred), S=H P_pred Hᵀ+R, and solve S
+/// w=ν without an explicit inverse; compute K from the same factorization.
+/// 3) Apply the configured normalized-innovation gate, then update x and
+/// use a Joseph-form covariance update; validate and commit together, or
+/// leave the prediction unchanged. Algorithm-specific focus: Extended
+/// Kalman filter with an explicit discrete nonlinear process model,
+/// measurement model, Jacobians, and covariance update.
 ucon_status_t ucon_ekf_correct(const ucon_algorithm_scaffold_call_t *call);
 
-/// Run prediction and optional correction in a fixed documented order.
-/// TODO(EKF.step): Handle asynchronous samples explicitly; do not synthesize missing
-/// measurements. Algorithm-specific focus: Extended Kalman filter with an
-/// explicit discrete nonlinear process model, measurement model, Jacobians,
-/// and covariance update.
+/// Run one timestamped prediction and optional correction transaction.
+/// TODO(EKF.step): 1) Validate timestamp order and derive dt from the accepted prior sample.
+/// 2) Stage exactly one prediction. 3) Correct only when at least one
+/// measurement channel is explicitly present; never synthesize missing
+/// values. 4) Publish estimate, covariance, and diagnostics only after all
+/// requested stages succeed. Algorithm-specific focus: Extended Kalman filter
+/// with an explicit discrete nonlinear process model, measurement model,
+/// Jacobians, and covariance update.
 ucon_status_t ucon_ekf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

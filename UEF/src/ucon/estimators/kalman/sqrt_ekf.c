@@ -16,9 +16,12 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(SQRT_EKF.validate_model): Specify lower/upper factor orientation and PSD assumptions.
- * Algorithm-specific focus: Square-root EKF; Cholesky-factored
- * P
+/* TODO(SQRT_EKF.validate_model): 1) Pin lower/upper factor orientation and whether P=S Sᵀ or
+ * SᵀS. 2) Check process/measurement Jacobian and noise-factor
+ * shapes plus finite inputs. 3) Define PSD/rank, QR sign, and
+ * downdate-failure policies; reject incompatible
+ * full-covariance assumptions. Algorithm-specific focus:
+ * Square-root EKF; Cholesky-factored P
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ekf_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -29,8 +32,11 @@ ucon_status_t ucon_sqrt_ekf_validate_model(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_EKF.init): Define factorization and rank-deficiency failure. Algorithm-specific
- * focus: Square-root EKF; Cholesky-factored P
+/* TODO(SQRT_EKF.init): 1) Validate x0/P0 dimensions and finite values. 2) Factor P0 with the
+ * declared Cholesky/semidefinite policy and normalize triangular signs
+ * if required. 3) Initialize timestamp and scratch factors; commit x/S
+ * only if reconstruction semantics are valid. Algorithm-specific focus:
+ * Square-root EKF; Cholesky-factored P
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ekf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,8 +47,11 @@ ucon_status_t ucon_sqrt_ekf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_EKF.reset): Define model-context retention. Algorithm-specific focus: Square-root
- * EKF; Cholesky-factored P
+/* TODO(SQRT_EKF.reset): 1) Clear timestamp and innovation diagnostics. 2) Restore caller x0
+ * and covariance seed, refactor under the same orientation, and
+ * preserve model callbacks. 3) Commit state/factor together or keep the
+ * previous pair on failure. Algorithm-specific focus: Square-root EKF;
+ * Cholesky-factored P
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ekf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -53,9 +62,13 @@ ucon_status_t ucon_sqrt_ekf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_EKF.predict_factor): Specify QR/Cholesky update and process-noise factor
- * insertion. Algorithm-specific focus: Square-root EKF;
- * Cholesky-factored P
+/* TODO(SQRT_EKF.predict_factor): 1) Evaluate x_pred and F at the prior. 2) Build the factor
+ * stack from F*S and the declared process-noise factor G*Sq.
+ * 3) QR-factor the stack with pinned row/column convention,
+ * normalize diagonal signs, validate rank/finiteness, and
+ * publish the predicted factor without forming P as an
+ * unchecked intermediate. Algorithm-specific focus:
+ * Square-root EKF; Cholesky-factored P
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ekf_predict_factor(const ucon_algorithm_scaffold_call_t *call)
@@ -66,9 +79,13 @@ ucon_status_t ucon_sqrt_ekf_predict_factor(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_EKF.correct_factor): Define solve/gating and avoid reconstructing an unstable
- * covariance implicitly. Algorithm-specific focus: Square-root
- * EKF; Cholesky-factored P
+/* TODO(SQRT_EKF.correct_factor): 1) Form innovation covariance factor from H*S and
+ * measurement-noise factor. 2) Solve triangular systems for
+ * gain/NIS and apply the configured gate. 3) Update state and
+ * apply a stable Cholesky downdate/QR correction to S;
+ * validate positive diagonals and preserve prediction if
+ * downdate fails. Algorithm-specific focus: Square-root EKF;
+ * Cholesky-factored P
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ekf_correct_factor(const ucon_algorithm_scaffold_call_t *call)
@@ -79,8 +96,12 @@ ucon_status_t ucon_sqrt_ekf_correct_factor(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(SQRT_EKF.step): Preserve estimate/factor on numeric failure. Algorithm-specific focus:
- * Square-root EKF; Cholesky-factored P
+/* TODO(SQRT_EKF.step): 1) Validate timestamp and stage one factor prediction. 2) Correct only
+ * valid measurement channels using factor solves. 3) Check triangular
+ * orientation, positive diagonal/rank policy, and finite state. 4)
+ * Commit estimate/factor/timestamp together; never hide an unstable
+ * covariance reconstruction. Algorithm-specific focus: Square-root EKF;
+ * Cholesky-factored P
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_sqrt_ekf_step(const ucon_algorithm_scaffold_call_t *call)

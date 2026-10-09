@@ -14,28 +14,56 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check phase sequence, nominal frequency, gains, and grid limits.
-/// TODO(SOGI_FLL.validate_config): Declare sequence and per-unit/scaling conventions.
-/// Algorithm-specific focus: Second-order generalized
-/// integrator followed by a frequency-locked loop with
-/// explicit detector, adaptation, and output-unit
-/// conventions.
+/// TODO(SOGI_FLL.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check phase sequence, nominal
+/// frequency, gains, and grid limits. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Declare sequence and
+/// per-unit/scaling conventions. Algorithm-specific focus:
+/// Second-order generalized integrator followed by a
+/// frequency-locked loop with explicit detector, adaptation,
+/// and output-unit conventions.
 ucon_status_t ucon_sogi_fll_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize orthogonal-signal, sequence, phase, and loop states.
-/// TODO(SOGI_FLL.init): Define phase seed and acquisition range. Algorithm-specific focus:
-/// Second-order generalized integrator followed by a frequency-locked
-/// loop with explicit detector, adaptation, and output-unit conventions.
+/// TODO(SOGI_FLL.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize orthogonal-signal, sequence, phase, and loop states. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define phase seed and acquisition range.
+/// Algorithm-specific focus: Second-order generalized integrator
+/// followed by a frequency-locked loop with explicit detector,
+/// adaptation, and output-unit conventions.
 ucon_status_t ucon_sogi_fll_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear synchronization history and lock persistence.
-/// TODO(SOGI_FLL.reset): Define loss-of-lock and restart behavior. Algorithm-specific focus:
+/// TODO(SOGI_FLL.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Clear synchronization history and lock persistence. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Define loss-of-lock and restart behavior. Algorithm-specific focus:
 /// Second-order generalized integrator followed by a frequency-locked
 /// loop with explicit detector, adaptation, and output-unit
 /// conventions.
 ucon_status_t ucon_sogi_fll_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Update SOGI/sequence or synchronous-frame signal estimates.
-/// TODO(SOGI_FLL.update_signal_model): Specify frequency adaptation and sample-time coupling.
+/// TODO(SOGI_FLL.update_signal_model): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Update SOGI/sequence or
+/// synchronous-frame signal estimates. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify
+/// frequency adaptation and sample-time coupling.
 /// Algorithm-specific focus: Second-order generalized
 /// integrator followed by a frequency-locked loop with
 /// explicit detector, adaptation, and output-unit
@@ -43,17 +71,29 @@ ucon_status_t ucon_sogi_fll_reset(const ucon_algorithm_scaffold_call_t *call);
 ucon_status_t ucon_sogi_fll_update_signal_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Update phase/frequency and lock/quality state.
-/// TODO(SOGI_FLL.update_loop): Define anti-windup, bounds, and units. Algorithm-specific
-/// focus: Second-order generalized integrator followed by a
-/// frequency-locked loop with explicit detector, adaptation, and
-/// output-unit conventions.
+/// TODO(SOGI_FLL.update_loop): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Update phase/frequency and lock/quality state. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define anti-windup, bounds,
+/// and units. Algorithm-specific focus: Second-order generalized
+/// integrator followed by a frequency-locked loop with explicit
+/// detector, adaptation, and output-unit conventions.
 ucon_status_t ucon_sogi_fll_update_loop(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one grid sample and publish synchronization outputs.
-/// TODO(SOGI_FLL.step): Reject invalid amplitude/sequence inputs without poisoning state.
-/// Algorithm-specific focus: Second-order generalized integrator
-/// followed by a frequency-locked loop with explicit detector,
-/// adaptation, and output-unit conventions.
+/// TODO(SOGI_FLL.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Process one grid sample and publish synchronization outputs. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Reject invalid amplitude/sequence inputs without
+/// poisoning state. Algorithm-specific focus: Second-order generalized
+/// integrator followed by a frequency-locked loop with explicit
+/// detector, adaptation, and output-unit conventions.
 ucon_status_t ucon_sogi_fll_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

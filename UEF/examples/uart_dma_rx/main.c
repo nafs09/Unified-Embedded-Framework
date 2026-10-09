@@ -6,6 +6,10 @@
 #include "uef/upal/upal_uart.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(uart-dma-rx main): Initialize UART framing/baud and a statically allocated,
+     * DMA-aligned RX buffer; start DMA/IDLE handling only after cache and ownership rules
+     * are configured. Consume completed spans outside the IRQ, detect ring overrun and
+     * framing errors, and rearm without exposing bytes still owned by DMA.
+     */
     return 0;
 }

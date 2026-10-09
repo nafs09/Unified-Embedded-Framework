@@ -14,38 +14,72 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check plant matrices, dimensions, gain layout, and disturbance model.
-/// TODO(DOB.validate_model): State detectability/observability assumptions and gain
-/// ownership. Algorithm-specific focus: Linear observer and
+/// TODO(DOB.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check plant matrices, dimensions, gain layout, and
+/// disturbance model. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: State
+/// detectability/observability assumptions and gain ownership.
+/// Algorithm-specific focus: Linear observer and
 /// disturbance-observer building blocks.
 ucon_status_t ucon_dob_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize estimate and observer/disturbance states.
-/// TODO(DOB.init): Define initial estimate and any required output history.
-/// Algorithm-specific focus: Linear observer and disturbance-observer
-/// building blocks.
+/// TODO(DOB.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize estimate
+/// and observer/disturbance states. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define initial estimate and any required
+/// output history. Algorithm-specific focus: Linear observer and
+/// disturbance-observer building blocks.
 ucon_status_t ucon_dob_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear observer history or preload a documented state.
-/// TODO(DOB.reset): Specify bumpless reset and disturbance estimate handling.
-/// Algorithm-specific focus: Linear observer and disturbance-observer
-/// building blocks.
+/// TODO(DOB.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Clear observer
+/// history or preload a documented state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify bumpless reset and
+/// disturbance estimate handling. Algorithm-specific focus: Linear observer
+/// and disturbance-observer building blocks.
 ucon_status_t ucon_dob_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate the model and predicted state.
-/// TODO(DOB.predict): Define sample time and discretization. Algorithm-specific focus: Linear
-/// observer and disturbance-observer building blocks.
+/// TODO(DOB.predict): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Propagate the model and predicted state. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define sample time
+/// and discretization. Algorithm-specific focus: Linear observer and
+/// disturbance-observer building blocks.
 ucon_status_t ucon_dob_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply measured output/residual and observer injection.
-/// TODO(DOB.correct): Specify residual sign, disturbance channels, and gain convention.
+/// TODO(DOB.correct): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Apply
+/// measured output/residual and observer injection. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Specify
+/// residual sign, disturbance channels, and gain convention.
 /// Algorithm-specific focus: Linear observer and disturbance-observer
 /// building blocks.
 ucon_status_t ucon_dob_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one observer update and report estimate/residual validity.
-/// TODO(DOB.step): Bound work and preserve prior state after numeric failure.
-/// Algorithm-specific focus: Linear observer and disturbance-observer
-/// building blocks.
+/// TODO(DOB.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Run one observer
+/// update and report estimate/residual validity. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Bound work and preserve prior
+/// state after numeric failure. Algorithm-specific focus: Linear observer and
+/// disturbance-observer building blocks.
 ucon_status_t ucon_dob_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

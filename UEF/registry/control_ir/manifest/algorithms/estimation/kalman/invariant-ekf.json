@@ -27,37 +27,38 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
-      "purpose": "Check group state and invariant error convention.",
-      "todo": "Pin left/right error and frame conventions. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
+      "purpose": "Validate group state, invariant error definition, and frame conventions.",
+      "todo": "1) Name the Lie group/state representation and pin left- or right-invariant error and frame direction. 2) Check tangent ordering, process/measurement Jacobians, and covariance coordinates. 3) Reject conventions that mix invariant and ordinary/iterated-EKF equations. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
     },
     {
       "name": "init",
-      "purpose": "Initialize group-valued state and tangent covariance.",
-      "todo": "Validate the group representation and covariance coordinates. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
+      "purpose": "Initialize a valid group state and tangent-space covariance.",
+      "todo": "1) Validate/project the nominal state onto the declared group representation. 2) Validate P0 in the named tangent coordinates and initialize local error to zero. 3) Set timestamp/workspace and publish only after normalization and covariance checks pass. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
     },
     {
       "name": "reset",
-      "purpose": "Reset covariance and invariant error history.",
-      "todo": "Specify nominal group-state retention. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
+      "purpose": "Reset covariance and group-state history under a declared seed policy.",
+      "todo": "1) Clear accepted timestamp, residuals, and local correction history. 2) Retain or replace the nominal group state as configured and seed tangent covariance. 3) Revalidate group membership and commit all reset values atomically. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
     },
     {
       "name": "predict",
-      "purpose": "Propagate group state and invariant covariance.",
-      "todo": "Derive dynamics/Jacobians for the selected invariant convention. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
+      "purpose": "Propagate the group state and invariant error covariance.",
+      "todo": "1) Advance the nominal group state using the declared dynamics and compose increments on the selected side. 2) Derive/evaluate the invariant error transition and noise mapping in the same frame convention. 3) Propagate P, validate finite/PSD results, and commit the candidate without substituting ordinary EKF linearization. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
     },
     {
       "name": "correct",
-      "purpose": "Apply innovation in tangent coordinates and inject correction.",
-      "todo": "Define residual mapping and covariance reset. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
+      "purpose": "Apply the measurement residual in the declared invariant/tangent coordinates.",
+      "todo": "1) Map predicted and measured quantities into the configured residual frame and compute wrapped/group residual. 2) Form/factor innovation covariance, solve for gain, and apply gate. 3) Inject the correction on the pinned side, transform covariance with the matching reset map, and commit only after group/PSD validation. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
     },
     {
       "name": "step",
-      "purpose": "Run invariant prediction and correction.",
-      "todo": "Do not substitute iterated-EKF equations. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
+      "purpose": "Run one invariant prediction and optional measurement correction.",
+      "todo": "1) Validate timestamp/frame and stage one group prediction. 2) Correct only present, frame-valid measurements using invariant residuals. 3) Apply the matching group injection/reset map. 4) Publish nominal state, covariance, and diagnostics together or preserve the previous complete estimate. Algorithm-specific focus: Lie-group-aware invariant error model; distinct from an iterated EKF."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/estimators/kalman/invariant_ekf.h.tmpl"
 }

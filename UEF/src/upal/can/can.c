@@ -16,12 +16,12 @@ uef_status_t upal_can_init(
     upal_can_rx_cb_t rx_cb,
     void* rx_ctx
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Validate
-     * standard/extended identifiers, configure filters without disrupting existing entries,
-     * and define callback execution context.
-     */
+    /* TODO(upal_can_init):
+ * 1) Validate bitrate/clock, timing, pins, filters, queues, and IRQ mapping
+ * 2) configure controller and safe default filters before clearing stale flags
+ * 3) enable IRQs only after callback/queue state is ready.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
     (void)hw;
     (void)cfg;
@@ -36,12 +36,12 @@ uef_status_t upal_can_add_filter(
     uef_u32_t mask,
     bool extended
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Validate
-     * standard/extended identifiers, configure filters without disrupting existing entries,
-     * and define callback execution context.
-     */
+    /* TODO(upal_can_add_filter):
+ * 1) Validate ID/mask width, frame format, FIFO, and filter capacity
+ * 2) enter target filter-update mode and encode the entry
+ * 3) restore controller operation and preserve old filters on failure.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
     (void)id;
     (void)mask;
@@ -54,12 +54,12 @@ uef_status_t upal_can_transmit(
     const upal_can_frame_t* f,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Validate
-     * standard/extended identifiers, configure filters without disrupting existing entries,
-     * and define callback execution context.
-     */
+    /* TODO(upal_can_transmit):
+ * 1) Validate frame ID/DLC/format and ACTIVE state
+ * 2) wait for mailbox using a bounded deadline and encode payload
+ * 3) wait for terminal completion/arbitration/error and clear owned status.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
     (void)f;
     (void)timeout_ms;
@@ -70,11 +70,12 @@ uef_status_t upal_can_transmit_async(
     upal_can_t* c,
     const upal_can_frame_t* f
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Wait until all queued/buffered hardware work is committed, bounded by the caller
-     * deadline. Validate standard/extended identifiers, configure filters without
-     * disrupting existing entries, and define callback execution context.
-     */
+    /* TODO(upal_can_transmit_async):
+ * 1) Validate frame/callback and reserve queue/mailbox ownership
+ * 2) copy payload if caller storage may expire and enqueue atomically
+ * 3) complete exactly once from the designated IRQ context.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
     (void)f;
     return UEF_NOT_SUPPORTED;
@@ -83,32 +84,35 @@ uef_status_t upal_can_transmit_async(
 void upal_can_rx_irq_handler(
     upal_can_t* c
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Validate standard/extended identifiers, configure
-     * filters without disrupting existing entries, and define callback execution context.
-     */
+    /* TODO(upal_can_rx_irq_handler):
+ * 1) Snapshot RX pending flags and drain boundedly
+ * 2) decode frame and release hardware FIFO then enqueue frames matching filters
+ * 3) count overflow and defer application callbacks.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
 }
 
 void upal_can_tx_irq_handler(
     upal_can_t* c
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Validate standard/extended identifiers, configure
-     * filters without disrupting existing entries, and define callback execution context.
-     */
+    /* TODO(upal_can_tx_irq_handler):
+ * 1) Snapshot completion/error state and correlate mailboxes with request generations
+ * 2) release completed queue entries before notifying once
+ * 3) re-enable TX IRQ only while work remains.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
 }
 
 void upal_can_err_irq_handler(
     upal_can_t* c
 ) {
-    /* TODO(UEF UPAL CAN):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Validate standard/extended identifiers, configure
-     * filters without disrupting existing entries, and define callback execution context.
-     */
+    /* TODO(upal_can_err_irq_handler):
+ * 1) Snapshot protocol/bus-off/warning flags before clearing
+ * 2) update diagnostics and apply bounded declared bus-off recovery
+ * 3) notify state transitions without silently dropping queued frames.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)c;
 }

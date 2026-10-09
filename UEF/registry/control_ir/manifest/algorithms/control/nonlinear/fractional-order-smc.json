@@ -25,37 +25,37 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Choose fractional order, finite-memory discretization and coefficients, truncation error, surface/reaching law, sampling effects, and bounded computation."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check fractional order, surface, sample period, and coefficient table.",
-      "todo": "Select finite-memory discretization; ideal unbounded fractional memory is not implementable. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check fractional order, surface, sample period, and coefficient table. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Select finite-memory discretization; ideal unbounded fractional memory is not implementable. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
     },
     {
       "name": "init",
       "purpose": "Initialize fixed fractional-memory history.",
-      "todo": "Specify memory length and initial-history assumption. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize fixed fractional-memory history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify memory length and initial-history assumption. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
     },
     {
       "name": "reset",
       "purpose": "Clear bounded fractional history.",
-      "todo": "Define zero-fill versus caller-supplied history. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear bounded fractional history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define zero-fill versus caller-supplied history. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
     },
     {
       "name": "update_fractional_memory",
       "purpose": "Advance the selected finite-memory approximation.",
-      "todo": "Document coefficients, truncation, scaling, and work bound. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Advance the selected finite-memory approximation. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Document coefficients, truncation, scaling, and work bound. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
     },
     {
       "name": "compute_switching_control",
       "purpose": "Compute reaching/switching term from declared surface.",
-      "todo": "Specify boundary layer and actuator/chattering policy. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute reaching/switching term from declared surface. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify boundary layer and actuator/chattering policy. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
     },
     {
       "name": "step",
       "purpose": "Run one fractional sliding-mode update.",
-      "todo": "Keep deferred until approximation/stability claims are specified. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run one fractional sliding-mode update. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep deferred until approximation/stability claims are specified. Algorithm-specific focus: Sliding-mode controller using a finite-memory discrete approximation of a fractional-order operator; approximation and switching law remain unspecified."
     }
   ]
 }

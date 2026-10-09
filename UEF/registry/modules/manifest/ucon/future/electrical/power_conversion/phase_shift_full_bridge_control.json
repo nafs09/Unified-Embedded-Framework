@@ -3,13 +3,7 @@
     "src/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.c"
   ],
   "headers": [
-    "include/uef/ucon/detail/algorithm_call.h",
-    "include/uef/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.h",
-    "include/uef/ucon/ucon_status.h",
-    "include/uef/ucon/ucon_types.h",
-    "include/uef/ucore/uef_types.h",
-    "include/uef/umath/scalar.h",
-    "include/uef/umath/status.h"
+    "include/uef/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.h"
   ],
   "dependencies": [
     "ucon/core"

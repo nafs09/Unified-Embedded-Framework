@@ -16,8 +16,16 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(COMPLEMENTARY.validate_model): Pin quaternion order/sign or rotation-group convention
- * and units. Algorithm-specific focus: Common embedded
+/* TODO(COMPLEMENTARY.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check sensor dimensions,
+ * frames, and attitude representation. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Pin
+ * quaternion order/sign or rotation-group convention and
+ * units. Algorithm-specific focus: Common embedded
  * attitude/sensor-fusion filters.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -29,9 +37,15 @@ ucon_status_t ucon_complementary_validate_model(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(COMPLEMENTARY.init): Define seed validity and zero/near-zero normalization behavior.
- * Algorithm-specific focus: Common embedded attitude/sensor-fusion
- * filters.
+/* TODO(COMPLEMENTARY.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize nominal attitude and estimator state. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define seed validity and zero/near-zero
+ * normalization behavior. Algorithm-specific focus: Common embedded
+ * attitude/sensor-fusion filters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_complementary_init(const ucon_algorithm_scaffold_call_t *call)
@@ -42,9 +56,15 @@ ucon_status_t ucon_complementary_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(COMPLEMENTARY.reset): Specify whether the caller must provide a new attitude seed.
- * Algorithm-specific focus: Common embedded attitude/sensor-fusion
- * filters.
+/* TODO(COMPLEMENTARY.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Reset sensor/attitude history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Specify whether the caller must provide a new
+ * attitude seed. Algorithm-specific focus: Common embedded
+ * attitude/sensor-fusion filters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_complementary_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,8 +75,15 @@ ucon_status_t ucon_complementary_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(COMPLEMENTARY.propagate): Define frame, integration, bias handling, and normalization.
- * Algorithm-specific focus: Common embedded
+/* TODO(COMPLEMENTARY.propagate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Propagate attitude from timestamped
+ * angular-rate data. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Define frame, integration, bias handling, and
+ * normalization. Algorithm-specific focus: Common embedded
  * attitude/sensor-fusion filters.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -68,8 +95,15 @@ ucon_status_t ucon_complementary_propagate(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(COMPLEMENTARY.update): Define vector validity, weighting, observability, and rejection
- * policy. Algorithm-specific focus: Common embedded
+/* TODO(COMPLEMENTARY.update): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Apply configured vector observations or estimator
+ * correction. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define vector
+ * validity, weighting, observability, and rejection policy.
+ * Algorithm-specific focus: Common embedded
  * attitude/sensor-fusion filters.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -81,9 +115,15 @@ ucon_status_t ucon_complementary_update(const ucon_algorithm_scaffold_call_t *ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(COMPLEMENTARY.step): Keep frame conversions/timestamps explicit and preserve state on
- * failure. Algorithm-specific focus: Common embedded
- * attitude/sensor-fusion filters.
+/* TODO(COMPLEMENTARY.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Coordinate propagation and measurement update. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Keep frame conversions/timestamps explicit and
+ * preserve state on failure. Algorithm-specific focus: Common
+ * embedded attitude/sensor-fusion filters.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_complementary_step(const ucon_algorithm_scaffold_call_t *call)

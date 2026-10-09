@@ -16,9 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(ZONE_MPC.validate_problem): Reject inconsistent bounds and define fixed
- * memory/iteration budgets. Algorithm-specific focus: Zone
- * tracking; relaxed terminal set
+/* TODO(ZONE_MPC.validate_problem): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check plant, horizon,
+ * objective, constraints, and solver contract. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Reject
+ * inconsistent bounds and define fixed memory/iteration
+ * budgets. Algorithm-specific focus: Zone tracking; relaxed
+ * terminal set
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_zone_mpc_validate_problem(const ucon_algorithm_scaffold_call_t *call)
@@ -29,7 +37,13 @@ ucon_status_t ucon_zone_mpc_validate_problem(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ZONE_MPC.init): Define first-solve seed and caller-owned data. Algorithm-specific
+/* TODO(ZONE_MPC.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize warm start, references, and solver workspace. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define first-solve seed and caller-owned data. Algorithm-specific
  * focus: Zone tracking; relaxed terminal set
  * This stub must not read/write opaque state or output buffers.
  */
@@ -41,7 +55,13 @@ ucon_status_t ucon_zone_mpc_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ZONE_MPC.reset): Specify reusable factorization/active-set behavior.
+/* TODO(ZONE_MPC.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear warm-start, disturbance, and optimizer history. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Specify reusable factorization/active-set behavior.
  * Algorithm-specific focus: Zone tracking; relaxed terminal set
  * This stub must not read/write opaque state or output buffers.
  */
@@ -53,9 +73,17 @@ ucon_status_t ucon_zone_mpc_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ZONE_MPC.prepare_problem): State discretization, terminal conditions, scaling, and
- * time budget. Algorithm-specific focus: Zone tracking;
- * relaxed terminal set
+/* TODO(ZONE_MPC.prepare_problem): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Build/update the finite-horizon
+ * prediction and optimization problem. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: State discretization,
+ * terminal conditions, scaling, and time budget.
+ * Algorithm-specific focus: Zone tracking; relaxed terminal
+ * set
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_zone_mpc_prepare_problem(const ucon_algorithm_scaffold_call_t *call)
@@ -66,9 +94,16 @@ ucon_status_t ucon_zone_mpc_prepare_problem(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ZONE_MPC.solve_problem): Report infeasible, nonconverged, numeric, and iteration-limit
- * outcomes distinctly. Algorithm-specific focus: Zone tracking;
- * relaxed terminal set
+/* TODO(ZONE_MPC.solve_problem): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or
+ * state. 2) Run the selected bounded optimization method. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Report infeasible,
+ * nonconverged, numeric, and iteration-limit outcomes
+ * distinctly. Algorithm-specific focus: Zone tracking; relaxed
+ * terminal set
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_zone_mpc_solve_problem(const ucon_algorithm_scaffold_call_t *call)
@@ -79,9 +114,16 @@ ucon_status_t ucon_zone_mpc_solve_problem(const ucon_algorithm_scaffold_call_t *
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ZONE_MPC.verify_solution): Never apply an unchecked solution or hide a missed
- * deadline. Algorithm-specific focus: Zone tracking; relaxed
- * terminal set
+/* TODO(ZONE_MPC.verify_solution): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Check candidate bounds and configured
+ * residual tolerances. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Never apply an unchecked
+ * solution or hide a missed deadline. Algorithm-specific
+ * focus: Zone tracking; relaxed terminal set
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_zone_mpc_verify_solution(const ucon_algorithm_scaffold_call_t *call)
@@ -92,8 +134,14 @@ ucon_status_t ucon_zone_mpc_verify_solution(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ZONE_MPC.step): Fallback must be caller-configured; do not invent a command.
- * Algorithm-specific focus: Zone tracking; relaxed terminal set
+/* TODO(ZONE_MPC.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Prepare, solve, verify, and publish the first admissible input. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Fallback must be caller-configured; do not invent a
+ * command. Algorithm-specific focus: Zone tracking; relaxed terminal set
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_zone_mpc_step(const ucon_algorithm_scaffold_call_t *call)

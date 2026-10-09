@@ -16,7 +16,11 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(INVARIANT_EKF.validate_model): Pin left/right error and frame conventions.
+/* TODO(INVARIANT_EKF.validate_model): 1) Name the Lie group/state representation and pin
+ * left- or right-invariant error and frame direction. 2)
+ * Check tangent ordering, process/measurement Jacobians,
+ * and covariance coordinates. 3) Reject conventions that
+ * mix invariant and ordinary/iterated-EKF equations.
  * Algorithm-specific focus: Lie-group-aware invariant
  * error model; distinct from an iterated EKF.
  * This stub must not read/write opaque state or output buffers.
@@ -29,7 +33,10 @@ ucon_status_t ucon_invariant_ekf_validate_model(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INVARIANT_EKF.init): Validate the group representation and covariance coordinates.
+/* TODO(INVARIANT_EKF.init): 1) Validate/project the nominal state onto the declared group
+ * representation. 2) Validate P0 in the named tangent coordinates
+ * and initialize local error to zero. 3) Set timestamp/workspace
+ * and publish only after normalization and covariance checks pass.
  * Algorithm-specific focus: Lie-group-aware invariant error model;
  * distinct from an iterated EKF.
  * This stub must not read/write opaque state or output buffers.
@@ -42,9 +49,12 @@ ucon_status_t ucon_invariant_ekf_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INVARIANT_EKF.reset): Specify nominal group-state retention. Algorithm-specific focus:
- * Lie-group-aware invariant error model; distinct from an iterated
- * EKF.
+/* TODO(INVARIANT_EKF.reset): 1) Clear accepted timestamp, residuals, and local correction
+ * history. 2) Retain or replace the nominal group state as
+ * configured and seed tangent covariance. 3) Revalidate group
+ * membership and commit all reset values atomically.
+ * Algorithm-specific focus: Lie-group-aware invariant error model;
+ * distinct from an iterated EKF.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_invariant_ekf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,9 +65,14 @@ ucon_status_t ucon_invariant_ekf_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INVARIANT_EKF.predict): Derive dynamics/Jacobians for the selected invariant
- * convention. Algorithm-specific focus: Lie-group-aware
- * invariant error model; distinct from an iterated EKF.
+/* TODO(INVARIANT_EKF.predict): 1) Advance the nominal group state using the declared dynamics
+ * and compose increments on the selected side. 2)
+ * Derive/evaluate the invariant error transition and noise
+ * mapping in the same frame convention. 3) Propagate P, validate
+ * finite/PSD results, and commit the candidate without
+ * substituting ordinary EKF linearization. Algorithm-specific
+ * focus: Lie-group-aware invariant error model; distinct from an
+ * iterated EKF.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_invariant_ekf_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -68,9 +83,14 @@ ucon_status_t ucon_invariant_ekf_predict(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INVARIANT_EKF.correct): Define residual mapping and covariance reset.
- * Algorithm-specific focus: Lie-group-aware invariant error
- * model; distinct from an iterated EKF.
+/* TODO(INVARIANT_EKF.correct): 1) Map predicted and measured quantities into the configured
+ * residual frame and compute wrapped/group residual. 2)
+ * Form/factor innovation covariance, solve for gain, and apply
+ * gate. 3) Inject the correction on the pinned side, transform
+ * covariance with the matching reset map, and commit only after
+ * group/PSD validation. Algorithm-specific focus:
+ * Lie-group-aware invariant error model; distinct from an
+ * iterated EKF.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_invariant_ekf_correct(const ucon_algorithm_scaffold_call_t *call)
@@ -81,7 +101,11 @@ ucon_status_t ucon_invariant_ekf_correct(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INVARIANT_EKF.step): Do not substitute iterated-EKF equations. Algorithm-specific
+/* TODO(INVARIANT_EKF.step): 1) Validate timestamp/frame and stage one group prediction. 2)
+ * Correct only present, frame-valid measurements using invariant
+ * residuals. 3) Apply the matching group injection/reset map. 4)
+ * Publish nominal state, covariance, and diagnostics together or
+ * preserve the previous complete estimate. Algorithm-specific
  * focus: Lie-group-aware invariant error model; distinct from an
  * iterated EKF.
  * This stub must not read/write opaque state or output buffers.

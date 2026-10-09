@@ -16,10 +16,27 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.validate_topology): The current key does not
- * define these inputs.
- * Algorithm-specific focus:
- * Deferred converter-specific
+/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.validate_topology): Implementation sequence: 1)
+ * Validate pointers,
+ * configuration, dimensions,
+ * and preconditions before
+ * writing outputs or state. 2)
+ * Confirm topology, sensing
+ * polarity, and half-cycle
+ * timing definition. 3) Check
+ * numeric results, declared
+ * constraints, and fixed
+ * work/memory bounds. 4)
+ * Commit outputs, state, and
+ * diagnostics together only
+ * after success; preserve
+ * prior values on failure.
+ * Operation-specific
+ * requirements: The current
+ * key does not define these
+ * inputs. Algorithm-specific
+ * focus: Deferred
+ * converter-specific
  * predictive-current-control
  * candidate whose topology,
  * prediction horizon, and
@@ -35,7 +52,17 @@ ucon_status_t ucon_half_cycle_predictive_current_control_validate_topology(const
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.init): Specify phase acquisition and safe
+/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.init): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Initialize a cycle-synchronous
+ * controller state. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific requirements:
+ * Specify phase acquisition and safe
  * hardware handoff. Algorithm-specific
  * focus: Deferred converter-specific
  * predictive-current-control candidate
@@ -52,8 +79,18 @@ ucon_status_t ucon_half_cycle_predictive_current_control_init(const ucon_algorit
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.reset): Never emit a switch command when
- * timing/topology is invalid.
+/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.reset): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Clear cycle/prediction
+ * history. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Never emit a switch
+ * command when timing/topology is invalid.
  * Algorithm-specific focus: Deferred
  * converter-specific
  * predictive-current-control candidate
@@ -70,8 +107,25 @@ ucon_status_t ucon_half_cycle_predictive_current_control_reset(const ucon_algori
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.predict_candidates): Write plant equations and
- * sample instant before
+/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.predict_candidates): Implementation sequence: 1)
+ * Validate pointers,
+ * configuration, dimensions,
+ * and preconditions before
+ * writing outputs or state.
+ * 2) Predict current for the
+ * explicitly allowed switch
+ * actions. 3) Check numeric
+ * results, declared
+ * constraints, and fixed
+ * work/memory bounds. 4)
+ * Commit outputs, state, and
+ * diagnostics together only
+ * after success; preserve
+ * prior values on failure.
+ * Operation-specific
+ * requirements: Write plant
+ * equations and sample
+ * instant before
  * implementation.
  * Algorithm-specific focus:
  * Deferred converter-specific
@@ -90,9 +144,27 @@ ucon_status_t ucon_half_cycle_predictive_current_control_predict_candidates(cons
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.select_switch_action): Define tie-breaking,
- * dead-time, current
- * limits, and fault
+/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.select_switch_action): Implementation sequence:
+ * 1) Validate pointers,
+ * configuration,
+ * dimensions, and
+ * preconditions before
+ * writing outputs or state.
+ * 2) Select an admissible
+ * action using the
+ * specified objective. 3)
+ * Check numeric results,
+ * declared constraints, and
+ * fixed work/memory bounds.
+ * 4) Commit outputs, state,
+ * and diagnostics together
+ * only after success;
+ * preserve prior values on
+ * failure.
+ * Operation-specific
+ * requirements: Define
+ * tie-breaking, dead-time,
+ * current limits, and fault
  * response.
  * Algorithm-specific focus:
  * Deferred
@@ -112,9 +184,20 @@ ucon_status_t ucon_half_cycle_predictive_current_control_select_switch_action(co
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.step): Keep gate sequencing/interlocks outside
- * portable UCON. Algorithm-specific focus:
- * Deferred converter-specific
+/* TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.step): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Run one half-cycle update and
+ * return abstract command/status. 3) Check
+ * numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together
+ * only after success; preserve prior values
+ * on failure. Operation-specific
+ * requirements: Keep gate
+ * sequencing/interlocks outside portable
+ * UCON. Algorithm-specific focus: Deferred
+ * converter-specific
  * predictive-current-control candidate
  * whose topology, prediction horizon, and
  * switch-selection rule are not defined

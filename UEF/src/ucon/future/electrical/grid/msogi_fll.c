@@ -16,11 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(MSOGI_FLL.validate_config): Declare sequence and per-unit/scaling conventions.
- * Algorithm-specific focus: Multiple second-order
- * generalized-integrator signal branches combined with a
- * frequency-locked loop; branch selection and frequency
- * coupling must be explicit.
+/* TODO(MSOGI_FLL.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check phase sequence, nominal
+ * frequency, gains, and grid limits. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Declare sequence and
+ * per-unit/scaling conventions. Algorithm-specific focus:
+ * Multiple second-order generalized-integrator signal
+ * branches combined with a frequency-locked loop; branch
+ * selection and frequency coupling must be explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_msogi_fll_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -31,10 +38,17 @@ ucon_status_t ucon_msogi_fll_validate_config(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MSOGI_FLL.init): Define phase seed and acquisition range. Algorithm-specific focus:
- * Multiple second-order generalized-integrator signal branches combined
- * with a frequency-locked loop; branch selection and frequency coupling
- * must be explicit.
+/* TODO(MSOGI_FLL.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize orthogonal-signal, sequence, phase, and loop states. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define phase seed and acquisition range.
+ * Algorithm-specific focus: Multiple second-order
+ * generalized-integrator signal branches combined with a
+ * frequency-locked loop; branch selection and frequency coupling must
+ * be explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_msogi_fll_init(const ucon_algorithm_scaffold_call_t *call)
@@ -45,7 +59,13 @@ ucon_status_t ucon_msogi_fll_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MSOGI_FLL.reset): Define loss-of-lock and restart behavior. Algorithm-specific focus:
+/* TODO(MSOGI_FLL.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear synchronization history and lock persistence. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define loss-of-lock and restart behavior. Algorithm-specific focus:
  * Multiple second-order generalized-integrator signal branches
  * combined with a frequency-locked loop; branch selection and
  * frequency coupling must be explicit.
@@ -59,7 +79,15 @@ ucon_status_t ucon_msogi_fll_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MSOGI_FLL.update_signal_model): Specify frequency adaptation and sample-time coupling.
+/* TODO(MSOGI_FLL.update_signal_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Update SOGI/sequence or
+ * synchronous-frame signal estimates. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify
+ * frequency adaptation and sample-time coupling.
  * Algorithm-specific focus: Multiple second-order
  * generalized-integrator signal branches combined with a
  * frequency-locked loop; branch selection and frequency
@@ -74,10 +102,17 @@ ucon_status_t ucon_msogi_fll_update_signal_model(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MSOGI_FLL.update_loop): Define anti-windup, bounds, and units. Algorithm-specific
- * focus: Multiple second-order generalized-integrator signal
- * branches combined with a frequency-locked loop; branch
- * selection and frequency coupling must be explicit.
+/* TODO(MSOGI_FLL.update_loop): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Update phase/frequency and lock/quality state. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define anti-windup, bounds,
+ * and units. Algorithm-specific focus: Multiple second-order
+ * generalized-integrator signal branches combined with a
+ * frequency-locked loop; branch selection and frequency coupling
+ * must be explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_msogi_fll_update_loop(const ucon_algorithm_scaffold_call_t *call)
@@ -88,8 +123,14 @@ ucon_status_t ucon_msogi_fll_update_loop(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MSOGI_FLL.step): Reject invalid amplitude/sequence inputs without poisoning state.
- * Algorithm-specific focus: Multiple second-order
+/* TODO(MSOGI_FLL.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Process one grid sample and publish synchronization outputs. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Reject invalid amplitude/sequence inputs without
+ * poisoning state. Algorithm-specific focus: Multiple second-order
  * generalized-integrator signal branches combined with a
  * frequency-locked loop; branch selection and frequency coupling must
  * be explicit.

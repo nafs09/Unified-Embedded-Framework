@@ -28,37 +28,37 @@
   "scaffold_module": "ucon/future/electrical/power_conversion/hysteretic_current_control",
   "scaffold_header": "include/uef/ucon/future/electrical/power_conversion/hysteretic_current_control.h",
   "scaffold_source": "src/ucon/future/electrical/power_conversion/hysteretic_current_control.c",
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_topology",
       "purpose": "Check converter topology, sensor polarity, and switch map.",
-      "todo": "The algorithm key does not define a power-stage model. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check converter topology, sensor polarity, and switch map. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: The algorithm key does not define a power-stage model. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
     },
     {
       "name": "init",
       "purpose": "Initialize current/reference and switching-cycle state.",
-      "todo": "Define cycle phase and hardware interlock requirements. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize current/reference and switching-cycle state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define cycle phase and hardware interlock requirements. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
     },
     {
       "name": "reset",
       "purpose": "Clear controller history without producing a gate action.",
-      "todo": "Safe-state handling belongs to caller/target supervision. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear controller history without producing a gate action. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Safe-state handling belongs to caller/target supervision. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
     },
     {
       "name": "predict_current",
       "purpose": "Predict current/state under allowed switch actions.",
-      "todo": "Derive equations and sample timing from the selected topology. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Predict current/state under allowed switch actions. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Derive equations and sample timing from the selected topology. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
     },
     {
       "name": "select_command",
       "purpose": "Choose an action under the named objective/constraints.",
-      "todo": "Define dead time, current limits, and deterministic tie-breaking. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Choose an action under the named objective/constraints. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define dead time, current limits, and deterministic tie-breaking. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
     },
     {
       "name": "step",
       "purpose": "Run one bounded converter update and return an abstract command.",
-      "todo": "Keep physical gate sequencing in the target boundary. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run one bounded converter update and return an abstract command. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep physical gate sequencing in the target boundary. Algorithm-specific focus: Hysteresis-band current controller that selects switching actions from current error and configured bounds."
     }
   ]
 }

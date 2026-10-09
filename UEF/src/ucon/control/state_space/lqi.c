@@ -16,10 +16,16 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(LQI.validate_config): Declare whether gain synthesis is offline or part of this
- * module. Algorithm-specific focus: LQR/LQI are state-feedback
- * variants; LQG composes a linear estimator with a state-feedback
- * law.
+/* TODO(LQI.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check matrix dimensions, gain layout, and state/input units.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Declare whether gain synthesis
+ * is offline or part of this module. Algorithm-specific focus:
+ * LQR/LQI are state-feedback variants; LQG composes a linear
+ * estimator with a state-feedback law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_lqi_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,8 +36,14 @@ ucon_status_t ucon_lqi_validate_config(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(LQI.init): Define initial-state requirements and workspace. Algorithm-specific focus:
- * LQR/LQI are state-feedback variants; LQG composes a linear estimator with a
+/* TODO(LQI.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize controller
+ * and optional integral/observer interface state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define initial-state
+ * requirements and workspace. Algorithm-specific focus: LQR/LQI are
+ * state-feedback variants; LQG composes a linear estimator with a
  * state-feedback law.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -43,9 +55,14 @@ ucon_status_t ucon_lqi_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(LQI.reset): Specify bumpless restart and estimator coordination. Algorithm-specific
- * focus: LQR/LQI are state-feedback variants; LQG composes a linear
- * estimator with a state-feedback law.
+/* TODO(LQI.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Reset dynamic
+ * control memory. 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure. Operation-specific
+ * requirements: Specify bumpless restart and estimator coordination.
+ * Algorithm-specific focus: LQR/LQI are state-feedback variants; LQG
+ * composes a linear estimator with a state-feedback law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_lqi_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,9 +73,16 @@ ucon_status_t ucon_lqi_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(LQI.compute_feedback): Define reference/feedforward terms, sign, and saturation order.
- * Algorithm-specific focus: LQR/LQI are state-feedback variants;
- * LQG composes a linear estimator with a state-feedback law.
+/* TODO(LQI.compute_feedback): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Evaluate the declared state/output-feedback law. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define reference/feedforward
+ * terms, sign, and saturation order. Algorithm-specific focus:
+ * LQR/LQI are state-feedback variants; LQG composes a linear
+ * estimator with a state-feedback law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_lqi_compute_feedback(const ucon_algorithm_scaffold_call_t *call)
@@ -69,9 +93,15 @@ ucon_status_t ucon_lqi_compute_feedback(const ucon_algorithm_scaffold_call_t *ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(LQI.step): Preserve output on dimension/numeric failure and state work bounds.
- * Algorithm-specific focus: LQR/LQI are state-feedback variants; LQG composes
- * a linear estimator with a state-feedback law.
+/* TODO(LQI.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Evaluate feedback and
+ * publish a bounded command. 3) Check numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Preserve output on dimension/numeric
+ * failure and state work bounds. Algorithm-specific focus: LQR/LQI are
+ * state-feedback variants; LQG composes a linear estimator with a
+ * state-feedback law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_lqi_step(const ucon_algorithm_scaffold_call_t *call)

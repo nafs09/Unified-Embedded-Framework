@@ -16,10 +16,13 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(UKF.validate_model): Pin alpha/beta/kappa or the selected alternative and admissible
- * weights. Algorithm-specific focus: Unscented Kalman filter using
- * a declared sigma-point rule, weights, nonlinear propagation, and
- * covariance update.
+/* TODO(UKF.validate_model): 1) Check callback/matrix dimensions and finite covariance/noise.
+ * 2) Pin sigma-point scaling, weights, state dimension, and
+ * covariance-factor orientation; validate weight sum and workspace
+ * bounds. 3) Define negative-weight/PSD recovery policy and reject
+ * before state mutation. Algorithm-specific focus: Unscented Kalman
+ * filter using a declared sigma-point rule, weights, nonlinear
+ * propagation, and covariance update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +33,12 @@ ucon_status_t ucon_ukf_validate_model(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF.init): Define scaling and covariance factorization failure. Algorithm-specific
- * focus: Unscented Kalman filter using a declared sigma-point rule, weights,
- * nonlinear propagation, and covariance update.
+/* TODO(UKF.init): 1) Copy x0/P0 into scratch and validate dimensions/finiteness. 2) Factor P0
+ * under the declared rank policy and derive/validate λ and mean/covariance
+ * weights. 3) Initialize freshness/timestamp state and commit only when the
+ * point set is valid. Algorithm-specific focus: Unscented Kalman filter using
+ * a declared sigma-point rule, weights, nonlinear propagation, and covariance
+ * update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +49,11 @@ ucon_status_t ucon_ukf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF.reset): Define model-context retention. Algorithm-specific focus: Unscented Kalman
- * filter using a declared sigma-point rule, weights, nonlinear propagation,
- * and covariance update.
+/* TODO(UKF.reset): 1) Clear timestamp, prior measurement, and diagnostics. 2) Restore caller
+ * seeds and preserve the selected sigma rule/weights. 3) Rebuild the
+ * covariance factor and commit the reset only after validation.
+ * Algorithm-specific focus: Unscented Kalman filter using a declared
+ * sigma-point rule, weights, nonlinear propagation, and covariance update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +64,14 @@ ucon_status_t ucon_ukf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF.generate_sigma_points): Specify Cholesky orientation and negative-weight
- * safeguards. Algorithm-specific focus: Unscented Kalman
- * filter using a declared sigma-point rule, weights,
- * nonlinear propagation, and covariance update.
+/* TODO(UKF.generate_sigma_points): 1) Factor P with the declared orientation and compute
+ * c=n+λ. 2) Emit x0 and paired x±√c L_i points in fixed
+ * order. 3) Assign configured mean/covariance weights, check
+ * finite points and negative-weight policy, and leave output
+ * untouched on factorization failure. Algorithm-specific
+ * focus: Unscented Kalman filter using a declared
+ * sigma-point rule, weights, nonlinear propagation, and
+ * covariance update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_generate_sigma_points(const ucon_algorithm_scaffold_call_t *call)
@@ -70,9 +82,13 @@ ucon_status_t ucon_ukf_generate_sigma_points(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF.predict): Define additive/nonadditive process-noise handling. Algorithm-specific
- * focus: Unscented Kalman filter using a declared sigma-point rule,
- * weights, nonlinear propagation, and covariance update.
+/* TODO(UKF.predict): 1) Generate points from the prior and evaluate f for each with aligned
+ * input/time. 2) Compute the weighted predicted mean and covariance using
+ * covariance weights. 3) Add process noise as declared (additive Q or
+ * augmented-noise points), validate finite/PSD results, and commit the
+ * prediction. Algorithm-specific focus: Unscented Kalman filter using a
+ * declared sigma-point rule, weights, nonlinear propagation, and
+ * covariance update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -83,9 +99,13 @@ ucon_status_t ucon_ukf_predict(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF.correct): Define innovation solve, gating, and conditioning. Algorithm-specific
- * focus: Unscented Kalman filter using a declared sigma-point rule,
- * weights, nonlinear propagation, and covariance update.
+/* TODO(UKF.correct): 1) Generate points from the predicted state and evaluate h; compute
+ * weighted z_pred, S+R, and cross covariance. 2) Factor S and solve for K
+ * without explicit inversion; compute innovation/NIS. 3) Apply gate and
+ * covariance downdate, validate finite/PSD results, then commit or
+ * preserve prediction. Algorithm-specific focus: Unscented Kalman filter
+ * using a declared sigma-point rule, weights, nonlinear propagation, and
+ * covariance update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_correct(const ucon_algorithm_scaffold_call_t *call)
@@ -96,9 +116,12 @@ ucon_status_t ucon_ukf_correct(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF.step): Keep UKF parameterization explicit. Algorithm-specific focus: Unscented
- * Kalman filter using a declared sigma-point rule, weights, nonlinear
- * propagation, and covariance update.
+/* TODO(UKF.step): 1) Validate timestamp and stage one prediction. 2) Reuse the declared
+ * alpha/beta/kappa or alternate rule for all points and weights. 3) Correct
+ * only explicitly present measurements. 4) Publish estimate, covariance, and
+ * diagnostics atomically; never switch UKF parameterizations silently.
+ * Algorithm-specific focus: Unscented Kalman filter using a declared
+ * sigma-point rule, weights, nonlinear propagation, and covariance update.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_step(const ucon_algorithm_scaffold_call_t *call)

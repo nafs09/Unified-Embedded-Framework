@@ -27,32 +27,33 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare port count and dimensions, scheduling/rate semantics, initial values, reset/mode-switch rules, and exact ownership of input/output storage."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check port counts, dimensions, bounds, and scheduling/reset rules.",
-      "todo": "Define ordering and meaning of every port. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check port counts, dimensions, bounds, and scheduling/reset rules. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define ordering and meaning of every port. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
     },
     {
       "name": "init",
       "purpose": "Initialize bounded block state and caller-selected values.",
-      "todo": "Specify deterministic startup. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize bounded block state and caller-selected values. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify deterministic startup. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
     },
     {
       "name": "reset",
       "purpose": "Clear or preload state according to exact block semantics.",
-      "todo": "Define reset priority with a simultaneous sample. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear or preload state according to exact block semantics. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define reset priority with a simultaneous sample. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
     },
     {
       "name": "compute_output",
       "purpose": "Evaluate block law for the declared mode and sample timing.",
-      "todo": "Define saturation and non-finite handling. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Evaluate block law for the declared mode and sample timing. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define saturation and non-finite handling. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
     },
     {
       "name": "step",
       "purpose": "Process one invocation and publish outputs/status.",
-      "todo": "Avoid hidden scheduling, allocation, or cross-instance state. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Process one invocation and publish outputs/status. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Avoid hidden scheduling, allocation, or cross-instance state. Algorithm-specific focus: Range/staleness/finiteness checks and configured redundant-sensor voting."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/infrastructure/blocks/sensor_voter.h.tmpl"
 }

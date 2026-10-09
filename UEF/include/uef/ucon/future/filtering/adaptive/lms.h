@@ -14,41 +14,76 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check tap count, step size, regularization, and sample format.
-/// TODO(LMS.validate_config): Define stable gain range and low-energy behavior.
-/// Algorithm-specific focus: Least-mean-squares adaptive FIR
-/// update driven by a declared reference and error signal.
+/// TODO(LMS.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check tap count, step size, regularization, and sample
+/// format. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Define stable gain
+/// range and low-energy behavior. Algorithm-specific focus:
+/// Least-mean-squares adaptive FIR update driven by a declared
+/// reference and error signal.
 ucon_status_t ucon_lms_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize coefficients and delay-line state.
-/// TODO(LMS.init): Define coefficient seed and fixed memory size. Algorithm-specific focus:
-/// Least-mean-squares adaptive FIR update driven by a declared reference and
-/// error signal.
+/// TODO(LMS.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize
+/// coefficients and delay-line state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define coefficient seed and fixed memory
+/// size. Algorithm-specific focus: Least-mean-squares adaptive FIR update
+/// driven by a declared reference and error signal.
 ucon_status_t ucon_lms_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset delay line and adaptation history.
-/// TODO(LMS.reset): State whether coefficients are retained or reseeded. Algorithm-specific
-/// focus: Least-mean-squares adaptive FIR update driven by a declared
-/// reference and error signal.
+/// TODO(LMS.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Reset delay line
+/// and adaptation history. 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: State whether coefficients are retained
+/// or reseeded. Algorithm-specific focus: Least-mean-squares adaptive FIR
+/// update driven by a declared reference and error signal.
 ucon_status_t ucon_lms_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute aligned filter output and adaptation error.
-/// TODO(LMS.compute_output_error): Declare desired/reference signal roles and
-/// synchronization. Algorithm-specific focus:
-/// Least-mean-squares adaptive FIR update driven by a
+/// TODO(LMS.compute_output_error): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute aligned filter output
+/// and adaptation error. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Declare desired/reference
+/// signal roles and synchronization. Algorithm-specific
+/// focus: Least-mean-squares adaptive FIR update driven by a
 /// declared reference and error signal.
 ucon_status_t ucon_lms_compute_output_error(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply the selected bounded coefficient update.
-/// TODO(LMS.update_coefficients): Define normalization, projection, and adaptation freeze
-/// rules. Algorithm-specific focus: Least-mean-squares
-/// adaptive FIR update driven by a declared reference and
-/// error signal.
+/// TODO(LMS.update_coefficients): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Apply the selected bounded coefficient
+/// update. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// normalization, projection, and adaptation freeze rules.
+/// Algorithm-specific focus: Least-mean-squares adaptive FIR
+/// update driven by a declared reference and error signal.
 ucon_status_t ucon_lms_update_coefficients(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one sample and publish output/adaptation status.
-/// TODO(LMS.step): Bound tap-loop work and commit only after finite checks.
-/// Algorithm-specific focus: Least-mean-squares adaptive FIR update driven by
-/// a declared reference and error signal.
+/// TODO(LMS.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Process one sample
+/// and publish output/adaptation status. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Bound tap-loop work and commit only after
+/// finite checks. Algorithm-specific focus: Least-mean-squares adaptive FIR
+/// update driven by a declared reference and error signal.
 ucon_status_t ucon_lms_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

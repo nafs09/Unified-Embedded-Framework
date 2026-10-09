@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(FS_MPC.validate_candidates): Define candidate ordering and allowed switch transitions.
+/* TODO(FS_MPC.validate_candidates): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Validate discrete switch
+ * candidates and plant/cost dimensions. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * candidate ordering and allowed switch transitions.
  * Algorithm-specific focus: Finite candidate enumeration
  * for switching systems; current project priority.
  * This stub must not read/write opaque state or output buffers.
@@ -29,9 +37,14 @@ ucon_status_t ucon_fs_mpc_validate_candidates(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FS_MPC.init): Define current switch state and previous candidate. Algorithm-specific
- * focus: Finite candidate enumeration for switching systems; current
- * project priority.
+/* TODO(FS_MPC.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize fixed candidate/prediction workspace. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Define current
+ * switch state and previous candidate. Algorithm-specific focus: Finite
+ * candidate enumeration for switching systems; current project priority.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fs_mpc_init(const ucon_algorithm_scaffold_call_t *call)
@@ -42,9 +55,14 @@ ucon_status_t ucon_fs_mpc_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FS_MPC.reset): Specify re-entry when the current switch state is unknown.
- * Algorithm-specific focus: Finite candidate enumeration for switching
- * systems; current project priority.
+/* TODO(FS_MPC.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Clear
+ * switch/prediction history. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify re-entry when the
+ * current switch state is unknown. Algorithm-specific focus: Finite
+ * candidate enumeration for switching systems; current project priority.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fs_mpc_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,9 +73,17 @@ ucon_status_t ucon_fs_mpc_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FS_MPC.predict_candidates): Bound candidate count and define model/sample timing.
- * Algorithm-specific focus: Finite candidate enumeration for
- * switching systems; current project priority.
+/* TODO(FS_MPC.predict_candidates): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Predict the plant for each
+ * enumerated candidate. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Bound candidate count and
+ * define model/sample timing. Algorithm-specific focus:
+ * Finite candidate enumeration for switching systems;
+ * current project priority.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fs_mpc_predict_candidates(const ucon_algorithm_scaffold_call_t *call)
@@ -68,10 +94,17 @@ ucon_status_t ucon_fs_mpc_predict_candidates(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FS_MPC.score_candidates): Define cost scaling, ties, infeasible candidates, and
- * numeric rejection. Algorithm-specific focus: Finite
- * candidate enumeration for switching systems; current project
- * priority.
+/* TODO(FS_MPC.score_candidates): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Compute objective and constraint status
+ * for each prediction. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Define cost scaling, ties, infeasible
+ * candidates, and numeric rejection. Algorithm-specific focus:
+ * Finite candidate enumeration for switching systems; current
+ * project priority.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fs_mpc_score_candidates(const ucon_algorithm_scaffold_call_t *call)
@@ -82,10 +115,17 @@ ucon_status_t ucon_fs_mpc_score_candidates(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FS_MPC.select_candidate): Return no-feasible-candidate distinctly; never select an
- * invalid candidate. Algorithm-specific focus: Finite
- * candidate enumeration for switching systems; current project
- * priority.
+/* TODO(FS_MPC.select_candidate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Choose the lowest-cost admissible
+ * switching action. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Return no-feasible-candidate distinctly; never
+ * select an invalid candidate. Algorithm-specific focus:
+ * Finite candidate enumeration for switching systems; current
+ * project priority.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fs_mpc_select_candidate(const ucon_algorithm_scaffold_call_t *call)
@@ -96,9 +136,15 @@ ucon_status_t ucon_fs_mpc_select_candidate(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(FS_MPC.step): Keep gate sequencing and dead-time outside this method.
- * Algorithm-specific focus: Finite candidate enumeration for switching
- * systems; current project priority.
+/* TODO(FS_MPC.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Run
+ * enumeration and publish the selected abstract action/status. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements: Keep
+ * gate sequencing and dead-time outside this method. Algorithm-specific
+ * focus: Finite candidate enumeration for switching systems; current
+ * project priority.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_fs_mpc_step(const ucon_algorithm_scaffold_call_t *call)

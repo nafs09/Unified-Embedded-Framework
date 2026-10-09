@@ -2,6 +2,7 @@
 /// @brief Allocation-free operations on caller-owned contiguous vectors.
 #ifndef UEF_UMATH_VECTOR_H
 #define UEF_UMATH_VECTOR_H
+#include <uef/umath/config.h>
 
 #include <stddef.h>
 #include <uef/umath/status.h>

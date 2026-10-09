@@ -6,6 +6,10 @@
 #include "uef/uproto/uproto_crsf.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(crsf-receiver main): Initialize the board UART at the selected CRSF settings,
+     * bind the bounded DMA/ring producer, and initialize the decoder. Process a bounded
+     * byte/frame budget outside the hard IRQ, publish only CRC-valid RC snapshots, and
+     * assert the configured stale-link/failsafe state when freshness expires.
+     */
     return 0;
 }

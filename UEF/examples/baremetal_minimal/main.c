@@ -6,6 +6,10 @@
 #include "uef/uhal/uhal_gpio.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(baremetal-minimal main): Initialize the selected board clock and verify the
+     * resulting frequency, configure one board-mapped GPIO as output, then set/clear it
+     * using the HAL without changing adjacent pins. Use a bounded board delay between
+     * transitions and route startup/configuration failure to the board's safe error path.
+     */
     return 0;
 }

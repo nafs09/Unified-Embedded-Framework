@@ -16,11 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(PARTICLE.validate_model): Bound storage and specify reproducible random-stream
- * behavior. Algorithm-specific focus: Bootstrap particle
- * filter with explicit particle propagation, likelihood
- * weighting, normalization, resampling, and random-number
- * policy.
+/* TODO(PARTICLE.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Check particle count, likelihood,
+ * dimensions, and random source. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Bound storage and specify
+ * reproducible random-stream behavior. Algorithm-specific
+ * focus: Bootstrap particle filter with explicit particle
+ * propagation, likelihood weighting, normalization,
+ * resampling, and random-number policy.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_particle_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -31,10 +38,16 @@ ucon_status_t ucon_particle_validate_model(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.init): Define caller-supplied prior and invalid-particle failure.
- * Algorithm-specific focus: Bootstrap particle filter with explicit
- * particle propagation, likelihood weighting, normalization, resampling,
- * and random-number policy.
+/* TODO(PARTICLE.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize particles and normalized prior weights. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Define
+ * caller-supplied prior and invalid-particle failure. Algorithm-specific
+ * focus: Bootstrap particle filter with explicit particle propagation,
+ * likelihood weighting, normalization, resampling, and random-number
+ * policy.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_particle_init(const ucon_algorithm_scaffold_call_t *call)
@@ -45,7 +58,13 @@ ucon_status_t ucon_particle_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.reset): Specify random stream reset/retention. Algorithm-specific focus:
+/* TODO(PARTICLE.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset population and resampling diagnostics. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Specify random stream reset/retention. Algorithm-specific focus:
  * Bootstrap particle filter with explicit particle propagation,
  * likelihood weighting, normalization, resampling, and random-number
  * policy.
@@ -59,11 +78,18 @@ ucon_status_t ucon_particle_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.propagate_particles): Bound per-particle work and random draws.
- * Algorithm-specific focus: Bootstrap particle filter
- * with explicit particle propagation, likelihood
- * weighting, normalization, resampling, and random-number
- * policy.
+/* TODO(PARTICLE.propagate_particles): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Propagate each particle
+ * through the process model. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Bound per-particle
+ * work and random draws. Algorithm-specific focus:
+ * Bootstrap particle filter with explicit particle
+ * propagation, likelihood weighting, normalization,
+ * resampling, and random-number policy.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_particle_propagate_particles(const ucon_algorithm_scaffold_call_t *call)
@@ -74,7 +100,14 @@ ucon_status_t ucon_particle_propagate_particles(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.update_weights): Handle all-zero likelihood without inventing a prior.
+/* TODO(PARTICLE.update_weights): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Apply likelihood and normalize weights
+ * stably. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Handle
+ * all-zero likelihood without inventing a prior.
  * Algorithm-specific focus: Bootstrap particle filter with
  * explicit particle propagation, likelihood weighting,
  * normalization, resampling, and random-number policy.
@@ -88,10 +121,16 @@ ucon_status_t ucon_particle_update_weights(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.resample): Define deterministic order and scratch bounds. Algorithm-specific
- * focus: Bootstrap particle filter with explicit particle
- * propagation, likelihood weighting, normalization, resampling, and
- * random-number policy.
+/* TODO(PARTICLE.resample): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Apply the named resampling method at the configured threshold. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define deterministic order and
+ * scratch bounds. Algorithm-specific focus: Bootstrap particle
+ * filter with explicit particle propagation, likelihood weighting,
+ * normalization, resampling, and random-number policy.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_particle_resample(const ucon_algorithm_scaffold_call_t *call)
@@ -102,7 +141,15 @@ ucon_status_t ucon_particle_resample(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.summarize_estimate): Specify circular/manifold averaging where needed.
+/* TODO(PARTICLE.summarize_estimate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute state and
+ * uncertainty summaries. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify
+ * circular/manifold averaging where needed.
  * Algorithm-specific focus: Bootstrap particle filter with
  * explicit particle propagation, likelihood weighting,
  * normalization, resampling, and random-number policy.
@@ -116,7 +163,13 @@ ucon_status_t ucon_particle_summarize_estimate(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PARTICLE.step): Do not partially replace the prior population on failure.
+/* TODO(PARTICLE.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Run
+ * propagation, weighting, optional resampling, and summary. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements: Do
+ * not partially replace the prior population on failure.
  * Algorithm-specific focus: Bootstrap particle filter with explicit
  * particle propagation, likelihood weighting, normalization, resampling,
  * and random-number policy.

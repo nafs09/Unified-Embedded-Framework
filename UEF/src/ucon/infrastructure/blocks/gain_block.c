@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(GAIN_BLOCK.validate_config): Define ordering and meaning of every port.
+/* TODO(GAIN_BLOCK.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check port counts,
+ * dimensions, bounds, and scheduling/reset rules. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Define ordering and meaning of every port.
  * Algorithm-specific focus: Reusable graph primitives and
  * transfer patterns.
  * This stub must not read/write opaque state or output buffers.
@@ -29,8 +37,14 @@ ucon_status_t ucon_gain_block_validate_config(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_BLOCK.init): Specify deterministic startup. Algorithm-specific focus: Reusable
- * graph primitives and transfer patterns.
+/* TODO(GAIN_BLOCK.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize bounded block state and caller-selected values. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Specify deterministic startup. Algorithm-specific
+ * focus: Reusable graph primitives and transfer patterns.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gain_block_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,7 +55,13 @@ ucon_status_t ucon_gain_block_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_BLOCK.reset): Define reset priority with a simultaneous sample.
+/* TODO(GAIN_BLOCK.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear or preload state according to exact block semantics. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure. Operation-specific
+ * requirements: Define reset priority with a simultaneous sample.
  * Algorithm-specific focus: Reusable graph primitives and transfer
  * patterns.
  * This stub must not read/write opaque state or output buffers.
@@ -54,9 +74,16 @@ ucon_status_t ucon_gain_block_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_BLOCK.compute_output): Define saturation and non-finite handling.
- * Algorithm-specific focus: Reusable graph primitives and
- * transfer patterns.
+/* TODO(GAIN_BLOCK.compute_output): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Evaluate block law for the
+ * declared mode and sample timing. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define saturation and
+ * non-finite handling. Algorithm-specific focus: Reusable
+ * graph primitives and transfer patterns.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_gain_block_compute_output(const ucon_algorithm_scaffold_call_t *call)
@@ -67,7 +94,13 @@ ucon_status_t ucon_gain_block_compute_output(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GAIN_BLOCK.step): Avoid hidden scheduling, allocation, or cross-instance state.
+/* TODO(GAIN_BLOCK.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Process one invocation and publish outputs/status. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Avoid hidden scheduling, allocation, or cross-instance state.
  * Algorithm-specific focus: Reusable graph primitives and transfer
  * patterns.
  * This stub must not read/write opaque state or output buffers.

@@ -16,9 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(MRAC_COMPOSITE.validate_config): State the stability assumptions; tuning alone is not
- * a stability proof. Algorithm-specific focus: Combined
- * tracking + parameter error; faster adaptation
+/* TODO(MRAC_COMPOSITE.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check reference model,
+ * adaptation gains, projection bounds, and rate. 3)
+ * Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: State the stability assumptions; tuning
+ * alone is not a stability proof. Algorithm-specific
+ * focus: Combined tracking + parameter error; faster
+ * adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -29,9 +38,15 @@ ucon_status_t ucon_mrac_composite_validate_config(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_COMPOSITE.init): Define parameter seeds and startup saturation behavior.
- * Algorithm-specific focus: Combined tracking + parameter error;
- * faster adaptation
+/* TODO(MRAC_COMPOSITE.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Initialize controller, observer, reference model, and
+ * parameter state. 3) Check numeric results, declared constraints,
+ * and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define parameter
+ * seeds and startup saturation behavior. Algorithm-specific focus:
+ * Combined tracking + parameter error; faster adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_init(const ucon_algorithm_scaffold_call_t *call)
@@ -42,9 +57,15 @@ ucon_status_t ucon_mrac_composite_init(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_COMPOSITE.reset): Say whether learned parameters are retained or reseeded.
- * Algorithm-specific focus: Combined tracking + parameter error;
- * faster adaptation
+/* TODO(MRAC_COMPOSITE.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Reset adaptation and controller history. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Say whether learned parameters are retained or
+ * reseeded. Algorithm-specific focus: Combined tracking +
+ * parameter error; faster adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,9 +76,17 @@ ucon_status_t ucon_mrac_composite_reset(const ucon_algorithm_scaffold_call_t *ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_COMPOSITE.update_model): Define sampling and input-delay alignment.
- * Algorithm-specific focus: Combined tracking + parameter
- * error; faster adaptation
+/* TODO(MRAC_COMPOSITE.update_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Update the declared
+ * reference/observer/model state. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * sampling and input-delay alignment. Algorithm-specific
+ * focus: Combined tracking + parameter error; faster
+ * adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_update_model(const ucon_algorithm_scaffold_call_t *call)
@@ -68,9 +97,18 @@ ucon_status_t ucon_mrac_composite_update_model(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_COMPOSITE.update_parameters): Bound drift and specify low-excitation/saturation
- * behavior. Algorithm-specific focus: Combined
- * tracking + parameter error; faster adaptation
+/* TODO(MRAC_COMPOSITE.update_parameters): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Apply adaptation law
+ * and projection/leakage policy. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Bound drift and specify
+ * low-excitation/saturation behavior.
+ * Algorithm-specific focus: Combined tracking +
+ * parameter error; faster adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_update_parameters(const ucon_algorithm_scaffold_call_t *call)
@@ -81,10 +119,17 @@ ucon_status_t ucon_mrac_composite_update_parameters(const ucon_algorithm_scaffol
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_COMPOSITE.compute_control): Keep actuator constraints and independent safety
- * supervision explicit. Algorithm-specific focus:
- * Combined tracking + parameter error; faster
- * adaptation
+/* TODO(MRAC_COMPOSITE.compute_control): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute/bound command
+ * from current estimates. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Keep actuator
+ * constraints and independent safety supervision
+ * explicit. Algorithm-specific focus: Combined tracking
+ * + parameter error; faster adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_compute_control(const ucon_algorithm_scaffold_call_t *call)
@@ -95,9 +140,15 @@ ucon_status_t ucon_mrac_composite_compute_control(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_COMPOSITE.step): Return diagnostics and preserve state on intermediate failure.
- * Algorithm-specific focus: Combined tracking + parameter error;
- * faster adaptation
+/* TODO(MRAC_COMPOSITE.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Coordinate model, adaptation, and control in a fixed order.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Return diagnostics and preserve
+ * state on intermediate failure. Algorithm-specific focus:
+ * Combined tracking + parameter error; faster adaptation
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_composite_step(const ucon_algorithm_scaffold_call_t *call)

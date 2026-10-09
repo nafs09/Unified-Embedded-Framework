@@ -14,42 +14,86 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check coefficients, sample time, limits, and recurrence history.
-/// TODO(SMITH_PREDICTOR.validate_config): Document coefficient convention and valid
-/// degenerate cases. Algorithm-specific focus:
-/// Delay-compensated wrapper around a declared plant
-/// model and inner controller.
+/// TODO(SMITH_PREDICTOR.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check coefficients,
+/// sample time, limits, and recurrence history. 3)
+/// Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure.
+/// Operation-specific requirements: Document
+/// coefficient convention and valid degenerate cases.
+/// Algorithm-specific focus: Delay-compensated wrapper
+/// around a declared plant model and inner controller.
 ucon_status_t ucon_smith_predictor_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize recurrence/controller state.
-/// TODO(SMITH_PREDICTOR.init): Define zero-state and optional steady-state preload.
-/// Algorithm-specific focus: Delay-compensated wrapper around a
-/// declared plant model and inner controller.
+/// TODO(SMITH_PREDICTOR.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Initialize recurrence/controller state. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define zero-state and optional steady-state
+/// preload. Algorithm-specific focus: Delay-compensated wrapper
+/// around a declared plant model and inner controller.
 ucon_status_t ucon_smith_predictor_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear or preload recurrence history.
-/// TODO(SMITH_PREDICTOR.reset): Define behavior after coefficient changes. Algorithm-specific
-/// focus: Delay-compensated wrapper around a declared plant
-/// model and inner controller.
+/// TODO(SMITH_PREDICTOR.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Clear or preload recurrence history. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define behavior after
+/// coefficient changes. Algorithm-specific focus:
+/// Delay-compensated wrapper around a declared plant model and
+/// inner controller.
 ucon_status_t ucon_smith_predictor_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate one discrete-time controller recurrence.
-/// TODO(SMITH_PREDICTOR.compute_candidate): Check intermediate values before committing
-/// history. Algorithm-specific focus:
+/// TODO(SMITH_PREDICTOR.compute_candidate): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Evaluate one
+/// discrete-time controller recurrence. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Check intermediate values before
+/// committing history. Algorithm-specific focus:
 /// Delay-compensated wrapper around a declared plant
 /// model and inner controller.
 ucon_status_t ucon_smith_predictor_compute_candidate(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply method-owned output and anti-windup behavior.
-/// TODO(SMITH_PREDICTOR.apply_limits): Specify ordering relative to feedforward and
-/// downstream actuator tracking. Algorithm-specific
-/// focus: Delay-compensated wrapper around a declared
-/// plant model and inner controller.
+/// TODO(SMITH_PREDICTOR.apply_limits): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Apply method-owned output
+/// and anti-windup behavior. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify ordering
+/// relative to feedforward and downstream actuator
+/// tracking. Algorithm-specific focus: Delay-compensated
+/// wrapper around a declared plant model and inner
+/// controller.
 ucon_status_t ucon_smith_predictor_apply_limits(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one sample and atomically commit output/history.
-/// TODO(SMITH_PREDICTOR.step): Specify aliasing and numeric-failure behavior.
-/// Algorithm-specific focus: Delay-compensated wrapper around a
-/// declared plant model and inner controller.
+/// TODO(SMITH_PREDICTOR.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Run one sample and atomically commit output/history. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify aliasing and
+/// numeric-failure behavior. Algorithm-specific focus:
+/// Delay-compensated wrapper around a declared plant model and
+/// inner controller.
 ucon_status_t ucon_smith_predictor_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

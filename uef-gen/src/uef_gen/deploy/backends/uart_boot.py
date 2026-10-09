@@ -56,10 +56,17 @@ class UARTBootDeployment(IDeployment):
         )
 
     def reset(self, run: bool = True) -> bool:
-        raise NotImplementedError("TODO(uart-reset): issue the documented reset/run command after verify.")
+        raise NotImplementedError(
+            "TODO(uart-reset): Require successful image verification, send the bootloader's documented "
+            "reset/run command, wait for its acknowledgement or reconnect state, and honor run without "
+            "issuing an undocumented command."
+        )
 
     def disconnect(self) -> None:
-        raise NotImplementedError("TODO(uart-disconnect): close the serial handle and release the port.")
+        raise NotImplementedError(
+            "TODO(uart-disconnect): Close the serial handle owned by this instance, cancel pending I/O, "
+            "release the selected port, and make cleanup safe after partial connection."
+        )
 
     def read_chip_identity(self) -> ChipIdentity:
         raise NotImplementedError(

@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(TERMINAL_SMC.validate_model): State operating-region and uncertainty assumptions.
+/* TODO(TERMINAL_SMC.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check nonlinear model,
+ * surface/relative-degree data, and parameter bounds. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * State operating-region and uncertainty assumptions.
  * Algorithm-specific focus: Terminal sliding mode;
  * finite-time convergence
  * This stub must not read/write opaque state or output buffers.
@@ -29,9 +37,15 @@ ucon_status_t ucon_terminal_smc_validate_model(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TERMINAL_SMC.init): Define state seeds and bound startup transients.
- * Algorithm-specific focus: Terminal sliding mode; finite-time
- * convergence
+/* TODO(TERMINAL_SMC.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize virtual-control, adaptation, integral, and filter
+ * state. 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define state seeds and bound
+ * startup transients. Algorithm-specific focus: Terminal sliding
+ * mode; finite-time convergence
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_terminal_smc_init(const ucon_algorithm_scaffold_call_t *call)
@@ -42,7 +56,13 @@ ucon_status_t ucon_terminal_smc_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TERMINAL_SMC.reset): Specify parameter projection and bumpless restart.
+/* TODO(TERMINAL_SMC.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset controller/adaptation history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Specify parameter projection and bumpless restart.
  * Algorithm-specific focus: Terminal sliding mode; finite-time
  * convergence
  * This stub must not read/write opaque state or output buffers.
@@ -55,9 +75,17 @@ ucon_status_t ucon_terminal_smc_reset(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TERMINAL_SMC.compute_surface): Declare sign, units, derivative source, and singularity
- * handling. Algorithm-specific focus: Terminal sliding
- * mode; finite-time convergence
+/* TODO(TERMINAL_SMC.compute_surface): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Evaluate tracking error,
+ * surface, barrier, or Lyapunov terms. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Declare sign,
+ * units, derivative source, and singularity handling.
+ * Algorithm-specific focus: Terminal sliding mode;
+ * finite-time convergence
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_terminal_smc_compute_surface(const ucon_algorithm_scaffold_call_t *call)
@@ -68,7 +96,15 @@ ucon_status_t ucon_terminal_smc_compute_surface(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TERMINAL_SMC.compute_control): Define actuator limits and chattering/boundary-layer
+/* TODO(TERMINAL_SMC.compute_control): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute the
+ * method-specific bounded control candidate. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Define actuator limits and chattering/boundary-layer
  * policy. Algorithm-specific focus: Terminal sliding
  * mode; finite-time convergence
  * This stub must not read/write opaque state or output buffers.
@@ -81,7 +117,14 @@ ucon_status_t ucon_terminal_smc_compute_control(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TERMINAL_SMC.step): Commit state only after numeric and constraint checks succeed.
+/* TODO(TERMINAL_SMC.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Run one deterministic control update and report
+ * status/diagnostics. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Commit state
+ * only after numeric and constraint checks succeed.
  * Algorithm-specific focus: Terminal sliding mode; finite-time
  * convergence
  * This stub must not read/write opaque state or output buffers.

@@ -16,10 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(RECURSIVE_AR.validate_model): Document identifiability assumptions and fixed
- * covariance/history size. Algorithm-specific focus:
- * Online parameter estimation for an autoregressive
- * time-series model.
+/* TODO(RECURSIVE_AR.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check model order, delays,
+ * regressor layout, and parameter bounds. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Document
+ * identifiability assumptions and fixed covariance/history
+ * size. Algorithm-specific focus: Online parameter
+ * estimation for an autoregressive time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +37,16 @@ ucon_status_t ucon_recursive_ar_validate_model(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RECURSIVE_AR.init): Define P0, forgetting/regularization, and parameter seed.
- * Algorithm-specific focus: Online parameter estimation for an
- * autoregressive time-series model.
+/* TODO(RECURSIVE_AR.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize parameters and information/covariance state. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define P0,
+ * forgetting/regularization, and parameter seed. Algorithm-specific
+ * focus: Online parameter estimation for an autoregressive
+ * time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +57,15 @@ ucon_status_t ucon_recursive_ar_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RECURSIVE_AR.reset): State whether reset retains or reinitializes parameters.
- * Algorithm-specific focus: Online parameter estimation for an
- * autoregressive time-series model.
+/* TODO(RECURSIVE_AR.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset recursive memory under a documented parameter policy. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: State whether reset retains or
+ * reinitializes parameters. Algorithm-specific focus: Online
+ * parameter estimation for an autoregressive time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,9 +76,17 @@ ucon_status_t ucon_recursive_ar_reset(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RECURSIVE_AR.build_regressor): Pin signal sign/order/delay and reject stale/non-finite
- * samples. Algorithm-specific focus: Online parameter
- * estimation for an autoregressive time-series model.
+/* TODO(RECURSIVE_AR.build_regressor): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Build ordered regressors,
+ * instruments, and sensitivity terms. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Pin signal
+ * sign/order/delay and reject stale/non-finite samples.
+ * Algorithm-specific focus: Online parameter estimation
+ * for an autoregressive time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_build_regressor(const ucon_algorithm_scaffold_call_t *call)
@@ -69,10 +97,17 @@ ucon_status_t ucon_recursive_ar_build_regressor(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RECURSIVE_AR.update_parameters): Define forgetting, conditioning, symmetrization, and
- * projection. Algorithm-specific focus: Online
- * parameter estimation for an autoregressive
- * time-series model.
+/* TODO(RECURSIVE_AR.update_parameters): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Apply one bounded
+ * recursive parameter update. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define forgetting,
+ * conditioning, symmetrization, and projection.
+ * Algorithm-specific focus: Online parameter estimation
+ * for an autoregressive time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_update_parameters(const ucon_algorithm_scaffold_call_t *call)
@@ -83,9 +118,17 @@ ucon_status_t ucon_recursive_ar_update_parameters(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RECURSIVE_AR.get_diagnostics): Distinguish insufficient excitation from numeric/model
- * failure. Algorithm-specific focus: Online parameter
- * estimation for an autoregressive time-series model.
+/* TODO(RECURSIVE_AR.get_diagnostics): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Report residual and
+ * excitation/conditioning status. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Distinguish
+ * insufficient excitation from numeric/model failure.
+ * Algorithm-specific focus: Online parameter estimation
+ * for an autoregressive time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_get_diagnostics(const ucon_algorithm_scaffold_call_t *call)
@@ -96,9 +139,15 @@ ucon_status_t ucon_recursive_ar_get_diagnostics(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RECURSIVE_AR.step): Bound loops and preserve state on failure. Algorithm-specific
- * focus: Online parameter estimation for an autoregressive
- * time-series model.
+/* TODO(RECURSIVE_AR.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Consume one aligned sample and atomically publish the updated
+ * model. 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Bound loops and preserve state on
+ * failure. Algorithm-specific focus: Online parameter estimation for
+ * an autoregressive time-series model.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_recursive_ar_step(const ucon_algorithm_scaffold_call_t *call)

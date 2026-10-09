@@ -2,6 +2,7 @@
 /// @brief Two-component vector value type and common operations.
 #ifndef UEF_UMATH_VECTOR2_H
 #define UEF_UMATH_VECTOR2_H
+#include <uef/umath/config.h>
 
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

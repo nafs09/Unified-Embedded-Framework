@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(ADAPTIVE_KF.validate_model): Reject invalid shapes before state changes; specify PSD
+/* TODO(ADAPTIVE_KF.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check state/measurement
+ * dimensions, model callbacks, and covariance assumptions.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Reject invalid shapes before state changes; specify PSD
  * and conditioning policy. Algorithm-specific focus:
  * Adaptive Kalman filter with an explicitly bounded
  * covariance or noise adaptation law.
@@ -30,9 +38,16 @@ ucon_status_t ucon_adaptive_kf_validate_model(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ADAPTIVE_KF.init): Define initial-state ownership, covariance seed, and factorization
- * failure. Algorithm-specific focus: Adaptive Kalman filter with an
- * explicitly bounded covariance or noise adaptation law.
+/* TODO(ADAPTIVE_KF.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize estimate, covariance, and fixed workspace. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure. Operation-specific
+ * requirements: Define initial-state ownership, covariance seed, and
+ * factorization failure. Algorithm-specific focus: Adaptive Kalman
+ * filter with an explicitly bounded covariance or noise adaptation
+ * law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_adaptive_kf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +58,16 @@ ucon_status_t ucon_adaptive_kf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ADAPTIVE_KF.reset): Specify whether nominal estimate/model context is retained.
- * Algorithm-specific focus: Adaptive Kalman filter with an
- * explicitly bounded covariance or noise adaptation law.
+/* TODO(ADAPTIVE_KF.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset estimator history under a documented seed policy. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify whether nominal
+ * estimate/model context is retained. Algorithm-specific focus:
+ * Adaptive Kalman filter with an explicitly bounded covariance or
+ * noise adaptation law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_adaptive_kf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +78,16 @@ ucon_status_t ucon_adaptive_kf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ADAPTIVE_KF.predict): Define discretization, process-noise timing, and stable
- * covariance update. Algorithm-specific focus: Adaptive Kalman
- * filter with an explicitly bounded covariance or noise adaptation
- * law.
+/* TODO(ADAPTIVE_KF.predict): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Propagate estimate and uncertainty over one declared
+ * interval. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define
+ * discretization, process-noise timing, and stable covariance
+ * update. Algorithm-specific focus: Adaptive Kalman filter with an
+ * explicitly bounded covariance or noise adaptation law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_adaptive_kf_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -70,7 +98,14 @@ ucon_status_t ucon_adaptive_kf_predict(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ADAPTIVE_KF.correct): Define gating, missing-channel behavior, and failure atomicity.
+/* TODO(ADAPTIVE_KF.correct): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Apply a timestamped measurement and compute innovation
+ * diagnostics. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Define gating,
+ * missing-channel behavior, and failure atomicity.
  * Algorithm-specific focus: Adaptive Kalman filter with an
  * explicitly bounded covariance or noise adaptation law.
  * This stub must not read/write opaque state or output buffers.
@@ -83,9 +118,16 @@ ucon_status_t ucon_adaptive_kf_correct(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ADAPTIVE_KF.step): Handle asynchronous samples explicitly; do not synthesize missing
- * measurements. Algorithm-specific focus: Adaptive Kalman filter with
- * an explicitly bounded covariance or noise adaptation law.
+/* TODO(ADAPTIVE_KF.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Run prediction and optional correction in a fixed documented order.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Handle asynchronous samples
+ * explicitly; do not synthesize missing measurements.
+ * Algorithm-specific focus: Adaptive Kalman filter with an explicitly
+ * bounded covariance or noise adaptation law.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_adaptive_kf_step(const ucon_algorithm_scaffold_call_t *call)

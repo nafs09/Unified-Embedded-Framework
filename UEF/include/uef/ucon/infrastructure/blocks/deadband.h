@@ -14,29 +14,61 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check port counts, dimensions, bounds, and scheduling/reset rules.
-/// TODO(DEADBAND.validate_config): Define ordering and meaning of every port.
-/// Algorithm-specific focus: Common nonlinear signal
-/// primitives.
+/// TODO(DEADBAND.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check port counts,
+/// dimensions, bounds, and scheduling/reset rules. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// ordering and meaning of every port. Algorithm-specific
+/// focus: Common nonlinear signal primitives.
 ucon_status_t ucon_deadband_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize bounded block state and caller-selected values.
-/// TODO(DEADBAND.init): Specify deterministic startup. Algorithm-specific focus: Common
-/// nonlinear signal primitives.
+/// TODO(DEADBAND.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize bounded block state and caller-selected values. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Specify deterministic startup. Algorithm-specific
+/// focus: Common nonlinear signal primitives.
 ucon_status_t ucon_deadband_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear or preload state according to exact block semantics.
-/// TODO(DEADBAND.reset): Define reset priority with a simultaneous sample. Algorithm-specific
-/// focus: Common nonlinear signal primitives.
+/// TODO(DEADBAND.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Clear or preload state according to exact block semantics. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define reset priority with a simultaneous sample.
+/// Algorithm-specific focus: Common nonlinear signal primitives.
 ucon_status_t ucon_deadband_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate block law for the declared mode and sample timing.
-/// TODO(DEADBAND.compute_output): Define saturation and non-finite handling.
-/// Algorithm-specific focus: Common nonlinear signal
-/// primitives.
+/// TODO(DEADBAND.compute_output): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Evaluate block law for the declared
+/// mode and sample timing. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define saturation and
+/// non-finite handling. Algorithm-specific focus: Common
+/// nonlinear signal primitives.
 ucon_status_t ucon_deadband_compute_output(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one invocation and publish outputs/status.
-/// TODO(DEADBAND.step): Avoid hidden scheduling, allocation, or cross-instance state.
+/// TODO(DEADBAND.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Process one invocation and publish outputs/status. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Avoid hidden scheduling, allocation, or cross-instance state.
 /// Algorithm-specific focus: Common nonlinear signal primitives.
 ucon_status_t ucon_deadband_step(const ucon_algorithm_scaffold_call_t *call);
 

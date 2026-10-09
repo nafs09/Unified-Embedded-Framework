@@ -2,6 +2,7 @@
 /// @brief Three-component vector value type and common operations.
 #ifndef UEF_UMATH_VECTOR3_H
 #define UEF_UMATH_VECTOR3_H
+#include <uef/umath/config.h>
 
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

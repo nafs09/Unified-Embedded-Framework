@@ -25,37 +25,37 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare the sampled plant/model contract, state and input dimensions, tuning/gain ownership, actuator constraints, execution deadline, and infeasible/fallback behavior."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check coefficients, sample time, limits, and recurrence history.",
-      "todo": "Document coefficient convention and valid degenerate cases. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check coefficients, sample time, limits, and recurrence history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Document coefficient convention and valid degenerate cases. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
     },
     {
       "name": "init",
       "purpose": "Initialize recurrence/controller state.",
-      "todo": "Define zero-state and optional steady-state preload. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize recurrence/controller state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define zero-state and optional steady-state preload. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
     },
     {
       "name": "reset",
       "purpose": "Clear or preload recurrence history.",
-      "todo": "Define behavior after coefficient changes. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear or preload recurrence history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define behavior after coefficient changes. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
     },
     {
       "name": "compute_candidate",
       "purpose": "Evaluate one discrete-time controller recurrence.",
-      "todo": "Check intermediate values before committing history. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Evaluate one discrete-time controller recurrence. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Check intermediate values before committing history. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
     },
     {
       "name": "apply_limits",
       "purpose": "Apply method-owned output and anti-windup behavior.",
-      "todo": "Specify ordering relative to feedforward and downstream actuator tracking. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply method-owned output and anti-windup behavior. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify ordering relative to feedforward and downstream actuator tracking. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
     },
     {
       "name": "step",
       "purpose": "Run one sample and atomically commit output/history.",
-      "todo": "Specify aliasing and numeric-failure behavior. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run one sample and atomically commit output/history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify aliasing and numeric-failure behavior. Algorithm-specific focus: Deadbeat step-response; precomputed gain sequence"
     }
   ]
 }

@@ -14,57 +14,105 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check sample period, detector/filter gains, and phase/frequency limits.
-/// TODO(PLL.validate_config): Declare units, phase wrap, and admissible update rate.
+/// TODO(PLL.validate_config): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check sample period, detector/filter gains, and
+/// phase/frequency limits. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements:
+/// Declare units, phase wrap, and admissible update rate.
 /// Algorithm-specific focus: Generic phase/frequency tracking loop
 /// and numerically controlled oscillator with declared detector
 /// and output units.
 ucon_status_t ucon_pll_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize phase, frequency, filter, and quality state.
-/// TODO(PLL.init): Define acquisition seed and startup behavior. Algorithm-specific focus:
-/// Generic phase/frequency tracking loop and numerically controlled
-/// oscillator with declared detector and output units.
+/// TODO(PLL.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize phase,
+/// frequency, filter, and quality state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define acquisition seed and startup
+/// behavior. Algorithm-specific focus: Generic phase/frequency tracking loop
+/// and numerically controlled oscillator with declared detector and output
+/// units.
 ucon_status_t ucon_pll_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear tracking history and lock persistence.
-/// TODO(PLL.reset): Specify reacquisition and caller-seeded restart behavior.
-/// Algorithm-specific focus: Generic phase/frequency tracking loop and
-/// numerically controlled oscillator with declared detector and output
-/// units.
+/// TODO(PLL.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Clear tracking
+/// history and lock persistence. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify reacquisition and
+/// caller-seeded restart behavior. Algorithm-specific focus: Generic
+/// phase/frequency tracking loop and numerically controlled oscillator with
+/// declared detector and output units.
 ucon_status_t ucon_pll_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute the configured phase/frequency detector output.
-/// TODO(PLL.update_detector): Define input quality rejection and detector sign convention.
-/// Algorithm-specific focus: Generic phase/frequency tracking loop
-/// and numerically controlled oscillator with declared detector
-/// and output units.
+/// TODO(PLL.update_detector): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Compute the configured phase/frequency detector output. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define input quality rejection
+/// and detector sign convention. Algorithm-specific focus: Generic
+/// phase/frequency tracking loop and numerically controlled
+/// oscillator with declared detector and output units.
 ucon_status_t ucon_pll_update_detector(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply bounded loop-filter or adaptation update.
-/// TODO(PLL.update_loop): Define anti-windup, frequency limits, and numeric failures.
+/// TODO(PLL.update_loop): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Apply bounded loop-filter or adaptation update. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Define anti-windup, frequency limits, and numeric failures.
 /// Algorithm-specific focus: Generic phase/frequency tracking loop and
 /// numerically controlled oscillator with declared detector and output
 /// units.
 ucon_status_t ucon_pll_update_loop(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance/wrap phase or NCO state for the elapsed interval.
-/// TODO(PLL.advance_phase): Specify phase representation and prevent overflow/unit ambiguity.
-/// Algorithm-specific focus: Generic phase/frequency tracking loop
-/// and numerically controlled oscillator with declared detector and
-/// output units.
+/// TODO(PLL.advance_phase): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Advance/wrap phase or NCO state for the elapsed interval. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify phase representation and
+/// prevent overflow/unit ambiguity. Algorithm-specific focus:
+/// Generic phase/frequency tracking loop and numerically controlled
+/// oscillator with declared detector and output units.
 ucon_status_t ucon_pll_advance_phase(const ucon_algorithm_scaffold_call_t *call);
 
 /// Report estimate validity and configured lock/loss-of-lock status.
-/// TODO(PLL.get_status): Use threshold persistence; small instantaneous phase error is not
-/// lock proof. Algorithm-specific focus: Generic phase/frequency
-/// tracking loop and numerically controlled oscillator with declared
-/// detector and output units.
+/// TODO(PLL.get_status): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Report estimate validity and configured lock/loss-of-lock status. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure. Operation-specific
+/// requirements: Use threshold persistence; small instantaneous phase
+/// error is not lock proof. Algorithm-specific focus: Generic
+/// phase/frequency tracking loop and numerically controlled oscillator
+/// with declared detector and output units.
 ucon_status_t ucon_pll_get_status(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one timestamped sample in a documented update order.
-/// TODO(PLL.step): Leave output/state unchanged when the sample is invalid.
-/// Algorithm-specific focus: Generic phase/frequency tracking loop and
-/// numerically controlled oscillator with declared detector and output units.
+/// TODO(PLL.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Process one
+/// timestamped sample in a documented update order. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Leave output/state unchanged
+/// when the sample is invalid. Algorithm-specific focus: Generic
+/// phase/frequency tracking loop and numerically controlled oscillator with
+/// declared detector and output units.
 ucon_status_t ucon_pll_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

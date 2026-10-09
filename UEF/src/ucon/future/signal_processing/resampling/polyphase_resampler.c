@@ -16,10 +16,19 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(POLYPHASE_RESAMPLER.validate_config): Define sample layout, scale, rate, and fixed
- * buffer size. Algorithm-specific focus:
- * Rational-rate polyphase FIR resampler with a
- * declared phase table and coefficient set.
+/* TODO(POLYPHASE_RESAMPLER.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check
+ * transform/statistic/rate dimensions and numeric
+ * range. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * sample layout, scale, rate, and fixed buffer
+ * size. Algorithm-specific focus: Rational-rate
+ * polyphase FIR resampler with a declared phase
+ * table and coefficient set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_polyphase_resampler_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +39,17 @@ ucon_status_t ucon_polyphase_resampler_validate_config(const ucon_algorithm_scaf
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLYPHASE_RESAMPLER.init): Define warm-up and reset behavior. Algorithm-specific
- * focus: Rational-rate polyphase FIR resampler with a
- * declared phase table and coefficient set.
+/* TODO(POLYPHASE_RESAMPLER.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Initialize window, phase, ring buffer,
+ * and accumulator. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define warm-up and reset
+ * behavior. Algorithm-specific focus: Rational-rate polyphase
+ * FIR resampler with a declared phase table and coefficient
+ * set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_polyphase_resampler_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +60,17 @@ ucon_status_t ucon_polyphase_resampler_init(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLYPHASE_RESAMPLER.reset): State ownership of coefficient/window tables.
- * Algorithm-specific focus: Rational-rate polyphase FIR
- * resampler with a declared phase table and coefficient set.
+/* TODO(POLYPHASE_RESAMPLER.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Clear signal history and
+ * phase/index state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: State ownership of
+ * coefficient/window tables. Algorithm-specific focus:
+ * Rational-rate polyphase FIR resampler with a declared
+ * phase table and coefficient set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_polyphase_resampler_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +81,18 @@ ucon_status_t ucon_polyphase_resampler_reset(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLYPHASE_RESAMPLER.process_block): Define latency, overlap, scaling, and overflow
- * behavior. Algorithm-specific focus: Rational-rate
- * polyphase FIR resampler with a declared phase
- * table and coefficient set.
+/* TODO(POLYPHASE_RESAMPLER.process_block): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Process one
+ * bounded block or fixed-rate sample group. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Define latency, overlap, scaling,
+ * and overflow behavior. Algorithm-specific focus:
+ * Rational-rate polyphase FIR resampler with a
+ * declared phase table and coefficient set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_polyphase_resampler_process_block(const ucon_algorithm_scaffold_call_t *call)
@@ -70,9 +103,17 @@ ucon_status_t ucon_polyphase_resampler_process_block(const ucon_algorithm_scaffo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLYPHASE_RESAMPLER.step): Specify incomplete-block and dropped-sample behavior.
- * Algorithm-specific focus: Rational-rate polyphase FIR
- * resampler with a declared phase table and coefficient set.
+/* TODO(POLYPHASE_RESAMPLER.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Advance the algorithm and publish
+ * output/validity metadata. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Specify incomplete-block
+ * and dropped-sample behavior. Algorithm-specific focus:
+ * Rational-rate polyphase FIR resampler with a declared phase
+ * table and coefficient set.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_polyphase_resampler_step(const ucon_algorithm_scaffold_call_t *call)

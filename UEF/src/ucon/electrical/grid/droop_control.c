@@ -16,10 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(DROOP_CONTROL.validate_config): Declare sequence and per-unit/scaling conventions.
- * Algorithm-specific focus: P-f/Q-V droop laws with
- * declared grid-forming or parallel-inverter model and
- * limits.
+/* TODO(DROOP_CONTROL.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check phase sequence,
+ * nominal frequency, gains, and grid limits. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Declare sequence and per-unit/scaling
+ * conventions. Algorithm-specific focus: P-f/Q-V droop
+ * laws with declared grid-forming or parallel-inverter
+ * model and limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_droop_control_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +38,15 @@ ucon_status_t ucon_droop_control_validate_config(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DROOP_CONTROL.init): Define phase seed and acquisition range. Algorithm-specific
- * focus: P-f/Q-V droop laws with declared grid-forming or
- * parallel-inverter model and limits.
+/* TODO(DROOP_CONTROL.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize orthogonal-signal, sequence, phase, and loop states.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define phase seed and
+ * acquisition range. Algorithm-specific focus: P-f/Q-V droop laws
+ * with declared grid-forming or parallel-inverter model and limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_droop_control_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +57,15 @@ ucon_status_t ucon_droop_control_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DROOP_CONTROL.reset): Define loss-of-lock and restart behavior. Algorithm-specific
- * focus: P-f/Q-V droop laws with declared grid-forming or
- * parallel-inverter model and limits.
+/* TODO(DROOP_CONTROL.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Clear synchronization history and lock persistence. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define loss-of-lock and restart
+ * behavior. Algorithm-specific focus: P-f/Q-V droop laws with
+ * declared grid-forming or parallel-inverter model and limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_droop_control_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +76,19 @@ ucon_status_t ucon_droop_control_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DROOP_CONTROL.update_signal_model): Specify frequency adaptation and sample-time
- * coupling. Algorithm-specific focus: P-f/Q-V droop
- * laws with declared grid-forming or
- * parallel-inverter model and limits.
+/* TODO(DROOP_CONTROL.update_signal_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Update
+ * SOGI/sequence or synchronous-frame signal
+ * estimates. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify
+ * frequency adaptation and sample-time coupling.
+ * Algorithm-specific focus: P-f/Q-V droop laws with
+ * declared grid-forming or parallel-inverter model
+ * and limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_droop_control_update_signal_model(const ucon_algorithm_scaffold_call_t *call)
@@ -70,9 +99,17 @@ ucon_status_t ucon_droop_control_update_signal_model(const ucon_algorithm_scaffo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DROOP_CONTROL.update_loop): Define anti-windup, bounds, and units. Algorithm-specific
- * focus: P-f/Q-V droop laws with declared grid-forming or
- * parallel-inverter model and limits.
+/* TODO(DROOP_CONTROL.update_loop): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Update phase/frequency and
+ * lock/quality state. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define anti-windup,
+ * bounds, and units. Algorithm-specific focus: P-f/Q-V droop
+ * laws with declared grid-forming or parallel-inverter model
+ * and limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_droop_control_update_loop(const ucon_algorithm_scaffold_call_t *call)
@@ -83,7 +120,14 @@ ucon_status_t ucon_droop_control_update_loop(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(DROOP_CONTROL.step): Reject invalid amplitude/sequence inputs without poisoning state.
+/* TODO(DROOP_CONTROL.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Process one grid sample and publish synchronization outputs. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Reject invalid
+ * amplitude/sequence inputs without poisoning state.
  * Algorithm-specific focus: P-f/Q-V droop laws with declared
  * grid-forming or parallel-inverter model and limits.
  * This stub must not read/write opaque state or output buffers.

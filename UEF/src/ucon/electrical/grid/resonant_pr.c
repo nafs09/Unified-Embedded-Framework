@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(RESONANT_PR.validate_config): Declare sequence and per-unit/scaling conventions.
+/* TODO(RESONANT_PR.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check phase sequence,
+ * nominal frequency, gains, and grid limits. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Declare sequence and per-unit/scaling conventions.
  * Algorithm-specific focus: Proportional-resonant current
  * controller with declared resonant frequency and
  * damping/bandwidth.
@@ -30,9 +38,15 @@ ucon_status_t ucon_resonant_pr_validate_config(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RESONANT_PR.init): Define phase seed and acquisition range. Algorithm-specific focus:
- * Proportional-resonant current controller with declared resonant
- * frequency and damping/bandwidth.
+/* TODO(RESONANT_PR.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize orthogonal-signal, sequence, phase, and loop states. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure. Operation-specific
+ * requirements: Define phase seed and acquisition range.
+ * Algorithm-specific focus: Proportional-resonant current controller
+ * with declared resonant frequency and damping/bandwidth.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_resonant_pr_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +57,15 @@ ucon_status_t ucon_resonant_pr_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RESONANT_PR.reset): Define loss-of-lock and restart behavior. Algorithm-specific
- * focus: Proportional-resonant current controller with declared
- * resonant frequency and damping/bandwidth.
+/* TODO(RESONANT_PR.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear synchronization history and lock persistence. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define loss-of-lock and restart
+ * behavior. Algorithm-specific focus: Proportional-resonant current
+ * controller with declared resonant frequency and damping/bandwidth.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_resonant_pr_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +76,18 @@ ucon_status_t ucon_resonant_pr_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RESONANT_PR.update_signal_model): Specify frequency adaptation and sample-time
- * coupling. Algorithm-specific focus:
- * Proportional-resonant current controller with
- * declared resonant frequency and damping/bandwidth.
+/* TODO(RESONANT_PR.update_signal_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Update SOGI/sequence or
+ * synchronous-frame signal estimates. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Specify
+ * frequency adaptation and sample-time coupling.
+ * Algorithm-specific focus: Proportional-resonant
+ * current controller with declared resonant frequency
+ * and damping/bandwidth.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_resonant_pr_update_signal_model(const ucon_algorithm_scaffold_call_t *call)
@@ -70,9 +98,16 @@ ucon_status_t ucon_resonant_pr_update_signal_model(const ucon_algorithm_scaffold
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RESONANT_PR.update_loop): Define anti-windup, bounds, and units. Algorithm-specific
- * focus: Proportional-resonant current controller with
- * declared resonant frequency and damping/bandwidth.
+/* TODO(RESONANT_PR.update_loop): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Update phase/frequency and lock/quality
+ * state. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define
+ * anti-windup, bounds, and units. Algorithm-specific focus:
+ * Proportional-resonant current controller with declared
+ * resonant frequency and damping/bandwidth.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_resonant_pr_update_loop(const ucon_algorithm_scaffold_call_t *call)
@@ -83,9 +118,16 @@ ucon_status_t ucon_resonant_pr_update_loop(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(RESONANT_PR.step): Reject invalid amplitude/sequence inputs without poisoning state.
- * Algorithm-specific focus: Proportional-resonant current controller
- * with declared resonant frequency and damping/bandwidth.
+/* TODO(RESONANT_PR.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Process one grid sample and publish synchronization outputs. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure. Operation-specific
+ * requirements: Reject invalid amplitude/sequence inputs without
+ * poisoning state. Algorithm-specific focus: Proportional-resonant
+ * current controller with declared resonant frequency and
+ * damping/bandwidth.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_resonant_pr_step(const ucon_algorithm_scaffold_call_t *call)

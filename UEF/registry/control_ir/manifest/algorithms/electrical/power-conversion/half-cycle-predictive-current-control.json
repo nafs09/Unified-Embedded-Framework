@@ -26,37 +26,37 @@
     "Family-specific decisions still required: declare phase order, transform scaling, measured switching instant, topology/motor model, voltage/current limits, dead-time, and safe gate-command boundary.",
     "Specify converter topology, half-cycle boundary and timing source, predictive plant equation, candidate switch actions, constraints, and current-limit/fault behavior before implementation."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_topology",
       "purpose": "Confirm topology, sensing polarity, and half-cycle timing definition.",
-      "todo": "The current key does not define these inputs. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Confirm topology, sensing polarity, and half-cycle timing definition. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: The current key does not define these inputs. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
     },
     {
       "name": "init",
       "purpose": "Initialize a cycle-synchronous controller state.",
-      "todo": "Specify phase acquisition and safe hardware handoff. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize a cycle-synchronous controller state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify phase acquisition and safe hardware handoff. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
     },
     {
       "name": "reset",
       "purpose": "Clear cycle/prediction history.",
-      "todo": "Never emit a switch command when timing/topology is invalid. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear cycle/prediction history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Never emit a switch command when timing/topology is invalid. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
     },
     {
       "name": "predict_candidates",
       "purpose": "Predict current for the explicitly allowed switch actions.",
-      "todo": "Write plant equations and sample instant before implementation. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Predict current for the explicitly allowed switch actions. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Write plant equations and sample instant before implementation. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
     },
     {
       "name": "select_switch_action",
       "purpose": "Select an admissible action using the specified objective.",
-      "todo": "Define tie-breaking, dead-time, current limits, and fault response. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Select an admissible action using the specified objective. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define tie-breaking, dead-time, current limits, and fault response. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
     },
     {
       "name": "step",
       "purpose": "Run one half-cycle update and return abstract command/status.",
-      "todo": "Keep gate sequencing/interlocks outside portable UCON. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run one half-cycle update and return abstract command/status. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep gate sequencing/interlocks outside portable UCON. Algorithm-specific focus: Deferred converter-specific predictive-current-control candidate whose topology, prediction horizon, and switch-selection rule are not defined yet."
     }
   ]
 }

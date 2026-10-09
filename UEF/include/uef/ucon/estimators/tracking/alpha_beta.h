@@ -14,38 +14,79 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check motion model, sample interval, and process/measurement noise.
-/// TODO(ALPHA_BETA.validate_config): Define state ordering and acceleration/noise
+/// TODO(ALPHA_BETA.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check motion model, sample
+/// interval, and process/measurement noise. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements:
+/// Define state ordering and acceleration/noise
 /// assumptions. Algorithm-specific focus: Alpha-beta (g-h)
 /// position/velocity tracker using a declared
 /// constant-velocity motion model.
 ucon_status_t ucon_alpha_beta_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize position/velocity/acceleration estimate and covariance if used.
-/// TODO(ALPHA_BETA.init): Define initial measurement and uncertainty policy.
-/// Algorithm-specific focus: Alpha-beta (g-h) position/velocity
-/// tracker using a declared constant-velocity motion model.
+/// TODO(ALPHA_BETA.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize position/velocity/acceleration estimate and covariance
+/// if used. 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define initial measurement and
+/// uncertainty policy. Algorithm-specific focus: Alpha-beta (g-h)
+/// position/velocity tracker using a declared constant-velocity motion
+/// model.
 ucon_status_t ucon_alpha_beta_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear tracking history.
-/// TODO(ALPHA_BETA.reset): Specify handling of gaps and reacquisition. Algorithm-specific
-/// focus: Alpha-beta (g-h) position/velocity tracker using a declared
+/// TODO(ALPHA_BETA.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Clear tracking history. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Specify
+/// handling of gaps and reacquisition. Algorithm-specific focus:
+/// Alpha-beta (g-h) position/velocity tracker using a declared
 /// constant-velocity motion model.
 ucon_status_t ucon_alpha_beta_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate the kinematic state across the supplied interval.
-/// TODO(ALPHA_BETA.predict): Handle variable dt only if explicitly supported.
-/// Algorithm-specific focus: Alpha-beta (g-h) position/velocity
-/// tracker using a declared constant-velocity motion model.
+/// TODO(ALPHA_BETA.predict): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Propagate the kinematic state across the supplied interval.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Handle variable dt only if
+/// explicitly supported. Algorithm-specific focus: Alpha-beta (g-h)
+/// position/velocity tracker using a declared constant-velocity
+/// motion model.
 ucon_status_t ucon_alpha_beta_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply the new position/measurement and compute residual diagnostics.
-/// TODO(ALPHA_BETA.correct): Define outlier rejection and missing-sample behavior.
-/// Algorithm-specific focus: Alpha-beta (g-h) position/velocity
-/// tracker using a declared constant-velocity motion model.
+/// TODO(ALPHA_BETA.correct): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Apply the new position/measurement and compute residual
+/// diagnostics. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Define outlier
+/// rejection and missing-sample behavior. Algorithm-specific focus:
+/// Alpha-beta (g-h) position/velocity tracker using a declared
+/// constant-velocity motion model.
 ucon_status_t ucon_alpha_beta_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one prediction/correction cycle.
-/// TODO(ALPHA_BETA.step): Preserve estimate on invalid timestamp or arithmetic failure.
+/// TODO(ALPHA_BETA.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Run one prediction/correction cycle. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements:
+/// Preserve estimate on invalid timestamp or arithmetic failure.
 /// Algorithm-specific focus: Alpha-beta (g-h) position/velocity
 /// tracker using a declared constant-velocity motion model.
 ucon_status_t ucon_alpha_beta_step(const ucon_algorithm_scaffold_call_t *call);

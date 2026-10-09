@@ -1,5 +1,5 @@
 /// @file include/uef/ucore/uef_types.h
-/// @brief Scalar type aliases. All UEF code uses these; never float or int directly in portable code.
+/// @brief Foundational fixed-width and primitive aliases for portable UEF code.
 
 #ifndef UEF_TYPES_H
 #define UEF_TYPES_H
@@ -49,11 +49,7 @@ typedef int16_t  uef_i16_t;
 typedef int32_t  uef_i32_t;
 typedef int64_t  uef_i64_t;
 
-/* Shared UMATH scalar type selected once for all numerical modules. */
-#ifndef UMATH_SCALAR_TYPE
-#  define UMATH_SCALAR_TYPE uef_f32_t
-#endif
-typedef UMATH_SCALAR_TYPE umath_scalar_t;
+/* UMATH scalar and accumulator aliases are configured in uef/umath/config.h. */
 
 #ifdef __cplusplus
 }

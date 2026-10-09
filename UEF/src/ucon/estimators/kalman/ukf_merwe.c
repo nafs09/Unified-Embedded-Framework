@@ -16,11 +16,14 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(UKF_MERWE.validate_model): Pin alpha, beta, kappa, state dimension, and admissible
- * weights. Algorithm-specific focus: Van der Merwe scaled
- * sigma-point parameterization of the UKF; share the UKF
- * runtime kernel only if the weight and spread contract stays
- * explicit.
+/* TODO(UKF_MERWE.validate_model): 1) Check callback and covariance dimensions. 2) Require
+ * finite alpha>0, beta, kappa and c=n+lambda>0 with
+ * lambda=alpha^2*(n+kappa)-n; verify the weights and fixed
+ * workspace. 3) Pin factor orientation and negative-weight
+ * policy before accepting configuration. Algorithm-specific
+ * focus: Van der Merwe scaled sigma-point parameterization of
+ * the UKF; share the UKF runtime kernel only if the weight
+ * and spread contract stays explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_validate_model(const ucon_algorithm_scaffold_call_t *call)
@@ -31,10 +34,13 @@ ucon_status_t ucon_ukf_merwe_validate_model(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF_MERWE.init): Define covariance factorization failure. Algorithm-specific focus:
- * Van der Merwe scaled sigma-point parameterization of the UKF; share
- * the UKF runtime kernel only if the weight and spread contract stays
- * explicit.
+/* TODO(UKF_MERWE.init): 1) Copy x0/P0 into candidate storage and validate finite shape/PSD.
+ * 2) Compute lambda, c, Wm0, Wc0, and paired weights from
+ * alpha/beta/kappa. 3) Initialize timestamp/diagnostics and publish
+ * only when factorization and weights are valid. Algorithm-specific
+ * focus: Van der Merwe scaled sigma-point parameterization of the UKF;
+ * share the UKF runtime kernel only if the weight and spread contract
+ * stays explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_init(const ucon_algorithm_scaffold_call_t *call)
@@ -45,10 +51,12 @@ ucon_status_t ucon_ukf_merwe_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF_MERWE.reset): Specify retained configuration/context. Algorithm-specific focus:
- * Van der Merwe scaled sigma-point parameterization of the UKF; share
- * the UKF runtime kernel only if the weight and spread contract stays
- * explicit.
+/* TODO(UKF_MERWE.reset): 1) Clear timestamp, freshness, and innovation history. 2) Restore
+ * caller x0/P0 seeds without changing scaling parameters. 3) Refactor
+ * the seed covariance and commit reset state atomically.
+ * Algorithm-specific focus: Van der Merwe scaled sigma-point
+ * parameterization of the UKF; share the UKF runtime kernel only if
+ * the weight and spread contract stays explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -59,11 +67,16 @@ ucon_status_t ucon_ukf_merwe_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF_MERWE.generate_merwe_points): Follow the declared scaling convention and
- * state-dimension factor. Algorithm-specific focus:
- * Van der Merwe scaled sigma-point parameterization of
- * the UKF; share the UKF runtime kernel only if the
- * weight and spread contract stays explicit.
+/* TODO(UKF_MERWE.generate_merwe_points): 1) Compute lambda=alpha^2*(n+kappa)-n and
+ * c=n+lambda. 2) Factor cP using the declared
+ * orientation; emit x and paired x+/-factor-column
+ * points in fixed order. 3) Assign Wm0=lambda/c,
+ * Wc0=Wm0+(1-alpha^2+beta), and paired 1/(2c); reject
+ * invalid c/nonfinite points. Algorithm-specific
+ * focus: Van der Merwe scaled sigma-point
+ * parameterization of the UKF; share the UKF runtime
+ * kernel only if the weight and spread contract stays
+ * explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_generate_merwe_points(const ucon_algorithm_scaffold_call_t *call)
@@ -74,10 +87,14 @@ ucon_status_t ucon_ukf_merwe_generate_merwe_points(const ucon_algorithm_scaffold
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF_MERWE.predict): Define noise augmentation and covariance recovery.
- * Algorithm-specific focus: Van der Merwe scaled sigma-point
- * parameterization of the UKF; share the UKF runtime kernel only if
- * the weight and spread contract stays explicit.
+/* TODO(UKF_MERWE.predict): 1) Generate the Merwe set from the prior and evaluate the process
+ * model at each point. 2) Apply Wm weights to predicted mean and Wc
+ * weights to covariance deviations. 3) Add process noise directly or
+ * through explicit augmentation per configuration; validate
+ * PSD/finite values before commit. Algorithm-specific focus: Van der
+ * Merwe scaled sigma-point parameterization of the UKF; share the
+ * UKF runtime kernel only if the weight and spread contract stays
+ * explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -88,10 +105,13 @@ ucon_status_t ucon_ukf_merwe_predict(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF_MERWE.correct): Define innovation solve, gating, and conditioning.
- * Algorithm-specific focus: Van der Merwe scaled sigma-point
- * parameterization of the UKF; share the UKF runtime kernel only if
- * the weight and spread contract stays explicit.
+/* TODO(UKF_MERWE.correct): 1) Generate predicted-state points and evaluate the measurement
+ * model. 2) Use Merwe weights for z_pred, S+R, and state/measurement
+ * cross covariance. 3) Factor/solve S, gate the innovation, apply
+ * the covariance update, and preserve prediction on rejection or
+ * numerical failure. Algorithm-specific focus: Van der Merwe scaled
+ * sigma-point parameterization of the UKF; share the UKF runtime
+ * kernel only if the weight and spread contract stays explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_correct(const ucon_algorithm_scaffold_call_t *call)
@@ -102,10 +122,12 @@ ucon_status_t ucon_ukf_merwe_correct(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(UKF_MERWE.step): Share implementation with UKF only if semantics remain explicit.
- * Algorithm-specific focus: Van der Merwe scaled sigma-point
- * parameterization of the UKF; share the UKF runtime kernel only if the
- * weight and spread contract stays explicit.
+/* TODO(UKF_MERWE.step): 1) Validate sample time and predict once. 2) Reuse the same validated
+ * alpha/beta/kappa weights for state and measurement transforms. 3)
+ * Correct only present channels and commit outputs together; never
+ * switch parameterization silently. Algorithm-specific focus: Van der
+ * Merwe scaled sigma-point parameterization of the UKF; share the UKF
+ * runtime kernel only if the weight and spread contract stays explicit.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ukf_merwe_step(const ucon_algorithm_scaffold_call_t *call)

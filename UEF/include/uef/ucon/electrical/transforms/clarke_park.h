@@ -14,30 +14,61 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check phase order, scaling, angle convention, and zero-sequence policy.
-/// TODO(CLARKE_PARK.validate_config): Keep forward/inverse conventions consistent.
+/// TODO(CLARKE_PARK.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check phase order,
+/// scaling, angle convention, and zero-sequence policy. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements:
+/// Keep forward/inverse conventions consistent.
 /// Algorithm-specific focus: Three-phase transforms with
 /// declared phase sequence, scaling, zero-sequence
 /// treatment, and angle convention.
 ucon_status_t ucon_clarke_park_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Transform phase samples into the configured frame.
-/// TODO(CLARKE_PARK.forward_transform): Specify phase ordering and numeric range.
-/// Algorithm-specific focus: Three-phase transforms with
-/// declared phase sequence, scaling, zero-sequence
-/// treatment, and angle convention.
+/// TODO(CLARKE_PARK.forward_transform): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Transform phase samples
+/// into the configured frame. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify phase
+/// ordering and numeric range. Algorithm-specific focus:
+/// Three-phase transforms with declared phase sequence,
+/// scaling, zero-sequence treatment, and angle
+/// convention.
 ucon_status_t ucon_clarke_park_forward_transform(const ucon_algorithm_scaffold_call_t *call);
 
 /// Transform frame commands back to phase values.
-/// TODO(CLARKE_PARK.inverse_transform): Define zero-sequence reconstruction and saturation
-/// ownership. Algorithm-specific focus: Three-phase
-/// transforms with declared phase sequence, scaling,
-/// zero-sequence treatment, and angle convention.
+/// TODO(CLARKE_PARK.inverse_transform): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Transform frame commands
+/// back to phase values. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define zero-sequence
+/// reconstruction and saturation ownership.
+/// Algorithm-specific focus: Three-phase transforms with
+/// declared phase sequence, scaling, zero-sequence
+/// treatment, and angle convention.
 ucon_status_t ucon_clarke_park_inverse_transform(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run the requested transform for one synchronized sample set.
-/// TODO(CLARKE_PARK.step): Validate all inputs before writing outputs. Algorithm-specific
-/// focus: Three-phase transforms with declared phase sequence,
-/// scaling, zero-sequence treatment, and angle convention.
+/// TODO(CLARKE_PARK.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Run the requested transform for one synchronized sample set. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Validate all inputs before
+/// writing outputs. Algorithm-specific focus: Three-phase transforms
+/// with declared phase sequence, scaling, zero-sequence treatment,
+/// and angle convention.
 ucon_status_t ucon_clarke_park_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

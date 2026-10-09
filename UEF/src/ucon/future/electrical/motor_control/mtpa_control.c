@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(MTPA_CONTROL.validate_config): State motor type and angle-source validity.
+/* TODO(MTPA_CONTROL.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check motor model,
+ * transform, sample timing, and current/voltage limits.
+ * 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * State motor type and angle-source validity.
  * Algorithm-specific focus: Maximum-torque-per-ampere
  * current-reference selection for a declared motor model
  * and operating region.
@@ -30,8 +38,15 @@ ucon_status_t ucon_mtpa_control_validate_config(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MTPA_CONTROL.init): Define alignment and sensor-offset ownership. Algorithm-specific
- * focus: Maximum-torque-per-ampere current-reference selection for a
+/* TODO(MTPA_CONTROL.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize d/q loops, flux/torque estimate, and modulation state.
+ * 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define alignment and
+ * sensor-offset ownership. Algorithm-specific focus:
+ * Maximum-torque-per-ampere current-reference selection for a
  * declared motor model and operating region.
  * This stub must not read/write opaque state or output buffers.
  */
@@ -43,9 +58,16 @@ ucon_status_t ucon_mtpa_control_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MTPA_CONTROL.reset): Define a safe restart state. Algorithm-specific focus:
- * Maximum-torque-per-ampere current-reference selection for a
- * declared motor model and operating region.
+/* TODO(MTPA_CONTROL.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset control/estimator history without issuing gate actions. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define a safe restart state.
+ * Algorithm-specific focus: Maximum-torque-per-ampere
+ * current-reference selection for a declared motor model and
+ * operating region.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mtpa_control_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,8 +78,16 @@ ucon_status_t ucon_mtpa_control_reset(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MTPA_CONTROL.estimate_motor_state): State model validity and low-speed operating
- * limits. Algorithm-specific focus:
+/* TODO(MTPA_CONTROL.estimate_motor_state): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Update flux,
+ * torque, angle, or speed estimates. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: State model validity and low-speed
+ * operating limits. Algorithm-specific focus:
  * Maximum-torque-per-ampere current-reference
  * selection for a declared motor model and operating
  * region.
@@ -71,8 +101,17 @@ ucon_status_t ucon_mtpa_control_estimate_motor_state(const ucon_algorithm_scaffo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MTPA_CONTROL.compute_current_command): Define decoupling, saturation, and
- * current-limit policy. Algorithm-specific focus:
+/* TODO(MTPA_CONTROL.compute_current_command): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Compute d/q
+ * or switching-state command. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: Define
+ * decoupling, saturation, and current-limit
+ * policy. Algorithm-specific focus:
  * Maximum-torque-per-ampere current-reference
  * selection for a declared motor model and
  * operating region.
@@ -86,10 +125,16 @@ ucon_status_t ucon_mtpa_control_compute_current_command(const ucon_algorithm_sca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MTPA_CONTROL.modulate): Do not assume gate polarity, dead time, or timer setup.
- * Algorithm-specific focus: Maximum-torque-per-ampere
- * current-reference selection for a declared motor model and
- * operating region.
+/* TODO(MTPA_CONTROL.modulate): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Map abstract command into declared modulation values. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Do not assume gate polarity,
+ * dead time, or timer setup. Algorithm-specific focus:
+ * Maximum-torque-per-ampere current-reference selection for a
+ * declared motor model and operating region.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mtpa_control_modulate(const ucon_algorithm_scaffold_call_t *call)
@@ -100,8 +145,14 @@ ucon_status_t ucon_mtpa_control_modulate(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MTPA_CONTROL.step): Bound work and preserve outputs on invalid measurements.
- * Algorithm-specific focus: Maximum-torque-per-ampere
+/* TODO(MTPA_CONTROL.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Coordinate one synchronized motor-control update. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Bound work and preserve outputs on invalid
+ * measurements. Algorithm-specific focus: Maximum-torque-per-ampere
  * current-reference selection for a declared motor model and
  * operating region.
  * This stub must not read/write opaque state or output buffers.

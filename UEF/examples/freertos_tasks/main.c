@@ -6,6 +6,10 @@
 #include "uef/uos/uos.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(freertos-tasks main): Initialize board/UOS dependencies, allocate task stacks,
+     * control blocks, queues, and synchronization objects statically, then check each
+     * create result. Start the scheduler only after all tasks are ready and provide a
+     * bounded startup-failure path; document priorities, stack sizes, and ownership.
+     */
     return 0;
 }

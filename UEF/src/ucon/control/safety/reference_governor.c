@@ -16,8 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(REFERENCE_GOVERNOR.validate_model): Define prediction/feasibility assumptions and
- * protected outputs. Algorithm-specific focus:
+/* TODO(REFERENCE_GOVERNOR.validate_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check
+ * closed-loop model, constraints, and reference
+ * bounds. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Define
+ * prediction/feasibility assumptions and protected
+ * outputs. Algorithm-specific focus:
  * Constraint-aware reference shaper around a
  * declared closed-loop model; it returns a governed
  * reference/status and does not replace the inner
@@ -32,7 +41,14 @@ ucon_status_t ucon_reference_governor_validate_model(const ucon_algorithm_scaffo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REFERENCE_GOVERNOR.init): Define startup state and previous feasible reference.
+/* TODO(REFERENCE_GOVERNOR.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Initialize reference/constraint
+ * history. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define
+ * startup state and previous feasible reference.
  * Algorithm-specific focus: Constraint-aware reference shaper
  * around a declared closed-loop model; it returns a governed
  * reference/status and does not replace the inner controller.
@@ -46,7 +62,14 @@ ucon_status_t ucon_reference_governor_init(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REFERENCE_GOVERNOR.reset): Specify behavior after model or constraint updates.
+/* TODO(REFERENCE_GOVERNOR.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Clear governor/safety history. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Specify
+ * behavior after model or constraint updates.
  * Algorithm-specific focus: Constraint-aware reference shaper
  * around a declared closed-loop model; it returns a governed
  * reference/status and does not replace the inner controller.
@@ -60,12 +83,20 @@ ucon_status_t ucon_reference_governor_reset(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REFERENCE_GOVERNOR.check_candidate): Bound prediction work and specify uncertainty
- * margin. Algorithm-specific focus:
- * Constraint-aware reference shaper around a
- * declared closed-loop model; it returns a governed
- * reference/status and does not replace the inner
- * controller.
+/* TODO(REFERENCE_GOVERNOR.check_candidate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Evaluate the
+ * requested reference against declared future
+ * constraints. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Bound
+ * prediction work and specify uncertainty margin.
+ * Algorithm-specific focus: Constraint-aware
+ * reference shaper around a declared closed-loop
+ * model; it returns a governed reference/status and
+ * does not replace the inner controller.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_reference_governor_check_candidate(const ucon_algorithm_scaffold_call_t *call)
@@ -76,12 +107,20 @@ ucon_status_t ucon_reference_governor_check_candidate(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REFERENCE_GOVERNOR.shape_reference): Do not modify the inner controller or actuate
- * hardware. Algorithm-specific focus:
- * Constraint-aware reference shaper around a
- * declared closed-loop model; it returns a governed
- * reference/status and does not replace the inner
- * controller.
+/* TODO(REFERENCE_GOVERNOR.shape_reference): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Compute the
+ * admissible reference under the selected governor
+ * rule. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Do not
+ * modify the inner controller or actuate hardware.
+ * Algorithm-specific focus: Constraint-aware
+ * reference shaper around a declared closed-loop
+ * model; it returns a governed reference/status and
+ * does not replace the inner controller.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_reference_governor_shape_reference(const ucon_algorithm_scaffold_call_t *call)
@@ -92,7 +131,14 @@ ucon_status_t ucon_reference_governor_shape_reference(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REFERENCE_GOVERNOR.step): Define infeasible and solver-timeout behavior.
+/* TODO(REFERENCE_GOVERNOR.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Return governed reference, feasibility,
+ * and limitation status. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Define infeasible and solver-timeout behavior.
  * Algorithm-specific focus: Constraint-aware reference shaper
  * around a declared closed-loop model; it returns a governed
  * reference/status and does not replace the inner controller.

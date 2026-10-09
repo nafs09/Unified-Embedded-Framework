@@ -3,13 +3,7 @@
     "src/ucon/control/state_space/lqr.c"
   ],
   "headers": [
-    "include/uef/ucon/control/state_space/lqr.h",
-    "include/uef/ucon/detail/algorithm_call.h",
-    "include/uef/ucon/ucon_status.h",
-    "include/uef/ucon/ucon_types.h",
-    "include/uef/ucore/uef_types.h",
-    "include/uef/umath/scalar.h",
-    "include/uef/umath/status.h"
+    "include/uef/ucon/control/state_space/lqr.h"
   ],
   "dependencies": [
     "ucon/core"

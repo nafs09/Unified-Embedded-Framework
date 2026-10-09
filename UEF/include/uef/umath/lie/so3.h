@@ -2,6 +2,7 @@
 /// @brief Planned SO(3) tangent, exponential/logarithm, and Jacobian operations.
 #ifndef UEF_UMATH_LIE_SO3_H
 #define UEF_UMATH_LIE_SO3_H
+#include <uef/umath/config.h>
 #include <uef/umath/quaternion.h>
 #include <uef/umath/vector3.h>
 #ifdef __cplusplus

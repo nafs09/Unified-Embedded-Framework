@@ -2,6 +2,7 @@
 /// @brief Planned bounded special functions required by probability and signal modules.
 #ifndef UEF_UMATH_SPECIAL_FUNCTIONS_H
 #define UEF_UMATH_SPECIAL_FUNCTIONS_H
+#include <uef/umath/config.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
 #ifdef __cplusplus

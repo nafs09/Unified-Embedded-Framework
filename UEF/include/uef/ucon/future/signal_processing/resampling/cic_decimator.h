@@ -14,37 +14,73 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check transform/statistic/rate dimensions and numeric range.
-/// TODO(CIC_DECIMATOR.validate_config): Define sample layout, scale, rate, and fixed buffer
-/// size. Algorithm-specific focus:
-/// Cascaded-integrator-comb decimator with configured
-/// rate change, stage count, and differential delay.
+/// TODO(CIC_DECIMATOR.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check
+/// transform/statistic/rate dimensions and numeric
+/// range. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define sample
+/// layout, scale, rate, and fixed buffer size.
+/// Algorithm-specific focus: Cascaded-integrator-comb
+/// decimator with configured rate change, stage count,
+/// and differential delay.
 ucon_status_t ucon_cic_decimator_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize window, phase, ring buffer, and accumulator.
-/// TODO(CIC_DECIMATOR.init): Define warm-up and reset behavior. Algorithm-specific focus:
-/// Cascaded-integrator-comb decimator with configured rate change,
-/// stage count, and differential delay.
+/// TODO(CIC_DECIMATOR.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Initialize window, phase, ring buffer, and accumulator. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define warm-up and reset
+/// behavior. Algorithm-specific focus: Cascaded-integrator-comb
+/// decimator with configured rate change, stage count, and
+/// differential delay.
 ucon_status_t ucon_cic_decimator_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear signal history and phase/index state.
-/// TODO(CIC_DECIMATOR.reset): State ownership of coefficient/window tables.
+/// TODO(CIC_DECIMATOR.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Clear signal history and phase/index state. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: State ownership of coefficient/window tables.
 /// Algorithm-specific focus: Cascaded-integrator-comb decimator
 /// with configured rate change, stage count, and differential
 /// delay.
 ucon_status_t ucon_cic_decimator_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one bounded block or fixed-rate sample group.
-/// TODO(CIC_DECIMATOR.process_block): Define latency, overlap, scaling, and overflow
-/// behavior. Algorithm-specific focus:
-/// Cascaded-integrator-comb decimator with configured rate
-/// change, stage count, and differential delay.
+/// TODO(CIC_DECIMATOR.process_block): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Process one bounded block
+/// or fixed-rate sample group. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Define latency,
+/// overlap, scaling, and overflow behavior.
+/// Algorithm-specific focus: Cascaded-integrator-comb
+/// decimator with configured rate change, stage count, and
+/// differential delay.
 ucon_status_t ucon_cic_decimator_process_block(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance the algorithm and publish output/validity metadata.
-/// TODO(CIC_DECIMATOR.step): Specify incomplete-block and dropped-sample behavior.
-/// Algorithm-specific focus: Cascaded-integrator-comb decimator
-/// with configured rate change, stage count, and differential
-/// delay.
+/// TODO(CIC_DECIMATOR.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Advance the algorithm and publish output/validity metadata.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify incomplete-block and
+/// dropped-sample behavior. Algorithm-specific focus:
+/// Cascaded-integrator-comb decimator with configured rate change,
+/// stage count, and differential delay.
 ucon_status_t ucon_cic_decimator_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

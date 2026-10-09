@@ -16,7 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(TIME_OPTIMAL_PROFILE.validate_limits): Declare coordinate/time units and infeasibility
+/* TODO(TIME_OPTIMAL_PROFILE.validate_limits): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Check
+ * boundary conditions, dimensions, and
+ * motion/continuity limits. 3) Check numeric
+ * results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: Declare
+ * coordinate/time units and infeasibility
  * behavior. Algorithm-specific focus:
  * Time-optimal one-dimensional motion profile
  * under declared velocity, acceleration, and jerk
@@ -31,7 +41,14 @@ ucon_status_t ucon_time_optimal_profile_validate_limits(const ucon_algorithm_sca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TIME_OPTIMAL_PROFILE.init): Define start-state acquisition and fixed workspace.
+/* TODO(TIME_OPTIMAL_PROFILE.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize profile/segment
+ * state. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define
+ * start-state acquisition and fixed workspace.
  * Algorithm-specific focus: Time-optimal one-dimensional
  * motion profile under declared velocity, acceleration, and
  * jerk limits.
@@ -45,10 +62,17 @@ ucon_status_t ucon_time_optimal_profile_init(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TIME_OPTIMAL_PROFILE.reset): Specify whether the last reference is retained.
- * Algorithm-specific focus: Time-optimal one-dimensional
- * motion profile under declared velocity, acceleration, and
- * jerk limits.
+/* TODO(TIME_OPTIMAL_PROFILE.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Cancel active profile and
+ * clear elapsed-time history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify whether the last
+ * reference is retained. Algorithm-specific focus:
+ * Time-optimal one-dimensional motion profile under
+ * declared velocity, acceleration, and jerk limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_time_optimal_profile_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -59,10 +83,17 @@ ucon_status_t ucon_time_optimal_profile_reset(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TIME_OPTIMAL_PROFILE.plan): Bound solver work and avoid partial output on
- * infeasibility. Algorithm-specific focus: Time-optimal
- * one-dimensional motion profile under declared velocity,
- * acceleration, and jerk limits.
+/* TODO(TIME_OPTIMAL_PROFILE.plan): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute/validate trajectory
+ * coefficients or profile phases. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Bound solver work and
+ * avoid partial output on infeasibility. Algorithm-specific
+ * focus: Time-optimal one-dimensional motion profile under
+ * declared velocity, acceleration, and jerk limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_time_optimal_profile_plan(const ucon_algorithm_scaffold_call_t *call)
@@ -73,7 +104,15 @@ ucon_status_t ucon_time_optimal_profile_plan(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TIME_OPTIMAL_PROFILE.sample): Define endpoint, segment-boundary, and continuity
+/* TODO(TIME_OPTIMAL_PROFILE.sample): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Evaluate position and
+ * required derivatives at a declared time. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Define endpoint, segment-boundary, and continuity
  * semantics. Algorithm-specific focus: Time-optimal
  * one-dimensional motion profile under declared velocity,
  * acceleration, and jerk limits.
@@ -87,10 +126,17 @@ ucon_status_t ucon_time_optimal_profile_sample(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(TIME_OPTIMAL_PROFILE.step): Handle irregular/missed intervals explicitly.
- * Algorithm-specific focus: Time-optimal one-dimensional
- * motion profile under declared velocity, acceleration, and
- * jerk limits.
+/* TODO(TIME_OPTIMAL_PROFILE.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Advance with the supplied
+ * timebase and publish reference values. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on failure.
+ * Operation-specific requirements: Handle irregular/missed
+ * intervals explicitly. Algorithm-specific focus:
+ * Time-optimal one-dimensional motion profile under declared
+ * velocity, acceleration, and jerk limits.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_time_optimal_profile_step(const ucon_algorithm_scaffold_call_t *call)

@@ -14,13 +14,12 @@ void uhal_irq_enable(
     uef_u8_t preempt_priority,
     uef_u8_t sub_priority
 ) {
-    /* TODO(UEF Cortex-M):
-     * Configure priority grouping and NVIC state using the target priority-bit count;
-     * preserve pending/enabled state and document safe ISR use. Implement this contract for
-     * the selected Cortex-M CMSIS device without assuming a particular vendor register map.
-     * Keep interrupt and register side effects documented, bounded, and safe for the active
-     * target.
-     */
+    /* TODO(uhal_irq_enable):
+ * 1) Validate IRQ number and priorities against implemented NVIC priority bits
+ * 2) encode using board-configured grouping and set priority
+ * 3) clear stale pending only if contract says so, then enable the line.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)irqn;
     (void)preempt_priority;
     (void)sub_priority;
@@ -29,38 +28,35 @@ void uhal_irq_enable(
 void uhal_irq_disable(
     IRQn_Type irqn
 ) {
-    /* TODO(UEF Cortex-M):
-     * Configure priority grouping and NVIC state using the target priority-bit count;
-     * preserve pending/enabled state and document safe ISR use. Implement this contract for
-     * the selected Cortex-M CMSIS device without assuming a particular vendor register map.
-     * Keep interrupt and register side effects documented, bounded, and safe for the active
-     * target.
-     */
+    /* TODO(uhal_irq_disable):
+ * 1) Validate and disable only the NVIC line through CMSIS
+ * 2) preserve pending/priority state
+ * 3) synchronize handler shutdown before owners release backing resources.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)irqn;
 }
 
 void uhal_irq_set_pending(
     IRQn_Type irqn
 ) {
-    /* TODO(UEF Cortex-M):
-     * Configure priority grouping and NVIC state using the target priority-bit count;
-     * preserve pending/enabled state and document safe ISR use. Implement this contract for
-     * the selected Cortex-M CMSIS device without assuming a particular vendor register map.
-     * Keep interrupt and register side effects documented, bounded, and safe for the active
-     * target.
-     */
+    /* TODO(uhal_irq_set_pending):
+ * 1) Validate IRQ number and set only its NVIC pending bit
+ * 2) preserve enable and priority state
+ * 3) document that the peripheral source flag remains independently owned.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)irqn;
 }
 
 void uhal_irq_clear_pending(
     IRQn_Type irqn
 ) {
-    /* TODO(UEF Cortex-M):
-     * Configure priority grouping and NVIC state using the target priority-bit count;
-     * preserve pending/enabled state and document safe ISR use. Implement this contract for
-     * the selected Cortex-M CMSIS device without assuming a particular vendor register map.
-     * Keep interrupt and register side effects documented, bounded, and safe for the active
-     * target.
-     */
+    /* TODO(uhal_irq_clear_pending):
+ * 1) Validate IRQ number and clear only its NVIC pending latch
+ * 2) preserve enable and priority state
+ * 3) do not clear the peripheral source flag.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)irqn;
 }

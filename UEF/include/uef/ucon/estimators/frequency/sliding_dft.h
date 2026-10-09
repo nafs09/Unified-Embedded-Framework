@@ -14,48 +14,91 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check window length, bins, sample timing, and update stride.
-/// TODO(SLIDING_DFT.validate_config): Define transform scale, frequency bins, and fixed
-/// memory. Algorithm-specific focus: Finite-window sliding
+/// TODO(SLIDING_DFT.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check window length, bins,
+/// sample timing, and update stride. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define
+/// transform scale, frequency bins, and fixed memory.
+/// Algorithm-specific focus: Finite-window sliding
 /// discrete Fourier transform for bounded-frequency-bin
 /// tracking; define update stride, leakage, and reset
 /// behavior.
 ucon_status_t ucon_sliding_dft_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize ring buffer and complex-bin recurrence state.
-/// TODO(SLIDING_DFT.init): Specify warm-up and coefficient/table ownership.
-/// Algorithm-specific focus: Finite-window sliding discrete Fourier
-/// transform for bounded-frequency-bin tracking; define update
-/// stride, leakage, and reset behavior.
+/// TODO(SLIDING_DFT.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize ring buffer and complex-bin recurrence state. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify warm-up and
+/// coefficient/table ownership. Algorithm-specific focus:
+/// Finite-window sliding discrete Fourier transform for
+/// bounded-frequency-bin tracking; define update stride, leakage, and
+/// reset behavior.
 ucon_status_t ucon_sliding_dft_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear buffer, phases, and validity count.
-/// TODO(SLIDING_DFT.reset): Define window refill behavior. Algorithm-specific focus:
-/// Finite-window sliding discrete Fourier transform for
+/// TODO(SLIDING_DFT.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Clear buffer, phases, and validity count. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define window refill behavior. Algorithm-specific
+/// focus: Finite-window sliding discrete Fourier transform for
 /// bounded-frequency-bin tracking; define update stride, leakage,
 /// and reset behavior.
 ucon_status_t ucon_sliding_dft_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Advance the finite-window sliding DFT for one sample.
-/// TODO(SLIDING_DFT.update_bins): Document recurrence, leakage/windowing, and numeric drift
-/// control. Algorithm-specific focus: Finite-window sliding
-/// discrete Fourier transform for bounded-frequency-bin
-/// tracking; define update stride, leakage, and reset
-/// behavior.
+/// TODO(SLIDING_DFT.update_bins): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Advance the finite-window sliding DFT
+/// for one sample. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Document recurrence,
+/// leakage/windowing, and numeric drift control.
+/// Algorithm-specific focus: Finite-window sliding discrete
+/// Fourier transform for bounded-frequency-bin tracking;
+/// define update stride, leakage, and reset behavior.
 ucon_status_t ucon_sliding_dft_update_bins(const ucon_algorithm_scaffold_call_t *call);
 
 /// Extract configured phase/frequency result from bounded bins.
-/// TODO(SLIDING_DFT.estimate_frequency): Define peak selection, unwrap, and confidence
-/// criteria. Algorithm-specific focus: Finite-window
-/// sliding discrete Fourier transform for
+/// TODO(SLIDING_DFT.estimate_frequency): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Extract configured
+/// phase/frequency result from bounded bins. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define peak selection, unwrap, and
+/// confidence criteria. Algorithm-specific focus:
+/// Finite-window sliding discrete Fourier transform for
 /// bounded-frequency-bin tracking; define update
 /// stride, leakage, and reset behavior.
 ucon_status_t ucon_sliding_dft_estimate_frequency(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one sample and publish selected spectral estimates.
-/// TODO(SLIDING_DFT.step): Handle incomplete windows and dropped samples explicitly.
-/// Algorithm-specific focus: Finite-window sliding discrete Fourier
-/// transform for bounded-frequency-bin tracking; define update
-/// stride, leakage, and reset behavior.
+/// TODO(SLIDING_DFT.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Process one sample and publish selected spectral estimates. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Handle incomplete windows and
+/// dropped samples explicitly. Algorithm-specific focus:
+/// Finite-window sliding discrete Fourier transform for
+/// bounded-frequency-bin tracking; define update stride, leakage, and
+/// reset behavior.
 ucon_status_t ucon_sliding_dft_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

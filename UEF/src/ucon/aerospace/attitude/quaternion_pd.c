@@ -16,10 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(QUATERNION_PD.validate_config): Declare handedness, component order, and sign
- * continuity. Algorithm-specific focus: Attitude/rate
- * tracking with explicit quaternion or rotation-group
- * conventions.
+/* TODO(QUATERNION_PD.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check frame,
+ * quaternion/rotation convention, and control limits. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Declare handedness, component order, and
+ * sign continuity. Algorithm-specific focus:
+ * Attitude/rate tracking with explicit quaternion or
+ * rotation-group conventions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_quaternion_pd_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +38,15 @@ ucon_status_t ucon_quaternion_pd_validate_config(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QUATERNION_PD.init): Require a valid initial attitude. Algorithm-specific focus:
- * Attitude/rate tracking with explicit quaternion or rotation-group
- * conventions.
+/* TODO(QUATERNION_PD.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize desired-attitude and rate-control history. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Require a valid initial
+ * attitude. Algorithm-specific focus: Attitude/rate tracking with
+ * explicit quaternion or rotation-group conventions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_quaternion_pd_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,7 +57,13 @@ ucon_status_t ucon_quaternion_pd_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QUATERNION_PD.reset): Define safe re-entry after attitude-source loss.
+/* TODO(QUATERNION_PD.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Clear control/error history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Define safe re-entry after attitude-source loss.
  * Algorithm-specific focus: Attitude/rate tracking with explicit
  * quaternion or rotation-group conventions.
  * This stub must not read/write opaque state or output buffers.
@@ -56,10 +76,17 @@ ucon_status_t ucon_quaternion_pd_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QUATERNION_PD.compute_error): Handle quaternion double cover and rotation
- * singularities. Algorithm-specific focus: Attitude/rate
- * tracking with explicit quaternion or rotation-group
- * conventions.
+/* TODO(QUATERNION_PD.compute_error): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute attitude/rate error
+ * in the declared frame. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Handle quaternion
+ * double cover and rotation singularities.
+ * Algorithm-specific focus: Attitude/rate tracking with
+ * explicit quaternion or rotation-group conventions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_quaternion_pd_compute_error(const ucon_algorithm_scaffold_call_t *call)
@@ -70,9 +97,17 @@ ucon_status_t ucon_quaternion_pd_compute_error(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QUATERNION_PD.compute_command): Specify actuator model and output units.
- * Algorithm-specific focus: Attitude/rate tracking with
- * explicit quaternion or rotation-group conventions.
+/* TODO(QUATERNION_PD.compute_command): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute a bounded
+ * torque/rate/magnetic command. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify
+ * actuator model and output units. Algorithm-specific
+ * focus: Attitude/rate tracking with explicit quaternion
+ * or rotation-group conventions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_quaternion_pd_compute_command(const ucon_algorithm_scaffold_call_t *call)
@@ -83,9 +118,15 @@ ucon_status_t ucon_quaternion_pd_compute_command(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QUATERNION_PD.step): Expose stale sensor and actuator-limit status. Algorithm-specific
- * focus: Attitude/rate tracking with explicit quaternion or
- * rotation-group conventions.
+/* TODO(QUATERNION_PD.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Run one timestamped attitude-control update. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Expose stale sensor and actuator-limit status.
+ * Algorithm-specific focus: Attitude/rate tracking with explicit
+ * quaternion or rotation-group conventions.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_quaternion_pd_step(const ucon_algorithm_scaffold_call_t *call)

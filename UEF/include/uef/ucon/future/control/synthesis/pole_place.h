@@ -14,34 +14,75 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check plant matrices, requested poles, and controllability assumptions.
-/// TODO(POLE_PLACE.validate_plant): This is offline gain synthesis, not a runtime controller
-/// step. Algorithm-specific focus: Ackermann/Bass-Gura; K
-/// from offline pole assignment
+/// TODO(POLE_PLACE.validate_plant): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check plant matrices,
+/// requested poles, and controllability assumptions. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: This
+/// is offline gain synthesis, not a runtime controller step.
+/// Algorithm-specific focus: Ackermann/Bass-Gura; K from
+/// offline pole assignment
 ucon_status_t ucon_pole_place_validate_plant(const ucon_algorithm_scaffold_call_t *call);
 
 /// Construct the declared controllability representation.
-/// TODO(POLE_PLACE.build_controllability_basis): Define numerical rank tolerance and
-/// conditioning limits. Algorithm-specific
-/// focus: Ackermann/Bass-Gura; K from offline
-/// pole assignment
+/// TODO(POLE_PLACE.build_controllability_basis): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Construct the declared
+/// controllability representation. 3) Check
+/// numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define
+/// numerical rank tolerance and conditioning
+/// limits. Algorithm-specific focus:
+/// Ackermann/Bass-Gura; K from offline pole
+/// assignment
 ucon_status_t ucon_pole_place_build_controllability_basis(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute the state-feedback gain for the requested pole assignment.
-/// TODO(POLE_PLACE.synthesize_gain): Select and document the supported pole-placement method.
+/// TODO(POLE_PLACE.synthesize_gain): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute the state-feedback
+/// gain for the requested pole assignment. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Select and
+/// document the supported pole-placement method.
 /// Algorithm-specific focus: Ackermann/Bass-Gura; K from
 /// offline pole assignment
 ucon_status_t ucon_pole_place_synthesize_gain(const ucon_algorithm_scaffold_call_t *call);
 
 /// Check achieved closed-loop eigenvalues and residuals.
-/// TODO(POLE_PLACE.verify_closed_loop): Return an explicit failure if requested poles are not
-/// realizable. Algorithm-specific focus:
+/// TODO(POLE_PLACE.verify_closed_loop): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check achieved
+/// closed-loop eigenvalues and residuals. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Return an explicit failure if requested
+/// poles are not realizable. Algorithm-specific focus:
 /// Ackermann/Bass-Gura; K from offline pole assignment
 ucon_status_t ucon_pole_place_verify_closed_loop(const ucon_algorithm_scaffold_call_t *call);
 
 /// Publish the fixed gain matrix and synthesis diagnostics.
-/// TODO(POLE_PLACE.publish_gain): No online state feedback is performed by this synthesis
-/// entry. Algorithm-specific focus: Ackermann/Bass-Gura; K
-/// from offline pole assignment
+/// TODO(POLE_PLACE.publish_gain): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Publish the fixed gain matrix and
+/// synthesis diagnostics. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: No online state feedback
+/// is performed by this synthesis entry. Algorithm-specific
+/// focus: Ackermann/Bass-Gura; K from offline pole assignment
 ucon_status_t ucon_pole_place_publish_gain(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

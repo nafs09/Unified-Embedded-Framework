@@ -2,6 +2,7 @@
 /// @brief Planned bounded sample statistics for calibration and estimation.
 #ifndef UEF_UMATH_STATISTICS_STREAMING_H
 #define UEF_UMATH_STATISTICS_STREAMING_H
+#include <uef/umath/config.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>

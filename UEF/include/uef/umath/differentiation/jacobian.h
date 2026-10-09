@@ -2,6 +2,7 @@
 /// @brief Planned caller-workspace finite-difference Jacobian operations.
 #ifndef UEF_UMATH_DIFFERENTIATION_JACOBIAN_H
 #define UEF_UMATH_DIFFERENTIATION_JACOBIAN_H
+#include <uef/umath/config.h>
 
 #include <stddef.h>
 #include <uef/umath/status.h>

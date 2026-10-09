@@ -16,7 +16,15 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(POLY_TRAJ_5.validate_limits): Declare coordinate/time units and infeasibility
+/* TODO(POLY_TRAJ_5.validate_limits): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check boundary conditions,
+ * dimensions, and motion/continuity limits. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements:
+ * Declare coordinate/time units and infeasibility
  * behavior. Algorithm-specific focus: Jerk-limited and
  * polynomial motion references.
  * This stub must not read/write opaque state or output buffers.
@@ -29,7 +37,13 @@ ucon_status_t ucon_poly_traj_5_validate_limits(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLY_TRAJ_5.init): Define start-state acquisition and fixed workspace.
+/* TODO(POLY_TRAJ_5.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize profile/segment state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define start-state acquisition and fixed workspace.
  * Algorithm-specific focus: Jerk-limited and polynomial motion
  * references.
  * This stub must not read/write opaque state or output buffers.
@@ -42,8 +56,15 @@ ucon_status_t ucon_poly_traj_5_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLY_TRAJ_5.reset): Specify whether the last reference is retained. Algorithm-specific
- * focus: Jerk-limited and polynomial motion references.
+/* TODO(POLY_TRAJ_5.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Cancel active profile and clear elapsed-time history. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Specify whether the last
+ * reference is retained. Algorithm-specific focus: Jerk-limited and
+ * polynomial motion references.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_poly_traj_5_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -54,9 +75,15 @@ ucon_status_t ucon_poly_traj_5_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLY_TRAJ_5.plan): Bound solver work and avoid partial output on infeasibility.
- * Algorithm-specific focus: Jerk-limited and polynomial motion
- * references.
+/* TODO(POLY_TRAJ_5.plan): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Compute/validate trajectory coefficients or profile phases. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure. Operation-specific
+ * requirements: Bound solver work and avoid partial output on
+ * infeasibility. Algorithm-specific focus: Jerk-limited and
+ * polynomial motion references.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_poly_traj_5_plan(const ucon_algorithm_scaffold_call_t *call)
@@ -67,9 +94,15 @@ ucon_status_t ucon_poly_traj_5_plan(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLY_TRAJ_5.sample): Define endpoint, segment-boundary, and continuity semantics.
- * Algorithm-specific focus: Jerk-limited and polynomial motion
- * references.
+/* TODO(POLY_TRAJ_5.sample): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Evaluate position and required derivatives at a declared time. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define endpoint,
+ * segment-boundary, and continuity semantics. Algorithm-specific
+ * focus: Jerk-limited and polynomial motion references.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_poly_traj_5_sample(const ucon_algorithm_scaffold_call_t *call)
@@ -80,8 +113,15 @@ ucon_status_t ucon_poly_traj_5_sample(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(POLY_TRAJ_5.step): Handle irregular/missed intervals explicitly. Algorithm-specific
- * focus: Jerk-limited and polynomial motion references.
+/* TODO(POLY_TRAJ_5.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Advance with the supplied timebase and publish reference values. 3)
+ * Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure. Operation-specific
+ * requirements: Handle irregular/missed intervals explicitly.
+ * Algorithm-specific focus: Jerk-limited and polynomial motion
+ * references.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_poly_traj_5_step(const ucon_algorithm_scaffold_call_t *call)

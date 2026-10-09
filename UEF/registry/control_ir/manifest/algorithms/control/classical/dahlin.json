@@ -25,37 +25,37 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Define sampled plant form/order, dead-time handling, target response/time constant, coefficient computation, stability range, and whether design is offline or runtime."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_plant",
       "purpose": "Check sampled plant model, delay, and requested response parameter.",
-      "todo": "Specify supported plant order and dead-time representation. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check sampled plant model, delay, and requested response parameter. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify supported plant order and dead-time representation. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
     },
     {
       "name": "design_coefficients",
       "purpose": "Derive the Dahlin controller coefficients for the declared response target.",
-      "todo": "Pin discretization, target time constant, and coefficient convention. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Derive the Dahlin controller coefficients for the declared response target. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Pin discretization, target time constant, and coefficient convention. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
     },
     {
       "name": "verify_closed_loop",
       "purpose": "Check stability and response constraints for the designed coefficients.",
-      "todo": "Reject invalid delay/response combinations. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check stability and response constraints for the designed coefficients. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Reject invalid delay/response combinations. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
     },
     {
       "name": "init",
       "purpose": "Initialize controller recurrence state.",
-      "todo": "Define reset and initial output behavior. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize controller recurrence state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define reset and initial output behavior. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
     },
     {
       "name": "reset",
       "purpose": "Clear/preload recurrence state.",
-      "todo": "Specify bumpless coefficient replacement. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear/preload recurrence state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify bumpless coefficient replacement. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
     },
     {
       "name": "step",
       "purpose": "Evaluate the designed discrete recurrence for one sample.",
-      "todo": "Keep deferred until design range and numeric bounds are specified. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Evaluate the designed discrete recurrence for one sample. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep deferred until design range and numeric bounds are specified. Algorithm-specific focus: Dahlin discrete controller design for a declared sampled plant and target closed-loop response; plant order, delay treatment, and response parameterization remain to be specified."
     }
   ]
 }

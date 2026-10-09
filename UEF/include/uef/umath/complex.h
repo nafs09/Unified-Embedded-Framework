@@ -2,6 +2,7 @@
 /// @brief Complex scalar operations using the configured UMATH precision.
 #ifndef UEF_UMATH_COMPLEX_H
 #define UEF_UMATH_COMPLEX_H
+#include <uef/umath/config.h>
 
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

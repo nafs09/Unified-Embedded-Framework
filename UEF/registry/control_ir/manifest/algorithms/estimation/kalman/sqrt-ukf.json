@@ -27,42 +27,42 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
-      "purpose": "Check nonlinear models, sigma configuration, and covariance-factor dimensions.",
-      "todo": "Pin scaled sigma-point weights and factor orientation. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Validate the unscented model, scaled weights, and square-root convention.",
+      "todo": "1) Pin factor orientation and the declared scaled-point rule/weights. 2) Check dimensions, finite noise factors, c=n+lambda, and fixed point workspace. 3) Define handling for negative covariance weights and rank loss before changing state. Algorithm-specific focus: Square-root UKF; most numerically stable"
     },
     {
       "name": "init",
-      "purpose": "Initialize estimate and covariance square root.",
-      "todo": "Define factorization and rank-deficiency failure. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Initialize the estimate, covariance factor, weights, and fixed point workspace.",
+      "todo": "1) Validate x0/P0 and factor P0 using the pinned orientation. 2) Compute scaled weights and ensure every required QR/downdate workspace is bounded. 3) Initialize timestamp/diagnostics and publish only after all checks succeed. Algorithm-specific focus: Square-root UKF; most numerically stable"
     },
     {
       "name": "reset",
-      "purpose": "Reset estimate/factor history.",
-      "todo": "Define model-context retention. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Reset estimate/factor while retaining the selected sigma-point configuration.",
+      "todo": "1) Clear timestamp, freshness, and innovation history. 2) Restore caller seeds and refactor covariance without changing scaling/weight parameters. 3) Commit nominal state and factor atomically. Algorithm-specific focus: Square-root UKF; most numerically stable"
     },
     {
       "name": "generate_sigma_points",
-      "purpose": "Generate scaled sigma points from the covariance factor.",
-      "todo": "Specify central weights and negative-weight safeguards. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Generate scaled sigma points from the square-root factor.",
+      "todo": "1) Compute c=n+lambda and scale the triangular factor by sqrt(c). 2) Emit the central point and paired plus/minus factor-column points in fixed order. 3) Assign configured mean/covariance weights and reject invalid c, nonfinite points, or unsupported negative-weight policy. Algorithm-specific focus: Square-root UKF; most numerically stable"
     },
     {
       "name": "predict_factor",
-      "purpose": "Propagate points and recover the predicted covariance factor.",
-      "todo": "Specify QR/Cholesky update and process-noise handling. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Propagate sigma points and recover predicted covariance factor by QR/downdate.",
+      "todo": "1) Evaluate the process model for each sigma point and compute the weighted mean. 2) Stack weighted deviation columns with the process-noise factor and QR-factor for positive covariance weights. 3) Apply bounded rank-one Cholesky updates/downdates for signed weights; reject failed downdates and commit only a valid factor. Algorithm-specific focus: Square-root UKF; most numerically stable"
     },
     {
       "name": "correct_factor",
-      "purpose": "Update from measurement points while retaining factor form.",
-      "todo": "Define innovation solve/gating and rank-deficiency behavior. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Apply the measurement transform, innovation gate, and square-root update.",
+      "todo": "1) Transform sigma points through h and compute weighted measurement mean/cross covariance. 2) Build innovation factor from weighted deviations and measurement-noise factor, then solve triangular systems for gain/NIS. 3) Gate and downdate state factor using the declared signed-weight policy; preserve prediction on rank/numeric failure. Algorithm-specific focus: Square-root UKF; most numerically stable"
     },
     {
       "name": "step",
-      "purpose": "Run one square-root UKF prediction/correction cycle.",
-      "todo": "Do not form an unchecked full covariance as a hidden shortcut. Algorithm-specific focus: Square-root UKF; most numerically stable"
+      "purpose": "Run one square-root unscented predict/correct cycle.",
+      "todo": "1) Validate timestamp and generate the configured scaled points. 2) Predict once and stage the QR/downdate factor. 3) Correct only present channels with triangular solves. 4) Commit state/factor/diagnostics together; do not form an unchecked full covariance as a shortcut. Algorithm-specific focus: Square-root UKF; most numerically stable"
     }
   ]
 }

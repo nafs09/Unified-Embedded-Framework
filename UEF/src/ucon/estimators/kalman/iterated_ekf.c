@@ -16,7 +16,11 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(ITERATED_EKF.validate_model): Define Jacobian evaluation and convergence tolerance.
+/* TODO(ITERATED_EKF.validate_model): 1) Check state/measurement/Jacobian dimensions and
+ * finite covariance/noise inputs. 2) Require a positive
+ * iteration cap, finite convergence tolerance, and
+ * declared damping policy. 3) Reject unsupported
+ * manifold/state conventions before accepting a model.
  * Algorithm-specific focus: EKF + inner Newton iteration
  * for measurement update
  * This stub must not read/write opaque state or output buffers.
@@ -29,8 +33,12 @@ ucon_status_t ucon_iterated_ekf_validate_model(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ITERATED_EKF.init): Define prior for each measurement update. Algorithm-specific
- * focus: EKF + inner Newton iteration for measurement update
+/* TODO(ITERATED_EKF.init): 1) Validate/copy x0/P0 and allocate no dynamic memory in the
+ * update path. 2) Initialize the iteration counter, convergence
+ * status, and timestamp. 3) Keep the prediction prior separate from
+ * the temporary iterate so correction can be restarted
+ * deterministically. Algorithm-specific focus: EKF + inner Newton
+ * iteration for measurement update
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_iterated_ekf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,7 +49,10 @@ ucon_status_t ucon_iterated_ekf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ITERATED_EKF.reset): Specify model-context retention. Algorithm-specific focus: EKF +
+/* TODO(ITERATED_EKF.reset): 1) Clear prior timestamp, innovation, iteration count, and
+ * convergence status. 2) Restore caller seeds while retaining model
+ * callbacks/configuration. 3) Commit reset atomically and reject
+ * missing or malformed seed data. Algorithm-specific focus: EKF +
  * inner Newton iteration for measurement update
  * This stub must not read/write opaque state or output buffers.
  */
@@ -53,7 +64,10 @@ ucon_status_t ucon_iterated_ekf_reset(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ITERATED_EKF.predict): Do not repeat process propagation inside measurement iteration.
+/* TODO(ITERATED_EKF.predict): 1) Evaluate the process model and F at the prior state. 2)
+ * Propagate covariance with the declared process-noise
+ * discretization. 3) Save this x_prior/P_prior once; the
+ * measurement iteration must never repeat process propagation.
  * Algorithm-specific focus: EKF + inner Newton iteration for
  * measurement update
  * This stub must not read/write opaque state or output buffers.
@@ -66,9 +80,16 @@ ucon_status_t ucon_iterated_ekf_predict(const ucon_algorithm_scaffold_call_t *ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ITERATED_EKF.iterate_measurement): Define damping, iteration cap, and no-convergence
- * result. Algorithm-specific focus: EKF + inner
- * Newton iteration for measurement update
+/* TODO(ITERATED_EKF.iterate_measurement): 1) Initialize x_i=x_prior and hold x_prior/P_prior
+ * fixed. 2) At each iteration evaluate h(x_i),
+ * H(x_i), form the iterated residual
+ * z−h(x_i)+H(x_i)(x_i−x_prior), and solve the
+ * innovation system. 3) Compute the next candidate,
+ * apply configured damping, and stop on the stated
+ * norm tolerance or iteration cap. 4) Return
+ * rejected/nonconverged status without mutating the
+ * live estimate. Algorithm-specific focus: EKF +
+ * inner Newton iteration for measurement update
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_iterated_ekf_iterate_measurement(const ucon_algorithm_scaffold_call_t *call)
@@ -79,9 +100,15 @@ ucon_status_t ucon_iterated_ekf_iterate_measurement(const ucon_algorithm_scaffol
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ITERATED_EKF.commit_correction): Preserve prior on rejected/nonconverged update unless
- * policy states otherwise. Algorithm-specific focus:
- * EKF + inner Newton iteration for measurement update
+/* TODO(ITERATED_EKF.commit_correction): 1) Reject a failed gate or nonconverged iterate
+ * according to policy, preserving x_prior/P_prior by
+ * default. 2) Re-evaluate/use the final Jacobian and
+ * compute the covariance update from the original
+ * prior, not from each inner iterate. 3) Validate
+ * finite/PSD results and atomically publish estimate,
+ * covariance, and iteration diagnostics.
+ * Algorithm-specific focus: EKF + inner Newton
+ * iteration for measurement update
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_iterated_ekf_commit_correction(const ucon_algorithm_scaffold_call_t *call)
@@ -92,8 +119,13 @@ ucon_status_t ucon_iterated_ekf_commit_correction(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(ITERATED_EKF.step): Expose iteration count and convergence status. Algorithm-specific
- * focus: EKF + inner Newton iteration for measurement update
+/* TODO(ITERATED_EKF.step): 1) Validate timestamp and stage one prediction. 2) If measurements
+ * are present, run the fixed-cap iteration then commit only a
+ * converged accepted result. 3) If no measurement is present,
+ * publish the prediction without fabricating a correction. 4) Return
+ * iteration count/convergence and preserve prior output on failure.
+ * Algorithm-specific focus: EKF + inner Newton iteration for
+ * measurement update
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_iterated_ekf_step(const ucon_algorithm_scaffold_call_t *call)

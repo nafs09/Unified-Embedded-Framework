@@ -27,37 +27,38 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Define residual sources, thresholds, persistence, fault hypotheses/isolation masks, stale-data behavior, and latched-state reset. The generic monitor does not create plant residual models."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check residual channels, thresholds, persistence, and isolation masks.",
-      "todo": "Keep residual models and fault policy caller-owned. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check residual channels, thresholds, persistence, and isolation masks. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Keep residual models and fault policy caller-owned. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
     },
     {
       "name": "init",
       "purpose": "Initialize counters and diagnostic outputs.",
-      "todo": "Define startup grace and initial fault state. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize counters and diagnostic outputs. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define startup grace and initial fault state. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
     },
     {
       "name": "reset",
       "purpose": "Clear/rearm diagnostic channels.",
-      "todo": "Specify whether latched faults require an explicit clear. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear/rearm diagnostic channels. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify whether latched faults require an explicit clear. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
     },
     {
       "name": "update_residuals",
       "purpose": "Consume caller-supplied residuals and validity flags.",
-      "todo": "Separate missing/bad data from a physical fault indication. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Consume caller-supplied residuals and validity flags. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Separate missing/bad data from a physical fault indication. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
     },
     {
       "name": "update_fault_state",
       "purpose": "Apply persistence and configured isolation rules.",
-      "todo": "Do not claim root cause without explicit hypotheses. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply persistence and configured isolation rules. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Do not claim root cause without explicit hypotheses. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
     },
     {
       "name": "step",
       "purpose": "Publish one bounded diagnostic update.",
-      "todo": "Do not actuate or silently choose a fallback. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Publish one bounded diagnostic update. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Do not actuate or silently choose a fallback. Algorithm-specific focus: Generic residual monitoring, persistence, and configured fault-isolation masks; plant residual models and fault hypotheses are caller supplied."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/infrastructure/fault_detection/sensor_fdi.h.tmpl"
 }

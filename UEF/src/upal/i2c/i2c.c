@@ -14,12 +14,12 @@ uef_status_t upal_i2c_init(
     const upal_i2c_hw_t* hw,
     upal_i2c_speed_t speed
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Handle repeated
-     * starts, NACK/arbitration/bus errors, DMA buffer ownership and timeout cleanup;
-     * document callback context.
-     */
+    /* TODO(upal_i2c_init):
+ * 1) Validate timing/clock/address mode/pins and IRQ/DMA resources
+ * 2) reset/configure filters/ACK/own address and clear bus flags
+ * 3) initialize transaction state before enabling IRQs.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
     (void)hw;
     (void)speed;
@@ -34,12 +34,12 @@ uef_status_t upal_i2c_write_dma(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Validate the full payload and peripheral state, then report completion only after the
-     * hardware accepts or finishes the transfer as promised. Handle repeated starts,
-     * NACK/arbitration/bus errors, DMA buffer ownership and timeout cleanup; document
-     * callback context.
-     */
+    /* TODO(upal_i2c_write_dma):
+ * 1) Validate address/buffer/length/DMA/cache/state
+ * 2) prepare cache, issue START/address and arm DMA/event IRQ in target order
+ * 3) stop/recover and release ownership on NACK/error/timeout.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
     (void)addr;
     (void)data;
@@ -57,11 +57,12 @@ uef_status_t upal_i2c_read_dma(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Handle repeated starts, NACK/arbitration/bus
-     * errors, DMA buffer ownership and timeout cleanup; document callback context.
-     */
+    /* TODO(upal_i2c_read_dma):
+ * 1) Validate destination/address/length and DMA/cache constraints
+ * 2) configure ACK/last-byte semantics before START and arm DMA
+ * 3) STOP at final-byte boundary and finalize cache/status.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
     (void)addr;
     (void)data;
@@ -81,11 +82,13 @@ uef_status_t upal_i2c_write_read_dma(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Handle repeated starts, NACK/arbitration/bus
-     * errors, DMA buffer ownership and timeout cleanup; document callback context.
-     */
+    /* TODO(upal_i2c_write_read_dma):
+ * 1) Validate both phases and repeated-start support
+ * 2) retain bus ownership across write and repeated START, reconfigure read ACK/DMA
+ *     *    before receive
+ * 3) STOP after final byte and report partial failure precisely.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
     (void)addr;
     (void)tx;
@@ -104,12 +107,12 @@ uef_status_t upal_i2c_write_blocking(
     uef_u32_t len,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Validate the full payload and peripheral state, then report completion only after the
-     * hardware accepts or finishes the transfer as promised. Handle repeated starts,
-     * NACK/arbitration/bus errors, DMA buffer ownership and timeout cleanup; document
-     * callback context.
-     */
+    /* TODO(upal_i2c_write_blocking):
+ * 1) Validate address/buffer/state and deadline
+ * 2) poll TX-ready for address and each byte while checking NACK/arbitration
+ * 3) wait transfer-complete, issue STOP, and recover on bounded timeout.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
     (void)addr;
     (void)data;
@@ -125,11 +128,13 @@ uef_status_t upal_i2c_read_blocking(
     uef_u32_t len,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Check output capacity and readiness before touching hardware; return fresh data only
-     * and preserve caller storage on failure. Handle repeated starts, NACK/arbitration/bus
-     * errors, DMA buffer ownership and timeout cleanup; document callback context.
-     */
+    /* TODO(upal_i2c_read_blocking):
+ * 1) Validate address/output/length and deadline
+ * 2) configure ACK/NACK for one/two/many-byte sequence before each boundary
+ * 3) read only ready bytes, STOP correctly, and preserve uninitialized output on
+ *     *    failure.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
     (void)addr;
     (void)data;
@@ -141,21 +146,24 @@ uef_status_t upal_i2c_read_blocking(
 void upal_i2c_ev_irq_handler(
     upal_i2c_t* i
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Handle repeated starts, NACK/arbitration/bus
-     * errors, DMA buffer ownership and timeout cleanup; document callback context.
-     */
+    /* TODO(upal_i2c_ev_irq_handler):
+ * 1) Snapshot event flags and transaction generation
+ * 2) advance address/TX/RX/STOP state in hardware-required order and clear handled
+ *     *    flags
+ * 3) defer callbacks and ignore stale timed-out events.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
 }
 
 void upal_i2c_er_irq_handler(
     upal_i2c_t* i
 ) {
-    /* TODO(UEF UPAL I2C):
-     * Read and clear the pending source flags, update only the owning module state, and
-     * defer non-ISR-safe callbacks/work. Handle repeated starts, NACK/arbitration/bus
-     * errors, DMA buffer ownership and timeout cleanup; document callback context.
-     */
+    /* TODO(upal_i2c_er_irq_handler):
+ * 1) Snapshot error flags before clearing and classify NACK/arbitration/bus/overrun
+ * 2) STOP or recover per bounded policy
+ * 3) release DMA/cache and finalize active transaction once.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)i;
 }

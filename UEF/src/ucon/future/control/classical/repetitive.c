@@ -16,8 +16,16 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(REPETITIVE.validate_config): Document coefficient convention and valid degenerate
- * cases. Algorithm-specific focus: Repetitive control;
+/* TODO(REPETITIVE.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check coefficients, sample
+ * time, limits, and recurrence history. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Document
+ * coefficient convention and valid degenerate cases.
+ * Algorithm-specific focus: Repetitive control;
  * IIR-approximated period memory
  * This stub must not read/write opaque state or output buffers.
  */
@@ -29,7 +37,13 @@ ucon_status_t ucon_repetitive_validate_config(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REPETITIVE.init): Define zero-state and optional steady-state preload.
+/* TODO(REPETITIVE.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize recurrence/controller state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define zero-state and optional steady-state preload.
  * Algorithm-specific focus: Repetitive control; IIR-approximated
  * period memory
  * This stub must not read/write opaque state or output buffers.
@@ -42,7 +56,13 @@ ucon_status_t ucon_repetitive_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REPETITIVE.reset): Define behavior after coefficient changes. Algorithm-specific
+/* TODO(REPETITIVE.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear or preload recurrence history. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define behavior after coefficient changes. Algorithm-specific
  * focus: Repetitive control; IIR-approximated period memory
  * This stub must not read/write opaque state or output buffers.
  */
@@ -54,9 +74,17 @@ ucon_status_t ucon_repetitive_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REPETITIVE.compute_candidate): Check intermediate values before committing history.
- * Algorithm-specific focus: Repetitive control;
- * IIR-approximated period memory
+/* TODO(REPETITIVE.compute_candidate): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Evaluate one discrete-time
+ * controller recurrence. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Check intermediate
+ * values before committing history. Algorithm-specific
+ * focus: Repetitive control; IIR-approximated period
+ * memory
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_repetitive_compute_candidate(const ucon_algorithm_scaffold_call_t *call)
@@ -67,9 +95,16 @@ ucon_status_t ucon_repetitive_compute_candidate(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REPETITIVE.apply_limits): Specify ordering relative to feedforward and downstream
- * actuator tracking. Algorithm-specific focus: Repetitive
- * control; IIR-approximated period memory
+/* TODO(REPETITIVE.apply_limits): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Apply method-owned output and
+ * anti-windup behavior. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific
+ * requirements: Specify ordering relative to feedforward and
+ * downstream actuator tracking. Algorithm-specific focus:
+ * Repetitive control; IIR-approximated period memory
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_repetitive_apply_limits(const ucon_algorithm_scaffold_call_t *call)
@@ -80,8 +115,15 @@ ucon_status_t ucon_repetitive_apply_limits(const ucon_algorithm_scaffold_call_t 
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(REPETITIVE.step): Specify aliasing and numeric-failure behavior. Algorithm-specific
- * focus: Repetitive control; IIR-approximated period memory
+/* TODO(REPETITIVE.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Run one sample and atomically commit output/history. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Specify aliasing and numeric-failure behavior.
+ * Algorithm-specific focus: Repetitive control; IIR-approximated
+ * period memory
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_repetitive_step(const ucon_algorithm_scaffold_call_t *call)

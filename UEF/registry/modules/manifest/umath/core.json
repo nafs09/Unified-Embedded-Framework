@@ -6,6 +6,8 @@
   ],
   "headers": [
     "include/uef/ucore/uef_types.h",
+    "include/uef/umath/config.h",
+    "include/uef/umath/internal/scalar_math.h",
     "include/uef/umath/scalar.h",
     "include/uef/umath/status.h",
     "include/uef/umath/vector.h"

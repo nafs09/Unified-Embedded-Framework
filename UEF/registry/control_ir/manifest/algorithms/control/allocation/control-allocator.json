@@ -27,42 +27,43 @@
     "No feature flags, numeric-helper dependencies, or generated output contract are declared.",
     "Define actuator effectiveness matrix, requested generalized-force units, objective weights, position/rate bounds, solver deadline, and infeasible/saturated command status."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check effector matrix, actuator bounds/rates, weights, and dimensions.",
-      "todo": "Define units, priority, and rank/conditioning requirements. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check effector matrix, actuator bounds/rates, weights, and dimensions. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define units, priority, and rank/conditioning requirements. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     },
     {
       "name": "init",
       "purpose": "Initialize solver and previous actuator command.",
-      "todo": "Define safe seed and fixed workspace. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize solver and previous actuator command. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define safe seed and fixed workspace. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     },
     {
       "name": "reset",
       "purpose": "Reset solver/command history.",
-      "todo": "Define whether previous actuator values are retained. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Reset solver/command history. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define whether previous actuator values are retained. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     },
     {
       "name": "build_problem",
       "purpose": "Build the bounded allocation objective and constraints.",
-      "todo": "Specify axis weights, trim/bias, and rate constraints. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Build the bounded allocation objective and constraints. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify axis weights, trim/bias, and rate constraints. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     },
     {
       "name": "solve_allocation",
       "purpose": "Compute an actuator command for the requested generalized force/moment.",
-      "todo": "Bound solver work and return infeasible/saturation status. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Compute an actuator command for the requested generalized force/moment. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Bound solver work and return infeasible/saturation status. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     },
     {
       "name": "verify_command",
       "purpose": "Check command residuals and all position/rate limits.",
-      "todo": "Never publish a command that violates declared actuator bounds. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check command residuals and all position/rate limits. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Never publish a command that violates declared actuator bounds. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     },
     {
       "name": "step",
       "purpose": "Allocate one requested command and publish status/residual.",
-      "todo": "Leave output untouched if allocation fails. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Allocate one requested command and publish status/residual. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Leave output untouched if allocation fails. Algorithm-specific focus: Bounded control allocation from requested generalized forces/moments to declared actuator commands."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/control/allocation/control_allocator.h.tmpl"
 }

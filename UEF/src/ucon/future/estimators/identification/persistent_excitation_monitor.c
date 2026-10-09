@@ -16,8 +16,20 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.validate_model): Document identifiability assumptions
- * and fixed covariance/history size.
+/* TODO(PERSISTENT_EXCITATION_MONITOR.validate_model): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Check model order,
+ * delays, regressor layout, and parameter
+ * bounds. 3) Check numeric results,
+ * declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only
+ * after success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Document identifiability
+ * assumptions and fixed
+ * covariance/history size.
  * Algorithm-specific focus: Monitor
  * whether a configured regressor supplies
  * sufficient excitation over a bounded
@@ -32,10 +44,19 @@ ucon_status_t ucon_persistent_excitation_monitor_validate_model(const ucon_algor
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.init): Define P0, forgetting/regularization, and
- * parameter seed. Algorithm-specific focus: Monitor
- * whether a configured regressor supplies
- * sufficient excitation over a bounded window.
+/* TODO(PERSISTENT_EXCITATION_MONITOR.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Initialize
+ * parameters and information/covariance state. 3)
+ * Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define P0,
+ * forgetting/regularization, and parameter seed.
+ * Algorithm-specific focus: Monitor whether a
+ * configured regressor supplies sufficient
+ * excitation over a bounded window.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_persistent_excitation_monitor_init(const ucon_algorithm_scaffold_call_t *call)
@@ -46,7 +67,16 @@ ucon_status_t ucon_persistent_excitation_monitor_init(const ucon_algorithm_scaff
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.reset): State whether reset retains or reinitializes
+/* TODO(PERSISTENT_EXCITATION_MONITOR.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Reset
+ * recursive memory under a documented parameter
+ * policy. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: State
+ * whether reset retains or reinitializes
  * parameters. Algorithm-specific focus: Monitor
  * whether a configured regressor supplies
  * sufficient excitation over a bounded window.
@@ -60,7 +90,19 @@ ucon_status_t ucon_persistent_excitation_monitor_reset(const ucon_algorithm_scaf
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.build_regressor): Pin signal sign/order/delay and reject
+/* TODO(PERSISTENT_EXCITATION_MONITOR.build_regressor): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Build ordered
+ * regressors, instruments, and
+ * sensitivity terms. 3) Check numeric
+ * results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics
+ * together only after success; preserve
+ * prior values on failure.
+ * Operation-specific requirements: Pin
+ * signal sign/order/delay and reject
  * stale/non-finite samples.
  * Algorithm-specific focus: Monitor
  * whether a configured regressor
@@ -76,12 +118,23 @@ ucon_status_t ucon_persistent_excitation_monitor_build_regressor(const ucon_algo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.update_parameters): Define forgetting, conditioning,
- * symmetrization, and projection.
- * Algorithm-specific focus: Monitor
- * whether a configured regressor
- * supplies sufficient excitation over
- * a bounded window.
+/* TODO(PERSISTENT_EXCITATION_MONITOR.update_parameters): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Apply one
+ * bounded recursive parameter update.
+ * 3) Check numeric results, declared
+ * constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state,
+ * and diagnostics together only after
+ * success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Define forgetting,
+ * conditioning, symmetrization, and
+ * projection. Algorithm-specific
+ * focus: Monitor whether a configured
+ * regressor supplies sufficient
+ * excitation over a bounded window.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_persistent_excitation_monitor_update_parameters(const ucon_algorithm_scaffold_call_t *call)
@@ -92,8 +145,19 @@ ucon_status_t ucon_persistent_excitation_monitor_update_parameters(const ucon_al
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.get_diagnostics): Distinguish insufficient excitation
- * from numeric/model failure.
+/* TODO(PERSISTENT_EXCITATION_MONITOR.get_diagnostics): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions,
+ * and preconditions before writing
+ * outputs or state. 2) Report residual
+ * and excitation/conditioning status. 3)
+ * Check numeric results, declared
+ * constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after
+ * success; preserve prior values on
+ * failure. Operation-specific
+ * requirements: Distinguish insufficient
+ * excitation from numeric/model failure.
  * Algorithm-specific focus: Monitor
  * whether a configured regressor
  * supplies sufficient excitation over a
@@ -108,7 +172,16 @@ ucon_status_t ucon_persistent_excitation_monitor_get_diagnostics(const ucon_algo
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PERSISTENT_EXCITATION_MONITOR.step): Bound loops and preserve state on failure.
+/* TODO(PERSISTENT_EXCITATION_MONITOR.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions
+ * before writing outputs or state. 2) Consume one
+ * aligned sample and atomically publish the updated
+ * model. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together
+ * only after success; preserve prior values on
+ * failure. Operation-specific requirements: Bound
+ * loops and preserve state on failure.
  * Algorithm-specific focus: Monitor whether a
  * configured regressor supplies sufficient
  * excitation over a bounded window.

@@ -14,37 +14,74 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check nonlinear model, surface/relative-degree data, and parameter bounds.
-/// TODO(INDI.validate_model): State operating-region and uncertainty assumptions.
+/// TODO(INDI.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check nonlinear model, surface/relative-degree data, and
+/// parameter bounds. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: State
+/// operating-region and uncertainty assumptions.
 /// Algorithm-specific focus: Nonlinear and incremental dynamic
 /// inversion; aerospace-oriented first-pass targets.
 ucon_status_t ucon_indi_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize virtual-control, adaptation, integral, and filter state.
-/// TODO(INDI.init): Define state seeds and bound startup transients. Algorithm-specific
-/// focus: Nonlinear and incremental dynamic inversion; aerospace-oriented
-/// first-pass targets.
+/// TODO(INDI.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize
+/// virtual-control, adaptation, integral, and filter state. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Define state
+/// seeds and bound startup transients. Algorithm-specific focus: Nonlinear
+/// and incremental dynamic inversion; aerospace-oriented first-pass targets.
 ucon_status_t ucon_indi_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset controller/adaptation history.
-/// TODO(INDI.reset): Specify parameter projection and bumpless restart. Algorithm-specific
-/// focus: Nonlinear and incremental dynamic inversion; aerospace-oriented
-/// first-pass targets.
+/// TODO(INDI.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Reset
+/// controller/adaptation history. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Specify parameter projection
+/// and bumpless restart. Algorithm-specific focus: Nonlinear and
+/// incremental dynamic inversion; aerospace-oriented first-pass targets.
 ucon_status_t ucon_indi_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate tracking error, surface, barrier, or Lyapunov terms.
-/// TODO(INDI.compute_surface): Declare sign, units, derivative source, and singularity
-/// handling. Algorithm-specific focus: Nonlinear and incremental
-/// dynamic inversion; aerospace-oriented first-pass targets.
+/// TODO(INDI.compute_surface): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Evaluate tracking error, surface, barrier, or Lyapunov
+/// terms. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Declare sign,
+/// units, derivative source, and singularity handling.
+/// Algorithm-specific focus: Nonlinear and incremental dynamic
+/// inversion; aerospace-oriented first-pass targets.
 ucon_status_t ucon_indi_compute_surface(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute the method-specific bounded control candidate.
-/// TODO(INDI.compute_control): Define actuator limits and chattering/boundary-layer policy.
-/// Algorithm-specific focus: Nonlinear and incremental dynamic
-/// inversion; aerospace-oriented first-pass targets.
+/// TODO(INDI.compute_control): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Compute the method-specific bounded control candidate. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define actuator limits and
+/// chattering/boundary-layer policy. Algorithm-specific focus:
+/// Nonlinear and incremental dynamic inversion;
+/// aerospace-oriented first-pass targets.
 ucon_status_t ucon_indi_compute_control(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one deterministic control update and report status/diagnostics.
-/// TODO(INDI.step): Commit state only after numeric and constraint checks succeed.
+/// TODO(INDI.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Run one
+/// deterministic control update and report status/diagnostics. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific requirements: Commit
+/// state only after numeric and constraint checks succeed.
 /// Algorithm-specific focus: Nonlinear and incremental dynamic inversion;
 /// aerospace-oriented first-pass targets.
 ucon_status_t ucon_indi_step(const ucon_algorithm_scaffold_call_t *call);

@@ -28,32 +28,32 @@
   "scaffold_module": "ucon/future/signal_processing/statistics/rms_window",
   "scaffold_header": "include/uef/ucon/future/signal_processing/statistics/rms_window.h",
   "scaffold_source": "src/ucon/future/signal_processing/statistics/rms_window.c",
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_config",
       "purpose": "Check transform/statistic/rate dimensions and numeric range.",
-      "todo": "Define sample layout, scale, rate, and fixed buffer size. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check transform/statistic/rate dimensions and numeric range. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define sample layout, scale, rate, and fixed buffer size. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
     },
     {
       "name": "init",
       "purpose": "Initialize window, phase, ring buffer, and accumulator.",
-      "todo": "Define warm-up and reset behavior. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize window, phase, ring buffer, and accumulator. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define warm-up and reset behavior. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
     },
     {
       "name": "reset",
       "purpose": "Clear signal history and phase/index state.",
-      "todo": "State ownership of coefficient/window tables. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear signal history and phase/index state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: State ownership of coefficient/window tables. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
     },
     {
       "name": "process_block",
       "purpose": "Process one bounded block or fixed-rate sample group.",
-      "todo": "Define latency, overlap, scaling, and overflow behavior. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Process one bounded block or fixed-rate sample group. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define latency, overlap, scaling, and overflow behavior. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
     },
     {
       "name": "step",
       "purpose": "Advance the algorithm and publish output/validity metadata.",
-      "todo": "Specify incomplete-block and dropped-sample behavior. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Advance the algorithm and publish output/validity metadata. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify incomplete-block and dropped-sample behavior. Algorithm-specific focus: Windowed root-mean-square estimator with bounded sample storage or running-sum state."
     }
   ]
 }

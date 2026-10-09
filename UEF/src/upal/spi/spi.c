@@ -15,12 +15,12 @@ uef_status_t upal_spi_init(
     uef_u32_t clock_hz,
     upal_spi_mode_t mode
 ) {
-    /* TODO(UEF UPAL SPI):
-     * Validate all descriptors and configuration, enable/reset the peripheral in the
-     * required order, and publish a ready state only after setup succeeds. Keep chip-select
-     * asserted across each full transfer, validate full-duplex buffer rules, and coordinate
-     * DMA completion and timeout.
-     */
+    /* TODO(upal_spi_init):
+ * 1) Validate CPOL/CPHA/word size/baud/pins/NSS and DMA resources
+ * 2) reset/configure and clear stale RX/OVR
+ * 3) initialize ownership before enabling required IRQ/DMA and verify idle.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)s;
     (void)hw;
     (void)clock_hz;
@@ -37,12 +37,13 @@ uef_status_t upal_spi_transfer_dma(
     upal_dma_callback_t cb,
     void* ctx
 ) {
-    /* TODO(UEF UPAL SPI):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Keep chip-select
-     * asserted across each full transfer, validate full-duplex buffer rules, and coordinate
-     * DMA completion and timeout.
-     */
+    /* TODO(upal_spi_transfer_dma):
+ * 1) Validate buffers/length/alignment/cache/chip-select ownership
+ * 2) prepare cache, arm RX before TX when needed, then start clocks
+ * 3) wait for both directions and final shifter, release CS/cache, and report partial
+ *     *    errors.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)s;
     (void)cs_pin;
     (void)tx;
@@ -61,12 +62,12 @@ uef_status_t upal_spi_transfer_blocking(
     uef_u32_t len,
     uef_u32_t timeout_ms
 ) {
-    /* TODO(UEF UPAL SPI):
-     * Implement the declared operation with argument/state validation, bounded waiting,
-     * precise status propagation, and documented callback/ISR ownership. Keep chip-select
-     * asserted across each full transfer, validate full-duplex buffer rules, and coordinate
-     * DMA completion and timeout.
-     */
+    /* TODO(upal_spi_transfer_blocking):
+ * 1) Validate buffers/length/state and deadline
+ * 2) for each word poll TX-ready, write, poll RX-ready, read/discard, and check errors
+ * 3) wait final shift-empty before deasserting CS.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)s;
     (void)cs_pin;
     (void)tx;
@@ -79,11 +80,11 @@ uef_status_t upal_spi_transfer_blocking(
 void upal_spi_dma_handler(
     upal_spi_t* s
 ) {
-    /* TODO(UEF UPAL SPI):
-     * Reconcile DMA and peripheral completion flags, perform cache maintenance where
-     * required, and issue exactly one completion callback. Keep chip-select asserted across
-     * each full transfer, validate full-duplex buffer rules, and coordinate DMA completion
-     * and timeout.
-     */
+    /* TODO(upal_spi_dma_handler):
+ * 1) Match DMA flags to active generation and clear owned sources
+ * 2) wait for both directions and final SPI shift completion, then handle overrun/cache
+ * 3) deassert CS and complete once.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     (void)s;
 }

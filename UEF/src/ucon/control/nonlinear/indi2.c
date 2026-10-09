@@ -16,7 +16,14 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(INDI2.validate_model): State operating-region and uncertainty assumptions.
+/* TODO(INDI2.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Check nonlinear model, surface/relative-degree data, and
+ * parameter bounds. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: State
+ * operating-region and uncertainty assumptions.
  * Algorithm-specific focus: 2nd-order INDI with rate measurement
  * This stub must not read/write opaque state or output buffers.
  */
@@ -28,8 +35,14 @@ ucon_status_t ucon_indi2_validate_model(const ucon_algorithm_scaffold_call_t *ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INDI2.init): Define state seeds and bound startup transients. Algorithm-specific
- * focus: 2nd-order INDI with rate measurement
+/* TODO(INDI2.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Initialize
+ * virtual-control, adaptation, integral, and filter state. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Define state
+ * seeds and bound startup transients. Algorithm-specific focus: 2nd-order
+ * INDI with rate measurement
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_indi2_init(const ucon_algorithm_scaffold_call_t *call)
@@ -40,8 +53,14 @@ ucon_status_t ucon_indi2_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INDI2.reset): Specify parameter projection and bumpless restart. Algorithm-specific
- * focus: 2nd-order INDI with rate measurement
+/* TODO(INDI2.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2) Reset
+ * controller/adaptation history. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify parameter projection
+ * and bumpless restart. Algorithm-specific focus: 2nd-order INDI with rate
+ * measurement
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_indi2_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -52,9 +71,15 @@ ucon_status_t ucon_indi2_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INDI2.compute_surface): Declare sign, units, derivative source, and singularity
- * handling. Algorithm-specific focus: 2nd-order INDI with rate
- * measurement
+/* TODO(INDI2.compute_surface): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Evaluate tracking error, surface, barrier, or Lyapunov
+ * terms. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Declare sign,
+ * units, derivative source, and singularity handling.
+ * Algorithm-specific focus: 2nd-order INDI with rate measurement
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_indi2_compute_surface(const ucon_algorithm_scaffold_call_t *call)
@@ -65,8 +90,15 @@ ucon_status_t ucon_indi2_compute_surface(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INDI2.compute_control): Define actuator limits and chattering/boundary-layer policy.
- * Algorithm-specific focus: 2nd-order INDI with rate measurement
+/* TODO(INDI2.compute_control): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Compute the method-specific bounded control candidate. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define actuator limits and
+ * chattering/boundary-layer policy. Algorithm-specific focus:
+ * 2nd-order INDI with rate measurement
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_indi2_compute_control(const ucon_algorithm_scaffold_call_t *call)
@@ -77,7 +109,13 @@ ucon_status_t ucon_indi2_compute_control(const ucon_algorithm_scaffold_call_t *c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(INDI2.step): Commit state only after numeric and constraint checks succeed.
+/* TODO(INDI2.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+ * and preconditions before writing outputs or state. 2) Run one
+ * deterministic control update and report status/diagnostics. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements: Commit
+ * state only after numeric and constraint checks succeed.
  * Algorithm-specific focus: 2nd-order INDI with rate measurement
  * This stub must not read/write opaque state or output buffers.
  */

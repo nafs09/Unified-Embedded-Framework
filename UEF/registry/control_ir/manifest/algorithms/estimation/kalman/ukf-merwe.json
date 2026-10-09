@@ -28,42 +28,43 @@
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
     "Pin the exact scaled-transform parameters and clarify how this configuration differs from the generic UKF catalogue key."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
-      "purpose": "Check nonlinear models and Merwe sigma-point configuration.",
-      "todo": "Pin alpha, beta, kappa, state dimension, and admissible weights. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Validate the model and Merwe scaled sigma-point parameters.",
+      "todo": "1) Check callback and covariance dimensions. 2) Require finite alpha>0, beta, kappa and c=n+lambda>0 with lambda=alpha^2*(n+kappa)-n; verify the weights and fixed workspace. 3) Pin factor orientation and negative-weight policy before accepting configuration. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     },
     {
       "name": "init",
-      "purpose": "Initialize estimate, covariance, and sigma workspace.",
-      "todo": "Define covariance factorization failure. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Initialize the prior and Merwe scaled-weight workspace.",
+      "todo": "1) Copy x0/P0 into candidate storage and validate finite shape/PSD. 2) Compute lambda, c, Wm0, Wc0, and paired weights from alpha/beta/kappa. 3) Initialize timestamp/diagnostics and publish only when factorization and weights are valid. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     },
     {
       "name": "reset",
-      "purpose": "Reset estimate/covariance history.",
-      "todo": "Specify retained configuration/context. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Reset estimate/covariance while preserving alpha/beta/kappa configuration.",
+      "todo": "1) Clear timestamp, freshness, and innovation history. 2) Restore caller x0/P0 seeds without changing scaling parameters. 3) Refactor the seed covariance and commit reset state atomically. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     },
     {
       "name": "generate_merwe_points",
-      "purpose": "Generate van der Merwe scaled sigma points and weights.",
-      "todo": "Follow the declared scaling convention and state-dimension factor. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Generate the Merwe scaled 2n+1 sigma set and exact weights.",
+      "todo": "1) Compute lambda=alpha^2*(n+kappa)-n and c=n+lambda. 2) Factor cP using the declared orientation; emit x and paired x+/-factor-column points in fixed order. 3) Assign Wm0=lambda/c, Wc0=Wm0+(1-alpha^2+beta), and paired 1/(2c); reject invalid c/nonfinite points. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     },
     {
       "name": "predict",
-      "purpose": "Propagate sigma points through the process model.",
-      "todo": "Define noise augmentation and covariance recovery. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Propagate Merwe points and reconstruct predicted moments.",
+      "todo": "1) Generate the Merwe set from the prior and evaluate the process model at each point. 2) Apply Wm weights to predicted mean and Wc weights to covariance deviations. 3) Add process noise directly or through explicit augmentation per configuration; validate PSD/finite values before commit. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     },
     {
       "name": "correct",
-      "purpose": "Apply measurement transform and update estimate/covariance.",
-      "todo": "Define innovation solve, gating, and conditioning. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Compute the measurement transform and gated Merwe covariance update.",
+      "todo": "1) Generate predicted-state points and evaluate the measurement model. 2) Use Merwe weights for z_pred, S+R, and state/measurement cross covariance. 3) Factor/solve S, gate the innovation, apply the covariance update, and preserve prediction on rejection or numerical failure. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     },
     {
       "name": "step",
-      "purpose": "Run one Merwe-parameterized UKF cycle.",
-      "todo": "Share implementation with UKF only if semantics remain explicit. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
+      "purpose": "Run a Merwe prediction and optional measurement update.",
+      "todo": "1) Validate sample time and predict once. 2) Reuse the same validated alpha/beta/kappa weights for state and measurement transforms. 3) Correct only present channels and commit outputs together; never switch parameterization silently. Algorithm-specific focus: Van der Merwe scaled sigma-point parameterization of the UKF; share the UKF runtime kernel only if the weight and spread contract stays explicit."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/estimators/kalman/ukf_merwe.h.tmpl"
 }

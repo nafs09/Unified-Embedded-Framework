@@ -16,7 +16,10 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(CKF.validate_model): Use the third-degree spherical-radial cubature rule, never
+/* TODO(CKF.validate_model): 1) Check f/h/J-independent callback dimensions, covariance/noise
+ * shapes, and finite values. 2) Require a factorable PSD covariance
+ * and bound n so 2n points fit fixed workspace. 3) Specify
+ * spherical-radial ordering/weight convention; do not substitute
  * Gauss-Hermite points. Algorithm-specific focus: Cubature Kalman
  * filter using the third-degree spherical-radial cubature rule; it
  * is not a Gauss-Hermite filter.
@@ -30,9 +33,12 @@ ucon_status_t ucon_ckf_validate_model(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(CKF.init): Define positive-semidefinite covariance and factorization failure.
- * Algorithm-specific focus: Cubature Kalman filter using the third-degree
- * spherical-radial cubature rule; it is not a Gauss-Hermite filter.
+/* TODO(CKF.init): 1) Copy x0/P0 to candidates and verify dimensions and finite entries. 2)
+ * Factor P0 using the declared PSD/rank policy and check capacity for 2n
+ * points. 3) Initialize timestamp/diagnostics and publish only after all
+ * steps succeed. Algorithm-specific focus: Cubature Kalman filter using the
+ * third-degree spherical-radial cubature rule; it is not a Gauss-Hermite
+ * filter.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ckf_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +49,11 @@ ucon_status_t ucon_ckf_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(CKF.reset): Define model-context retention. Algorithm-specific focus: Cubature Kalman
- * filter using the third-degree spherical-radial cubature rule; it is not a
- * Gauss-Hermite filter.
+/* TODO(CKF.reset): 1) Clear timestamp, measurement freshness, and innovation diagnostics. 2)
+ * Restore caller-provided x0/P0 and retain model callbacks/configuration. 3)
+ * Re-factor the seed covariance and commit only when the factor is valid.
+ * Algorithm-specific focus: Cubature Kalman filter using the third-degree
+ * spherical-radial cubature rule; it is not a Gauss-Hermite filter.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ckf_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +64,13 @@ ucon_status_t ucon_ckf_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(CKF.generate_cubature_points): Pin the 2*n point ordering and equal weights for this
- * cubature rule. Algorithm-specific focus: Cubature
- * Kalman filter using the third-degree spherical-radial
- * cubature rule; it is not a Gauss-Hermite filter.
+/* TODO(CKF.generate_cubature_points): 1) Factor P=L Lᵀ using the pinned orientation. 2) For
+ * each column i emit x+√n L_i then x−√n L_i in fixed
+ * order. 3) Assign equal weight 1/(2n), check finite
+ * points, and never generate a 2n+1 or Gauss-Hermite set.
+ * Algorithm-specific focus: Cubature Kalman filter using
+ * the third-degree spherical-radial cubature rule; it is
+ * not a Gauss-Hermite filter.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ckf_generate_cubature_points(const ucon_algorithm_scaffold_call_t *call)
@@ -70,9 +81,13 @@ ucon_status_t ucon_ckf_generate_cubature_points(const ucon_algorithm_scaffold_ca
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(CKF.predict): Preserve covariance symmetry/PSD and bound point count.
- * Algorithm-specific focus: Cubature Kalman filter using the third-degree
- * spherical-radial cubature rule; it is not a Gauss-Hermite filter.
+/* TODO(CKF.predict): 1) Generate points from the prior and evaluate f for each point with the
+ * same input/time interval. 2) Compute the equal-weight mean and
+ * covariance of propagated deviations, then add declared Q_d. 3) Validate
+ * finite/PSD covariance, symmetrize round-off only, and commit the
+ * predicted candidate. Algorithm-specific focus: Cubature Kalman filter
+ * using the third-degree spherical-radial cubature rule; it is not a
+ * Gauss-Hermite filter.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ckf_predict(const ucon_algorithm_scaffold_call_t *call)
@@ -83,9 +98,13 @@ ucon_status_t ucon_ckf_predict(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(CKF.correct): Define solve/gating/rejected-measurement policy. Algorithm-specific
- * focus: Cubature Kalman filter using the third-degree spherical-radial
- * cubature rule; it is not a Gauss-Hermite filter.
+/* TODO(CKF.correct): 1) Generate points from the predicted state and evaluate h for each. 2)
+ * Accumulate predicted measurement mean, S including R, and P_xz using
+ * equal weights. 3) Factor S, solve for gain, apply the configured
+ * innovation gate, and update state/covariance. 4) Preserve the prediction
+ * on solve, gate, or PSD failure. Algorithm-specific focus: Cubature
+ * Kalman filter using the third-degree spherical-radial cubature rule; it
+ * is not a Gauss-Hermite filter.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_ckf_correct(const ucon_algorithm_scaffold_call_t *call)
@@ -96,7 +115,10 @@ ucon_status_t ucon_ckf_correct(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(CKF.step): Do not publish partial state after factorization failure.
+/* TODO(CKF.step): 1) Validate time/order and stage prediction using exactly 2n points. 2)
+ * Correct only present channels using the same fixed point rule. 3) Check
+ * every intermediate and covariance before publication. 4) Commit
+ * timestamp/state/diagnostics together or preserve the last complete state.
  * Algorithm-specific focus: Cubature Kalman filter using the third-degree
  * spherical-radial cubature rule; it is not a Gauss-Hermite filter.
  * This stub must not read/write opaque state or output buffers.

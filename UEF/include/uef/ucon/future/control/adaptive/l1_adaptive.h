@@ -14,45 +14,94 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check reference model, adaptation gains, projection bounds, and rate.
-/// TODO(L1_ADAPTIVE.validate_config): State the stability assumptions; tuning alone is not a
+/// TODO(L1_ADAPTIVE.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check reference model,
+/// adaptation gains, projection bounds, and rate. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements:
+/// State the stability assumptions; tuning alone is not a
 /// stability proof. Algorithm-specific focus: L1 adaptive;
 /// bounded adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize controller, observer, reference model, and parameter state.
-/// TODO(L1_ADAPTIVE.init): Define parameter seeds and startup saturation behavior.
-/// Algorithm-specific focus: L1 adaptive; bounded adaptation
-/// transient; known bandwidth
+/// TODO(L1_ADAPTIVE.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize controller, observer, reference model, and parameter
+/// state. 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define parameter seeds and
+/// startup saturation behavior. Algorithm-specific focus: L1
+/// adaptive; bounded adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset adaptation and controller history.
-/// TODO(L1_ADAPTIVE.reset): Say whether learned parameters are retained or reseeded.
-/// Algorithm-specific focus: L1 adaptive; bounded adaptation
-/// transient; known bandwidth
+/// TODO(L1_ADAPTIVE.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Reset adaptation and controller history. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Say whether learned parameters are retained or
+/// reseeded. Algorithm-specific focus: L1 adaptive; bounded
+/// adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Update the declared reference/observer/model state.
-/// TODO(L1_ADAPTIVE.update_model): Define sampling and input-delay alignment.
-/// Algorithm-specific focus: L1 adaptive; bounded adaptation
-/// transient; known bandwidth
+/// TODO(L1_ADAPTIVE.update_model): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Update the declared
+/// reference/observer/model state. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define sampling and
+/// input-delay alignment. Algorithm-specific focus: L1
+/// adaptive; bounded adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_update_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply adaptation law and projection/leakage policy.
-/// TODO(L1_ADAPTIVE.update_parameters): Bound drift and specify low-excitation/saturation
-/// behavior. Algorithm-specific focus: L1 adaptive;
-/// bounded adaptation transient; known bandwidth
+/// TODO(L1_ADAPTIVE.update_parameters): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Apply adaptation law and
+/// projection/leakage policy. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Bound drift and
+/// specify low-excitation/saturation behavior.
+/// Algorithm-specific focus: L1 adaptive; bounded
+/// adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_update_parameters(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute/bound command from current estimates.
-/// TODO(L1_ADAPTIVE.compute_control): Keep actuator constraints and independent safety
-/// supervision explicit. Algorithm-specific focus: L1
-/// adaptive; bounded adaptation transient; known bandwidth
+/// TODO(L1_ADAPTIVE.compute_control): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute/bound command from
+/// current estimates. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Keep actuator
+/// constraints and independent safety supervision
+/// explicit. Algorithm-specific focus: L1 adaptive;
+/// bounded adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_compute_control(const ucon_algorithm_scaffold_call_t *call);
 
 /// Coordinate model, adaptation, and control in a fixed order.
-/// TODO(L1_ADAPTIVE.step): Return diagnostics and preserve state on intermediate failure.
-/// Algorithm-specific focus: L1 adaptive; bounded adaptation
-/// transient; known bandwidth
+/// TODO(L1_ADAPTIVE.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Coordinate model, adaptation, and control in a fixed order. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Return diagnostics and preserve
+/// state on intermediate failure. Algorithm-specific focus: L1
+/// adaptive; bounded adaptation transient; known bandwidth
 ucon_status_t ucon_l1_adaptive_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

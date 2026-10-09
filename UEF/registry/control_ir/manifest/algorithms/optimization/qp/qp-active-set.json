@@ -28,32 +28,32 @@
   "scaffold_module": "ucon/future/optimization/qp/qp_active_set",
   "scaffold_header": "include/uef/ucon/future/optimization/qp/qp_active_set.h",
   "scaffold_source": "src/ucon/future/optimization/qp/qp_active_set.c",
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_problem",
       "purpose": "Check fixed dimensions, convexity, bounds, and workspace size.",
-      "todo": "Reject unsupported/inconsistent problems before state changes. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check fixed dimensions, convexity, bounds, and workspace size. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Reject unsupported/inconsistent problems before state changes. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
     },
     {
       "name": "init",
       "purpose": "Initialize primal/dual variables and fixed solver workspace.",
-      "todo": "Define deterministic scaling and warm start. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize primal/dual variables and fixed solver workspace. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define deterministic scaling and warm start. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
     },
     {
       "name": "reset",
       "purpose": "Clear iteration and warm-start state.",
-      "todo": "Document retained factorization/active-set data. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Clear iteration and warm-start state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Document retained factorization/active-set data. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
     },
     {
       "name": "solve",
       "purpose": "Run the selected bounded optimization iteration.",
-      "todo": "Separate convergence, infeasibility, numeric failure, and iteration limit. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run the selected bounded optimization iteration. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Separate convergence, infeasibility, numeric failure, and iteration limit. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
     },
     {
       "name": "verify_solution",
       "purpose": "Check primal/dual residuals and constraint tolerances.",
-      "todo": "Do not declare success merely because the loop terminated. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check primal/dual residuals and constraint tolerances. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Do not declare success merely because the loop terminated. Algorithm-specific focus: Bounded active-set quadratic-program solver for a fixed-shape convex QP."
     }
   ]
 }

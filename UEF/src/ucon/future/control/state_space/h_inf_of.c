@@ -16,9 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(H_INF_OF.validate_config): Declare whether gain synthesis is offline or part of this
- * module. Algorithm-specific focus: H∞ output feedback; K, L
- * from Riccati offline
+/* TODO(H_INF_OF.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Check matrix dimensions, gain layout,
+ * and state/input units. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Declare whether gain
+ * synthesis is offline or part of this module.
+ * Algorithm-specific focus: H∞ output feedback; K, L from
+ * Riccati offline
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_h_inf_of_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -29,8 +37,15 @@ ucon_status_t ucon_h_inf_of_validate_config(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(H_INF_OF.init): Define initial-state requirements and workspace. Algorithm-specific
- * focus: H∞ output feedback; K, L from Riccati offline
+/* TODO(H_INF_OF.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize controller and optional integral/observer interface state.
+ * 3) Check numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Define initial-state requirements and workspace.
+ * Algorithm-specific focus: H∞ output feedback; K, L from Riccati
+ * offline
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_h_inf_of_init(const ucon_algorithm_scaffold_call_t *call)
@@ -41,9 +56,14 @@ ucon_status_t ucon_h_inf_of_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(H_INF_OF.reset): Specify bumpless restart and estimator coordination.
- * Algorithm-specific focus: H∞ output feedback; K, L from Riccati
- * offline
+/* TODO(H_INF_OF.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Reset dynamic control memory. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit outputs, state,
+ * and diagnostics together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Specify bumpless restart
+ * and estimator coordination. Algorithm-specific focus: H∞ output
+ * feedback; K, L from Riccati offline
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_h_inf_of_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -54,9 +74,17 @@ ucon_status_t ucon_h_inf_of_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(H_INF_OF.compute_feedback): Define reference/feedforward terms, sign, and saturation
- * order. Algorithm-specific focus: H∞ output feedback; K, L
- * from Riccati offline
+/* TODO(H_INF_OF.compute_feedback): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Evaluate the declared
+ * state/output-feedback law. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define
+ * reference/feedforward terms, sign, and saturation order.
+ * Algorithm-specific focus: H∞ output feedback; K, L from
+ * Riccati offline
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_h_inf_of_compute_feedback(const ucon_algorithm_scaffold_call_t *call)
@@ -67,7 +95,13 @@ ucon_status_t ucon_h_inf_of_compute_feedback(const ucon_algorithm_scaffold_call_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(H_INF_OF.step): Preserve output on dimension/numeric failure and state work bounds.
+/* TODO(H_INF_OF.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Evaluate feedback and publish a bounded command. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: Preserve
+ * output on dimension/numeric failure and state work bounds.
  * Algorithm-specific focus: H∞ output feedback; K, L from Riccati
  * offline
  * This stub must not read/write opaque state or output buffers.

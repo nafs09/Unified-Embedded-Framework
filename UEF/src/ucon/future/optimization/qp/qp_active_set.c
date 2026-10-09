@@ -16,9 +16,18 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(QP_ACTIVE_SET.validate_problem): Reject unsupported/inconsistent problems before state
- * changes. Algorithm-specific focus: Bounded active-set
- * quadratic-program solver for a fixed-shape convex QP.
+/* TODO(QP_ACTIVE_SET.validate_problem): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check fixed dimensions,
+ * convexity, bounds, and workspace size. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: Reject unsupported/inconsistent
+ * problems before state changes. Algorithm-specific
+ * focus: Bounded active-set quadratic-program solver
+ * for a fixed-shape convex QP.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_active_set_validate_problem(const ucon_algorithm_scaffold_call_t *call)
@@ -29,9 +38,15 @@ ucon_status_t ucon_qp_active_set_validate_problem(const ucon_algorithm_scaffold_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_ACTIVE_SET.init): Define deterministic scaling and warm start. Algorithm-specific
- * focus: Bounded active-set quadratic-program solver for a
- * fixed-shape convex QP.
+/* TODO(QP_ACTIVE_SET.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize primal/dual variables and fixed solver workspace. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define deterministic scaling and
+ * warm start. Algorithm-specific focus: Bounded active-set
+ * quadratic-program solver for a fixed-shape convex QP.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_active_set_init(const ucon_algorithm_scaffold_call_t *call)
@@ -42,7 +57,13 @@ ucon_status_t ucon_qp_active_set_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_ACTIVE_SET.reset): Document retained factorization/active-set data.
+/* TODO(QP_ACTIVE_SET.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Clear iteration and warm-start state. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Document retained factorization/active-set data.
  * Algorithm-specific focus: Bounded active-set quadratic-program
  * solver for a fixed-shape convex QP.
  * This stub must not read/write opaque state or output buffers.
@@ -55,9 +76,16 @@ ucon_status_t ucon_qp_active_set_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_ACTIVE_SET.solve): Separate convergence, infeasibility, numeric failure, and
- * iteration limit. Algorithm-specific focus: Bounded active-set
- * quadratic-program solver for a fixed-shape convex QP.
+/* TODO(QP_ACTIVE_SET.solve): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Run the selected bounded optimization iteration. 3) Check
+ * numeric results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Separate convergence,
+ * infeasibility, numeric failure, and iteration limit.
+ * Algorithm-specific focus: Bounded active-set quadratic-program
+ * solver for a fixed-shape convex QP.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_active_set_solve(const ucon_algorithm_scaffold_call_t *call)
@@ -68,10 +96,17 @@ ucon_status_t ucon_qp_active_set_solve(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(QP_ACTIVE_SET.verify_solution): Do not declare success merely because the loop
- * terminated. Algorithm-specific focus: Bounded
- * active-set quadratic-program solver for a fixed-shape
- * convex QP.
+/* TODO(QP_ACTIVE_SET.verify_solution): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check primal/dual
+ * residuals and constraint tolerances. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on
+ * failure. Operation-specific requirements: Do not
+ * declare success merely because the loop terminated.
+ * Algorithm-specific focus: Bounded active-set
+ * quadratic-program solver for a fixed-shape convex QP.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_qp_active_set_verify_solution(const ucon_algorithm_scaffold_call_t *call)

@@ -6,6 +6,10 @@
 #include "uef/umid/umid_imu.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(spi-imu main): Initialize the selected board SPI instance and one explicitly
+     * supported IMU, verify device identity, configure sample rate/range, and establish
+     * chip-select/transfer ownership. Read timestamped samples with bounded deadlines,
+     * apply declared scale/bias calibration, and publish a coherent sample only on success.
+     */
     return 0;
 }

@@ -14,44 +14,90 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check units, timestamps, model identity, and supplied supervisor limits.
-/// TODO(PKPD_TARGET_CONTROL.validate_inputs): Never infer clinical settings or therapy
-/// limits. Algorithm-specific focus:
-/// Target-control boundary around caller-supplied
+/// TODO(PKPD_TARGET_CONTROL.validate_inputs): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check
+/// units, timestamps, model identity, and supplied
+/// supervisor limits. 3) Check numeric results,
+/// declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success;
+/// preserve prior values on failure.
+/// Operation-specific requirements: Never infer
+/// clinical settings or therapy limits.
+/// Algorithm-specific focus: Target-control
+/// boundary around caller-supplied
 /// pharmacokinetic/pharmacodynamic models,
 /// estimates, dose constraints, and independent
 /// supervision; no clinical defaults are provided.
 ucon_status_t ucon_pkpd_target_control_validate_inputs(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize reusable profile state and external model interface.
-/// TODO(PKPD_TARGET_CONTROL.init): Require explicit safe seed and configuration provenance.
-/// Algorithm-specific focus: Target-control boundary around
-/// caller-supplied pharmacokinetic/pharmacodynamic models,
-/// estimates, dose constraints, and independent supervision;
-/// no clinical defaults are provided.
+/// TODO(PKPD_TARGET_CONTROL.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Initialize reusable profile
+/// state and external model interface. 3) Check numeric
+/// results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Require explicit safe
+/// seed and configuration provenance. Algorithm-specific
+/// focus: Target-control boundary around caller-supplied
+/// pharmacokinetic/pharmacodynamic models, estimates, dose
+/// constraints, and independent supervision; no clinical
+/// defaults are provided.
 ucon_status_t ucon_pkpd_target_control_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset history only under explicit external supervision.
-/// TODO(PKPD_TARGET_CONTROL.reset): Define stale-data and therapy-state handoff.
-/// Algorithm-specific focus: Target-control boundary around
-/// caller-supplied pharmacokinetic/pharmacodynamic models,
-/// estimates, dose constraints, and independent supervision;
-/// no clinical defaults are provided.
+/// TODO(PKPD_TARGET_CONTROL.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Reset history only under
+/// explicit external supervision. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Define stale-data and
+/// therapy-state handoff. Algorithm-specific focus:
+/// Target-control boundary around caller-supplied
+/// pharmacokinetic/pharmacodynamic models, estimates, dose
+/// constraints, and independent supervision; no clinical
+/// defaults are provided.
 ucon_status_t ucon_pkpd_target_control_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Consume the declared application-owned physiology/device model output.
-/// TODO(PKPD_TARGET_CONTROL.update_estimate): Do not invent patient or device dynamics.
-/// Algorithm-specific focus: Target-control
-/// boundary around caller-supplied
-/// pharmacokinetic/pharmacodynamic models,
-/// estimates, dose constraints, and independent
-/// supervision; no clinical defaults are provided.
+/// TODO(PKPD_TARGET_CONTROL.update_estimate): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Consume the
+/// declared application-owned physiology/device
+/// model output. 3) Check numeric results,
+/// declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success;
+/// preserve prior values on failure.
+/// Operation-specific requirements: Do not invent
+/// patient or device dynamics. Algorithm-specific
+/// focus: Target-control boundary around
+/// caller-supplied pharmacokinetic/pharmacodynamic
+/// models, estimates, dose constraints, and
+/// independent supervision; no clinical defaults
+/// are provided.
 ucon_status_t ucon_pkpd_target_control_update_estimate(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute a candidate subject to caller-supplied constraints.
-/// TODO(PKPD_TARGET_CONTROL.compute_candidate): Require independent safety supervision and
-/// report limiting conditions.
-/// Algorithm-specific focus: Target-control
-/// boundary around caller-supplied
+/// TODO(PKPD_TARGET_CONTROL.compute_candidate): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Compute a candidate subject to
+/// caller-supplied constraints. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure.
+/// Operation-specific requirements: Require
+/// independent safety supervision and report
+/// limiting conditions. Algorithm-specific
+/// focus: Target-control boundary around
+/// caller-supplied
 /// pharmacokinetic/pharmacodynamic models,
 /// estimates, dose constraints, and independent
 /// supervision; no clinical defaults are
@@ -59,11 +105,19 @@ ucon_status_t ucon_pkpd_target_control_update_estimate(const ucon_algorithm_scaf
 ucon_status_t ucon_pkpd_target_control_compute_candidate(const ucon_algorithm_scaffold_call_t *call);
 
 /// Return candidate/status for external approval and actuation.
-/// TODO(PKPD_TARGET_CONTROL.step): No generic UCON profile establishes clinical safety.
-/// Algorithm-specific focus: Target-control boundary around
-/// caller-supplied pharmacokinetic/pharmacodynamic models,
-/// estimates, dose constraints, and independent supervision;
-/// no clinical defaults are provided.
+/// TODO(PKPD_TARGET_CONTROL.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Return candidate/status for
+/// external approval and actuation. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: No generic UCON profile
+/// establishes clinical safety. Algorithm-specific focus:
+/// Target-control boundary around caller-supplied
+/// pharmacokinetic/pharmacodynamic models, estimates, dose
+/// constraints, and independent supervision; no clinical
+/// defaults are provided.
 ucon_status_t ucon_pkpd_target_control_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

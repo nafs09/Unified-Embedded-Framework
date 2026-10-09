@@ -14,49 +14,105 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check effector matrix, actuator bounds/rates, weights, and dimensions.
-/// TODO(CONTROL_ALLOCATOR.validate_config): Define units, priority, and rank/conditioning
-/// requirements. Algorithm-specific focus: Bounded
-/// control allocation from requested generalized
+/// TODO(CONTROL_ALLOCATOR.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check
+/// effector matrix, actuator bounds/rates, weights,
+/// and dimensions. 3) Check numeric results,
+/// declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior
+/// values on failure. Operation-specific
+/// requirements: Define units, priority, and
+/// rank/conditioning requirements.
+/// Algorithm-specific focus: Bounded control
+/// allocation from requested generalized
 /// forces/moments to declared actuator commands.
 ucon_status_t ucon_control_allocator_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize solver and previous actuator command.
-/// TODO(CONTROL_ALLOCATOR.init): Define safe seed and fixed workspace. Algorithm-specific
-/// focus: Bounded control allocation from requested generalized
+/// TODO(CONTROL_ALLOCATOR.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Initialize solver and previous actuator
+/// command. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// safe seed and fixed workspace. Algorithm-specific focus:
+/// Bounded control allocation from requested generalized
 /// forces/moments to declared actuator commands.
 ucon_status_t ucon_control_allocator_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset solver/command history.
-/// TODO(CONTROL_ALLOCATOR.reset): Define whether previous actuator values are retained.
+/// TODO(CONTROL_ALLOCATOR.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Reset solver/command history. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Define
+/// whether previous actuator values are retained.
 /// Algorithm-specific focus: Bounded control allocation from
 /// requested generalized forces/moments to declared actuator
 /// commands.
 ucon_status_t ucon_control_allocator_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Build the bounded allocation objective and constraints.
-/// TODO(CONTROL_ALLOCATOR.build_problem): Specify axis weights, trim/bias, and rate
-/// constraints. Algorithm-specific focus: Bounded
+/// TODO(CONTROL_ALLOCATOR.build_problem): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Build the bounded
+/// allocation objective and constraints. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Specify axis weights, trim/bias, and
+/// rate constraints. Algorithm-specific focus: Bounded
 /// control allocation from requested generalized
 /// forces/moments to declared actuator commands.
 ucon_status_t ucon_control_allocator_build_problem(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute an actuator command for the requested generalized force/moment.
-/// TODO(CONTROL_ALLOCATOR.solve_allocation): Bound solver work and return
-/// infeasible/saturation status. Algorithm-specific
-/// focus: Bounded control allocation from requested
-/// generalized forces/moments to declared actuator
-/// commands.
+/// TODO(CONTROL_ALLOCATOR.solve_allocation): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Compute an
+/// actuator command for the requested generalized
+/// force/moment. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on
+/// failure. Operation-specific requirements: Bound
+/// solver work and return infeasible/saturation
+/// status. Algorithm-specific focus: Bounded
+/// control allocation from requested generalized
+/// forces/moments to declared actuator commands.
 ucon_status_t ucon_control_allocator_solve_allocation(const ucon_algorithm_scaffold_call_t *call);
 
 /// Check command residuals and all position/rate limits.
-/// TODO(CONTROL_ALLOCATOR.verify_command): Never publish a command that violates declared
-/// actuator bounds. Algorithm-specific focus: Bounded
-/// control allocation from requested generalized
+/// TODO(CONTROL_ALLOCATOR.verify_command): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check command
+/// residuals and all position/rate limits. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Never publish a command that
+/// violates declared actuator bounds.
+/// Algorithm-specific focus: Bounded control
+/// allocation from requested generalized
 /// forces/moments to declared actuator commands.
 ucon_status_t ucon_control_allocator_verify_command(const ucon_algorithm_scaffold_call_t *call);
 
 /// Allocate one requested command and publish status/residual.
-/// TODO(CONTROL_ALLOCATOR.step): Leave output untouched if allocation fails.
+/// TODO(CONTROL_ALLOCATOR.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Allocate one requested command and
+/// publish status/residual. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: Leave output untouched if allocation fails.
 /// Algorithm-specific focus: Bounded control allocation from
 /// requested generalized forces/moments to declared actuator
 /// commands.

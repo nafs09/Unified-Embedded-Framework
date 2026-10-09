@@ -2,6 +2,29 @@ cmake_minimum_required(VERSION 3.20)
 project(UEF VERSION 1.1.0 LANGUAGES C)
 
 option(UEF_BUILD_EXAMPLE "Build the portable component-lifecycle example" OFF)
+# The scalar choice affects UMATH/UCON ABI; the accumulator choice controls
+# numerical precision and cost. Publish both on UEF::Core for consistent use.
+set(UEF_UMATH_SCALAR_TYPE "uef_f32_t" CACHE STRING
+  "UMATH public scalar type: uef_f32_t or uef_f64_t")
+set_property(CACHE UEF_UMATH_SCALAR_TYPE PROPERTY STRINGS uef_f32_t uef_f64_t)
+if(NOT UEF_UMATH_SCALAR_TYPE STREQUAL "uef_f32_t" AND
+   NOT UEF_UMATH_SCALAR_TYPE STREQUAL "uef_f64_t")
+  message(FATAL_ERROR "UEF_UMATH_SCALAR_TYPE must be uef_f32_t or uef_f64_t")
+endif()
+set(UEF_UMATH_ACCUMULATOR_TYPE "SCALAR" CACHE STRING
+  "UMATH intermediate type: SCALAR, uef_f32_t, or uef_f64_t")
+set_property(CACHE UEF_UMATH_ACCUMULATOR_TYPE PROPERTY STRINGS SCALAR uef_f32_t uef_f64_t)
+if(NOT UEF_UMATH_ACCUMULATOR_TYPE STREQUAL "SCALAR" AND
+   NOT UEF_UMATH_ACCUMULATOR_TYPE STREQUAL "uef_f32_t" AND
+   NOT UEF_UMATH_ACCUMULATOR_TYPE STREQUAL "uef_f64_t")
+  message(FATAL_ERROR
+    "UEF_UMATH_ACCUMULATOR_TYPE must be SCALAR, uef_f32_t, or uef_f64_t")
+endif()
+set(UEF_UMATH_DEFINITIONS UMATH_SCALAR_TYPE=${UEF_UMATH_SCALAR_TYPE})
+if(NOT UEF_UMATH_ACCUMULATOR_TYPE STREQUAL "SCALAR")
+  list(APPEND UEF_UMATH_DEFINITIONS
+    UMATH_ACCUMULATOR_TYPE=${UEF_UMATH_ACCUMULATOR_TYPE})
+endif()
 # Select one target backend at configure time; the host simulator and Cortex-M CMSIS code provide
 # the same UHAL contract and must never be compiled into one firmware/runtime library together.
 set(UEF_TARGET "HOST" CACHE STRING "UHAL implementation: HOST or CORTEX_M")
@@ -256,7 +279,9 @@ target_compile_features(uef_core PUBLIC c_std_11)
 set_target_properties(uef_core PROPERTIES
   C_STANDARD 11 C_STANDARD_REQUIRED YES C_EXTENSIONS NO
   EXPORT_NAME Core)
-target_compile_definitions(uef_core PUBLIC ${UEF_TARGET_DEFINITIONS})
+target_compile_definitions(uef_core PUBLIC
+  ${UEF_TARGET_DEFINITIONS}
+  ${UEF_UMATH_DEFINITIONS})
 
 if(UEF_TARGET STREQUAL "CORTEX_M")
   target_include_directories(uef_core PUBLIC ${UEF_CMSIS_INCLUDE_DIR})

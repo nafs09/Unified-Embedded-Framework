@@ -9,6 +9,11 @@
 #include "uef/uproto/uproto_dshot.h"
 
 int main(void) {
-    /* Add board startup, checked configuration, and the example flow here. */
+    /* TODO(full-motor-control main): Initialize sensing, estimator, controller,
+     * allocation, communications, health, and fault components in dependency order.
+     * Check timing/workspace budgets and sensor validity before enabling any actuator;
+     * keep outputs in the board-safe state until explicit arming, and define shutdown and
+     * degraded-mode behavior for each startup/runtime failure.
+     */
     return 0;
 }

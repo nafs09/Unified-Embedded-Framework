@@ -14,39 +14,77 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check linear model and U-D factor dimensions.
-/// TODO(UD_KF.validate_model): Pin unit-upper/diagonal convention and pivot policy.
-/// Algorithm-specific focus: UD-factorized Kalman filter that
-/// propagates covariance as unit-upper and diagonal factors.
+/// TODO(UD_KF.validate_model): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check linear model and U-D factor dimensions. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Pin unit-upper/diagonal
+/// convention and pivot policy. Algorithm-specific focus:
+/// UD-factorized Kalman filter that propagates covariance as
+/// unit-upper and diagonal factors.
 ucon_status_t ucon_ud_kf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize estimate and U-D covariance factors.
-/// TODO(UD_KF.init): Define factor conversion/validation from caller covariance.
-/// Algorithm-specific focus: UD-factorized Kalman filter that propagates
-/// covariance as unit-upper and diagonal factors.
+/// TODO(UD_KF.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize estimate and U-D covariance factors. 3) Check numeric
+/// results, declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Define factor
+/// conversion/validation from caller covariance. Algorithm-specific focus:
+/// UD-factorized Kalman filter that propagates covariance as unit-upper and
+/// diagonal factors.
 ucon_status_t ucon_ud_kf_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset estimate and factors.
-/// TODO(UD_KF.reset): Specify covariance retention. Algorithm-specific focus: UD-factorized
-/// Kalman filter that propagates covariance as unit-upper and diagonal
-/// factors.
+/// TODO(UD_KF.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Reset
+/// estimate and factors. 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify covariance retention.
+/// Algorithm-specific focus: UD-factorized Kalman filter that propagates
+/// covariance as unit-upper and diagonal factors.
 ucon_status_t ucon_ud_kf_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate covariance using the U-D factor recursion.
-/// TODO(UD_KF.predict_factor): Specify process-noise factorization and positive diagonal
-/// checks. Algorithm-specific focus: UD-factorized Kalman filter
-/// that propagates covariance as unit-upper and diagonal factors.
+/// TODO(UD_KF.predict_factor): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Propagate covariance using the U-D factor recursion. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify process-noise
+/// factorization and positive diagonal checks. Algorithm-specific
+/// focus: UD-factorized Kalman filter that propagates covariance
+/// as unit-upper and diagonal factors.
 ucon_status_t ucon_ud_kf_predict_factor(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply measurement update directly to U-D factors.
-/// TODO(UD_KF.correct_factor): Define scalar/vector measurement ordering and conditioning
-/// policy. Algorithm-specific focus: UD-factorized Kalman filter
-/// that propagates covariance as unit-upper and diagonal factors.
+/// TODO(UD_KF.correct_factor): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Apply measurement update directly to U-D factors. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define scalar/vector
+/// measurement ordering and conditioning policy.
+/// Algorithm-specific focus: UD-factorized Kalman filter that
+/// propagates covariance as unit-upper and diagonal factors.
 ucon_status_t ucon_ud_kf_correct_factor(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one factorized linear Kalman cycle.
-/// TODO(UD_KF.step): Avoid silently reconstructing and refactoring a full covariance.
-/// Algorithm-specific focus: UD-factorized Kalman filter that propagates
-/// covariance as unit-upper and diagonal factors.
+/// TODO(UD_KF.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Run
+/// one factorized linear Kalman cycle. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Avoid silently reconstructing
+/// and refactoring a full covariance. Algorithm-specific focus:
+/// UD-factorized Kalman filter that propagates covariance as unit-upper and
+/// diagonal factors.
 ucon_status_t ucon_ud_kf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

@@ -21,10 +21,17 @@ class TIUniFlashDeployment(IDeployment):
         )
 
     def identify(self) -> ChipIdentity:
-        raise NotImplementedError("TODO(ti-uniflash-identify): read device identity and memory from target metadata.")
+        raise NotImplementedError(
+            "TODO(ti-uniflash-identify): Read the connected device ID/revision and reported memory "
+            "geometry using the selected UniFlash target definition, match verified chip metadata, "
+            "and leave identity fields unknown when the probe does not expose them."
+        )
 
     def halt(self) -> bool:
-        raise NotImplementedError("TODO(ti-uniflash-halt): halt and confirm the supported target core.")
+        raise NotImplementedError(
+            "TODO(ti-uniflash-halt): Issue the supported halt operation, poll with a finite timeout "
+            "until the selected core is confirmed stopped, and preserve the provider error if it fails."
+        )
 
     def unlock_flash(self) -> bool:
         raise NotImplementedError(
@@ -50,10 +57,16 @@ class TIUniFlashDeployment(IDeployment):
         )
 
     def reset(self, run: bool = True) -> bool:
-        raise NotImplementedError("TODO(ti-uniflash-reset): reset/resume through the supported probe API.")
+        raise NotImplementedError(
+            "TODO(ti-uniflash-reset): Require successful artifact verification, use the supported "
+            "UniFlash/probe reset operation, resume only when run is true, and confirm the final state."
+        )
 
     def disconnect(self) -> None:
-        raise NotImplementedError("TODO(ti-uniflash-disconnect): close CLI/debug sessions and release probe resources.")
+        raise NotImplementedError(
+            "TODO(ti-uniflash-disconnect): Close only CLI/debug sessions opened by this instance, "
+            "release the selected probe, and make cleanup idempotent after partial connection or error."
+        )
 
     def read_chip_identity(self) -> ChipIdentity:
         raise NotImplementedError(

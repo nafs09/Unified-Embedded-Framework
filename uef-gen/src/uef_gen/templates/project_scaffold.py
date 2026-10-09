@@ -136,13 +136,18 @@ void board_deinitialize(void);
 
 uef_status_t board_initialize(void)
 {{
-    /* TODO: configure board clocks and pins, then initialize selected UPAL devices. */
+    /* TODO(board-initialize): Resolve the verified clock/pin plan, configure clocks before
+     * dependent peripherals, then initialize selected UPAL devices in dependency order. Check
+     * every status, unwind already-started devices on failure, and return success only when the
+     * complete board profile is ready without modifying unowned pins. */
     return UEF_NOT_SUPPORTED;
 }}
 
 void board_deinitialize(void)
 {{
-    /* TODO: stop board-owned devices and return pins to their documented safe state. */
+    /* TODO(board-deinitialize): Stop board-owned services and DMA in reverse dependency order,
+     * disable peripheral/interrupt sources, then place configured pins in their documented safe
+     * state. Make repeated shutdown harmless and do not alter pins outside this board profile. */
 }}
 """
 
@@ -152,7 +157,10 @@ void board_deinitialize(void)
  */
 void uef_system_initialize(void)
 {
-    /* TODO: use the selected MCU reference manual and board clock plan. */
+    /* TODO(system-clock-startup): Apply the verified oscillator/PLL and bus-divider sequence;
+     * configure flash wait states before raising frequency; enable required memory protection
+     * and caches; wait with bounded timeouts for readiness; then verify and publish the actual
+     * clock configuration before any timing-dependent peripheral is initialized. */
 }
 """
     startup_assembly = """/* GENERATED PLACEHOLDER — replace with the selected vendor startup file.
@@ -198,14 +206,18 @@ static uef_status_t application_initialize(void *context)
 static uef_status_t application_start(void *context)
 {{
     (void)context;
-    /* TODO: start application services after every required component is ready. */
+    /* TODO(application-start): Start selected services only after their declared dependencies
+     * report ready; on the first error, stop already-started services in reverse order and return
+     * that failure instead of allowing the scheduler to run a partial application. */
     return UEF_NOT_SUPPORTED;
 }}
 
 static void application_stop(void *context)
 {{
     (void)context;
-    /* TODO: stop services in reverse dependency order and flush durable state. */
+    /* TODO(application-stop): Stop task producers first, then stop services in reverse dependency
+     * order, drain owned DMA/transfers, flush durable state with bounded waits, and finally call
+     * board_deinitialize; make the path safe after partial startup and repeated stop requests. */
 }}
 
 int main(void)
@@ -222,7 +234,9 @@ int main(void)
 
     if (uapp_component_init(&application) != UEF_OK) return 1;
     if (uapp_component_start(&application) != UEF_OK) return 2;
-    /* TODO: replace this skeleton path with the selected UOS lifecycle policy. */
+    /* TODO(application-main-loop): Use the selected UOS scheduler/lifecycle policy, propagate
+     * startup failure without starting tasks, and arrange a defined shutdown path when the
+     * scheduler returns or a system fault requests termination. */
     uos_scheduler_start();
     uapp_component_stop(&application);
     return 0;
@@ -283,8 +297,10 @@ def _render_task_scaffold(project: ResolvedProject) -> tuple[GeneratedFile, ...]
         f"void {_identifier(task.name, 'task')}(void *context);\n" for task in tasks
     )
     entries = "\n".join(
-        f"    /* TODO: create {_identifier(task.name, 'task')} at {task.period_us} us, "
-        f"priority {task.priority}, stack {task.stack_bytes} bytes using the selected UOS backend. */"
+        f"    /* TODO(task-{_identifier(task.name, 'task')}): Allocate or bind the configured "
+        f"{task.stack_bytes}-byte stack and task control storage, create the task at "
+        f"{task.period_us} us with priority {task.priority} through the selected UOS backend, "
+        f"check its creation status, and define how missed periods and startup failure are reported. */"
         for task in tasks
     )
     header = f"""/* Generated task declarations; implement task bodies in the application. */
@@ -315,7 +331,9 @@ def _render_protocol_scaffolds(project: ResolvedProject) -> tuple[GeneratedFile,
 #define GENERATED_PROTOCOL_{macro}_H
 
 #define UEF_PROTOCOL_{macro}_TYPE {json.dumps(protocol_type)}
-/* TODO: add timing/frame constants only after target clocks and pin assignments resolve. */
+/* TODO(protocol-{macro.lower()}): Resolve baud/bit timing, framing, polarity, and pin assignment
+ * from the selected protocol profile and verified target clock; validate the values against the
+ * transport limits and publish named constants only when every required setting is known. */
 
 #endif /* GENERATED_PROTOCOL_{macro}_H */
 """
@@ -351,8 +369,9 @@ def _render_freertos_config(project: ResolvedProject) -> tuple[GeneratedFile, ..
 #define configSUPPORT_STATIC_ALLOCATION {1 if static_allocation else 0}
 #define configSUPPORT_DYNAMIC_ALLOCATION {1 if heap_bytes > 0 else 0}
 
-/* TODO: set interrupt priorities, timer hooks, stack-depth type, assertions,
- * FPU/MPU options, allocation hooks and ISR-yield macro for the chosen port.
+/* TODO(freertos-port-config): Resolve interrupt priorities and timer hooks from the chosen port;
+ * select its stack-depth type, assertions, FPU/MPU settings, allocation hooks, and ISR-yield macro;
+ * then cross-check heap/allocation and priority settings against the generated task profile.
  */
 
 #endif /* FREERTOS_CONFIG_H */

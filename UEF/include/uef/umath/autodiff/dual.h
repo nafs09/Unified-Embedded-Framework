@@ -2,6 +2,7 @@
 /// @brief Planned forward-mode dual scalar for fixed-cost derivative propagation.
 #ifndef UEF_UMATH_AUTODIFF_DUAL_H
 #define UEF_UMATH_AUTODIFF_DUAL_H
+#include <uef/umath/config.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
 #ifdef __cplusplus

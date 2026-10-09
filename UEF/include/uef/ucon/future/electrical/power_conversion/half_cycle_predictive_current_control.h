@@ -14,10 +14,28 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Confirm topology, sensing polarity, and half-cycle timing definition.
-/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.validate_topology): The current key does not
-/// define these inputs.
-/// Algorithm-specific focus:
-/// Deferred converter-specific
+/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.validate_topology): Implementation sequence: 1)
+/// Validate pointers,
+/// configuration, dimensions,
+/// and preconditions before
+/// writing outputs or state.
+/// 2) Confirm topology,
+/// sensing polarity, and
+/// half-cycle timing
+/// definition. 3) Check
+/// numeric results, declared
+/// constraints, and fixed
+/// work/memory bounds. 4)
+/// Commit outputs, state, and
+/// diagnostics together only
+/// after success; preserve
+/// prior values on failure.
+/// Operation-specific
+/// requirements: The current
+/// key does not define these
+/// inputs. Algorithm-specific
+/// focus: Deferred
+/// converter-specific
 /// predictive-current-control
 /// candidate whose topology,
 /// prediction horizon, and
@@ -26,9 +44,20 @@ extern "C" {
 ucon_status_t ucon_half_cycle_predictive_current_control_validate_topology(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize a cycle-synchronous controller state.
-/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.init): Specify phase acquisition and safe
-/// hardware handoff. Algorithm-specific
-/// focus: Deferred converter-specific
+/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.init): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Initialize a cycle-synchronous
+/// controller state. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only
+/// after success; preserve prior values on
+/// failure. Operation-specific
+/// requirements: Specify phase acquisition
+/// and safe hardware handoff.
+/// Algorithm-specific focus: Deferred
+/// converter-specific
 /// predictive-current-control candidate
 /// whose topology, prediction horizon, and
 /// switch-selection rule are not defined
@@ -36,7 +65,18 @@ ucon_status_t ucon_half_cycle_predictive_current_control_validate_topology(const
 ucon_status_t ucon_half_cycle_predictive_current_control_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear cycle/prediction history.
-/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.reset): Never emit a switch command when
+/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.reset): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions,
+/// and preconditions before writing
+/// outputs or state. 2) Clear
+/// cycle/prediction history. 3) Check
+/// numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics
+/// together only after success; preserve
+/// prior values on failure.
+/// Operation-specific requirements: Never
+/// emit a switch command when
 /// timing/topology is invalid.
 /// Algorithm-specific focus: Deferred
 /// converter-specific
@@ -47,8 +87,25 @@ ucon_status_t ucon_half_cycle_predictive_current_control_init(const ucon_algorit
 ucon_status_t ucon_half_cycle_predictive_current_control_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Predict current for the explicitly allowed switch actions.
-/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.predict_candidates): Write plant equations and
-/// sample instant before
+/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.predict_candidates): Implementation sequence:
+/// 1) Validate pointers,
+/// configuration, dimensions,
+/// and preconditions before
+/// writing outputs or state.
+/// 2) Predict current for the
+/// explicitly allowed switch
+/// actions. 3) Check numeric
+/// results, declared
+/// constraints, and fixed
+/// work/memory bounds. 4)
+/// Commit outputs, state, and
+/// diagnostics together only
+/// after success; preserve
+/// prior values on failure.
+/// Operation-specific
+/// requirements: Write plant
+/// equations and sample
+/// instant before
 /// implementation.
 /// Algorithm-specific focus:
 /// Deferred
@@ -61,10 +118,29 @@ ucon_status_t ucon_half_cycle_predictive_current_control_reset(const ucon_algori
 ucon_status_t ucon_half_cycle_predictive_current_control_predict_candidates(const ucon_algorithm_scaffold_call_t *call);
 
 /// Select an admissible action using the specified objective.
-/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.select_switch_action): Define tie-breaking,
-/// dead-time, current
-/// limits, and fault
-/// response.
+/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.select_switch_action): Implementation sequence:
+/// 1) Validate pointers,
+/// configuration,
+/// dimensions, and
+/// preconditions before
+/// writing outputs or
+/// state. 2) Select an
+/// admissible action using
+/// the specified objective.
+/// 3) Check numeric
+/// results, declared
+/// constraints, and fixed
+/// work/memory bounds. 4)
+/// Commit outputs, state,
+/// and diagnostics together
+/// only after success;
+/// preserve prior values on
+/// failure.
+/// Operation-specific
+/// requirements: Define
+/// tie-breaking, dead-time,
+/// current limits, and
+/// fault response.
 /// Algorithm-specific
 /// focus: Deferred
 /// converter-specific
@@ -77,9 +153,20 @@ ucon_status_t ucon_half_cycle_predictive_current_control_predict_candidates(cons
 ucon_status_t ucon_half_cycle_predictive_current_control_select_switch_action(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one half-cycle update and return abstract command/status.
-/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.step): Keep gate sequencing/interlocks outside
-/// portable UCON. Algorithm-specific focus:
-/// Deferred converter-specific
+/// TODO(HALF_CYCLE_PREDICTIVE_CURRENT_CONTROL.step): Implementation sequence: 1) Validate
+/// pointers, configuration, dimensions, and
+/// preconditions before writing outputs or
+/// state. 2) Run one half-cycle update and
+/// return abstract command/status. 3) Check
+/// numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together
+/// only after success; preserve prior
+/// values on failure. Operation-specific
+/// requirements: Keep gate
+/// sequencing/interlocks outside portable
+/// UCON. Algorithm-specific focus: Deferred
+/// converter-specific
 /// predictive-current-control candidate
 /// whose topology, prediction horizon, and
 /// switch-selection rule are not defined

@@ -2,6 +2,7 @@
 /// @brief Planned fixed-step quadrature and bounded ODE integration routines.
 #ifndef UEF_UMATH_NUMERICAL_INTEGRATION_H
 #define UEF_UMATH_NUMERICAL_INTEGRATION_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

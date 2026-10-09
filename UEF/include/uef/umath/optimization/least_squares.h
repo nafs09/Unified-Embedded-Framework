@@ -2,6 +2,7 @@
 /// @brief Planned dense least-squares and residual utilities.
 #ifndef UEF_UMATH_OPTIMIZATION_LEAST_SQUARES_H
 #define UEF_UMATH_OPTIMIZATION_LEAST_SQUARES_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>

@@ -3,13 +3,7 @@
     "src/ucon/trajectory/profiles/jerk_profile.c"
   ],
   "headers": [
-    "include/uef/ucon/detail/algorithm_call.h",
-    "include/uef/ucon/trajectory/profiles/jerk_profile.h",
-    "include/uef/ucon/ucon_status.h",
-    "include/uef/ucon/ucon_types.h",
-    "include/uef/ucore/uef_types.h",
-    "include/uef/umath/scalar.h",
-    "include/uef/umath/status.h"
+    "include/uef/ucon/trajectory/profiles/jerk_profile.h"
   ],
   "dependencies": [
     "ucon/core"

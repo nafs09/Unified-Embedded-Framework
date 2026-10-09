@@ -14,36 +14,77 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check nonlinear model, surface/relative-degree data, and parameter bounds.
-/// TODO(CLF_CBF.validate_model): State operating-region and uncertainty assumptions.
-/// Algorithm-specific focus: Combined CLF + CBF QP; performance
-/// + safety
+/// TODO(CLF_CBF.validate_model): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Check nonlinear model,
+/// surface/relative-degree data, and parameter bounds. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: State operating-region and
+/// uncertainty assumptions. Algorithm-specific focus: Combined
+/// CLF + CBF QP; performance + safety
 ucon_status_t ucon_clf_cbf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize virtual-control, adaptation, integral, and filter state.
-/// TODO(CLF_CBF.init): Define state seeds and bound startup transients. Algorithm-specific
-/// focus: Combined CLF + CBF QP; performance + safety
+/// TODO(CLF_CBF.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize virtual-control, adaptation, integral, and filter state. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define state seeds and bound startup transients.
+/// Algorithm-specific focus: Combined CLF + CBF QP; performance + safety
 ucon_status_t ucon_clf_cbf_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset controller/adaptation history.
-/// TODO(CLF_CBF.reset): Specify parameter projection and bumpless restart. Algorithm-specific
-/// focus: Combined CLF + CBF QP; performance + safety
+/// TODO(CLF_CBF.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Reset controller/adaptation history. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements: Specify
+/// parameter projection and bumpless restart. Algorithm-specific focus:
+/// Combined CLF + CBF QP; performance + safety
 ucon_status_t ucon_clf_cbf_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate tracking error, surface, barrier, or Lyapunov terms.
-/// TODO(CLF_CBF.compute_surface): Declare sign, units, derivative source, and singularity
-/// handling. Algorithm-specific focus: Combined CLF + CBF QP;
+/// TODO(CLF_CBF.compute_surface): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Evaluate tracking error, surface,
+/// barrier, or Lyapunov terms. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Declare sign, units,
+/// derivative source, and singularity handling.
+/// Algorithm-specific focus: Combined CLF + CBF QP;
 /// performance + safety
 ucon_status_t ucon_clf_cbf_compute_surface(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute the method-specific bounded control candidate.
-/// TODO(CLF_CBF.compute_control): Define actuator limits and chattering/boundary-layer
-/// policy. Algorithm-specific focus: Combined CLF + CBF QP;
-/// performance + safety
+/// TODO(CLF_CBF.compute_control): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Compute the method-specific bounded
+/// control candidate. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define actuator limits and
+/// chattering/boundary-layer policy. Algorithm-specific focus:
+/// Combined CLF + CBF QP; performance + safety
 ucon_status_t ucon_clf_cbf_compute_control(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one deterministic control update and report status/diagnostics.
-/// TODO(CLF_CBF.step): Commit state only after numeric and constraint checks succeed.
-/// Algorithm-specific focus: Combined CLF + CBF QP; performance + safety
+/// TODO(CLF_CBF.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2) Run
+/// one deterministic control update and report status/diagnostics. 3)
+/// Check numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Commit state only after numeric and constraint checks
+/// succeed. Algorithm-specific focus: Combined CLF + CBF QP; performance
+/// + safety
 ucon_status_t ucon_clf_cbf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

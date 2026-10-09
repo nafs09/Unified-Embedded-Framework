@@ -10,56 +10,64 @@
 #include <uef/uhal/uhal_core.h>
 
 uef_u32_t uhal_core_id(void) {
-    /* TODO(UEF Cortex-M):
-     * Read the target core identity and cycle counter using supported CMSIS facilities;
-     * document enablement, wraparound, and conversion to microseconds. Implement this
-     * contract for the selected Cortex-M CMSIS device without assuming a particular vendor
-     * register map. Keep interrupt and register side effects documented, bounded, and safe
-     * for the active target.
-     */
+    /* TODO(uhal_core_id):
+ * 1) Read core identity using CMSIS/CPUID and map only documented IDs to the stable UEF
+ *     *    value
+ * 2) return an explicit unsupported/unknown value for unrecognized cores
+ * 3) avoid vendor register assumptions.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     return 0;
 }
 
 uef_u32_t uhal_cpu_freq_hz(void) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_cpu_freq_hz):
+ * 1) Read the active board clock-tree source/dividers
+ * 2) derive core frequency with overflow-safe arithmetic and reconcile SystemCoreClock
+ *     *    only if refreshed by board startup
+ * 3) return unknown when clock state is unavailable.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     return 0;
 }
 
 void uhal_system_reset(void) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_system_reset):
+ * 1) Issue required DSB before AIRCR reset request and use the CMSIS key/priority-
+ *     *    preserving write
+ * 2) prevent return if reset is requested
+ * 3) document reset-cause capture ordering for startup.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
 }
 
 uef_u32_t uhal_cycle_count(void) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_cycle_count):
+ * 1) Ensure the DWT counter is enabled under the documented startup ownership
+ * 2) read CYCCNT once and document 32-bit wrap semantics
+ * 3) avoid enabling tracing as an undocumented side effect.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     return 0;
 }
 
 uef_u64_t uhal_cycle_count_64(void) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_cycle_count_64):
+ * 1) Read high/low extension state atomically around CYCCNT and retry if wrap occurred
+ *     *    during sampling
+ * 2) initialize extension before use and document concurrency/ISR semantics
+ * 3) preserve monotonicity across 32-bit rollover.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     return 0;
 }
 
 uef_u32_t uhal_cycles_per_us(void) {
-    /* TODO(UEF Cortex-M):
-     * Implement this contract for the selected Cortex-M CMSIS device without assuming a
-     * particular vendor register map. Keep interrupt and register side effects documented,
-     * bounded, and safe for the active target.
-     */
+    /* TODO(uhal_cycles_per_us):
+ * 1) Derive cycles per microsecond from validated core frequency
+ * 2) define integer rounding and zero/unknown-frequency behavior
+ * 3) refresh only when the clock tree changes.
+ * Keep target register mappings explicit, bound every hardware wait, and preserve unrelated peripheral state.
+ */
     return 0;
 }

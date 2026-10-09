@@ -14,49 +14,94 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check horizon, models, constraints, arrival cost, and solver.
-/// TODO(MHE.validate_problem): Specify fixed storage and optimization problem class.
-/// Algorithm-specific focus: Moving-horizon estimator that solves
-/// a bounded fixed-window estimation problem with a declared
-/// arrival cost and solver contract.
+/// TODO(MHE.validate_problem): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Check horizon, models, constraints, arrival cost, and
+/// solver. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Specify fixed
+/// storage and optimization problem class. Algorithm-specific
+/// focus: Moving-horizon estimator that solves a bounded
+/// fixed-window estimation problem with a declared arrival cost
+/// and solver contract.
 ucon_status_t ucon_mhe_validate_problem(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize arrival estimate and window/solver workspace.
-/// TODO(MHE.init): Define first timestamp and warm start. Algorithm-specific focus:
-/// Moving-horizon estimator that solves a bounded fixed-window estimation
-/// problem with a declared arrival cost and solver contract.
+/// TODO(MHE.init): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Initialize arrival
+/// estimate and window/solver workspace. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define first timestamp and warm start.
+/// Algorithm-specific focus: Moving-horizon estimator that solves a bounded
+/// fixed-window estimation problem with a declared arrival cost and solver
+/// contract.
 ucon_status_t ucon_mhe_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear window and optimizer history.
-/// TODO(MHE.reset): Specify how caller reseeds arrival information. Algorithm-specific focus:
-/// Moving-horizon estimator that solves a bounded fixed-window estimation
-/// problem with a declared arrival cost and solver contract.
+/// TODO(MHE.reset): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Clear window and
+/// optimizer history. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify how caller reseeds arrival
+/// information. Algorithm-specific focus: Moving-horizon estimator that
+/// solves a bounded fixed-window estimation problem with a declared arrival
+/// cost and solver contract.
 ucon_status_t ucon_mhe_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Append aligned input/measurement data to the fixed window.
-/// TODO(MHE.append_sample): Define missing/out-of-order samples and eviction.
-/// Algorithm-specific focus: Moving-horizon estimator that solves a
-/// bounded fixed-window estimation problem with a declared arrival
-/// cost and solver contract.
+/// TODO(MHE.append_sample): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Append aligned input/measurement data to the fixed window. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define missing/out-of-order
+/// samples and eviction. Algorithm-specific focus: Moving-horizon
+/// estimator that solves a bounded fixed-window estimation problem
+/// with a declared arrival cost and solver contract.
 ucon_status_t ucon_mhe_append_sample(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compress information from removed samples into arrival term.
-/// TODO(MHE.update_arrival_cost): Specify approximation and conditioning. Algorithm-specific
-/// focus: Moving-horizon estimator that solves a bounded
-/// fixed-window estimation problem with a declared arrival
-/// cost and solver contract.
+/// TODO(MHE.update_arrival_cost): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Compress information from removed
+/// samples into arrival term. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Specify approximation and
+/// conditioning. Algorithm-specific focus: Moving-horizon
+/// estimator that solves a bounded fixed-window estimation
+/// problem with a declared arrival cost and solver contract.
 ucon_status_t ucon_mhe_update_arrival_cost(const ucon_algorithm_scaffold_call_t *call);
 
 /// Solve the bounded finite-horizon estimation problem.
-/// TODO(MHE.solve_window): Define convergence, infeasible, and iteration-limit outputs.
-/// Algorithm-specific focus: Moving-horizon estimator that solves a
-/// bounded fixed-window estimation problem with a declared arrival
-/// cost and solver contract.
+/// TODO(MHE.solve_window): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Solve the bounded finite-horizon estimation problem. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure.
+/// Operation-specific requirements: Define convergence, infeasible,
+/// and iteration-limit outputs. Algorithm-specific focus:
+/// Moving-horizon estimator that solves a bounded fixed-window
+/// estimation problem with a declared arrival cost and solver
+/// contract.
 ucon_status_t ucon_mhe_solve_window(const ucon_algorithm_scaffold_call_t *call);
 
 /// Append, solve, and expose the selected estimate.
-/// TODO(MHE.step): Specify partial-result and state-preservation policy. Algorithm-specific
-/// focus: Moving-horizon estimator that solves a bounded fixed-window
-/// estimation problem with a declared arrival cost and solver contract.
+/// TODO(MHE.step): Implementation sequence: 1) Validate pointers, configuration, dimensions,
+/// and preconditions before writing outputs or state. 2) Append, solve, and
+/// expose the selected estimate. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify partial-result and
+/// state-preservation policy. Algorithm-specific focus: Moving-horizon
+/// estimator that solves a bounded fixed-window estimation problem with a
+/// declared arrival cost and solver contract.
 ucon_status_t ucon_mhe_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

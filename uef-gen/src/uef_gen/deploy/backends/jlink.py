@@ -26,7 +26,11 @@ class JLinkDeployment(IDeployment):
         )
 
     def halt(self) -> bool:
-        raise NotImplementedError("TODO(jlink-halt): halt and confirm the core state.")
+        raise NotImplementedError(
+            "TODO(jlink-halt): Issue the bounded halt request through the owned session, poll until "
+            "the probe confirms the core is stopped, and report timeout/transport errors without "
+            "starting erase or program operations."
+        )
 
     def unlock_flash(self) -> bool:
         raise NotImplementedError(
@@ -53,10 +57,16 @@ class JLinkDeployment(IDeployment):
         )
 
     def reset(self, run: bool = True) -> bool:
-        raise NotImplementedError("TODO(jlink-reset): reset and resume only after verified programming.")
+        raise NotImplementedError(
+            "TODO(jlink-reset): Require the current artifact verification result, issue the selected "
+            "reset type, optionally resume only when run is true, and confirm the final core state."
+        )
 
     def disconnect(self) -> None:
-        raise NotImplementedError("TODO(jlink-disconnect): close SDK/process handles and release probe.")
+        raise NotImplementedError(
+            "TODO(jlink-disconnect): Stop only a process/session owned by this instance, close SDK "
+            "handles, release the selected probe, and make cleanup safe after partial connection."
+        )
 
     def read_chip_identity(self) -> ChipIdentity:
         raise NotImplementedError(

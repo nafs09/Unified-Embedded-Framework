@@ -28,47 +28,47 @@
   "scaffold_module": "ucon/future/estimators/kalman/gaussian_sum_filter",
   "scaffold_header": "include/uef/ucon/future/estimators/kalman/gaussian_sum_filter.h",
   "scaffold_source": "src/ucon/future/estimators/kalman/gaussian_sum_filter.c",
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
       "purpose": "Check component model, mixture count, and reduction bounds.",
-      "todo": "Set a fixed maximum component count. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Check component model, mixture count, and reduction bounds. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Set a fixed maximum component count. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "init",
       "purpose": "Initialize normalized Gaussian components and weights.",
-      "todo": "Define prior mixture and covariance requirements. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Initialize normalized Gaussian components and weights. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define prior mixture and covariance requirements. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "reset",
       "purpose": "Reset mixture state.",
-      "todo": "Specify component-label stability. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Reset mixture state. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Specify component-label stability. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "predict_components",
       "purpose": "Propagate each Gaussian component through the selected model/filter.",
-      "todo": "Bound model/component work. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Propagate each Gaussian component through the selected model/filter. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Bound model/component work. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "update_component_weights",
       "purpose": "Apply measurement likelihoods and normalize mixture weights.",
-      "todo": "Handle likelihood underflow/all-zero weight explicitly. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Apply measurement likelihoods and normalize mixture weights. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Handle likelihood underflow/all-zero weight explicitly. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "reduce_mixture",
       "purpose": "Prune/merge components to the configured fixed maximum.",
-      "todo": "Define distance, threshold, and moment-preservation rule. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Prune/merge components to the configured fixed maximum. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define distance, threshold, and moment-preservation rule. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "summarize_estimate",
       "purpose": "Combine mixture into requested state/uncertainty output.",
-      "todo": "Define multimodal summary semantics. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Combine mixture into requested state/uncertainty output. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Define multimodal summary semantics. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     },
     {
       "name": "step",
       "purpose": "Run prediction, update, reduction, and summary in a fixed order.",
-      "todo": "Preserve prior mixture on numeric failure. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
+      "todo": "Implementation sequence: 1) Validate pointers, configuration, dimensions, and preconditions before writing outputs or state. 2) Run prediction, update, reduction, and summary in a fixed order. 3) Check numeric results, declared constraints, and fixed work/memory bounds. 4) Commit outputs, state, and diagnostics together only after success; preserve prior values on failure. Operation-specific requirements: Preserve prior mixture on numeric failure. Algorithm-specific focus: Gaussian-sum filter that maintains and reduces a finite mixture of Gaussian state estimates."
     }
   ]
 }

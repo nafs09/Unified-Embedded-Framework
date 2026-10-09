@@ -14,28 +14,61 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check statistic scale, thresholds, and window/persistence limits.
-/// TODO(INNOVATION_MONITOR.validate_config): Define units, warm-up, and threshold equality
-/// behavior. Algorithm-specific focus: Monitor
-/// estimator innovations and covariance-normalized
-/// residuals for configured consistency limits.
+/// TODO(INNOVATION_MONITOR.validate_config): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Check
+/// statistic scale, thresholds, and
+/// window/persistence limits. 3) Check numeric
+/// results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure.
+/// Operation-specific requirements: Define units,
+/// warm-up, and threshold equality behavior.
+/// Algorithm-specific focus: Monitor estimator
+/// innovations and covariance-normalized residuals
+/// for configured consistency limits.
 ucon_status_t ucon_innovation_monitor_validate_config(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize statistic, counters, and baseline state.
-/// TODO(INNOVATION_MONITOR.init): Define baseline ownership and startup grace period.
-/// Algorithm-specific focus: Monitor estimator innovations and
-/// covariance-normalized residuals for configured consistency
-/// limits.
+/// TODO(INNOVATION_MONITOR.init): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Initialize statistic, counters, and
+/// baseline state. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit
+/// outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Define baseline ownership
+/// and startup grace period. Algorithm-specific focus: Monitor
+/// estimator innovations and covariance-normalized residuals
+/// for configured consistency limits.
 ucon_status_t ucon_innovation_monitor_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Clear detector history and rearm according to policy.
-/// TODO(INNOVATION_MONITOR.reset): State whether reset also clears the reference baseline.
-/// Algorithm-specific focus: Monitor estimator innovations
-/// and covariance-normalized residuals for configured
-/// consistency limits.
+/// TODO(INNOVATION_MONITOR.reset): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Clear detector history and
+/// rearm according to policy. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: State whether reset also
+/// clears the reference baseline. Algorithm-specific focus:
+/// Monitor estimator innovations and covariance-normalized
+/// residuals for configured consistency limits.
 ucon_status_t ucon_innovation_monitor_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute normalized residual or cumulative change statistic.
-/// TODO(INNOVATION_MONITOR.update_statistic): Handle missing data and zero variance without
+/// TODO(INNOVATION_MONITOR.update_statistic): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Compute
+/// normalized residual or cumulative change
+/// statistic. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on
+/// failure. Operation-specific requirements:
+/// Handle missing data and zero variance without
 /// division by zero. Algorithm-specific focus:
 /// Monitor estimator innovations and
 /// covariance-normalized residuals for configured
@@ -43,17 +76,33 @@ ucon_status_t ucon_innovation_monitor_reset(const ucon_algorithm_scaffold_call_t
 ucon_status_t ucon_innovation_monitor_update_statistic(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply threshold, persistence, clear, and latch rules.
-/// TODO(INNOVATION_MONITOR.update_decision): Separate detection from fault isolation or
-/// safety action. Algorithm-specific focus: Monitor
-/// estimator innovations and covariance-normalized
-/// residuals for configured consistency limits.
+/// TODO(INNOVATION_MONITOR.update_decision): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions
+/// before writing outputs or state. 2) Apply
+/// threshold, persistence, clear, and latch rules.
+/// 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Separate
+/// detection from fault isolation or safety action.
+/// Algorithm-specific focus: Monitor estimator
+/// innovations and covariance-normalized residuals
+/// for configured consistency limits.
 ucon_status_t ucon_innovation_monitor_update_decision(const ucon_algorithm_scaffold_call_t *call);
 
 /// Process one timestamped input and publish statistic/status.
-/// TODO(INNOVATION_MONITOR.step): Keep counters bounded and preserve state on invalid input.
-/// Algorithm-specific focus: Monitor estimator innovations and
-/// covariance-normalized residuals for configured consistency
-/// limits.
+/// TODO(INNOVATION_MONITOR.step): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before writing
+/// outputs or state. 2) Process one timestamped input and
+/// publish statistic/status. 3) Check numeric results,
+/// declared constraints, and fixed work/memory bounds. 4)
+/// Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure.
+/// Operation-specific requirements: Keep counters bounded and
+/// preserve state on invalid input. Algorithm-specific focus:
+/// Monitor estimator innovations and covariance-normalized
+/// residuals for configured consistency limits.
 ucon_status_t ucon_innovation_monitor_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

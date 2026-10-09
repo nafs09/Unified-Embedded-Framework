@@ -14,41 +14,82 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check state/measurement dimensions, model callbacks, and covariance assumptions.
-/// TODO(ROBUST_KF.validate_model): Reject invalid shapes before state changes; specify PSD
-/// and conditioning policy. Algorithm-specific focus: Robust
+/// TODO(ROBUST_KF.validate_model): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check state/measurement
+/// dimensions, model callbacks, and covariance assumptions.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior
+/// values on failure. Operation-specific requirements: Reject
+/// invalid shapes before state changes; specify PSD and
+/// conditioning policy. Algorithm-specific focus: Robust
 /// Kalman estimation variant with a named bounded-influence
 /// or outlier-resistance rule.
 ucon_status_t ucon_robust_kf_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize estimate, covariance, and fixed workspace.
-/// TODO(ROBUST_KF.init): Define initial-state ownership, covariance seed, and factorization
-/// failure. Algorithm-specific focus: Robust Kalman estimation variant
-/// with a named bounded-influence or outlier-resistance rule.
+/// TODO(ROBUST_KF.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Initialize estimate, covariance, and fixed workspace. 3) Check
+/// numeric results, declared constraints, and fixed work/memory bounds.
+/// 4) Commit outputs, state, and diagnostics together only after
+/// success; preserve prior values on failure. Operation-specific
+/// requirements: Define initial-state ownership, covariance seed, and
+/// factorization failure. Algorithm-specific focus: Robust Kalman
+/// estimation variant with a named bounded-influence or
+/// outlier-resistance rule.
 ucon_status_t ucon_robust_kf_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset estimator history under a documented seed policy.
-/// TODO(ROBUST_KF.reset): Specify whether nominal estimate/model context is retained.
-/// Algorithm-specific focus: Robust Kalman estimation variant with a
-/// named bounded-influence or outlier-resistance rule.
+/// TODO(ROBUST_KF.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Reset estimator history under a documented seed policy. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together only
+/// after success; preserve prior values on failure. Operation-specific
+/// requirements: Specify whether nominal estimate/model context is
+/// retained. Algorithm-specific focus: Robust Kalman estimation
+/// variant with a named bounded-influence or outlier-resistance rule.
 ucon_status_t ucon_robust_kf_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Propagate estimate and uncertainty over one declared interval.
-/// TODO(ROBUST_KF.predict): Define discretization, process-noise timing, and stable
-/// covariance update. Algorithm-specific focus: Robust Kalman
-/// estimation variant with a named bounded-influence or
-/// outlier-resistance rule.
+/// TODO(ROBUST_KF.predict): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Propagate estimate and uncertainty over one declared interval. 3)
+/// Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Define discretization,
+/// process-noise timing, and stable covariance update.
+/// Algorithm-specific focus: Robust Kalman estimation variant with a
+/// named bounded-influence or outlier-resistance rule.
 ucon_status_t ucon_robust_kf_predict(const ucon_algorithm_scaffold_call_t *call);
 
 /// Apply a timestamped measurement and compute innovation diagnostics.
-/// TODO(ROBUST_KF.correct): Define gating, missing-channel behavior, and failure atomicity.
+/// TODO(ROBUST_KF.correct): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Apply a timestamped measurement and compute innovation
+/// diagnostics. 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values on
+/// failure. Operation-specific requirements: Define gating,
+/// missing-channel behavior, and failure atomicity.
 /// Algorithm-specific focus: Robust Kalman estimation variant with a
 /// named bounded-influence or outlier-resistance rule.
 ucon_status_t ucon_robust_kf_correct(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run prediction and optional correction in a fixed documented order.
-/// TODO(ROBUST_KF.step): Handle asynchronous samples explicitly; do not synthesize missing
-/// measurements. Algorithm-specific focus: Robust Kalman estimation
-/// variant with a named bounded-influence or outlier-resistance rule.
+/// TODO(ROBUST_KF.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state. 2)
+/// Run prediction and optional correction in a fixed documented order.
+/// 3) Check numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and diagnostics
+/// together only after success; preserve prior values on failure.
+/// Operation-specific requirements: Handle asynchronous samples
+/// explicitly; do not synthesize missing measurements.
+/// Algorithm-specific focus: Robust Kalman estimation variant with a
+/// named bounded-influence or outlier-resistance rule.
 ucon_status_t ucon_robust_kf_step(const ucon_algorithm_scaffold_call_t *call);
 
 #ifdef __cplusplus

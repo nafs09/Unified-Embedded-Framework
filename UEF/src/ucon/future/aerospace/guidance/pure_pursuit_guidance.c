@@ -16,10 +16,20 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(PURE_PURSUIT_GUIDANCE.validate_geometry): Define coincident-point and path-end
- * behavior. Algorithm-specific focus:
- * Geometric path-following guidance that aims
- * toward a configured look-ahead point.
+/* TODO(PURE_PURSUIT_GUIDANCE.validate_geometry): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Check path/target geometry,
+ * frames, and guidance limits. 3) Check
+ * numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs,
+ * state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define
+ * coincident-point and path-end behavior.
+ * Algorithm-specific focus: Geometric
+ * path-following guidance that aims toward a
+ * configured look-ahead point.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_pure_pursuit_guidance_validate_geometry(const ucon_algorithm_scaffold_call_t *call)
@@ -30,9 +40,17 @@ ucon_status_t ucon_pure_pursuit_guidance_validate_geometry(const ucon_algorithm_
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PURE_PURSUIT_GUIDANCE.init): Specify entry/reseed behavior after route replacement.
- * Algorithm-specific focus: Geometric path-following
- * guidance that aims toward a configured look-ahead point.
+/* TODO(PURE_PURSUIT_GUIDANCE.init): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Initialize guidance mode and
+ * path progress. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Specify entry/reseed
+ * behavior after route replacement. Algorithm-specific
+ * focus: Geometric path-following guidance that aims toward
+ * a configured look-ahead point.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_pure_pursuit_guidance_init(const ucon_algorithm_scaffold_call_t *call)
@@ -43,9 +61,17 @@ ucon_status_t ucon_pure_pursuit_guidance_init(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PURE_PURSUIT_GUIDANCE.reset): Define behavior when navigation validity is lost.
- * Algorithm-specific focus: Geometric path-following
- * guidance that aims toward a configured look-ahead point.
+/* TODO(PURE_PURSUIT_GUIDANCE.reset): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Clear path progress and
+ * command history. 3) Check numeric results, declared
+ * constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define behavior when
+ * navigation validity is lost. Algorithm-specific focus:
+ * Geometric path-following guidance that aims toward a
+ * configured look-ahead point.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_pure_pursuit_guidance_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -56,10 +82,20 @@ ucon_status_t ucon_pure_pursuit_guidance_reset(const ucon_algorithm_scaffold_cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PURE_PURSUIT_GUIDANCE.compute_guidance): State command units and separation from
- * inner-loop control. Algorithm-specific focus:
- * Geometric path-following guidance that aims
- * toward a configured look-ahead point.
+/* TODO(PURE_PURSUIT_GUIDANCE.compute_guidance): Implementation sequence: 1) Validate
+ * pointers, configuration, dimensions, and
+ * preconditions before writing outputs or
+ * state. 2) Convert relative geometry into a
+ * guidance command. 3) Check numeric results,
+ * declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success;
+ * preserve prior values on failure.
+ * Operation-specific requirements: State
+ * command units and separation from inner-loop
+ * control. Algorithm-specific focus: Geometric
+ * path-following guidance that aims toward a
+ * configured look-ahead point.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_pure_pursuit_guidance_compute_guidance(const ucon_algorithm_scaffold_call_t *call)
@@ -70,7 +106,15 @@ ucon_status_t ucon_pure_pursuit_guidance_compute_guidance(const ucon_algorithm_s
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(PURE_PURSUIT_GUIDANCE.step): Bound commands and preserve outputs on invalid geometry.
+/* TODO(PURE_PURSUIT_GUIDANCE.step): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Process timestamped
+ * route/navigation data and publish status. 3) Check
+ * numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Bound
+ * commands and preserve outputs on invalid geometry.
  * Algorithm-specific focus: Geometric path-following
  * guidance that aims toward a configured look-ahead point.
  * This stub must not read/write opaque state or output buffers.

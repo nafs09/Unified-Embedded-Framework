@@ -28,37 +28,38 @@
     "Family-specific decisions still required: declare state and measurement ordering, process/measurement models, covariance/noise assumptions, timestamp and missing-measurement policy, innovation handling, and PSD-preserving updates.",
     "Keep this as the one-state Kalman special case; define its process/measurement model and do not describe it as an alpha-beta-gamma tracker."
   ],
-  "scaffold_outline_version": 4,
+  "scaffold_outline_version": 5,
   "scaffold_operations": [
     {
       "name": "validate_model",
-      "purpose": "Check state/measurement dimensions, model callbacks, and covariance assumptions.",
-      "todo": "Reject invalid shapes before state changes; specify PSD and conditioning policy. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
+      "purpose": "Validate the one-state scalar process and measurement model.",
+      "todo": "1) Check finite transition/input/measurement gains and nonnegative process variance/P0 plus valid measurement variance. 2) Confirm scalar sample-time and missing-measurement conventions. 3) Reject a nonfinite or nonpositive innovation variance before any state write; keep this API distinct from alpha-beta tracking. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
     },
     {
       "name": "init",
-      "purpose": "Initialize estimate, covariance, and fixed workspace.",
-      "todo": "Define initial-state ownership, covariance seed, and factorization failure. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
+      "purpose": "Initialize scalar estimate, variance, and timestamp state.",
+      "todo": "1) Copy x0 and P0 into local candidates. 2) Check finite estimate and nonnegative finite variance and initialize freshness/diagnostic flags. 3) Publish only after validation succeeds. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
     },
     {
       "name": "reset",
-      "purpose": "Reset estimator history under a documented seed policy.",
-      "todo": "Specify whether nominal estimate/model context is retained. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
+      "purpose": "Reset scalar history under the documented caller seed policy.",
+      "todo": "1) Clear timestamp, last innovation, and measurement freshness. 2) Restore explicit x0/P0 seeds while retaining model coefficients. 3) Reject absent/invalid seeds without partially resetting the live estimate. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
     },
     {
       "name": "predict",
-      "purpose": "Propagate estimate and uncertainty over one declared interval.",
-      "todo": "Define discretization, process-noise timing, and stable covariance update. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
+      "purpose": "Propagate scalar state and uncertainty for one interval.",
+      "todo": "1) Compute x_pred=a*x+b*u with the declared input alignment. 2) Compute P_pred=a*a*P+Q_d using the selected noise timing. 3) Check finite/nonnegative results, then commit estimate and variance together. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
     },
     {
       "name": "correct",
-      "purpose": "Apply a timestamped measurement and compute innovation diagnostics.",
-      "todo": "Define gating, missing-channel behavior, and failure atomicity. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
+      "purpose": "Apply one scalar measurement with gating and stable variance update.",
+      "todo": "1) Compute innovation ν=z−h*x_pred and S=h*h*P_pred+R; reject invalid S. 2) Compute K=P_pred*h/S and apply the configured normalized-innovation gate. 3) Update x and scalar Joseph variance (1−K*h)^2 P_pred+K^2 R; commit only a finite nonnegative candidate. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
     },
     {
       "name": "step",
-      "purpose": "Run prediction and optional correction in a fixed documented order.",
-      "todo": "Handle asynchronous samples explicitly; do not synthesize missing measurements. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
+      "purpose": "Run one timestamped scalar prediction and optional correction.",
+      "todo": "1) Validate sample time and derive dt. 2) Predict exactly once. 3) Correct only when the measurement-present flag is set; do not substitute zero for a missing sample. 4) Publish estimate, variance, and timestamp atomically after success. Algorithm-specific focus: One-state linear Kalman filter for a scalar process and measurement model; keep it distinct from alpha-beta tracking filters."
     }
-  ]
+  ],
+  "scaffold_template": "templates/ucon/first_pass/estimators/kalman/scalar_kf.h.tmpl"
 }

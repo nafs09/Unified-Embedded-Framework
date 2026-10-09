@@ -16,9 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(MRAC_LYAPUNOV.validate_config): State the stability assumptions; tuning alone is not a
- * stability proof. Algorithm-specific focus:
- * Lyapunov-based MRAC; guaranteed stability
+/* TODO(MRAC_LYAPUNOV.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Check reference model,
+ * adaptation gains, projection bounds, and rate. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific
+ * requirements: State the stability assumptions; tuning
+ * alone is not a stability proof. Algorithm-specific
+ * focus: Lyapunov-based MRAC; guaranteed stability
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_lyapunov_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -29,9 +37,15 @@ ucon_status_t ucon_mrac_lyapunov_validate_config(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_LYAPUNOV.init): Define parameter seeds and startup saturation behavior.
- * Algorithm-specific focus: Lyapunov-based MRAC; guaranteed
- * stability
+/* TODO(MRAC_LYAPUNOV.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize controller, observer, reference model, and parameter
+ * state. 3) Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Define parameter seeds and
+ * startup saturation behavior. Algorithm-specific focus:
+ * Lyapunov-based MRAC; guaranteed stability
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_lyapunov_init(const ucon_algorithm_scaffold_call_t *call)
@@ -42,9 +56,15 @@ ucon_status_t ucon_mrac_lyapunov_init(const ucon_algorithm_scaffold_call_t *call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_LYAPUNOV.reset): Say whether learned parameters are retained or reseeded.
- * Algorithm-specific focus: Lyapunov-based MRAC; guaranteed
- * stability
+/* TODO(MRAC_LYAPUNOV.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state.
+ * 2) Reset adaptation and controller history. 3) Check numeric
+ * results, declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure. Operation-specific
+ * requirements: Say whether learned parameters are retained or
+ * reseeded. Algorithm-specific focus: Lyapunov-based MRAC;
+ * guaranteed stability
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_lyapunov_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,9 +75,16 @@ ucon_status_t ucon_mrac_lyapunov_reset(const ucon_algorithm_scaffold_call_t *cal
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_LYAPUNOV.update_model): Define sampling and input-delay alignment.
- * Algorithm-specific focus: Lyapunov-based MRAC; guaranteed
- * stability
+/* TODO(MRAC_LYAPUNOV.update_model): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Update the declared
+ * reference/observer/model state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Define sampling and
+ * input-delay alignment. Algorithm-specific focus:
+ * Lyapunov-based MRAC; guaranteed stability
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_lyapunov_update_model(const ucon_algorithm_scaffold_call_t *call)
@@ -68,7 +95,15 @@ ucon_status_t ucon_mrac_lyapunov_update_model(const ucon_algorithm_scaffold_call
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_LYAPUNOV.update_parameters): Bound drift and specify low-excitation/saturation
+/* TODO(MRAC_LYAPUNOV.update_parameters): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Apply adaptation law
+ * and projection/leakage policy. 3) Check numeric
+ * results, declared constraints, and fixed work/memory
+ * bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values
+ * on failure. Operation-specific requirements: Bound
+ * drift and specify low-excitation/saturation
  * behavior. Algorithm-specific focus: Lyapunov-based
  * MRAC; guaranteed stability
  * This stub must not read/write opaque state or output buffers.
@@ -81,9 +116,17 @@ ucon_status_t ucon_mrac_lyapunov_update_parameters(const ucon_algorithm_scaffold
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_LYAPUNOV.compute_control): Keep actuator constraints and independent safety
- * supervision explicit. Algorithm-specific focus:
- * Lyapunov-based MRAC; guaranteed stability
+/* TODO(MRAC_LYAPUNOV.compute_control): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before
+ * writing outputs or state. 2) Compute/bound command
+ * from current estimates. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only
+ * after success; preserve prior values on failure.
+ * Operation-specific requirements: Keep actuator
+ * constraints and independent safety supervision
+ * explicit. Algorithm-specific focus: Lyapunov-based
+ * MRAC; guaranteed stability
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_lyapunov_compute_control(const ucon_algorithm_scaffold_call_t *call)
@@ -94,9 +137,15 @@ ucon_status_t ucon_mrac_lyapunov_compute_control(const ucon_algorithm_scaffold_c
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(MRAC_LYAPUNOV.step): Return diagnostics and preserve state on intermediate failure.
- * Algorithm-specific focus: Lyapunov-based MRAC; guaranteed
- * stability
+/* TODO(MRAC_LYAPUNOV.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Coordinate model, adaptation, and control in a fixed order. 3)
+ * Check numeric results, declared constraints, and fixed
+ * work/memory bounds. 4) Commit outputs, state, and diagnostics
+ * together only after success; preserve prior values on failure.
+ * Operation-specific requirements: Return diagnostics and preserve
+ * state on intermediate failure. Algorithm-specific focus:
+ * Lyapunov-based MRAC; guaranteed stability
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_mrac_lyapunov_step(const ucon_algorithm_scaffold_call_t *call)

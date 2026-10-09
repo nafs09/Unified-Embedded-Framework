@@ -10,6 +10,8 @@ extern "C" {
 
 #include "uef/ucore/uef_types.h"
 #include "uef/ucore/uef_status.h"
+#include <uef/uhal/uhal_gpio.h>
+#include <uef/upal/upal_spi.h>
 
 typedef enum {
     UMID_TEMP_THERMOCOUPLE_K,

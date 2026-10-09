@@ -14,38 +14,82 @@ extern "C" {
 /// Every operation returns UCON_NOT_IMPLEMENTED until its contract is reviewed.
 
 /// Check nonlinear model, surface/relative-degree data, and parameter bounds.
-/// TODO(COMPUTED_TORQUE.validate_model): State operating-region and uncertainty assumptions.
-/// Algorithm-specific focus: Robot joint
+/// TODO(COMPUTED_TORQUE.validate_model): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Check nonlinear model,
+/// surface/relative-degree data, and parameter bounds.
+/// 3) Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure. Operation-specific
+/// requirements: State operating-region and uncertainty
+/// assumptions. Algorithm-specific focus: Robot joint
 /// inverse-dynamics controller.
 ucon_status_t ucon_computed_torque_validate_model(const ucon_algorithm_scaffold_call_t *call);
 
 /// Initialize virtual-control, adaptation, integral, and filter state.
-/// TODO(COMPUTED_TORQUE.init): Define state seeds and bound startup transients.
-/// Algorithm-specific focus: Robot joint inverse-dynamics
-/// controller.
+/// TODO(COMPUTED_TORQUE.init): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Initialize virtual-control, adaptation, integral, and
+/// filter state. 3) Check numeric results, declared constraints,
+/// and fixed work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve prior values
+/// on failure. Operation-specific requirements: Define state
+/// seeds and bound startup transients. Algorithm-specific focus:
+/// Robot joint inverse-dynamics controller.
 ucon_status_t ucon_computed_torque_init(const ucon_algorithm_scaffold_call_t *call);
 
 /// Reset controller/adaptation history.
-/// TODO(COMPUTED_TORQUE.reset): Specify parameter projection and bumpless restart.
-/// Algorithm-specific focus: Robot joint inverse-dynamics
-/// controller.
+/// TODO(COMPUTED_TORQUE.reset): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or
+/// state. 2) Reset controller/adaptation history. 3) Check
+/// numeric results, declared constraints, and fixed work/memory
+/// bounds. 4) Commit outputs, state, and diagnostics together
+/// only after success; preserve prior values on failure.
+/// Operation-specific requirements: Specify parameter projection
+/// and bumpless restart. Algorithm-specific focus: Robot joint
+/// inverse-dynamics controller.
 ucon_status_t ucon_computed_torque_reset(const ucon_algorithm_scaffold_call_t *call);
 
 /// Evaluate tracking error, surface, barrier, or Lyapunov terms.
-/// TODO(COMPUTED_TORQUE.compute_surface): Declare sign, units, derivative source, and
-/// singularity handling. Algorithm-specific focus:
-/// Robot joint inverse-dynamics controller.
+/// TODO(COMPUTED_TORQUE.compute_surface): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Evaluate tracking
+/// error, surface, barrier, or Lyapunov terms. 3)
+/// Check numeric results, declared constraints, and
+/// fixed work/memory bounds. 4) Commit outputs, state,
+/// and diagnostics together only after success;
+/// preserve prior values on failure.
+/// Operation-specific requirements: Declare sign,
+/// units, derivative source, and singularity handling.
+/// Algorithm-specific focus: Robot joint
+/// inverse-dynamics controller.
 ucon_status_t ucon_computed_torque_compute_surface(const ucon_algorithm_scaffold_call_t *call);
 
 /// Compute the method-specific bounded control candidate.
-/// TODO(COMPUTED_TORQUE.compute_control): Define actuator limits and
+/// TODO(COMPUTED_TORQUE.compute_control): Implementation sequence: 1) Validate pointers,
+/// configuration, dimensions, and preconditions before
+/// writing outputs or state. 2) Compute the
+/// method-specific bounded control candidate. 3) Check
+/// numeric results, declared constraints, and fixed
+/// work/memory bounds. 4) Commit outputs, state, and
+/// diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific
+/// requirements: Define actuator limits and
 /// chattering/boundary-layer policy.
 /// Algorithm-specific focus: Robot joint
 /// inverse-dynamics controller.
 ucon_status_t ucon_computed_torque_compute_control(const ucon_algorithm_scaffold_call_t *call);
 
 /// Run one deterministic control update and report status/diagnostics.
-/// TODO(COMPUTED_TORQUE.step): Commit state only after numeric and constraint checks succeed.
+/// TODO(COMPUTED_TORQUE.step): Implementation sequence: 1) Validate pointers, configuration,
+/// dimensions, and preconditions before writing outputs or state.
+/// 2) Run one deterministic control update and report
+/// status/diagnostics. 3) Check numeric results, declared
+/// constraints, and fixed work/memory bounds. 4) Commit outputs,
+/// state, and diagnostics together only after success; preserve
+/// prior values on failure. Operation-specific requirements:
+/// Commit state only after numeric and constraint checks succeed.
 /// Algorithm-specific focus: Robot joint inverse-dynamics
 /// controller.
 ucon_status_t ucon_computed_torque_step(const ucon_algorithm_scaffold_call_t *call);

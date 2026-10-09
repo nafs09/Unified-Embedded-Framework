@@ -16,9 +16,17 @@
  * Keep the entry unregistered until implementation, numeric limits, and templates are reviewed.
  */
 
-/* TODO(GOERTZEL.validate_config): Define sample layout, scale, rate, and fixed buffer size.
- * Algorithm-specific focus: Single-bin or small-bin DFT
- * evaluation using a bounded Goertzel recurrence.
+/* TODO(GOERTZEL.validate_config): Implementation sequence: 1) Validate pointers,
+ * configuration, dimensions, and preconditions before writing
+ * outputs or state. 2) Check transform/statistic/rate
+ * dimensions and numeric range. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4)
+ * Commit outputs, state, and diagnostics together only after
+ * success; preserve prior values on failure.
+ * Operation-specific requirements: Define sample layout,
+ * scale, rate, and fixed buffer size. Algorithm-specific
+ * focus: Single-bin or small-bin DFT evaluation using a
+ * bounded Goertzel recurrence.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_goertzel_validate_config(const ucon_algorithm_scaffold_call_t *call)
@@ -29,7 +37,13 @@ ucon_status_t ucon_goertzel_validate_config(const ucon_algorithm_scaffold_call_t
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GOERTZEL.init): Define warm-up and reset behavior. Algorithm-specific focus:
+/* TODO(GOERTZEL.init): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Initialize window, phase, ring buffer, and accumulator. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Define warm-up and reset behavior. Algorithm-specific focus:
  * Single-bin or small-bin DFT evaluation using a bounded Goertzel
  * recurrence.
  * This stub must not read/write opaque state or output buffers.
@@ -42,9 +56,15 @@ ucon_status_t ucon_goertzel_init(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GOERTZEL.reset): State ownership of coefficient/window tables. Algorithm-specific
- * focus: Single-bin or small-bin DFT evaluation using a bounded
- * Goertzel recurrence.
+/* TODO(GOERTZEL.reset): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Clear signal history and phase/index state. 3) Check numeric results,
+ * declared constraints, and fixed work/memory bounds. 4) Commit
+ * outputs, state, and diagnostics together only after success; preserve
+ * prior values on failure. Operation-specific requirements: State
+ * ownership of coefficient/window tables. Algorithm-specific focus:
+ * Single-bin or small-bin DFT evaluation using a bounded Goertzel
+ * recurrence.
  * This stub must not read/write opaque state or output buffers.
  */
 ucon_status_t ucon_goertzel_reset(const ucon_algorithm_scaffold_call_t *call)
@@ -55,7 +75,14 @@ ucon_status_t ucon_goertzel_reset(const ucon_algorithm_scaffold_call_t *call)
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GOERTZEL.process_block): Define latency, overlap, scaling, and overflow behavior.
+/* TODO(GOERTZEL.process_block): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or
+ * state. 2) Process one bounded block or fixed-rate sample
+ * group. 3) Check numeric results, declared constraints, and
+ * fixed work/memory bounds. 4) Commit outputs, state, and
+ * diagnostics together only after success; preserve prior
+ * values on failure. Operation-specific requirements: Define
+ * latency, overlap, scaling, and overflow behavior.
  * Algorithm-specific focus: Single-bin or small-bin DFT
  * evaluation using a bounded Goertzel recurrence.
  * This stub must not read/write opaque state or output buffers.
@@ -68,7 +95,13 @@ ucon_status_t ucon_goertzel_process_block(const ucon_algorithm_scaffold_call_t *
     return UCON_NOT_IMPLEMENTED;
 }
 
-/* TODO(GOERTZEL.step): Specify incomplete-block and dropped-sample behavior.
+/* TODO(GOERTZEL.step): Implementation sequence: 1) Validate pointers, configuration,
+ * dimensions, and preconditions before writing outputs or state. 2)
+ * Advance the algorithm and publish output/validity metadata. 3) Check
+ * numeric results, declared constraints, and fixed work/memory bounds.
+ * 4) Commit outputs, state, and diagnostics together only after success;
+ * preserve prior values on failure. Operation-specific requirements:
+ * Specify incomplete-block and dropped-sample behavior.
  * Algorithm-specific focus: Single-bin or small-bin DFT evaluation using
  * a bounded Goertzel recurrence.
  * This stub must not read/write opaque state or output buffers.

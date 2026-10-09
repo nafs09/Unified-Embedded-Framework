@@ -2,6 +2,7 @@
 /// @brief Planned pivoted LDL-transpose factorization for symmetric systems.
 #ifndef UEF_UMATH_MATRIX_LDLT_H
 #define UEF_UMATH_MATRIX_LDLT_H
+#include <uef/umath/config.h>
 #include <stddef.h>
 #include <uef/ucore/uef_types.h>
 #include <uef/umath/status.h>
