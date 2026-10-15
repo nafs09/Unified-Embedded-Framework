@@ -12,6 +12,8 @@ The repository contains two related projects:
 - **UETD** is the C11 embedded framework. Applications can use its public C
   APIs directly. Start with the [UETD README](../../UETD/README.md) for the
   library structure and current build requirements.
+- **uef-gen** is the host-side project generator. Its hardware-configuration
+  workflow is separate from the standalone project language described here.
 - **UEF Project Language (UEF-PL)** is the standalone authoring language.
   A `.uef` file describes one firmware target; a `.uefs` file describes a
   group of targets and their communication links. It is designed to use UETD

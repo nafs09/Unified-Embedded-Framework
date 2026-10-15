@@ -18,6 +18,19 @@ The corresponding UETD source map is in `UETD/src/uhal/README.md` and
 `UETD/registry/targets/toolchains/README.md`; do not add Python constants to
 `chips/` or `deploy/backends/` as a substitute for UETD registry data.
 
+| Work area | Main source files | Function/class entry points and responsibility |
+| --- | --- | --- |
+| UETD discovery and API contract | `src/uef_gen/uetd_adapter/locator.py`, `snapshot.py`, `registry.py`, `src/uef_gen/chips/registry_records.py`, `development_boards.py`, `src/uef_gen/toolchains/catalog.py` | `UETDLocator.locate()` follows UETD API declarations; `SnapshotManager.verify()` fingerprints and validates one UETD checkout; loaders read the registries declared by `api.json`. |
+| Configuration and resource resolution | `src/uef_gen/config/schema.py`, `loader.py`, `normalize.py`, `src/uef_gen/resolver/resource_resolver.py`, `models.py` | Validate input, normalize stable forms, resolve chip/board/pins/clocks/peripherals/DMA/memory into one resolved project, and attach diagnostics instead of guessing. |
+| Module and dependency selection | `src/uef_gen/modules/selector.py`, `planner.py`, `bundled.py`, `src/uef_gen/uetd_adapter/api_database.py` | Validate requested module IDs; close transitive source/header dependencies; select UETD-managed packages and external dependencies. |
+| Standalone project generation | `src/uef_gen/generation/pipeline.py`, `validator.py`, `manifest.py`, `src/uef_gen/templates/project_scaffold.py`, `uetd_library.py` | `generate_project()` owns validate → resolve → stage → render → validate → publish. `render_project_scaffold()` emits project shell and TODO placeholders. Manifest builders record resolved data, hashes, modules, and manual actions. |
+| Build file and compiler pipeline | `src/uef_gen/deploy/build_manager.py`, `models.py`, `src/uef_gen/toolchains/catalog.py`, `bootstrap.py`, `profiles.py`, `cli.py` | Build-manager methods dispatch to supported build routes; shared path/flag/process helpers and compile/link/objcopy/size steps are separate. Package installation and verification remain explicit scaffolds until pins and safe extraction are complete. |
+| Artifact identity and staleness | `schemas/artifact.schema.json`, `src/uef_gen/deploy/models.py`, `artifact_store.py`, `src/uef_gen/generation/manifest.py` | Artifact records must capture image role/hash/format/address. Populate them from linker/SDK metadata and reject modified inputs/images and overlapping/out-of-range segments. |
+| Read-only probe discovery | `src/uef_gen/deploy/target_discovery.py`, `backend_factory.py`, `models.py` | Enumerate endpoints without changing target state, read silicon identity, and select only the board profile's declared backend. |
+| Flash lifecycle and transports | `src/uef_gen/deploy/orchestrator.py`, `ideployment.py`, `src/uef_gen/deploy/backends/` | `DeploymentOrchestrator.deploy()` owns the safety sequence. Backends implement bounded connect, identify, halt, protection inspection, erase, program, verify, reset, disconnect, and read-only identity operations. |
+| Wired command-line monitor | `src/uef_gen/deploy/monitor.py`, `cli.py`, `src/uef_gen/chips/development_boards.py` | Board metadata describes console framing; the monitor owns optional port listing, attach/read/decode/cleanup and must not reset, erase, or flash. |
+| User-facing command routing | `src/uef_gen/cli.py`, `src/uef_gen/deploy/cli.py`, `src/uef_gen/toolchains/cli.py`, `src/uef_gen/diagnostics.py`, `src/uef_gen/contract.py` | Route generation, tools, build/deploy/flash/probe/monitor commands; JSON mode keeps stdout machine-readable and sends human diagnostics to stderr. |
+
 ## Recommended implementation sequence
 
 The numbered work areas below describe the task inventory. Use this dependency
@@ -30,12 +43,16 @@ write operation is enabled.
 
 The full design and syntax proposal are in `../../docs/design/PROJECT_LANGUAGE_DESIGN.md`.
 
+Keep the standalone project compiler and the hardware-configuration assembler
+as separate input workflows with explicit ownership and validation contracts.
+
 - [x] Implement the lexer, recursive-descent parser, immutable AST/source spans, local error recovery, and public `.uef` compiler API. All checked-in `.uef` and `.uefs` examples parse; current example failures are semantic/registry compatibility issues, not grammar failures.
 - [x] Keep syntax productions and dispatch IDs in `src/uef_gen/language/registry/`; resolve UETD names and contracts from UETD's live registries.
 - [x] Discover module spellings through `DSL_descriptor`, load available authoring contracts, and report registered-but-unready entries.
 - [x] Implement project symbols, type/unit/shape checks, model/algorithm/protocol/FSM/OS validation, and lowering to a backend-neutral application specification. Composition output and branch contracts, scheduled-call arguments, state actions, nested UMATH restrictions, and exact registry-backed UMATH routes are preserved and checked.
 - [ ] Reconcile the basic, platform, drone, ECHO, rover, optical-bench, and Tesla examples with the current UETD authoring contracts and type/unit catalogue; they parse, but none currently passes semantic compilation against the live checkout.
 - [x] Implement `.uefs` parsing, node compilation, shared link-contract validation, and deterministic system-plan lowering.
+- [ ] Implement the standalone `.uef` emitter from the lowered application specification and UETD-owned generation contracts.
 - [ ] Implement the `.uefs` firmware emitter after single-target emission, preserving independent node builds and link metadata.
 - [ ] Complete source-to-generated diagnostic maps and generated-project validation once an emitter exists.
 - [ ] Add human-readable CLI summaries while retaining machine-readable JSON output for scripts and the existing request bridge.
@@ -45,14 +62,21 @@ The full design and syntax proposal are in `../../docs/design/PROJECT_LANGUAGE_D
 
 ### Milestone 0 — maintain input, ownership, and live UETD contracts
 
-3. [x] Require each selectable UETD module to declare its source files and transitive public-header closure; copy only the selected module dependency closure into generated projects.
-4. [x] Emit selected system link libraries in the canonical project build list and provenance; link UMATH's `m` library for GNU/Clang builds and omit it for MSVC.
-5. [x] Locate the separately maintained UETD checkout at runtime and compute a
+1. Keep the versioned hardware configuration, request/response payload,
+   resolved project, and generated provenance as distinct contracts. Record
+   which component owns and validates each field.
+2. [x] Require each selectable UETD module to declare its source files and transitive public-header closure; copy only the selected module dependency closure into generated projects.
+3. [x] Emit selected system link libraries in the canonical project build list and provenance; link UMATH's `m` library for GNU/Clang builds and omit it for MSVC.
+4. [x] Locate the separately maintained UETD checkout at runtime and compute a
    stable fingerprint from its public source, templates, release metadata, and
    manifests. Do not package or refresh a second UETD tree inside this project.
-6. Make schema validation and CLI diagnostics stable, path-specific and
+5. Make schema validation and CLI diagnostics stable, path-specific and
    independent of optional packages where the package promises fallback
    behavior.
+
+**Exit gate:** input and response examples validate against committed schemas;
+ownership is unambiguous; the live UETD version and manifests agree; generated
+outputs carry reproducible provenance and manual-action records.
 
 
 ### Milestone 1 — trusted target data and complete resolution

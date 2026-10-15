@@ -7,6 +7,8 @@ project compiler resolves types, checks the implemented expression rules, and
 lowers type/boundary descriptors into its application model. This does not
 mean a firmware backend can emit every representation: generation must remain
 blocked until the selected UETD ABI, codec, and target route are implemented.
+The emitter must consume this lowered application specification rather than
+reinterpret source text.
 
 This document defines how a value keeps its meaning across the UETD registry,
 UEF-PL source, `.uefs` contracts, UMATH bindings, generated C, and

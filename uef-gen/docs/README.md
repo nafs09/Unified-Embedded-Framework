@@ -4,6 +4,8 @@ The [uef-gen README](../README.md) is the entry point for installation, CLI
 usage, project assembly, and the boundary with UETD. This directory holds the
 source map and implementation planning documents.
 
+UETD and uef-gen are licensed together under GPL-3.0-only; see the repository
+[`LICENSE.md`](../../LICENSE.md). Third-party components retain their own terms.
 
 For people authoring standalone `.uef` projects, the official starting point is
 the [UEF-PL user handbook](../../docs/guides/UEF_PROJECT_LANGUAGE_HANDBOOK.md).

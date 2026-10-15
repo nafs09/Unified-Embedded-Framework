@@ -1,5 +1,11 @@
 # UEF Project Language (UEF-PL)
 
+This document defines UEF Project Language (UEF-PL), the standalone `.uef`
+authoring language and its planned `uef-gen` path. It is a typed, declarative
+surface for configuring UETD and writing bounded project-local models,
+algorithms, protocols, and compositions.
+It is not a general programming language: users do not write C/C++ or Python in
+project files.
 
 UETD owns the catalogues and implementation contracts for targets, boards,
 modules, runtimes, public C types, UMATH operations, and numeric capabilities.

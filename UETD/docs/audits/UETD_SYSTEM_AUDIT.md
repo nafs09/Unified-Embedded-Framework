@@ -1,5 +1,9 @@
 # UETD system-wide audit
 
+Audit scope: the UETD source tree, public headers, CMake source selection,
+module and target registries with their detail manifests, `api.json`, examples,
+and the current `UETD_Specification.md` (V1.2). This is a static source and
+contract review. No build or tests were run.
 
 This file is the implementation-status snapshot. The broader capability and
 source-equivalence review, including selective generation and requirements
@@ -33,6 +37,10 @@ not acceptance evidence for generated firmware.
   configuration or a `StandaloneApplicationSpec`.
 - `system_language` has the same blocker: `.uefs` compilation and validation
   return `system_language_frontend_incomplete`.
+- The existing `generate_project` API accepts a hardware configuration, not
+  the standalone application specification. UETD does not yet render that
+  specification into modules, settings, schedules, models, protocols, or
+  project source.
 - Build and flash adapters remain scaffolded. The standalone `.uef` route
   cannot reach a compiled image, and target-specific flash profiles are not
   complete. Thus `check`, `generate`, `build`, and `flash` are not operational
@@ -121,6 +129,11 @@ validation, C/C++ compilation, or end-to-end generation tests.
    to a bounded task or deferred interrupt path, matching Part XVII's
    integration guidance. Their frame publication still needs a concurrency
    contract.
+5. **Missing planned outlines:** added non-selectable, fail-closed source and
+   header outlines for MSP, ExpressLRS, UAVCAN v1, LIN, J1939, and IEC 60870-5,
+   plus all 23 operations in the existing UOS API for the named SafeRTOS
+   backend. These are excluded from normal CMake builds and are not advertised
+   as implemented protocol capabilities.
 6. **Spec revision comments:** updated 89 public-header/source comments from
    the stale V1.1 reference to the current V1.2 specification.
 7. **Fault reporting honesty:** the nonfatal fault stub now states why it does
@@ -191,6 +204,10 @@ validation, C/C++ compilation, or end-to-end generation tests.
 
 ## Added UPROTO operation outline groups
 
+The future protocol modules use `uproto_future_call_t` only as a development
+work envelope. Each operation has a named declaration, definition, and
+protocol-specific TODO. No future module is exposed through the common
+`uproto.h` or module provider map.
 
 - **MSP:** profile validation, initialization, bounded byte feed, request
   encoding, response extraction, reset.

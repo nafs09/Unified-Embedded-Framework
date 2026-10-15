@@ -2,9 +2,22 @@
 
 This list distinguishes linkable source scaffolding from working behavior. Public runtime APIs now have definitions in their layer source files, but each `UETD_NOT_SUPPORTED` return, neutral getter result, or function-level TODO still marks behavior that must be implemented and reviewed. A function being present in a `.c` file does not mean the driver or algorithm works.
 
+These notes are a maintainer worklist, not public usage instructions.
 
 ## Source map — where to continue implementation
 
+| Work area | Public contract / source location | What the current scaffold means |
+| --- | --- | --- |
+| Foundational status/types/time | `include/ucore/`, `src/ucore/` | Shared types, status, assertions, checksums, and the monotonic-time declarations used by portable code. |
+| Architecture abstraction | `include/uhal/`, `src/uhal/README.md`, `src/uhal/{arm_cm,x86}/` | Existing CMSIS Cortex-M and host implementations; the README maps each source to its public contract and documents AVR/ESP-IDF work locations and blockers. |
+| Chip/family/board/tool records | `registry/targets/README.md`, `registry/targets/toolchains/README.md`, `registry/targets/{chips,families,development_boards,toolchains}/` | JSON indexes point to per-record manifests. Keep exact silicon facts on the chip, carrier/module facts on development boards, and version/hash pins in the toolchain registry. |
+| Target startup/link contract | `templates/targets/README.md`, `api.json`, board/chip registry records | The template notes distinguish Cortex-M startup/linker files, AVR CRT behavior, and ESP-IDF-owned startup/partitions. Missing target facts stay unavailable rather than being guessed. |
+| Portable math | `include/umath/`, `src/umath/`, `catalogues/UMATH_CATALOGUE.md`, `registry/modules/manifest/umath/` | Each module header/source is registered. Implemented functions have behavior; scaffold functions have detailed operation-level TODOs and remain fail-closed/selectability-gated as described by their manifest. |
+| Control and estimation | `include/ucon/`, `src/ucon/`, `catalogues/` | Algorithm contracts and direct C implementations are grouped by family. Incomplete operations remain fail-closed until their typed behavior and numeric policy are reviewed. |
+| Peripheral abstraction | `include/upal/`, `src/upal/` | Hardware-neutral driver contracts and fail-closed source functions; add register bindings in the selected architecture/board implementation, not in portable code. |
+| Sensor/middleware | `include/umid/`, `include/umid/drivers/`, `src/umid/`, `src/umid/drivers/`, `include/uproto/`, `src/uproto/` | Shared UMID services plus manually maintained sensor/measurement drivers; keep transport timing and pin binding in board/backend code. |
+| Scheduler/RTOS | `include/uos/`, `src/uos/{baremetal,freertos}/`, `third_party/` | Backend implementations plus the pinned dependency integration files. The UOS checklist below tracks behavior/API contract gaps separately from linkable symbols. |
+| Applications and lifecycle | `include/uapp/`, `src/uapp/`, `examples/` | Lifecycle, supervisor, state machine, and application examples; example mains are intentionally board integration checklists. |
 
 Read a module's public header for its API and its paired `src/.../*.c` for
 implementation progress. Do not promote a `SCAFFOLD_ONLY` registry/module entry
@@ -258,6 +271,7 @@ separates host checks, compile-only examples, and hardware-validated behavior.
 - [x] Add the Phase 1 STM32L4+ profile for the SDMMC roadmap. Keep the Phase 0 H7/F7 profiles marked as Phase 1 SDMMC target families, and expose Phase 0, Phase 1, and complete registered-profile queries.
 - [x] Publish the UETD-owned 66-roadmap-family catalogue through api.json, including later spec targets and broader STM32/Espressif series as non-generatable, unverified roadmap metadata.
 - [x] Add vendor-sourced exact-part chip records across the specification's named vendor groups and expose them to uef-gen list/show queries. Records can progress from identity and headline facts to complete per-chip resources; readiness is declared per record.
+- [x] Keep family, exact-part, and module indexes beside their per-entry detail files under `registry/`, using one index-plus-manifest layout for each catalogue.
 - [x] Remove duplicate Phase 0 family data from uef-gen; its target listing reads UETD’s API-declared registry and expands per-family/per-chip manifests. Snapshots fingerprint the registry/detail trees and include them in provenance.
 - [ ] After the cross-layer portable backlog is prioritized, select a first-pass set of at least two concrete MCU/package/board configurations. Record each toolchain, CMSIS device header, clock setup, linker script, startup files, interrupt priorities, and capability coverage.
 - [ ] Complete selected chip records in place with package pinouts/AFs, peripheral
@@ -294,15 +308,14 @@ and flash settings. Keep incomplete and later-roadmap records generation-unavail
 - [ ] Decide whether MAVLink and UAVCAN definitions are vendored, imported, or provided through a documented external package. Keep upstream protocol definitions out of duplicate UETD copies.
 - [x] Define thread/ISR ownership for UMID logging and health registry access: health reports/snapshots use UHAL critical sections; UMID_LOG is task/main-only, serializes same-core producers, and has one task-context drain consumer. Cross-core logging requires per-core instances or a future shared queue.
 
-## Phase 2 — UCON algorithm contracts and generated specialization
+## Phase 2 — UCON algorithm contracts and typed implementations
 
 Algorithm contract work and board-independent generic C implementations can
 proceed during the portable host phase; do not wait for board selection for
-work that has no hardware dependency. Defer signal bindings, target capability
-requirements, and hardware-specific template actions until their UPAL/target
-contracts exist.
+work that has no hardware dependency. Defer signal bindings and target
+capability requirements until their UPAL/target contracts exist.
 
-- [x] Add UCON status/numeric foundations and generic PID and lead-lag implementations with thin registered UETD-owned templates.
+- [x] Add UCON status/numeric foundations and generic PID and lead-lag implementations with direct C APIs.
 - [x] Keep all `FIRST_PASS` entries plus planned common/project-required filters, drone estimation/control, QCWDRSSTC predictive-control, and PK/PD medical entries in the initial tree; keep other planned and all deferred entries under `future/`.
 - [x] Register every placeholder as a scaffold-only UETD module and prevent uef-gen from selecting it for generated firmware.
 - [x] Add per-algorithm `algorithm_unregistered`/direct-only/ambiguous-alias diagnostics to the generic uef-gen bridge; keep UCON equations and catalog ownership in UETD.

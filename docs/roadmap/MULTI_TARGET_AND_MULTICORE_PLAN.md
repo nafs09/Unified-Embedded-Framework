@@ -146,6 +146,10 @@ The system compiler should:
    node whose compiler, linker, or deployment backend is unavailable.
 
 
+The generator may reuse UETD's per-target resolver and public project-generation
+contracts, but it must not duplicate chip, peripheral, protocol, or runtime
+catalogues inside `uef-gen`.
+
 ## 6. Implementation sequence
 
 ### Phase A — Freeze the first supported topology

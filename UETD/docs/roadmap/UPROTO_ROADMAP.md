@@ -1,5 +1,10 @@
 # UPROTO roadmap and coverage review
 
+This file maps Part XV.3 planned protocols to UETD-owned module outlines. It is
+not a protocol implementation or selection list. The modules are registered
+in `registry/modules/registry.json` as `scaffold_only`, their sources are excluded
+from ordinary CMake builds, and no UPROTO future entry is present in
+`protocol_provides`.
 
 | Proposal | Function outline | Contract decisions before implementation |
 |---|---|---|
@@ -35,3 +40,10 @@ consumer dependencies, with UETD owning only the adapter and bounded transport
 hooks.
 
 ## Promotion gate
+
+For each protocol, define a typed fixed-size configuration and instance state,
+framing and checksum rules, inputs/outputs, ownership/lifetime, parser recovery,
+maximum work per call, memory limits, status/freshness behavior, transport
+requirements, external stack version/license, and manual target actions. Then
+implement the direct UETD C API and add protocol-specific modules only after
+their outputs match the reviewed API and target contract.

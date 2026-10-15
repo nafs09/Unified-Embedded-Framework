@@ -8,6 +8,8 @@ catalogues, and reusable templates. Firmware can call its C APIs directly.
 hardware and module catalogues; generated firmware does not require Python at
 runtime.
 
+The public UETD workflow is through the C APIs and the documented hardware-
+configuration path.
 
 ## License
 

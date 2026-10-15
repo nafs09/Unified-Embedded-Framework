@@ -8,6 +8,9 @@ the two components have separate package versions and release schedules.
 
 ### Repository
 
+- Added a root GNU GPL-3.0-only license for UEF (UETD and uef-gen together).
+  Third-party components retain separate terms, and the VS Code extension uses
+  the project license.
 - Drafted contributor, conduct, security, support, publication, and release
   guidance, along with GitHub issue forms and a pull request template.
 - Organized cross-project design and planning documents under `docs/`, with

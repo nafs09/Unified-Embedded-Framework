@@ -357,6 +357,9 @@ Do these in order before scaffolding either full acceptance project:
    profiles only from exact schematics, vendor manuals/datasheets/errata,
    toolchain and startup data. Keep generation blocked until every used
    resource/profile field has a source and verification state.
+5. **Implement the DSL-to-generator seam.** Complete the standalone frontend
+   and lower to a stable private application/system IR. Then connect that IR to
+   UETD module planning, target resolution, and route selection.
 6. **Verify fidelity.** Require parser/type diagnostics; golden generated
    source/manifest; dependency and output determinism; host unit/numerical and
    boundary checks; target compile/link/map/stack/size checks; protocol
@@ -384,6 +387,8 @@ Do these in order before scaffolding either full acceptance project:
   scaffold failures.
 - `uef-gen/src/uef_gen/language/frontends/system/` contains the separate system-language
   contract and its unfinished compiler boundary.
+- `uef-gen/src/uef_gen/generation/pipeline.py` accepts the existing hardware
+  configuration path; it is not yet the standalone application-IR renderer.
 - `uef-gen/src/uef_gen/modules/selector.py` performs fail-closed selection and
   dependency closure for its current route. The gap is integration with the
   standalone application IR and broader selected capability graph.

@@ -7,6 +7,8 @@ needed before publishing the repository.
 
 - [x] Add the exact GPL-3.0 license text at the repository root and declare
   the same license for uef-gen and its VS Code extension metadata.
+- [x] Document that UEF (UETD and uef-gen) is licensed under GPL-3.0-only and
+  that third-party components retain their own terms.
 - [ ] Decide whether inbound contributions are covered by the project license
   alone, a Developer Certificate of Origin, or a Contributor License Agreement.
   Update `CONTRIBUTING.md` before accepting outside code.
@@ -63,6 +65,15 @@ is implemented, scaffolded, or hardware verified.
   [unit](reference/UEF_PL_UNITS_REFERENCE.md) references. These documents
   describe the current language design and scaffold status; they do not claim
   that the standalone compiler or target pipeline is release-ready.
+- [ ] **Release-ready UEF Project Language specification and reference.** Use
+  “UEF Project Language” as the readable name; refer to it informally as the
+  `.uef` language. Explain installation and CLI workflow; lexical rules and
+  grammar; declarations, records, fixed-width enums, scalar/vector/matrix types
+  and units; expressions and casts; component and driver bindings; models,
+  algorithms, protocols, subsystems and hybrid composition; operating system,
+  tasks, timing, interrupts and failure policies; `.uefs` multi-target
+  composition; diagnostics; editor support; generation limits; and contract
+  versioning. Provide small complete projects and annotated diagnostics.
 - [ ] **Getting started / first generated firmware tutorial.** Once a supported
   standalone generation path exists, cover supported
   host tools and versions, installing UETD and `uef-gen` from this monorepo,

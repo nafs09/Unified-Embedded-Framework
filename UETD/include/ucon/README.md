@@ -1,5 +1,7 @@
 # UCON public headers
 
+The public UCON interface is the direct C API described below. Applications can
+use these headers without the standalone project-language workflow.
 
 ## Current direct-use API
 

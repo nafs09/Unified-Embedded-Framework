@@ -4,6 +4,8 @@ The [UETD README](../README.md) is the entry point for installing the library,
 using its public C APIs, and understanding current readiness. This directory
 holds the deeper architecture and engineering references.
 
+UETD and `uef-gen` are licensed together under GPL-3.0-only; see the repository
+[`LICENSE.md`](../../LICENSE.md). Third-party components retain their own terms.
 
 UETD also supplies the JSON contracts consumed by the standalone project
 language. For that authoring path, see the repository's

@@ -7,13 +7,15 @@ Python project assembler:
 - [`UETD/`](UETD/) contains the C11 framework source, public APIs, module
   metadata, control algorithms, registries, and reusable templates.
 - [`uef-gen/`](uef-gen/) resolves hardware configuration, selects UETD modules,
-  assembles project scaffolds, reads UETD's live registries, and renders its
-  declared templates.
+  assembles project scaffolds, and reads UETD's live registries and manifests.
 
 UEF is licensed under GNU GPL-3.0-only; see [`LICENSE.md`](LICENSE.md).
 Dependencies retain their own license terms.
 
 Generated firmware does not require the host-side Python tool at runtime.
+
+See the [publication checklist](docs/PUBLICATION_CHECKLIST.md) for remaining
+release and documentation work.
 
 
 ## Public API and current coverage

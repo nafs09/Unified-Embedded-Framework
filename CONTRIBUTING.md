@@ -1,7 +1,12 @@
 # Contributing
 
-UEF (UETD and `uef-gen`) is licensed under GNU GPL-3.0-only; see
-[`LICENSE.md`](LICENSE.md). Dependencies retain their own license terms.
+Thank you for considering a contribution to the Unified Embedded Framework
+(UEF), which consists of UETD and `uef-gen`. They are licensed together under
+GNU GPL-3.0-only; see [`LICENSE.md`](LICENSE.md). Dependencies keep their own
+terms. Inbound contribution terms have not yet been selected. Use issues to
+discuss changes; do not assume that code submissions can be merged. The
+repository maintainer will publish contribution terms before accepting outside
+code.
 
 ## Start with the problem
 

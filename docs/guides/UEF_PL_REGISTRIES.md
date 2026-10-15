@@ -12,6 +12,8 @@ For detailed source rules, read the [technical guide](UEF_PROJECT_LANGUAGE_GUIDE
 and [language design](../design/PROJECT_LANGUAGE_DESIGN.md). For record
 authoring rules, see the [UETD registry README](../../UETD/registry/README.md).
 
+The public UEF-PL catalogue is the module, type, unit, UMATH, and target data
+described in this guide.
 
 ## Catalogue ownership and file roles
 

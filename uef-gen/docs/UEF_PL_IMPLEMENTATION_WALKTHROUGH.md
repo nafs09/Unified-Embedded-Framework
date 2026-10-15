@@ -33,6 +33,22 @@ The CLI and language server share the compiler APIs. Editor behavior must never 
 
 ## 2. Where the working frontend lives
 
+| File | Responsibility |
+| --- | --- |
+| `src/uef_gen/language/frontends/project/tokens.py` | Token kinds and source locations. |
+| `src/uef_gen/language/frontends/project/lexer.py` | Tokenizes `.uef` source, including comments, strings, finite numbers, operators, and spans. |
+| `src/uef_gen/language/frontends/project/ast.py` | Immutable AST nodes for declarations, expressions, types, equations, compositions, and source maps. |
+| `src/uef_gen/language/frontends/project/parser.py` | Recursive-descent `.uef` parser with local error recovery. |
+| `src/uef_gen/language/frontends/project/contract_imports.py` | Safe relative `.uefs` imports and node-local contract selection. |
+| `src/uef_gen/language/frontends/project/registry_contracts.py` | UETD API-linked module, target, type, unit, UMATH, runtime, and authoring contract discovery. |
+| `src/uef_gen/language/frontends/project/type_interchange.py` | Nominal type identities, unit and shape facts, expression inference, and type-specific checks. |
+| `src/uef_gen/language/frontends/project/validation.py` | Ordered declaration, registry, runtime, algorithm, protocol, and type validation passes. |
+| `src/uef_gen/language/frontends/project/lowering.py` | Converts checked AST nodes to application-spec records and source-map entries. |
+| `src/uef_gen/language/frontends/project/application_spec.py` | Backend-neutral application input model. |
+| `src/uef_gen/language/frontends/project/compiler.py` | Public `compile_project_file`, `compile_project_text`, and `compile_project_document` APIs. |
+| `src/uef_gen/language/frontends/project/hints.py` | Registry-backed completion, hover, and signature data independent of a specific editor. |
+| `src/uef_gen/language/server/server.py` | LSP document sync, diagnostics, completion, hover, definition, signatures, and editor position conversion. |
+
 
 A saved `.uef` follows the same path as an in-memory editor document: lexer → parser → safe imports and registry load → symbol/type validation → lowering. A compilation result is successful only when both the hardware configuration and the application specification exist and there are no error diagnostics.
 
@@ -82,6 +98,10 @@ The VS Code TextMate grammar is also included by the Visual Studio VSIX project,
 
 The next concrete coding task is to make `generate .uef` consume `CompilationResult.application_spec` rather than stopping after validation. Keep this work in a backend module; do not put C rendering into the parser, type checker, or `cli.py`.
 
+1. **Define the generation request from lowered data.** Start with
+   `application_spec.py` and the `CompilationResult` fields. Include the
+   selected UETD root/snapshot, hardware configuration, complete application
+   specification, and source-map provenance. Do not pass raw source text.
 2. **Resolve the selected UETD routes.** Reuse `registry_contracts.py`, module selection, template/source closure, and target capability data. Before rendering, verify every module, type, UMATH call, runtime behavior, codec, and target route has a generation contract. Missing routes stop before output files are published.
 3. **Render one backend-neutral application model.** Convert records, state machines, schedules, model equations, algorithms, subsystem/hybrid stages, protocol layouts, and component settings into the UETD-owned template inputs. Preserve source order only where the language makes it meaningful. All arrays, buffers, loops, work areas, and scratch storage remain bounded.
 4. **Validate the generated project.** Run the existing UETD generated-project checks and compare selected source closure against the resolved manifest. Keep generated-file-to-source spans so diagnostics can point back to `.uef` declarations.
