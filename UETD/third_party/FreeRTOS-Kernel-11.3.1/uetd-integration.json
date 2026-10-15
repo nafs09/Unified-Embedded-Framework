@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "dependency": "freertos-kernel",
+  "version": "11.3.1",
+  "common_sources": [
+    "croutine.c",
+    "event_groups.c",
+    "list.c",
+    "queue.c",
+    "stream_buffer.c",
+    "tasks.c",
+    "timers.c"
+  ],
+  "common_include_directories": [
+    "include"
+  ],
+  "profiles": {
+    "arm_cm4f_gcc": {
+      "architecture": "arm-cortex-m4f",
+      "compiler": "gcc-arm-none-eabi",
+      "port_sources": [
+        "portable/GCC/ARM_CM4F/port.c"
+      ],
+      "include_directories": [
+        "portable/GCC/ARM_CM4F"
+      ],
+      "heap_source": "portable/MemMang/heap_4.c",
+      "defines": [],
+      "notes": "Generic Cortex-M4F GCC port only. The generated project must supply FreeRTOSConfig.h, an ARM cross toolchain, target ABI/FPU flags, startup code, linker script, and board-specific interrupt/tick setup. This profile does not qualify a specific MCU or board."
+    }
+  }
+}

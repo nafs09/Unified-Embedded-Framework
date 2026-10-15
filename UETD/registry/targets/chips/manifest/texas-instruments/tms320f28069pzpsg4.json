@@ -1,0 +1,57 @@
+{
+  "id": "tms320f28069pzpsg4",
+  "vendor": "Texas Instruments",
+  "family_id": "c2000-piccolo",
+  "series": "C2000 Piccolo",
+  "part_number": "TMS320F28069PZPSG4",
+  "aliases": [
+    "TMS320F28069"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "C28x",
+    "isa": "TI C28x",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 90000000
+  },
+  "package": {
+    "name": "HTQFP100",
+    "pin_count": 100
+  },
+  "memory": {
+    "flash_bytes": 262144,
+    "sram_bytes": 102400
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "ePWM",
+    "CLA",
+    "CAN",
+    "USB",
+    "SPI",
+    "I2C",
+    "SCI"
+  ],
+  "source_references": [
+    {
+      "title": "TI TMS320F28069 product page",
+      "url": "https://www.ti.com/product/TMS320F28069"
+    },
+    {
+      "title": "TI TMS320F2806x data sheet",
+      "url": "https://www.ti.com/lit/ds/symlink/tms320f28069.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "F28069 C2000 variant with CLA and single-precision FPU; code and memory are not Cortex-M compatible."
+}

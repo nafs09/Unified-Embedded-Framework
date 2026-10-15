@@ -1,0 +1,37 @@
+{
+  "id": "nrf9160-sica-b1a-r",
+  "vendor": "Nordic Semiconductor",
+  "family_id": "nrf9160",
+  "series": "nRF91",
+  "part_number": "nRF9160-SICA-B1A-R",
+  "aliases": ["nRF9160 SiP", "nRF9160-SICA-B1A-R7"],
+  "roadmap_phase": 3,
+  "core": {
+    "name": "Cortex-M33",
+    "isa": "Armv8-M Mainline",
+    "word_bits": 32,
+    "count": 1,
+    "fpu": "unknown",
+    "max_frequency_hz": 64000000
+  },
+  "package": { "name": "LGA127", "pin_count": 127 },
+  "memory": { "flash_bytes": 1048576, "sram_bytes": 262144 },
+  "peripheral_groups": ["GPIO", "SPI", "I2C", "UART", "ADC", "PWM", "PDM", "I2S", "LTE-M", "NB-IoT", "GNSS"],
+  "source_references": [
+    {
+      "title": "Nordic nRF9160 product specification, key features",
+      "url": "https://docs.nordicsemi.com/r/bundle/ps_nrf9160/page/nrf9160_html5_keyfeatures.html"
+    },
+    {
+      "title": "Nordic nRF9160 ordering information",
+      "url": "https://docs.nordicsemi.com/r/bundle/ps_nrf9160/page/ordering_info.html"
+    },
+    {
+      "title": "Nordic nRF9160 SiP product brief",
+      "url": "https://www.nordicsemi.com/-/media/Software-and-other-downloads/Product-Briefs/nRF9160-SiP-PB-v2.1.pdf"
+    }
+  ],
+  "source_verified_fields": ["identity", "core", "word_bits", "frequency", "package", "flash", "SRAM", "peripheral_groups"],
+  "generation_available": false,
+  "record_note": "nRF9160 is a cellular System-in-Package with a dedicated Cortex-M33 application processor. Core FPU detail and all pin, clock, peripheral-instance, DMA, startup, and linker maps remain unverified."
+}

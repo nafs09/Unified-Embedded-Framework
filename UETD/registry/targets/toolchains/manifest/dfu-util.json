@@ -1,0 +1,11 @@
+{
+  "id": "dfu-util",
+  "name": "dfu-util USB DFU host utility",
+  "purpose": "flasher",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["dfu-util"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin official binary/source releases and USB driver rules per host; record supported DFU modes and verify interface matching before enabling transfer."
+}

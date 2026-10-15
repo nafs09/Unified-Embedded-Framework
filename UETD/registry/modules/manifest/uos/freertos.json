@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/uos/freertos/freertos.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "bundled_dependencies": [
+    "freertos-kernel"
+  ],
+  "backend": "FREERTOS",
+  "variant_of": "uos",
+  "headers": [
+    "include/ucore/assert.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uos/uos.h"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "sources": [],
+  "headers": [],
+  "dependencies": [],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "authoring_contract_scaffold",
+  "scaffold_reason": "The target-independent actuator identity is registered so .uef files can name an H-bridge. The project-specific driver, command semantics, safe-state details, and generation route still require design.",
+  "authoring": {
+    "contract_version": "1.0",
+    "status": "draft",
+    "kind": "actuator",
+    "display_name": "H-bridge actuator",
+    "description": "Target-independent identity for a bidirectional power-stage actuator. The user's handwritten UETD target driver owns the electrical topology, pin mapping, timer behavior, and independent inhibit path.",
+    "parameters": [],
+    "ports": [],
+    "numerics": {
+      "scalar_types": ["float32", "float64"],
+      "constraints": [
+        "TODO: Define command units, range, and update semantics from the selected actuator and plant.",
+        "TODO: Define the safe disabled state and hardware-inhibit relationship for each target driver."
+      ]
+    },
+    "scheduling": {
+      "contexts": ["task"]
+    },
+    "composition": {
+      "supports_multi_rate": false,
+      "supports_mode_switching": true,
+      "supports_blending": false,
+      "required_blocks": []
+    },
+    "operations": [],
+    "actuator_capabilities": {
+      "safe_state_ids": []
+    },
+    "generation": {
+      "status": "draft",
+      "route_id": "uetd_actuator_binding",
+      "template_paths": [],
+      "notes": [
+        "TODO: Define the reviewed authoring contract before allowing project validation.",
+        "TODO: Bind a manually implemented UETD target driver without embedding driver source in .uef."
+      ]
+    }
+  }
+}

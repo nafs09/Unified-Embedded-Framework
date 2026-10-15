@@ -1,0 +1,31 @@
+{
+  "id": "uetd-reference",
+  "vendor": "UETD",
+  "family": "Generator fixture",
+  "series": "Generic",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "generic-word32"
+  ],
+  "core_notes": "Non-physical pipeline fixture; never select for a physical board.",
+  "roadmap_phase": null,
+  "catalogue_status": "internal_fixture",
+  "vendor_status": "not_applicable",
+  "representative_parts": [
+    "generic-reference"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "generator example and contract validation"
+  ],
+  "source_references": [
+    "uetd_reference"
+  ],
+  "exact_part_specs_registered": [
+    "generic-reference"
+  ],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uetd_c_profile_registered": false
+}

@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/umath/geometry/quaternion.c"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/umath/constants.h",
+    "include/umath/geometry/quaternion.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h",
+    "include/umath/vector/vector3.h"
+  ],
+  "dependencies": [
+    "umath/core",
+    "umath/vector/vector3"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

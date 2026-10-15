@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "src/uapp/supervisor.c"
+  ],
+  "dependencies": [
+    "umid/health"
+  ],
+  "headers": [
+    "include/uapp/supervisor.h",
+    "include/ucore/status.h",
+    "include/ucore/time.h",
+    "include/ucore/types.h",
+    "include/umid/health.h"
+  ]
+}

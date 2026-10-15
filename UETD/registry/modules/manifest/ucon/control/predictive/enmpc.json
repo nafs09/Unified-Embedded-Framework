@@ -1,0 +1,48 @@
+{
+  "sources": [],
+  "headers": [],
+  "dependencies": [],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "algorithm_scaffold",
+  "scaffold_reason": "This record describes the explicit nonlinear MPC policy-table algorithm. The policy table, plant-specific feature map, validity envelope, runtime implementation, and target generation route are still project/implementation work.",
+  "authoring": {
+    "contract_version": "1.0",
+    "status": "draft",
+    "kind": "algorithm",
+    "display_name": "Explicit nonlinear model-predictive control",
+    "description": "Evaluate a precomputed nonlinear-MPC policy table over its declared state-feature domain and return the selected bounded command/trajectory together with table validity and region metadata. This is an algorithm, not a fallback or fusion strategy.",
+    "parameters": [],
+    "ports": [],
+    "numerics": {
+      "scalar_types": ["float32", "float64"],
+      "constraints": [
+        "The selected state-feature map, table region data, command dimensions, and validity envelope are project/model-specific.",
+        "Policy-table evaluation must use fixed storage and return explicit validity metadata; the enclosing hybrid policy owns fallback selection."
+      ]
+    },
+    "scheduling": {
+      "contexts": ["task"]
+    },
+    "composition": {
+      "supports_multi_rate": false,
+      "supports_mode_switching": false,
+      "supports_blending": false,
+      "supports_custom_parent": false,
+      "supports_hybrid_mode": false,
+      "supports_state_transfer": false,
+      "allowed_child_kinds": [],
+      "required_blocks": []
+    },
+    "operations": [],
+    "generation": {
+      "status": "draft",
+      "route_id": "uetd_enmpc",
+      "template_paths": [],
+      "notes": [
+        "The project hybrid_algorithm declaration composes enmpc with nmpc_rti or other compatible members; that composition is not part of this module.",
+        "Supply the explicit policy data and validate table coverage, model feature mapping, and worst-case execution time for the selected target."
+      ]
+    }
+  }
+}

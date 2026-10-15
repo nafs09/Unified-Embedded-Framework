@@ -1,0 +1,9 @@
+/* Rename to clock.c only after mapping UETD clock IDs to the pinned ESP-IDF API. */
+/* uetd_u32_t uhal_clk_freq_hz(uhal_clk_t clock); */
+/* void uhal_clk_periph_enable(uhal_periph_clk_t peripheral); */
+/* void uhal_clk_periph_disable(uhal_periph_clk_t peripheral); */
+/* void uhal_reset_periph_assert(uhal_periph_clk_t peripheral); */
+/* void uhal_reset_periph_release(uhal_periph_clk_t peripheral); */
+/* uetd_u32_t uhal_reset_cause(void); */
+/* TODO: Use documented IDF clock/peripheral services, avoid global frequency changes in gate
+ * calls, preserve SDK ownership, and map SDK errors to explicit UETD diagnostics. */

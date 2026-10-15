@@ -1,0 +1,8 @@
+/* Rename to cache.c only after classic ESP32 cache APIs/capabilities are documented. */
+/* void uhal_cache_clean(const void *address, uetd_u32_t size); */
+/* void uhal_cache_invalidate(void *address, uetd_u32_t size); */
+/* void uhal_cache_clean_invalidate(void *address, uetd_u32_t size); */
+/* void uhal_dcache_enable(void); */
+/* void uhal_icache_enable(void); */
+/* TODO: Align ranges to verified cache lines; distinguish normal data-cache maintenance from
+ * flash-cache suspension; honor IDF restrictions and report unsupported operations honestly. */

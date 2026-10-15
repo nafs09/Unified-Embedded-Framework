@@ -1,0 +1,56 @@
+{
+  "id": "ch32v203c8t6",
+  "vendor": "WCH",
+  "family_id": "ch32v203",
+  "series": "CH32V203",
+  "part_number": "CH32V203C8T6",
+  "aliases": [
+    "CH32V203"
+  ],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "QingKe V4B",
+    "isa": "RV32IMAC",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 144000000
+  },
+  "package": {
+    "name": "LQFP48",
+    "pin_count": 48
+  },
+  "memory": {
+    "flash_bytes": 65536,
+    "sram_bytes": 20480
+  },
+  "peripheral_groups": [
+    "DMA",
+    "USB",
+    "CAN",
+    "ADC",
+    "TIM",
+    "USART",
+    "I2C",
+    "SPI"
+  ],
+  "source_references": [
+    {
+      "title": "WCH CH32FV2x/V3x reference manual and supported order codes",
+      "url": "https://www.wch-ic.com/downloads/CH32FV2x_V3xRM_PDF.html"
+    },
+    {
+      "title": "WCH CH32V203 datasheet entry",
+      "url": "https://www.wch-ic.com/downloads/CH32V203DS0_PDF.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "RISC-V V4B variant. This part does not inherit Cortex-M startup or interrupt assumptions."
+}

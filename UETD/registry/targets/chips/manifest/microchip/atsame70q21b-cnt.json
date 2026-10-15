@@ -1,0 +1,59 @@
+{
+  "id": "atsame70q21b-cnt",
+  "vendor": "Microchip",
+  "family_id": "same70",
+  "series": "SAME70",
+  "part_number": "ATSAME70Q21B-CNT",
+  "aliases": [
+    "ATSAME70Q21"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M7",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single and double",
+    "max_frequency_hz": 300000000
+  },
+  "package": {
+    "name": "LFBGA144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 393216
+  },
+  "peripheral_groups": [
+    "XDMAC",
+    "HSMCI",
+    "CAN-FD",
+    "Ethernet",
+    "USB",
+    "QSPI",
+    "ADC",
+    "DAC",
+    "USART",
+    "SPI",
+    "TWI"
+  ],
+  "source_references": [
+    {
+      "title": "Microchip ATSAME70Q21 product page",
+      "url": "https://www.microchip.com/en-us/product/ATSAME70Q21"
+    },
+    {
+      "title": "Microchip SAM E70 family configuration summary",
+      "url": "https://onlinedocs.microchip.com/oxy/GUID-174CB4CE-C435-49E8-BF01-3B8ABC11F056-en-US-8/GUID-FD044EE1-8386-4684-B759-D59D95377EB3.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "B-revision Q21 variant in 144-ball LFBGA; package and memory facts are device-specific."
+}

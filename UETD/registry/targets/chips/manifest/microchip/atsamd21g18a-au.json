@@ -1,0 +1,55 @@
+{
+  "id": "atsamd21g18a-au",
+  "vendor": "Microchip",
+  "family_id": "samd21",
+  "series": "SAMD21",
+  "part_number": "ATSAMD21G18A-AU",
+  "aliases": [
+    "ATSAMD21G18A"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M0+",
+    "isa": "Armv6-M",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 48000000
+  },
+  "package": {
+    "name": "TQFP48",
+    "pin_count": 48
+  },
+  "memory": {
+    "flash_bytes": 262144,
+    "sram_bytes": 32768
+  },
+  "peripheral_groups": [
+    "DMAC",
+    "ADC",
+    "DAC",
+    "SERCOM",
+    "USB",
+    "TCC",
+    "RTC"
+  ],
+  "source_references": [
+    {
+      "title": "Microchip ATSAMD21G18 product page",
+      "url": "https://www.microchip.com/en-us/product/ATsamd21g18"
+    },
+    {
+      "title": "Microchip SAM D21/DA1 family data sheet",
+      "url": "https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/40001884A.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Common SAM D21G18 assembly variant; package pins are package pins, not a claim about usable GPIO count."
+}

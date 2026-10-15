@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/plc-process-image-1.0.schema.json",
+  "title": "UETD PLC process-image contract",
+  "type": "object",
+  "required": ["schema_id", "version", "cycle_us", "atomic_scan", "points"],
+  "properties": {
+    "schema_id": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "cycle_us": { "type": "integer", "minimum": 1 },
+    "maximum_jitter_us": { "type": "integer", "minimum": 0 },
+    "maximum_latency_us": { "type": "integer", "minimum": 1 },
+    "atomic_scan": { "const": true },
+    "quality_model": { "type": "string", "minLength": 1 },
+    "points": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "direction", "owner", "type", "units", "timestamp_domain_id", "update_period_us", "stale_after_us", "quality_required", "write_authority", "command_semantics", "max_payload_bytes"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "direction": { "enum": ["input", "output", "input_output"] },
+          "owner": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1 },
+          "units": { "type": "string", "minLength": 1 },
+          "timestamp_domain_id": { "type": "string", "minLength": 1 },
+          "update_period_us": { "type": "integer", "minimum": 1 },
+          "stale_after_us": { "type": "integer", "minimum": 1 },
+          "quality_required": { "type": "boolean" },
+          "max_payload_bytes": { "type": "integer", "minimum": 1 },
+          "minimum_encoded": { "type": "string", "contentEncoding": "base64" },
+          "maximum_encoded": { "type": "string", "contentEncoding": "base64" },
+          "safe_value_encoded": { "type": "string", "contentEncoding": "base64" },
+          "write_authority": { "enum": ["local_only", "peer_command", "local_arbitration"] },
+          "command_semantics": { "enum": ["level", "edge", "transaction"] },
+          "requires_acknowledgement": { "type": "boolean" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "direction": { "enum": ["output", "input_output"] } }, "required": ["direction"] },
+            "then": { "required": ["safe_value_encoded"] }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

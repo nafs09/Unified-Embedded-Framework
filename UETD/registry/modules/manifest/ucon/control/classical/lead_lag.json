@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/ucon/control/classical/lead_lag.c"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "phase": 0,
+  "headers": [
+    "include/ucon/control/classical/lead_lag.h",
+    "include/ucon/status.h",
+    "include/ucon/types.h",
+    "include/ucore/types.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h"
+  ]
+}

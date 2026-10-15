@@ -1,0 +1,271 @@
+{
+  "UEF-PL project shell": {
+    "prefix": "uef-project",
+    "body": [
+      "project ${1:project_name} {",
+      "  target = \"${2:stm32f722ret6}\";",
+      "  numeric { scalar = f32; accumulator = f64; rounding = nearest_even; overflow = reject; non_finite = reject; fused_multiply_add = disabled; matrix_layout = row_major; }",
+      "",
+      "  parameter setpoint : f32;",
+      "  parameter measurement_value : f32;",
+      "  algorithm ${3:controller} : ${4:pid};",
+      "  subsystem ${5:application};",
+      "",
+      "  operatingsystem ${6:Runtime} {",
+      "    runtime = ${7:FreeRTOS};",
+      "    component_failure_policy = ${11:assert_safe_state};",
+      "    task ${8:control} { run = ${5:application}(request = setpoint, measurement = measurement_value); rate = ${9:500} Hz; priority = ${10:5}; }",
+      "  }",
+      "",
+      "  implementation {",
+      "    algorithm ${3:controller} { reference = setpoint; measurement = measurement_value; kp = 1.0; }",
+      "    subsystem ${5:application} { input request : f32; input measurement : f32; output command : f32; use ${3:controller} as controller; stage control = controller(reference = request, measurement = measurement); output command = control.output; }",
+      "    ${0}",
+      "  }",
+      "}"
+    ],
+    "description": "Create the required constructor, operating-system, implementation layout"
+  },
+  "Subsystem signature and definition": {
+    "prefix": "uetd-subsystem",
+    "body": [
+      "subsystem ${1:controller};",
+      "",
+      "implementation {",
+      "  subsystem ${1:controller} {",
+      "    input request : ${2:f32} { rate = ${3:100} Hz; max_age = ${4:10} ms; };",
+      "    input measurement : ${2:f32} { rate = ${3:100} Hz; max_age = ${4:10} ms; };",
+      "    output command : ${5:f32} { rate = ${3:100} Hz; max_age = ${4:10} ms; };",
+      "    use ${6:controller_instance} as controller;",
+      "    stage control = controller(reference = request, measurement = measurement);",
+      "    output command = control.output;",
+      "  }",
+      "}"
+    ],
+    "description": "Declare a reusable subsystem with typed ports, ordered member calls, and explicit outputs"
+  },
+  "Ordered component stage and local value": {
+    "prefix": "uetd-stage",
+    "body": [
+      "use ${1:component_instance} as ${2:component};",
+      "stage ${3:result} = ${2:component}(${4:input_name} = ${5:input_value});",
+      "let ${6:derived_value} : ${7:f32} = ${8:expression};"
+    ],
+    "description": "Call one declared member in sequence, then declare a typed immutable local"
+  },
+  "UETD PID signature and definition": {
+    "prefix": "uetd-pid",
+    "body": [
+      "algorithm ${1:controller} : pid;",
+      "",
+      "implementation {",
+      "  algorithm ${1:controller} {",
+      "    reference = ${2:setpoint}; measurement = ${3:sensor.measurement};",
+      "    kp = ${4:1.0}; ki = ${5:0.0}; kd = ${6:0.0};",
+      "    derivative_filter_n = 10.0; proportional_weight_b = 1.0; derivative_weight_c = 0.0;",
+      "    sample_time = ${7:1} ms; output_min = -1.0; output_max = 1.0;",
+      "    integral_min = -1.0; integral_max = 1.0; tracking_time = 0.0 s;",
+      "    saturation_enabled = true; anti_windup = clamp;",
+      "  }",
+      "}"
+    ],
+    "description": "Declare a PID constructor and configure it in the implementation section"
+  },
+  "DSL named-value map": {
+    "prefix": "uetd-map",
+    "body": [
+      "signal ${1:mapped_value} : ${6:RecordType} = map(",
+      "  ${2:output_a} = ${3:expression},",
+      "  ${4:output_b} = ${5:expression}",
+      ");"
+    ],
+    "description": "Create a statically typed named value from expressions"
+  },
+  "DSL conditional value": {
+    "prefix": "uetd-select",
+    "body": [
+      "signal ${1:selected_value} : ${5:ValueType} = select(",
+      "  ${2:condition}, ${3:true_value}, ${4:false_value}",
+      ");"
+    ],
+    "description": "Select between same-typed values using a bounded boolean condition"
+  },
+  "Guarded operating-system state machine": {
+    "prefix": "uetd-state-machine",
+    "body": [
+      "operatingsystem ${5:Runtime} {",
+      "  state_machine ${6:mode_controller} : ${1:FlightMode} {",
+      "    initial ${2:disarmed};",
+      "    owner = ${10:safety_monitor};",
+      "    consumers = [${11:controlled_task}];",
+      "    transition any -> ${2:disarmed} when ${7:safety.kill_motors};",
+      "    transition ${2:disarmed} -> ${3:armed} when ${8:safety.arm_permitted};",
+      "    transition ${3:armed} -> ${4:failsafe} when not ${9:receiver.valid};",
+      "  }",
+      "  task ${10:safety_monitor} { run = ${12:safety}; rate = ${13:1} kHz; priority = ${14:7}; }",
+      "  task ${11:controlled_task} { run = ${15:controller}; when = ${6:mode_controller}.state == ${1:FlightMode}.${3:armed}; rate = ${16:500} Hz; }",
+      "}"
+    ],
+    "description": "Define runtime modes and guarded tasks inside the operating-system section"
+  },
+  "Hybrid algorithm signature and definition": {
+    "prefix": "uetd-hybrid-algorithm",
+    "body": [
+      "hybrid algorithm ${1:energy_planner};",
+      "",
+      "implementation {",
+      "  hybrid algorithm ${1:energy_planner} {",
+      "    input request : ${2:PlanRequest} { rate = ${3:1} kHz; max_age = ${4:2} ms; };",
+      "    output plan : ${5:PlanTrajectory} { rate = ${3:1} kHz; max_age = ${4:2} ms; };",
+      "    use ${6:table_algorithm} as table;",
+      "    use ${7:online_algorithm} as online;",
+      "    stage table_result = table(request = request);",
+      "    stage online_result = online(request = request) when request.force_online or not table_result.within_envelope;",
+      "    choose plan {",
+      "      when not request.force_online and table_result.valid and table_result.within_envelope: table_result.trajectory;",
+      "      otherwise: online_result.trajectory;",
+      "    }",
+      "    on_failure = ${8:invalid_result};",
+      "    execution_budget = ${9:1} ms;",
+      "  }",
+      "}"
+    ],
+    "description": "Compose registered algorithms through ordered calls, guarded stages, selection, and a failure policy"
+  },
+  "Custom algorithm signature and definition": {
+    "prefix": "uetd-custom-algorithm",
+    "body": [
+      "custom algorithm ${1:algorithm_name};",
+      "",
+      "implementation {",
+      "  custom algorithm ${1:algorithm_name} {",
+      "    model = ${3:system_model}; sample_time = ${4:1} ms;",
+      "    input ${5:measurement} : ${6:f32[3]<1>};",
+      "    output ${7:estimate} : ${8:f32[3]<1>};",
+      "    state ${9:state} : ${10:f32[3]<1>} = [0, 0, 0];",
+      "    parameter ${11:gain} : f32 = ${12:1.0};",
+      "    local ${13:next_state} : ${10:f32[3]<1>};",
+      "    step(dt : f32<s>) { ${13:next_state} = ${9:state} + ${11:gain} * ${5:measurement} * dt; ${9:state} = ${13:next_state}; ${7:estimate} = ${9:state}; }",
+      "  }",
+      "}"
+    ],
+    "description": "Declare a project-local algorithm and define its typed bounded equations"
+  },
+  "Continuous or discrete model signature and definition": {
+    "prefix": "uetd-model",
+    "body": [
+      "model ${1:plant} : continuous;",
+      "",
+      "implementation {",
+      "  model ${1:plant} {",
+      "    ${5:sample_time = 1 ms;}",
+      "    discretize with integration.ode_rk4 at 1 ms;",
+      "    state ${6:x} : vector[${7:2}]; input ${8:u} : vector[${9:1}]; output ${10:y} : vector[${11:1}];",
+      "    state_order = [${6:x}]; input_order = [${8:u}]; output_order = [${10:y}];",
+      "    linear { A = [[1.0, 0.01], [0.0, 0.98]]; B = [[0.0], [0.02]]; C = [[1.0, 0.0]]; D = [[0.0]]; }",
+      "  }",
+      "}"
+    ],
+    "description": "Declare model type before the OS, then define the dynamics afterward"
+  },
+  "UETD algorithm signature and definition": {
+    "prefix": "uetd-algorithm",
+    "body": [
+      "algorithm ${1:controller} : ${2:registered_descriptor};",
+      "",
+      "implementation {",
+      "  algorithm ${1:controller} {",
+      "    reference = ${3:setpoint}; measurement = ${4:sensor.measurement};",
+      "    sample_time = ${5:1} ms;",
+      "  }",
+      "}"
+    ],
+    "description": "Configure one algorithm through its UETD-registered descriptor"
+  },
+  "Operating system and taskset": {
+    "prefix": "uetd-operatingsystem",
+    "body": [
+      "operatingsystem ${1:Runtime} {",
+      "  runtime = ${2:FreeRTOS};",
+      "  component_failure_policy = ${13:assert_safe_state};",
+      "  task ${3:control} { run = ${4:controller}; rate = ${5:500} Hz; priority = ${6:5}; deadline = ${7:2} ms; }",
+      "  task ${8:supervision} { run = ${9:safety_supervisor}; rate = ${10:1} kHz; priority = ${11:7}; }",
+      "}"
+    ],
+    "description": "Select a runtime and schedule tasks directly under the operating-system root"
+  },
+  "Nonlinear model state update": {
+    "prefix": "uetd-derivative",
+    "body": [
+      "state ${1:position} : ${2:f32<m>};",
+      "input ${3:velocity} : ${4:f32<m/s>};",
+      "output ${5:measured_position} : ${2:f32<m>};",
+      "equations {",
+      "  derivative ${1:position} = ${3:velocity};",
+      "  ${5:measured_position} = ${1:position};",
+      "}"
+    ],
+    "description": "Write an explicit continuous-state derivative and output equation"
+  },
+  "Shared taskset scope": {
+    "prefix": "uetd-taskset",
+    "body": [
+      "taskset ${1:m7_realtime} {",
+      "  core = ${2:M7}; scheduler = ${3:fixed_priority};",
+      "  task ${4:control} { run = ${5:controller}; rate = ${6:500} Hz; priority = ${7:5}; deadline = ${8:2} ms; }",
+      "  task ${9:supervision} { run = ${10:safety_supervisor}; rate = ${11:1} kHz; priority = ${12:7}; }",
+      "}"
+    ],
+    "description": "Group tasks that share a core and scheduler policy; omit the group otherwise"
+  },
+  "Custom protocol signature and definition": {
+    "prefix": "uetd-custom-protocol",
+    "body": [
+      "record ${11:Sample} { ${5:value} : ${6:u16}; }",
+      "",
+      "custom protocol ${1:wire_protocol};",
+      "",
+      "implementation {",
+      "  custom protocol ${1:wire_protocol} {",
+      "    transport = ${2:uart};",
+      "    framing { sync = [0xA5, 0x5A]; version = 1; max_frame_bytes = ${3:64} B; byte_order = little_endian; }",
+      "    header { version_offset = 2 B; message_id_offset = 3 B; payload_offset = 6 B; }",
+      "    sequence { offset = 4 B; width = 16 bit; scope = per_message; }",
+      "    message ${4:sample} { id = 1; logical_type = ${11:Sample}; field ${5:value} : ${6:u16} { offset = ${7:0} B; encoding = ${8:little_endian}; application_field = ${11:Sample}.${5:value}; } }",
+      "    checksum { position = trailer; width = 2 B; algorithm = ${9:crc16}; coverage = ${10:version_through_payload}; }",
+      "  }",
+      "}"
+    ],
+    "description": "Declare a protocol role and describe its bounded wire format"
+  },
+  "Bounded algorithm loop": {
+    "prefix": "uetd-bounded-loop",
+    "body": [
+      "for ${1:i} in 0 .. ${2:dimension} {",
+      "  ${3:state}[${1:i}] = ${4:expression};",
+      "}"
+    ],
+    "description": "A statically bounded loop inside a custom algorithm or model equation block"
+  },
+  "Algorithm conditional": {
+    "prefix": "uetd-if",
+    "body": [
+      "if ${1:condition} {",
+      "  ${2:output} = ${3:value};",
+      "} else {",
+      "  ${2:output} = ${4:fallback};",
+      "}"
+    ],
+    "description": "A boolean branch with statically checked assignments"
+  },
+  "Fixed-shape record": {
+    "prefix": "uetd-record",
+    "body": [
+      "record ${1:Sample} {",
+      "  ${2:value} : ${3:f32};",
+      "  ${4:valid} : bool;",
+      "}"
+    ],
+    "description": "Declare a fixed-shape typed application record for ports and message contracts"
+  }
+}

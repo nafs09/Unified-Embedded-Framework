@@ -1,0 +1,3 @@
+recursive-include src/uef_gen/schemas *.json
+recursive-include src/uef_gen/language/registry *.json
+recursive-include src/uef_gen/language/frontends/system *.json

@@ -1,0 +1,20 @@
+{
+  "id": "nucleo-f746zg",
+  "name": "ST NUCLEO-F746ZG",
+  "aliases": ["MB1137"],
+  "chip_id": "stm32f746zgt6",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "ST NUCLEO-F746ZG product page",
+      "url": "https://www.st.com/en/evaluation-tools/nucleo-f746zg.html"
+    },
+    {
+      "title": "ST Nucleo-144 board data brief",
+      "url": "https://www.st.com/resource/en/data_brief/nucleo-l496zg-p.pdf"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "ST lists STM32F746ZGT6 as the target MCU. Board revision, clock tree, pin reservations, build profile, and flash profile still need review."
+}

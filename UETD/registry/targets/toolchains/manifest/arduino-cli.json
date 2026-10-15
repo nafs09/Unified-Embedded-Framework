@@ -1,0 +1,11 @@
+{
+  "id": "arduino-cli",
+  "name": "Arduino CLI",
+  "purpose": "build-system",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["arduino-cli"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin Arduino CLI per host, isolate its data/download directories under the UETD tools root, and make core-index downloads reproducible rather than relying on global user configuration."
+}

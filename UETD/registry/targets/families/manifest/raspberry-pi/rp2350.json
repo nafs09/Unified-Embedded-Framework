@@ -1,0 +1,38 @@
+{
+  "id": "rp2350",
+  "vendor": "Raspberry Pi",
+  "family": "RP2350",
+  "series": "RP2350",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Dual Cortex-M33 or dual Hazard3 RISC-V (selectable)"
+  ],
+  "core_notes": "Catalogue-only family addition. Core architecture is selectable through software or OTP; it needs separate startup, security, and toolchain profiles.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "RP2350A",
+    "RP2350B",
+    "RP2354A",
+    "RP2354B"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "selectable Cortex-M33 or Hazard3 RISC-V architecture",
+    "secure boot and TrustZone",
+    "multi-bank SRAM",
+    "PIO",
+    "HSTX"
+  ],
+  "source_references": [
+    "rpi_rp2350"
+  ],
+  "exact_part_specs_registered": [
+    "RP2350A"
+  ],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uetd_c_profile_registered": false
+}

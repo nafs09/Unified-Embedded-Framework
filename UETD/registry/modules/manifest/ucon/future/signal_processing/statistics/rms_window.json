@@ -1,0 +1,27 @@
+{
+  "sources": [
+    "src/ucon/future/signal_processing/statistics/rms_window.c"
+  ],
+  "headers": [
+    "include/ucon/future/signal_processing/statistics/rms_window.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "RMS_WINDOW",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_rms_window_validate_config",
+    "ucon_rms_window_init",
+    "ucon_rms_window_reset",
+    "ucon_rms_window_process_block",
+    "ucon_rms_window_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

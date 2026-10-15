@@ -1,0 +1,463 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/uef-gen/language-registry-1.3.schema.json",
+  "title": "uef-gen project-language registry",
+  "description": "Syntax and compiler-dispatch metadata only; UETD catalogue facts are excluded.",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "language",
+    "lexical",
+    "grammar",
+    "core_types",
+    "operators",
+    "constructs",
+    "builtins",
+    "semantics",
+    "value_forms",
+    "forbidden_forms",
+    "lowering_rules_are_dispatch_ids_only"
+  ],
+  "properties": {
+    "registry_version": {
+      "const": "1.3"
+    },
+    "language": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "file_extensions",
+        "entrypoint"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "file_extensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "entrypoint": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "lexical": {
+      "type": "object",
+      "required": [
+        "line_comments",
+        "string_quotes",
+        "case_sensitive_keywords",
+        "numeric_units_are_tokens",
+        "identifier",
+        "finite_decimal",
+        "hex_integer",
+        "integer_token",
+        "number_token",
+        "token_names",
+        "token_priority",
+        "range_operator",
+        "signs_are_operators",
+        "string_escapes",
+        "forbidden_numeric_values",
+        "numeric_locale"
+      ],
+      "properties": {
+        "line_comments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "string_quotes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "case_sensitive_keywords": {
+          "type": "boolean"
+        },
+        "numeric_units_are_tokens": {
+          "type": "boolean"
+        },
+        "identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "finite_decimal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hex_integer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "integer_token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "number_token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "token_names": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "token_priority": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "range_operator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signs_are_operators": {
+          "type": "boolean"
+        },
+        "string_escapes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "forbidden_numeric_values": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "numeric_locale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "grammar": {
+      "type": "object",
+      "required": [
+        "entrypoint",
+        "statement_terminators",
+        "productions"
+      ],
+      "properties": {
+        "entrypoint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement_terminators": {
+          "type": "string",
+          "minLength": 1
+        },
+        "productions": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "core_types": {
+      "type": "object",
+      "required": [
+        "boolean",
+        "signed_integers",
+        "unsigned_integers",
+        "floating_point",
+        "fixed_point",
+        "project_types",
+        "registered_uetd_types",
+        "fixed_shape",
+        "units",
+        "compile_time_string",
+        "received",
+        "generic_types",
+        "bounded_buffers"
+      ],
+      "properties": {
+        "boolean": {
+          "const": "bool"
+        },
+        "signed_integers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "unsigned_integers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "floating_point": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "fixed_point": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "project_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "registered_uetd_types": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fixed_shape": {
+          "type": "string",
+          "minLength": 1
+        },
+        "units": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compile_time_string": {
+          "type": "string",
+          "minLength": 1
+        },
+        "received": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generic_types": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "bounded_buffers": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "operators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "precedence",
+          "operators",
+          "associativity",
+          "operand_contract"
+        ],
+        "properties": {
+          "precedence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "operators": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "associativity": {
+            "enum": [
+              "left",
+              "right",
+              "non_associative",
+              "chain_not_supported"
+            ]
+          },
+          "operand_contract": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "constructs": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "category",
+          "syntax",
+          "parse_rule",
+          "lowering_rule",
+          "description"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "syntax": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parse_rule": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "lowering_rule": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "contract_source": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "builtins": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "parse_rule",
+          "lowering_rule",
+          "syntax",
+          "description",
+          "field_policy",
+          "fields"
+        ],
+        "properties": {
+          "parse_rule": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "lowering_rule": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "syntax": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "field_policy": {
+            "enum": [
+              "fixed",
+              "unique_named_expressions"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "value_kind",
+                "required"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+                },
+                "value_kind": {
+                  "enum": [
+                    "expression",
+                    "boolean_expression"
+                  ]
+                },
+                "required": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "semantics": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "value_forms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "forbidden_forms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "lowering_rules_are_dispatch_ids_only": {
+      "const": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "src/ucon/control/state_space/lqi.c"
+  ],
+  "headers": [
+    "include/ucon/control/state_space/lqi.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "LQI",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_lqi_validate_config",
+    "ucon_lqi_init",
+    "ucon_lqi_reset",
+    "ucon_lqi_compute_feedback",
+    "ucon_lqi_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

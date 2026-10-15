@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future-catalogue-1.0.schema.json",
+  "title": "UETD future catalogue index",
+  "description": "Design-only UETD and uef-gen capability contracts. Entries are discoverable for planning but cannot be selected for generation.",
+  "type": "object",
+  "required": ["schema_version", "items"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "schemas": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "items": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_.-]+$" },
+      "additionalProperties": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "required": ["area", "title", "status", "contract_file", "generation", "reason"],
+      "properties": {
+        "area": { "enum": ["upal", "umid", "uapp", "uproto", "project_language", "system_language", "deploy", "evidence"] },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "const": "design_only" },
+        "contract_file": { "type": "string", "minLength": 1 },
+        "api_outline": { "type": "string", "minLength": 1 },
+        "generation": { "const": "blocked" },
+        "reason": { "type": "string", "minLength": 1 },
+        "depends_on": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "project_relevance": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

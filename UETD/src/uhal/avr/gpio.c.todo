@@ -1,0 +1,9 @@
+/* Rename to gpio.c after replacing the Cortex-style port pointer/pin encoding. */
+/* void uhal_gpio_init(uhal_gpio_pin_t pin, const uhal_gpio_cfg_t *configuration); */
+/* void uhal_gpio_write(uhal_gpio_pin_t pin, bool state); */
+/* bool uhal_gpio_read(uhal_gpio_pin_t pin); */
+/* void uhal_gpio_toggle(uhal_gpio_pin_t pin); */
+/* void uhal_gpio_set(uhal_gpio_pin_t pin); */
+/* void uhal_gpio_clear(uhal_gpio_pin_t pin); */
+/* TODO: Resolve a typed port/pin ID to exact DDR/PORT/PIN registers; validate pin range and
+ * preserve unrelated register bits and board-reserved pins. */

@@ -1,0 +1,11 @@
+{
+  "id": "stm32cube-h7",
+  "name": "STM32CubeH7 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["CMSIS device headers", "startup sources", "STM32H7 HAL"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin an ST-published STM32CubeH7 release and archive hash; record license files and exact CMSIS device/header, startup, linker, and HAL paths. H745/H755 need per-core startup/link profiles and must not use an unqualified single-core package recipe."
+}

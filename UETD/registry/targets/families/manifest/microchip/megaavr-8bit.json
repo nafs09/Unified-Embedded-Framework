@@ -1,0 +1,48 @@
+{
+  "id": "megaavr-8bit",
+  "vendor": "Microchip",
+  "family": "AVR 8-bit",
+  "series": "megaAVR",
+  "parent_series": null,
+  "aliases": [
+    "ATmega",
+    "megaAVR"
+  ],
+  "architectures": [
+    "AVR 8-bit"
+  ],
+  "core_notes": "8-bit AVR parts used by common Arduino boards, including classic ATmega and megaAVR 0-series devices; exact package and board binding remain part-specific.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ATMEGA328P-PU",
+    "ATMEGA328P-32MUR",
+    "ATMEGA2560-16AU",
+    "ATMEGA32U4-AU",
+    "ATMEGA4809-AFR"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "GPIO",
+    "timers",
+    "ADC",
+    "USART",
+    "SPI",
+    "TWI",
+    "USB device on ATmega32U4"
+  ],
+  "source_references": [
+    "microchip_avr"
+  ],
+  "exact_part_specs_registered": [
+    "ATMEGA2560-16AU",
+    "ATMEGA328P-32MUR",
+    "ATMEGA328P-PU",
+    "ATMEGA32U4-AU",
+    "ATMEGA4809-AFR"
+  ],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uetd_c_profile_registered": false
+}

@@ -1,0 +1,30 @@
+{
+  "sources": [
+    "src/ucon/estimators/frequency/nco.c"
+  ],
+  "headers": [
+    "include/ucon/estimators/frequency/nco.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "NCO",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_nco_validate_config",
+    "ucon_nco_init",
+    "ucon_nco_reset",
+    "ucon_nco_set_frequency",
+    "ucon_nco_advance_phase",
+    "ucon_nco_get_output"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

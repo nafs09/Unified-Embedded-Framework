@@ -1,0 +1,11 @@
+{
+  "id": "avr-gcc",
+  "name": "AVR-GCC and avr-libc",
+  "purpose": "compiler",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "macos-x86_64", "macos-arm64"],
+  "tools": ["avr-gcc", "avr-g++", "avr-as", "avr-objcopy", "avr-size"],
+  "packages": [],
+  "dependencies": ["cmake", "ninja"],
+  "record_note": "TODO: pin a supported AVR-GCC/avr-libc binary bundle for each host; document device-pack coverage and add the selected ATmega architecture flags."
+}

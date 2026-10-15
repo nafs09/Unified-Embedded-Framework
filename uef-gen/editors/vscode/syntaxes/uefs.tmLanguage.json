@@ -1,0 +1,346 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "UEF System",
+  "scopeName": "source.uef-system",
+  "fileTypes": ["uefs"],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#annotated-types"
+    },
+    {
+      "include": "#registered-types"
+    },
+    {
+      "include": "#named-declarations"
+    },
+    {
+      "include": "#declarations"
+    },
+    {
+      "include": "#dsl-builtins"
+    },
+    {
+      "include": "#property-names"
+    },
+    {
+      "include": "#flow-control"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#names"
+    }
+  ],
+  "repository": {
+    "annotated-types": {
+      "patterns": [
+        {
+          "name": "meta.type.unit.uef-system",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(\\[)([0-9]+(?:\\s*,\\s*[0-9]+)*)(\\])(<)([^<>\\s]+)(>)",
+          "captures": {
+            "1": { "name": "storage.type.uef-system" },
+            "2": { "name": "punctuation.definition.array.begin.uef-system" },
+            "3": { "name": "constant.numeric.type-dimension.uef-system" },
+            "4": { "name": "punctuation.definition.array.end.uef-system" },
+            "5": { "name": "punctuation.definition.type.uef-system" },
+            "6": { "name": "keyword.other.unit.uef-system" },
+            "7": { "name": "punctuation.definition.type.uef-system" }
+          }
+        },
+        {
+          "name": "meta.type.array.uef-system",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(\\[)([0-9]+(?:\\s*,\\s*[0-9]+)*)(\\])",
+          "captures": {
+            "1": { "name": "storage.type.uef-system" },
+            "2": { "name": "punctuation.definition.array.begin.uef-system" },
+            "3": { "name": "constant.numeric.type-dimension.uef-system" },
+            "4": { "name": "punctuation.definition.array.end.uef-system" }
+          }
+        },
+        {
+          "name": "meta.type.unit.uef-system",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(<)([^<>\\s]+)(>)",
+          "captures": {
+            "1": { "name": "storage.type.uef-system" },
+            "2": { "name": "punctuation.definition.type.uef-system" },
+            "3": { "name": "keyword.other.unit.uef-system" },
+            "4": { "name": "punctuation.definition.type.uef-system" }
+          }
+        }
+      ]
+    },
+    "named-declarations": {
+      "patterns": [
+        {
+          "name": "meta.declaration.system.uef-system",
+          "match": "\\b(system)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.project.uef-system" },
+            "2": { "name": "entity.name.declaration.project.uef-system" }
+          }
+        },
+        {
+          "name": "meta.declaration.node.uef-system",
+          "match": "\\b(node|external)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.hardware.uef-system" },
+            "2": { "name": "entity.name.declaration.hardware.uef-system" }
+          }
+        },
+        {
+          "name": "meta.declaration.protocol.uef-system",
+          "match": "\\b(custom\\s+)?(protocol)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.algorithm.uef-system" },
+            "2": { "name": "keyword.control.declaration.algorithm.uef-system" },
+            "3": { "name": "entity.name.declaration.algorithm.uef-system" }
+          }
+        },
+        {
+          "name": "meta.type.enum.uef-system",
+          "begin": "\\b(enum)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.declaration.type.uef-system" },
+            "2": { "name": "entity.name.declaration.type.uef-system" },
+            "3": { "name": "keyword.operator.assignment.uef-system" },
+            "4": { "name": "storage.type.uef-system" },
+            "5": { "name": "punctuation.section.block.begin.uef-system" }
+          },
+          "end": "\\}",
+          "endCaptures": { "0": { "name": "punctuation.section.block.end.uef-system" } },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#strings" },
+            {
+              "name": "constant.other.enum-member.uef-system",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\s*(?==|,)"
+            },
+            { "include": "#numbers" }
+          ]
+        },
+        {
+          "name": "meta.type.record.uef-system",
+          "begin": "\\b(record)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.declaration.type.uef-system" },
+            "2": { "name": "entity.name.declaration.type.uef-system" },
+            "3": { "name": "punctuation.section.block.begin.uef-system" }
+          },
+          "end": "\\}",
+          "endCaptures": { "0": { "name": "punctuation.section.block.end.uef-system" } },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#strings" },
+            {
+              "name": "meta.record.field.uef-system",
+              "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(:)",
+              "captures": {
+                "1": { "name": "variable.other.field.uef-system" },
+                "2": { "name": "keyword.operator.assignment.uef-system" }
+              }
+            },
+            { "include": "#annotated-types" },
+            { "include": "#types" },
+            { "include": "#numbers" },
+            { "include": "#operators" },
+            { "include": "#names" }
+          ]
+        },
+        {
+          "name": "meta.declaration.named.uef-system",
+          "match": "\\b(variant|flags|fixed)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.type.uef-system" },
+            "2": { "name": "entity.name.declaration.type.uef-system" }
+          }
+        },
+        {
+          "name": "meta.declaration.link.uef-system",
+          "match": "\\b(link|delivery_policy)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.runtime.uef-system" },
+            "2": { "name": "entity.name.declaration.runtime.uef-system" }
+          }
+        },
+        {
+          "name": "keyword.control.declaration.hardware.uef-system",
+          "match": "\\b(?:node|external)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.algorithm.uef-system",
+          "match": "\\b(?:custom|hybrid|protocol)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.type.uef-system",
+          "match": "\\b(?:record|enum|variant|flags|fixed|field|message|fragment)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.runtime.uef-system",
+          "match": "\\b(?:link|delivery_policy|transport|delivery|receiver|framing|checksum|timeout|recovery)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.binding.uef-system",
+          "match": "\\b(?:role|attached_to|implementation|contract|id|from|to|source|destination|encoding|validity|freshness|integrity|version|byte_order|offset|width|coverage|clock_domain|rate|max_age|execution_budget|startup_state|no_fresh_response|response_used_on|cycle_id)\\b"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.uef-system",
+          "match": "#.*$"
+        },
+        {
+          "name": "comment.line.double-slash.uef-system",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.uef-project",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.uef-project"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.uef-project"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.uef-project",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.uef-project",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.uef-project"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.uef-project"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.uef-project",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.uef-project",
+          "match": "(?<![A-Za-z0-9_])(?:0[xX][0-9A-Fa-f]+|(?:[0-9]+(?:\\.(?!\\.)[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?)(?![A-Za-z0-9_])"
+        },
+        {
+          "name": "keyword.other.unit.uef-system",
+          "match": "\\b(?:Hz|kHz|MHz|s|ms|us|ns|V|mV|A|mA|rad|deg|m|cm|mm|kg|g|B|KiB)\\b"
+        }
+      ]
+    },
+    "declarations": {
+      "name": "keyword.control.declaration.uef-project",
+      "match": "\\b(?:system|node|external|implementation|role|attached_to|record|enum|link|from|to|contract|protocol|custom|hybrid|delivery_policy|message|id|field|fragment|framing|header|sequence|payload|checksum|receiver|transport|delivery|freshness|timeout|recovery|integrity|version|byte_order|offset|width|coverage|algorithm|encoding|validity|clock_domain|rate|max_age|execution_budget|startup_state|no_fresh_response|response_used_on|cycle_id|enum|private|public|true|false)\\b"
+    },
+    "registered-types": {
+      "patterns": [
+        {
+          "name": "meta.declaration.registered-module.uef-project",
+          "match": "\\b(algorithm|protocol)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.algorithm.uef-system" },
+            "2": { "name": "entity.name.declaration.algorithm.uef-system" },
+            "3": { "name": "keyword.operator.assignment.uef-system" },
+            "4": { "name": "entity.name.type.registered.uef-system" }
+          }
+        },
+        {
+          "name": "meta.declaration.registered-module.uef-system",
+          "match": "\\b(sensor|actuator|peripheral|bus)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.hardware.uef-system" },
+            "2": { "name": "entity.name.declaration.hardware.uef-system" },
+            "3": { "name": "keyword.operator.uef-system" },
+            "4": { "name": "entity.name.type.registered.uef-system" }
+          }
+        }
+      ]
+    },
+    "property-names": {
+      "name": "variable.other.property.uef-project",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)*\\s*(?==)"
+    },
+    "dsl-builtins": {
+      "name": "support.function.builtin.uef-project",
+      "match": "\\b(?:map|select)(?=\\s*\\()"
+    },
+    "types": {
+      "name": "storage.type.uef-project",
+      "match": "\\b(?:Received|f32|f64|bool|vector|matrix|vec2|vec3|vec4|u8|u16|u32|u64|i8|i16|i32|i64|q15|q16|q31|q63|string)\\b"
+    },
+    "flow-control": {
+      "name": "keyword.control.flow.uef-system",
+      "match": "\\b(?:if|else|for|in|when|otherwise|on|from|to|after)\\b"
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.uef-project",
+          "match": "->|==|!=|<=|>=|=|<|>"
+        },
+        {
+          "name": "keyword.operator.arithmetic.uef-system",
+          "match": "(?:\\+|-|\\*|/)"
+        },
+        {
+          "name": "keyword.operator.logical.uef-system",
+          "match": "\\b(?:and|or|not)\\b"
+        },
+        {
+          "name": "punctuation.section.block.uef-project",
+          "match": "[{}\\[\\]():,.;]"
+        }
+      ]
+    },
+    "constants": {
+      "name": "constant.language.uef-project",
+      "match": "\\b(?:true|false)\\b"
+    },
+    "names": {
+      "name": "variable.other.uef-project",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_-]*\\b"
+    }
+  }
+}

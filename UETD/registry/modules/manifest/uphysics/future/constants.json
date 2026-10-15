@@ -1,0 +1,21 @@
+{
+  "sources": [],
+  "headers": [
+    "include/umath/config.h",
+    "include/umath/constants.h",
+    "include/uphysics/future/constants.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Header-only SI constant outline. UEF generation remains blocked until physical quantities have typed unit bindings, complete unit-registry coverage, and a precision/rounding contract.",
+  "contract_status": "roadmap_proposal",
+  "provenance": {
+    "authority": "BIPM",
+    "reference": "https://www.bipm.org/en/measurement-units/si-defining-constants",
+    "scope": "Seven SI defining constants; measured CODATA constants are excluded."
+  }
+}

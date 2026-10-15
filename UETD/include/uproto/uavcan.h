@@ -1,0 +1,37 @@
+/// @file include/uproto/uavcan.h
+/// @brief Public interface from the UETD Architecture and API Specification V1.2.
+
+#ifndef UPROTO_UAVCAN_H
+#define UPROTO_UAVCAN_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "ucore/status.h"
+#include "ucore/types.h"
+#include "upal/can.h"
+
+/* UETD provides the CAN transport binding for UAVCAN/DroneCAN.
+ * Protocol stack (libcanard or libuavcan) is a project dependency,
+ * not bundled with UETD. This header provides the glue layer. */
+
+typedef struct {
+    upal_can_t* can;
+    uetd_u8_t node_id;
+    uetd_u64_t tx_timestamp_us;
+    /* libcanard CanardInstance goes here in the project implementation */
+    void* canard_instance;
+} uproto_uavcan_t;
+
+/* Transport adapter — maps UAVCAN stack callbacks to UPAL CAN */
+uetd_status_t uproto_uavcan_init(uproto_uavcan_t* u, upal_can_t* can, uetd_u8_t node_id);
+void uproto_uavcan_spin(uproto_uavcan_t* u); /* call periodically */
+uetd_status_t uproto_uavcan_broadcast(uproto_uavcan_t* u, const uetd_u8_t* payload, uetd_u32_t len, uetd_u16_t data_type_id,
+                                     uetd_u8_t transfer_priority);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* UPROTO_UAVCAN_H */

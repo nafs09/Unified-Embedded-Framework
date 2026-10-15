@@ -1,0 +1,20 @@
+{
+  "id": "arduino-leonardo",
+  "name": "Arduino Leonardo",
+  "aliases": ["Leonardo"],
+  "chip_id": "atmega32u4-au",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Arduino Leonardo board documentation",
+      "url": "https://docs.arduino.cc/hardware/leonardo"
+    },
+    {
+      "title": "Microchip ATmega32U4 product page and datasheet",
+      "url": "https://www.microchip.com/en-us/product/ATmega32u4"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "Identity and MCU binding only. Board clock, pin reservations, Arduino build settings, and upload protocol have not been encoded."
+}

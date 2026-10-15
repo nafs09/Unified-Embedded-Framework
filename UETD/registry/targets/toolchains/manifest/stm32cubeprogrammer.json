@@ -1,0 +1,11 @@
+{
+  "id": "stm32cubeprogrammer",
+  "name": "STM32CubeProgrammer CLI and ST-LINK support",
+  "purpose": "flasher",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "macos-x86_64", "macos-arm64"],
+  "tools": ["STM32_Programmer_CLI"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: record ST release package URLs, license/website acceptance requirements, CLI path, driver installation, and an unattended-install policy if ST permits one."
+}

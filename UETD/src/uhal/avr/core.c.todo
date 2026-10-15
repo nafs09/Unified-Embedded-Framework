@@ -1,0 +1,9 @@
+/* Rename to core.c only after unsupported AVR capabilities have explicit semantics. */
+/* uetd_u32_t uhal_core_id(void); */
+/* uetd_u32_t uhal_cpu_freq_hz(void); */
+/* void uhal_system_reset(void); */
+/* uetd_u32_t uhal_cycle_count(void); */
+/* uetd_u64_t uhal_cycle_count_64(void); */
+/* uetd_u32_t uhal_cycles_per_us(void); */
+/* TODO: Use only documented MCU features; return/report unsupported core IDs and cycle counters;
+ * define reset and clock-scaling behavior per exact chip record. */

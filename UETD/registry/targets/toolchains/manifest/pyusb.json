@@ -1,0 +1,11 @@
+{
+  "id": "pyusb",
+  "name": "PyUSB optional USB probe enumeration library",
+  "purpose": "support",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["python-module:usb"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin the exact wheel and hashes; document host libusb/driver prerequisites; keep probe enumeration optional so generation and build do not require USB access."
+}

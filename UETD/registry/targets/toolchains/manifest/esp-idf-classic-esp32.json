@@ -1,0 +1,11 @@
+{
+  "id": "esp-idf-classic-esp32",
+  "name": "Espressif ESP-IDF for classic ESP32",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["idf.py", "xtensa-esp32-elf-gcc", "esptool"],
+  "packages": [],
+  "dependencies": ["cmake", "ninja", "esptool", "pyserial"],
+  "record_note": "TODO: pin the ESP-IDF source revision and matching host tool manifest as one coherent installation; keep the classic ESP32 Xtensa toolchain distinct from newer RISC-V/Xtensa chips."
+}

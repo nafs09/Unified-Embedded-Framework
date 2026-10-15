@@ -1,0 +1,6 @@
+/* Rename to timing.c only after selecting a timer and shared monotonic-time policy. */
+/* uetd_time_us_t uetd_time_now_us(void); */
+/* void uetd_delay_us(uetd_dur_us_t duration_us); */
+/* void uetd_delay_ms(uetd_u32_t duration_ms); */
+/* TODO: Implement a wrap-safe monotonic timer, checked duration conversion, bounded delay policy,
+ * and documented jitter/interrupt behavior; account for runtime prescaler changes. */

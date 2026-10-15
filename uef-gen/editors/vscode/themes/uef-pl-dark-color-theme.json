@@ -1,0 +1,165 @@
+{
+  "$schema": "vscode://schemas/color-theme",
+  "name": "UEF-PL Dark",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#1E1E1E",
+    "editor.foreground": "#D4D4D4",
+    "editorLineNumber.foreground": "#858585",
+    "editorLineNumber.activeForeground": "#C6C6C6",
+    "editor.selectionBackground": "#264F78",
+    "editorCursor.foreground": "#AEAFAD",
+    "editorIndentGuide.background1": "#404040",
+    "editorIndentGuide.activeBackground1": "#707070"
+  },
+  "tokenColors": [
+    {
+      "scope": ["comment.line.number-sign.uef-project", "comment.line.double-slash.uef-project", "comment.line.number-sign.uef-system", "comment.line.double-slash.uef-system"],
+      "settings": { "foreground": "#6A9955", "fontStyle": "italic" }
+    },
+    {
+      "scope": ["string.quoted.double.uef-project", "string.quoted.single.uef-project", "string.quoted.double.uef-system", "string.quoted.single.uef-system"],
+      "settings": { "foreground": "#CE9178" }
+    },
+    {
+      "scope": ["constant.character.escape.uef-project", "constant.character.escape.uef-system"],
+      "settings": { "foreground": "#D7BA7D" }
+    },
+    {
+      "scope": ["constant.numeric.uef-project", "constant.numeric.uef-system"],
+      "settings": { "foreground": "#D4D4D4" }
+    },
+    {
+      "scope": ["constant.numeric.type-dimension.uef-project", "constant.numeric.type-dimension.uef-system"],
+      "settings": { "foreground": "#D4D4D4" }
+    },
+    {
+      "scope": ["keyword.control.declaration.uef-project", "keyword.control.declaration.uef-system", "keyword.control.system.uef-system"],
+      "settings": { "foreground": "#569CD6", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["keyword.control.declaration.project.uef-project", "keyword.control.declaration.project.uef-system"],
+      "settings": { "foreground": "#4FC1FF", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["keyword.control.declaration.type.uef-project", "keyword.control.declaration.type.uef-system"],
+      "settings": { "foreground": "#4EC9B0", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["keyword.control.declaration.hardware.uef-project", "keyword.control.declaration.hardware.uef-system"],
+      "settings": { "foreground": "#F08C46", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["keyword.control.declaration.algorithm.uef-project", "keyword.control.declaration.algorithm.uef-system"],
+      "settings": { "foreground": "#C586C0", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["keyword.control.declaration.runtime.uef-project", "keyword.control.declaration.runtime.uef-system"],
+      "settings": { "foreground": "#6FAF50", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["keyword.control.declaration.binding.uef-project", "keyword.control.declaration.binding.uef-system"],
+      "settings": { "foreground": "#569CD6" }
+    },
+    {
+      "scope": ["entity.name.declaration.project.uef-project", "entity.name.declaration.project.uef-system"],
+      "settings": { "foreground": "#8AD7FF", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["entity.name.declaration.hardware.uef-project", "entity.name.declaration.hardware.uef-system"],
+      "settings": { "foreground": "#FFB36B", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["entity.name.declaration.algorithm.uef-project", "entity.name.declaration.algorithm.uef-system"],
+      "settings": { "foreground": "#DDA0DD", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["entity.name.declaration.runtime.uef-project", "entity.name.declaration.runtime.uef-system"],
+      "settings": { "foreground": "#B4E28B", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["entity.name.declaration.type.uef-project", "entity.name.declaration.type.uef-system"],
+      "settings": { "foreground": "#76D7C5", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["constant.other.enum-member.uef-project", "constant.other.enum-member.uef-system", "constant.other.enum-case.uef-project", "constant.other.enum-case.uef-system"],
+      "settings": { "foreground": "#C586C0" }
+    },
+    {
+      "scope": ["variable.other.field.uef-project", "variable.other.field.uef-system"],
+      "settings": { "foreground": "#9CDCFE" }
+    },
+    {
+      "scope": ["keyword.control.flow.uef-project", "keyword.control.flow.uef-system", "storage.modifier.uef-project"],
+      "settings": { "foreground": "#C586C0" }
+    },
+    {
+      "scope": ["storage.type.uef-project", "storage.type.uef-system", "support.type.uef-project", "support.type.uef-system"],
+      "settings": { "foreground": "#4EC9B0" }
+    },
+    {
+      "scope": ["entity.name.type.uef-project", "entity.name.type.uef-system", "entity.name.type.enum.uef-project", "entity.name.type.record.uef-project", "entity.name.type.state.uef-project"],
+      "settings": { "foreground": "#4EC9B0", "fontStyle": "bold" }
+    },
+    {
+      "scope": ["entity.name.type.registered.uef-project", "entity.name.type.registered.uef-system"],
+      "settings": { "foreground": "#4FC1FF" }
+    },
+    {
+      "scope": ["entity.name.function.uef-project", "entity.name.function.uef-system", "support.function.builtin.uef-project", "support.function.builtin.uef-system"],
+      "settings": { "foreground": "#DCDCAA" }
+    },
+    {
+      "scope": ["constant.other.enum-case.uef-project", "constant.other.enum-case.uef-system"],
+      "settings": { "foreground": "#C586C0" }
+    },
+    {
+      "scope": ["variable.other.property.uef-project", "variable.other.property.uef-system", "entity.name.variable.uef-project", "entity.name.variable.uef-system"],
+      "settings": { "foreground": "#9CDCFE" }
+    },
+    {
+      "scope": ["keyword.other.unit.uef-project", "keyword.other.unit.uef-system"],
+      "settings": { "foreground": "#B5CEA8" }
+    },
+    {
+      "scope": ["keyword.operator.uef-project", "keyword.operator.uef-system", "punctuation.section.block.uef-project", "punctuation.section.block.uef-system"],
+      "settings": { "foreground": "#D4D4D4" }
+    },
+    {
+      "scope": ["constant.language.uef-project", "constant.language.uef-system"],
+      "settings": { "foreground": "#569CD6" }
+    },
+    {
+      "scope": ["variable.other.uef-project", "variable.other.uef-system", "entity.name.uef-project", "entity.name.uef-system"],
+      "settings": { "foreground": "#D4D4D4" }
+    }
+  ],
+  "semanticTokenColors": {
+    "namespace": "#4FC1FF",
+    "type": "#4EC9B0",
+    "class": "#4FC1FF",
+    "function": "#DCDCAA",
+    "unit": "#B5CEA8",
+    "enumMember": "#C586C0",
+    "property": "#9CDCFE",
+    "variable": "#D4D4D4",
+    "parameter": "#9CDCFE",
+    "keyword": "#569CD6",
+    "projectKeyword": { "foreground": "#4FC1FF", "bold": true },
+    "typeKeyword": { "foreground": "#4EC9B0", "bold": true },
+    "hardwareKeyword": { "foreground": "#F08C46", "bold": true },
+    "algorithmKeyword": { "foreground": "#C586C0", "bold": true },
+    "runtimeKeyword": { "foreground": "#6FAF50", "bold": true },
+    "bindingKeyword": "#569CD6",
+    "flowKeyword": "#C586C0",
+    "projectName": { "foreground": "#8AD7FF", "bold": true },
+    "hardwareName": { "foreground": "#FFB36B", "bold": true },
+    "algorithmName": { "foreground": "#DDA0DD", "bold": true },
+    "runtimeName": { "foreground": "#B4E28B", "bold": true },
+    "typeName": { "foreground": "#76D7C5", "bold": true },
+    "recordField": "#9CDCFE",
+    "operator": "#D4D4D4",
+    "number": "#D4D4D4",
+    "string": "#CE9178"
+  }
+}

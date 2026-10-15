@@ -1,0 +1,1558 @@
+// Source-parity example for the supplied STM32F722 flight-controller project.
+// It represents the data types, task boundaries, sensor/receiver interfaces,
+// control-mode behavior, and board wiring. Device drivers remain UETD modules.
+// The source pack has handwritten board drivers and several unfinished service
+// bodies. This file records their intended typed interfaces without pretending
+// that the source drivers or the uef-gen backend are already complete.
+project DroneFlightController {
+	target = "stm32f722ret6";
+	numeric {
+		scalar = f32; accumulator = f64;
+		rounding = nearest_even; overflow = reject;
+		non_finite = reject; fused_multiply_add = disabled;
+		matrix_layout = row_major;
+	}
+	record RCInputs {
+		roll : f32<1>;
+		pitch : f32<1>;
+		yaw : f32<1>;
+		throttle : f32<1>;
+		arm_switch : bool;
+		mode_switch : bool;
+		alt_hold : bool;
+		valid : bool;
+		last_update_ms : u32<ms>;
+	}
+	record GPSData {
+		latitude_deg : f64<deg>;
+		longitude_deg : f64<deg>;
+		altitude_msl : f32<m>;
+		velocity_ned : vec3<m/s>;
+		horizontal_accuracy : f32<m>;
+		vertical_accuracy : f32<m>;
+		satellite_count : u8;
+		fix_valid : bool;
+		last_update_ms : u32<ms>;
+	}
+	record NavOrigin {
+		latitude_deg : f64<deg>;
+		longitude_deg : f64<deg>;
+		altitude_msl : f32<m>;
+		valid : bool;
+	}
+	record BatteryState {
+		voltage : f32<V>;
+		current : f32<A>;
+		consumed_capacity : f32<mAh>;
+		remaining_percent : u8;
+	}
+	record MotorTelemetry {
+		electrical_rpm : f32<rpm>;
+		mechanical_rpm : f32<rpm>;
+		estimated_thrust : f32<N>;
+		rotation_frequency : f32<Hz>;
+		valid : bool;
+		crc_errors : u8;
+	}
+	record MotorTelemetryBank {
+		motors : MotorTelemetry[4];
+		average_frequency : f32<Hz>;
+		average_second_harmonic : f32<Hz>;
+		all_motors_valid : bool;
+	}
+	record NavigationErrorState {
+		position : vec3<m>;
+		velocity : vec3<m/s>;
+		attitude : vec3<rad>;
+		gyro_bias : vec3<rad/s>;
+		accelerometer_bias : vec3<m/s^2>;
+		motor_time_constant : f32<s>;
+		magnetometer_bias : vec3<uT>;
+		barometer_bias : f32<m>;
+		barometer_scale : f32<1>;
+		wind : vec3<m/s>;
+	}
+	record NavigationErrorRate {
+		position : vec3<m/s>;
+		velocity : vec3<m/s^2>;
+		attitude : vec3<rad/s>;
+		gyro_bias : vec3<rad/s^2>;
+		accelerometer_bias : vec3<m/s^3>;
+		motor_time_constant : f32<1>;
+		magnetometer_bias : vec3<uT/s>;
+		barometer_bias : f32<m/s>;
+		barometer_scale : f32<1/s>;
+		wind : vec3<m/s^2>;
+	}
+	record FlightFaults {
+		imu_fault : bool;
+		tilt_limit_fault : bool;
+		receiver_loss : bool;
+		motor_loss : bool;
+		estimator_fault : bool;
+		storage_fault : bool;
+	}
+	record SharedFlightState {
+		gyro_body : vec3<rad/s>;
+		gyro_raw_body : vec3<rad/s>;
+		acceleration_body : vec3<m/s^2>;
+		attitude_body_to_ned : quaternion;
+		euler_rpy_deg : vec3<deg>;
+		heading_magnetic_deg : f32<deg>;
+		position_ned : vec3<m>;
+		velocity_ned : vec3<m/s>;
+		barometer_altitude_msl : f32<m>;
+		barometer_altitude_agl : f32<m>;
+		barometer_temperature : f32<degC>;
+		home_altitude_msl : f32<m>;
+		magnetic_field_normalized : vec3<1>;
+		receiver : RCInputs;
+		gps : GPSData;
+		origin : NavOrigin;
+		battery : BatteryState;
+		motor_commands : u16[4];
+		motor_telemetry : MotorTelemetry[4];
+		flight_mode : FlightMode;
+		arm_state : ArmState;
+		faults : FlightFaults;
+		motors_killed : bool;
+		rate_setpoint : vec3<rad/s>;
+		torque_output : vec3<1>;
+		thrust_output : f32<1>;
+		control_cycle_time : u32<us>;
+		imu_ready_count : u32;
+		average_motor_frequency : f32<Hz>;
+		average_motor_second_harmonic : f32<Hz>;
+	}
+	record NavigationSnapshot {
+		attitude : quaternion;
+		euler_rpy_rad : vec3<rad>;
+		euler_rpy_deg : vec3<deg>;
+		position_ned : vec3<m>;
+		velocity_ned : vec3<m/s>;
+		valid : bool;
+	}
+	record CameraReference {
+		desired_tilt : vec2<rad>;
+		thrust_delta : f32<1>;
+	}
+	record FlightRuntimeProfile {
+		control_deadline : f32<us>;
+		safety_deadline : f32<us>;
+	}
+	parameter mission_position : vec3<m>;
+	parameter navigation_origin : NavOrigin;
+	parameter geofence_radius : f32<m>;
+	parameter camera_yaw_rate_limit : f32<rad/s> = 2.792527 rad/s;
+	parameter arming_rate_limit : f32<rad/s> = 0.10 rad/s;
+	parameter arming_tilt_limit : f32<rad> = 1.0472 rad;
+	parameter watchdog_timeout : f32<s>;
+	parameter battery_capacity : f32<mAh>;
+	parameter runtime_profile : FlightRuntimeProfile;
+	peripheral spi1 : spi;
+	peripheral spi2 : spi;
+	peripheral imu_cs : gpio;
+	peripheral imu_drdy : gpio;
+	peripheral barometer_cs : gpio;
+	peripheral i2c1 : i2c;
+	peripheral magnetometer_drdy : gpio;
+	peripheral gnss_uart : uart;
+	peripheral receiver_uart : uart;
+	peripheral motor1_uart : uart;
+	peripheral motor2_uart : uart;
+	peripheral motor3_uart : uart;
+	peripheral motor4_uart : uart;
+	peripheral sd_cs : gpio;
+	peripheral battery_adc : adc;
+	peripheral current_adc : adc;
+	peripheral usb_cdc : usb;
+	peripheral status_led : gpio;
+	peripheral error_led : gpio;
+	peripheral buzzer_timer : timer;
+	peripheral camera_trigger : gpio;
+	peripheral watchdog_timer : iwdg;
+	bus imu_bus : spi;
+	bus barometer_bus : spi;
+	bus magnetometer_bus : i2c;
+	bus power_monitor_bus : i2c;
+	bus storage_bus : spi;
+	sensor imu : imu;
+	sensor barometer : pressure;
+	sensor magnetometer : magnetometer;
+	sensor gnss : gnss;
+	sensor battery : voltage;
+	sensor current_12v : current;
+	sensor current_5v : current;
+	sensor current_3v3 : current;
+	sensor analog_current : current;
+	protocol receiver : crsf;
+	protocol motor_front_left : dshot;
+	protocol motor_rear_left : dshot;
+	protocol motor_rear_right : dshot;
+	protocol motor_front_right : dshot;
+	protocol wired_telemetry : mavlink;
+	model navigation_error : continuous;
+	algorithm navigation_ekf : error_state_ekf;
+	algorithm mahony_ahrs : mahony;
+	custom algorithm x_frame_mixer;
+	custom algorithm landing_throttle_ramp;
+	custom algorithm battery_state_estimator;
+	algorithm rate_roll_pid : pid;
+	algorithm rate_pitch_pid : pid;
+	algorithm rate_yaw_pid : pid;
+	algorithm rate_notch_roll_fundamental : notch;
+	algorithm rate_notch_roll_harmonic : notch;
+	algorithm rate_notch_pitch_fundamental : notch;
+	algorithm rate_notch_pitch_harmonic : notch;
+	algorithm rate_notch_yaw_fundamental : notch;
+	algorithm rate_notch_yaw_harmonic : notch;
+	subsystem motor_output;
+	subsystem rate_controller;
+	custom algorithm camera_attitude_controller;
+	algorithm velocity_surge_pid : pid;
+	algorithm velocity_sway_pid : pid;
+	algorithm velocity_heave_pid : pid;
+	algorithm position_north_pid : pid;
+	algorithm position_east_pid : pid;
+	algorithm position_altitude_pid : pid;
+	subsystem velocity_controller;
+	subsystem position_controller;
+	custom algorithm camera_velocity_mapping;
+	custom algorithm fpv_rate_mapping;
+	custom algorithm velocity_to_tilt_mapping;
+	custom algorithm position_to_velocity_mapping;
+	subsystem estimation;
+	subsystem imu_control_pipeline;
+	hybrid algorithm flight_controller;
+	supervisor safety;
+	project routine safety.assert_motor_inhibit() returns status;
+	project routine safety.begin_controlled_descent() returns status;
+	project routine safety.begin_landing_ramp() returns status;
+	fault safety_faults;
+	watchdog flight_watchdog;
+	log flight_recorder;
+
+	operatingsystem FlightControl {
+		runtime = FreeRTOS;
+		component_failure_policy = assert_hard_kill;
+		scheduler = fixed_priority;
+		tick = 1 kHz;
+		startup_policy = inhibit_motors_until_sensor_and_receiver_qualification;
+		deadline_miss_policy = assert_hard_kill;
+
+		// The source has a separate arming timer and flight-mode switch. Keep both
+		// state sets explicit; an arm qualification does not silently enter a mode.
+		state_machine arm_state : ArmState {
+			state arm_disarmed;
+			state arm_arming;
+			state arm_armed;
+
+			initial arm_disarmed;
+			owner = safety_monitor;
+			consumers = [imu_control_cycle];
+			transition any -> arm_disarmed when safety.kill_motors;
+			transition arm_disarmed -> arm_arming when receiver_snapshot.value.valid and receiver_snapshot.value.arm_switch and receiver_snapshot.value.throttle < 0.05 and safety.arm_prechecks and imu.angular_rate.x * imu.angular_rate.x + imu.angular_rate.y * imu.angular_rate.y + imu.angular_rate.z * imu.angular_rate.z < arming_rate_limit * arming_rate_limit;
+			transition arm_arming -> arm_armed when safety.arm_hold_elapsed >= 500 ms;
+			transition arm_arming -> arm_disarmed when not receiver_snapshot.value.valid or not receiver_snapshot.value.arm_switch or receiver_snapshot.value.throttle >= 0.05 or not safety.arm_prechecks;
+			transition arm_armed -> arm_disarmed when not receiver_snapshot.value.valid or not receiver_snapshot.value.arm_switch;
+		}
+		state_machine flight_mode : FlightMode {
+			state disarmed;
+			state armed;
+			state takeoff;
+			state camera;
+			state fpv;
+			state failsafe;
+			state landing;
+
+			initial disarmed;
+			owner = safety_monitor;
+			consumers = [imu_control_cycle, camera_velocity_loop, camera_position_loop];
+			transition any -> disarmed when safety.kill_motors;
+			transition disarmed -> armed when arm_state.state == ArmState.arm_armed;
+			transition armed -> disarmed when not receiver_snapshot.value.valid or not receiver_snapshot.value.arm_switch;
+			transition armed -> fpv when receiver_snapshot.value.valid and receiver_snapshot.value.arm_switch and receiver_snapshot.value.throttle > 0.05 and not receiver_snapshot.value.mode_switch;
+			transition armed -> camera when receiver_snapshot.value.valid and receiver_snapshot.value.arm_switch and receiver_snapshot.value.throttle > 0.05 and receiver_snapshot.value.mode_switch;
+			transition fpv -> camera when receiver_snapshot.value.valid and receiver_snapshot.value.arm_switch and receiver_snapshot.value.mode_switch;
+			transition camera -> fpv when receiver_snapshot.value.valid and receiver_snapshot.value.arm_switch and not receiver_snapshot.value.mode_switch;
+			transition fpv -> failsafe when not receiver_snapshot.value.valid;
+			transition camera -> failsafe when not receiver_snapshot.value.valid;
+			transition failsafe -> landing when imu_control_pipeline.navigation.velocity_ned.z < 0.1 m/s and barometer.altitude_agl < 0.3 m;
+			transition landing -> disarmed when flight_controller.landing_complete;
+			on_enter disarmed call safety.assert_motor_inhibit;
+			on_enter failsafe call safety.begin_controlled_descent;
+			on_enter landing call safety.begin_landing_ramp;
+		}
+
+		// Latest-value channels replace the source's mutex-protected snapshots.
+		// The producer/consumer and age limits make cross-task ownership visible.
+		channel receiver_snapshot {
+			source = receiver.input;
+			destination = imu_control_pipeline.pilot;
+			producer = receiver_poll;
+			consumers = [imu_control_cycle, safety_monitor, camera_velocity_loop, camera_position_loop, fault_evaluation];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 300 ms;
+			ownership = immutable_snapshot;
+		}
+		channel navigation_snapshot {
+			source = imu_control_pipeline.navigation;
+			destination = safety.navigation;
+			producer = imu_control_cycle;
+			consumers = [safety_monitor];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 3 ms;
+			ownership = immutable_snapshot;
+		}
+		channel motor_telemetry_snapshot {
+			source = motor_output.telemetry;
+			destination = imu_control_pipeline.motor_feedback;
+			producer = motor_output_service;
+			consumers = [imu_control_cycle, fault_evaluation];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 10 ms;
+			ownership = immutable_snapshot;
+		}
+		channel camera_reference_snapshot {
+			source = velocity_controller.output;
+			destination = imu_control_pipeline.camera_reference;
+			producer = camera_velocity_loop;
+			consumers = [imu_control_cycle];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 10 ms;
+			ownership = immutable_snapshot;
+		}
+		channel battery_control_snapshot {
+			source = battery_state_estimator.state;
+			destination = imu_control_pipeline.battery_state;
+			producer = battery_state_update;
+			consumers = [imu_control_cycle];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 10 ms;
+			ownership = immutable_snapshot;
+		}
+		channel battery_safety_snapshot {
+			source = battery_state_estimator.state;
+			destination = safety.battery;
+			producer = battery_state_update;
+			consumers = [safety_monitor];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 10 ms;
+			ownership = immutable_snapshot;
+		}
+		channel fault_control_snapshot {
+			source = safety_faults.snapshot;
+			destination = imu_control_pipeline.faults;
+			producer = fault_evaluation;
+			consumers = [imu_control_cycle];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 10 ms;
+			ownership = immutable_snapshot;
+		}
+		channel fault_supervisor_snapshot {
+			source = safety_faults.snapshot;
+			destination = safety.faults;
+			producer = fault_evaluation;
+			consumers = [safety_monitor];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 10 ms;
+			ownership = immutable_snapshot;
+		}
+		channel flight_telemetry_snapshot {
+			source = imu_control_pipeline.state_snapshot;
+			destination = wired_telemetry.state;
+			producer = imu_control_cycle;
+			consumers = [telemetry];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 100 ms;
+			ownership = immutable_snapshot;
+		}
+		channel position_reference_snapshot {
+			source = position_controller.velocity_setpoint;
+			destination = velocity_controller.position_velocity_reference;
+			producer = camera_position_loop;
+			consumers = [camera_velocity_loop];
+			capacity = 1;
+			overflow = replace_oldest;
+			maximum_age = 20 ms;
+			ownership = immutable_snapshot;
+		}
+		channel flight_log_queue {
+			source = imu_control_pipeline.state_snapshot;
+			destination = flight_recorder.snapshot;
+			producer = imu_control_cycle;
+			consumers = [logger];
+			capacity = 128;
+			overflow = drop_oldest_and_count;
+			ownership = immutable_snapshot;
+		}
+
+		interrupt imu_data_ready {
+			source = imu_drdy.rising_edge;
+			handler = imu_control_cycle;
+			priority = 7;
+			context = isr_signal_only;
+		}
+		task imu_control_cycle {
+			run = imu_control_pipeline(
+			gyroscope = imu.angular_rate,
+			gyro_raw = imu.raw_angular_rate,
+			accelerometer = imu.acceleration,
+			magnetometer = magnetometer.field_body,
+			gps = gnss.snapshot,
+			barometer_altitude = barometer.altitude_msl,
+			barometer_altitude_agl = barometer.altitude_agl,
+			barometer_temperature = barometer.temperature,
+			home_altitude_msl = navigation_origin.altitude_msl,
+			magnetometer_normalized = magnetometer.field_normalized,
+			magnetic_heading = magnetometer.heading_magnetic_deg,
+			navigation_origin = navigation_origin,
+			arm_state = arm_state.state,
+			motors_killed = safety.kill_motors,
+			imu_ready_count = imu_data_ready.count,
+			control_cycle_time = 260 us,
+			measured_rate = imu.angular_rate,
+			motor_frequency = motor_telemetry_snapshot.value.average_frequency,
+			mode = flight_mode.state,
+			motors_enabled = safety.motor_enable_permitted
+			);
+			trigger = imu_data_ready;
+			rate = 3840 Hz;
+			priority = 7;
+			deadline = runtime_profile.control_deadline;
+			stack = 768 words;
+			on_miss = assert_hard_kill;
+		}
+		task receiver_poll {
+			run = receiver;
+			rate = 500 Hz;
+			priority = 5;
+			deadline = 2 ms;
+			stack = 256 words;
+		}
+		task camera_velocity_loop {
+			run = velocity_controller(
+			sticks = [receiver_snapshot.value.roll, receiver_snapshot.value.pitch],
+			throttle = receiver_snapshot.value.throttle,
+			heading = imu_control_pipeline.navigation.euler_rpy_rad.z,
+			alt_hold = receiver_snapshot.value.alt_hold,
+			gnss_valid = gnss.snapshot.fix_valid,
+			mode = flight_mode.state,
+			estimated_velocity = imu_control_pipeline.navigation.velocity_ned
+			);
+			rate = 100 Hz;
+			when = flight_mode.state == FlightMode.camera or flight_mode.state == FlightMode.failsafe;
+			priority = 4;
+			deadline = 10 ms;
+			stack = 512 words;
+		}
+		task camera_position_loop {
+			// The source declares updatePositionLoop() and consumes its setpoint,
+			// but the supplied pack has no call site. This 50 Hz task makes that
+			// intended GPS-hold path explicit in the generated design.
+			run = position_controller(
+			reference = mission_position,
+			measured_position = imu_control_pipeline.navigation.position_ned,
+			measured_velocity = imu_control_pipeline.navigation.velocity_ned,
+			heading = imu_control_pipeline.navigation.euler_rpy_rad.z
+			);
+			rate = 50 Hz;
+			when = flight_mode.state == FlightMode.camera and receiver_snapshot.value.alt_hold and gnss.snapshot.fix_valid;
+			priority = 3;
+			deadline = 20 ms;
+			stack = 384 words;
+		}
+		task barometer_sample {
+			run = barometer;
+			rate = 50 Hz;
+			priority = 2;
+			deadline = 20 ms;
+			stack = 256 words;
+		}
+		task magnetometer_sample {
+			run = magnetometer;
+			rate = 100 Hz;
+			priority = 2;
+			deadline = 10 ms;
+			stack = 384 words;
+		}
+		task gnss_update {
+			run = gnss;
+			rate = 10 Hz;
+			priority = 2;
+			deadline = 100 ms;
+			stack = 384 words;
+		}
+		task power_monitor {
+			run = battery;
+			rate = 100 Hz;
+			priority = 2;
+			deadline = 10 ms;
+			stack = 256 words;
+		}
+		task current_12v_sample { run = current_12v; rate = 100 Hz; priority = 2; deadline = 10 ms; stack = 192 words; }
+		task current_5v_sample { run = current_5v; rate = 100 Hz; priority = 2; deadline = 10 ms; stack = 192 words; }
+		task current_3v3_sample { run = current_3v3; rate = 100 Hz; priority = 2; deadline = 10 ms; stack = 192 words; }
+		task analog_current_sample { run = analog_current; rate = 100 Hz; priority = 2; deadline = 10 ms; stack = 192 words; }
+		task battery_state_update {
+			run = battery_state_estimator(
+			voltage = battery.voltage,
+			current = analog_current.current,
+			dt = 0.010 s
+			);
+			rate = 100 Hz;
+			priority = 2;
+			deadline = 10 ms;
+			stack = 192 words;
+		}
+		task fault_evaluation {
+			run = safety_faults(
+			imu_fault = not imu.healthy,
+			tilt_limit_fault = imu_control_pipeline.navigation.euler_rpy_rad.x * imu_control_pipeline.navigation.euler_rpy_rad.x + imu_control_pipeline.navigation.euler_rpy_rad.y * imu_control_pipeline.navigation.euler_rpy_rad.y > arming_tilt_limit * arming_tilt_limit,
+			receiver_loss = not receiver_snapshot.value.valid,
+			motor_loss = not motor_telemetry_snapshot.value.all_motors_valid,
+			estimator_fault = not imu_control_pipeline.navigation.valid,
+			storage_fault = not flight_recorder.healthy
+			);
+			rate = 100 Hz;
+			priority = 6;
+			deadline = 10 ms;
+			stack = 256 words;
+		}
+		task safety_monitor {
+			run = safety(
+			faults = safety_faults.snapshot,
+			navigation = imu_control_pipeline.navigation,
+			battery = battery_state_estimator.state,
+			motor_telemetry = motor_output.telemetry
+			);
+			rate = 100 Hz;
+			priority = 6;
+			deadline = runtime_profile.safety_deadline;
+			stack = 256 words;
+			on_miss = assert_hard_kill;
+		}
+		task motor_output_service {
+			run = motor_output(command = imu_control_pipeline.motor_commands);
+			trigger = imu_control_cycle.result_ready;
+			rate = 3840 Hz;
+			priority = 7;
+			deadline = runtime_profile.control_deadline;
+			stack = 256 words;
+			on_miss = assert_hard_kill;
+		}
+		task telemetry {
+			run = wired_telemetry;
+			rate = 10 Hz;
+			priority = 1;
+			deadline = 100 ms;
+			stack = 512 words;
+		}
+		task logger {
+			run = flight_recorder;
+			trigger = flight_log_queue.not_empty;
+			priority = 0;
+			stack = 512 words;
+		}
+		task watchdog_service {
+			run = flight_watchdog;
+			rate = 100 Hz;
+			priority = 6;
+			feed_only_when = safety.watchdog_feed_permitted and not safety.kill_motors;
+		}
+		constraint realtime_budget {
+			maximum_utilization = 0.75;
+			require_deadline_analysis = true;
+		}
+	}
+
+	implementation {
+
+		// On-chip pin assignments follow the supplied STM32F722RET6 LQFP64 map.
+		// The carrier and its power, clock, and connector details remain separate.
+		peripheral spi1 {
+			instance = "SPI1";
+			sck_pin = "PA5"; miso_pin = "PA6"; mosi_pin = "PA7";
+			clock = 20 MHz;
+		} spi;
+		peripheral spi2 {
+			instance = "SPI2";
+			sck_pin = "PB13"; miso_pin = "PB14"; mosi_pin = "PB15";
+		} spi;
+		peripheral imu_cs { pin = "PA4"; direction = output; idle = high; } gpio;
+		peripheral imu_drdy { pin = "PC4"; edge = rising; } gpio;
+		peripheral barometer_cs { pin = "PC5"; direction = output; idle = high; } gpio;
+		peripheral i2c1 {
+			instance = "I2C1";
+			scl_pin = "PB6"; sda_pin = "PB7";
+		} i2c;
+		peripheral magnetometer_drdy { pin = "PD2"; edge = rising; } gpio;
+		peripheral gnss_uart {
+			instance = "USART1"; tx_pin = "PA9"; rx_pin = "PA10"; dma = enabled;
+		} uart;
+		peripheral receiver_uart {
+			instance = "USART2"; tx_pin = "PA2"; rx_pin = "PA3"; baud = 420 kbaud;
+		} uart;
+		peripheral motor1_uart { instance = "UART4"; tx_pin = "PA0"; dma = enabled; } uart;
+		peripheral motor2_uart { instance = "UART5"; tx_pin = "PC12"; dma = enabled; } uart;
+		peripheral motor3_uart { instance = "USART3"; tx_pin = "PB10"; dma = enabled; } uart;
+		peripheral motor4_uart { instance = "USART6"; tx_pin = "PC6"; dma = enabled; } uart;
+		peripheral sd_cs { pin = "PC3"; direction = output; idle = high; } gpio;
+		peripheral battery_adc { instance = "ADC1_IN1"; pin = "PA1"; } adc;
+		peripheral current_adc { instance = "ADC1_IN10"; pin = "PC0"; } adc;
+		peripheral usb_cdc { dm_pin = "PA11"; dp_pin = "PA12"; } usb;
+		peripheral status_led { pin = "PB0"; direction = output; active_level = high; } gpio;
+		peripheral error_led { pin = "PB12"; direction = output; active_level = high; } gpio;
+		peripheral buzzer_timer { instance = "TIM8_CH2"; pin = "PC7"; role = pwm_output; } timer;
+		peripheral camera_trigger { instance = "TIM1_CH1"; pin = "PA8"; role = shutter_trigger; } gpio;
+		peripheral watchdog_timer { instance = "IWDG"; timeout = watchdog_timeout; } iwdg;
+
+		bus imu_bus { peripheral = spi1; chip_select = imu_cs; mode = 3; } spi;
+		bus barometer_bus { peripheral = spi1; chip_select = barometer_cs; } spi;
+		bus magnetometer_bus { peripheral = i2c1; address = 0x0D; } i2c;
+		bus power_monitor_bus { peripheral = i2c1; addresses = [0x40, 0x41, 0x44]; } i2c;
+		bus storage_bus { peripheral = spi2; chip_select = sd_cs; mode = 0; } spi;
+
+		// These declarations name the typed sensor contracts. Their drivers remain
+		// handwritten UETD modules; the DSL defines their ports, settings and rates.
+		sensor imu {
+			bus = imu_bus;
+			data_ready = imu_drdy;
+			device = "LSM6DSV320XTR";
+			sample_rate = 3840 Hz;
+			accelerometer_range = 16 g;
+			gyroscope_range = 2000 deg/s;
+			gyro_low_pass = 384 Hz;
+			output acceleration : vec3<m/s^2>;
+			output angular_rate : vec3<rad/s>;
+			output raw_angular_rate : vec3<rad/s>;
+			output data_ready_event : bool;
+			output healthy : bool;
+		} imu;
+		sensor barometer {
+			bus = barometer_bus; device = "MS5611"; sample_rate = 50 Hz;
+			output altitude_msl : f32<m>;
+			output altitude_agl : f32<m>;
+			output vibration_rms : f32<m/s^2>;
+			output temperature : f32<degC>;
+		} pressure;
+		sensor magnetometer {
+			bus = magnetometer_bus; device = "QMC5883L";
+			interrupt = magnetometer_drdy; sample_rate = 100 Hz;
+			output field_body : vec3<uT>;
+			output field_normalized : vec3<1>;
+			output heading_magnetic_deg : f32<deg>;
+		} magnetometer;
+		sensor gnss {
+			peripheral = gnss_uart; device = "Matek M10Q-5883"; sample_rate = 10 Hz;
+			output snapshot : GPSData;
+		} gnss;
+		sensor battery {
+			peripheral = battery_adc; sample_rate = 100 Hz;
+			output voltage : f32<V>;
+		} voltage;
+		sensor current_12v { bus = power_monitor_bus; address = 0x40; device = "INA226"; sample_rate = 100 Hz; output current : f32<A>; } current;
+		sensor current_5v { bus = power_monitor_bus; address = 0x41; device = "INA226"; sample_rate = 100 Hz; output current : f32<A>; } current;
+		sensor current_3v3 { bus = power_monitor_bus; address = 0x44; device = "INA226"; sample_rate = 100 Hz; output current : f32<A>; } current;
+		sensor analog_current {
+			peripheral = current_adc; sample_rate = 100 Hz;
+			output current : f32<A>;
+		} current;
+
+		protocol receiver {
+			peripheral = receiver_uart;
+			output input : RCInputs;
+			poll_rate = 500 Hz;
+			failsafe_timeout = 300 ms;
+			channel_min = 172; channel_mid = 992; channel_max = 1811;
+			channel_roll = 0; channel_pitch = 1; channel_throttle = 2;
+			channel_yaw = 3; channel_arm = 4; channel_mode = 5; channel_alt_hold = 6;
+			deadband = 0.02;
+			channel_values_are_normalized = true;
+			mode_switch_low = FlightMode.fpv; mode_switch_high = FlightMode.camera;
+		} crsf;
+		protocol motor_front_left {
+			peripheral = motor1_uart; motor_index = 0; half_duplex = true;
+			input command : u16;
+			output telemetry : MotorTelemetry;
+			bit_rate = 3 Mbaud; bidirectional_telemetry = true;
+			command_min = 48; command_idle_fpv = 150; command_idle_camera = 80;
+			command_max = 2047; motor_pole_count = 14;
+		} dshot;
+		protocol motor_rear_left {
+			peripheral = motor2_uart; motor_index = 1; half_duplex = true;
+			input command : u16;
+			output telemetry : MotorTelemetry;
+			bit_rate = 3 Mbaud; bidirectional_telemetry = true;
+			command_min = 48; command_idle_fpv = 150; command_idle_camera = 80;
+			command_max = 2047; motor_pole_count = 14;
+		} dshot;
+		protocol motor_rear_right {
+			peripheral = motor3_uart; motor_index = 2; half_duplex = true;
+			input command : u16;
+			output telemetry : MotorTelemetry;
+			bit_rate = 3 Mbaud; bidirectional_telemetry = true;
+			command_min = 48; command_idle_fpv = 150; command_idle_camera = 80;
+			command_max = 2047; motor_pole_count = 14;
+		} dshot;
+		protocol motor_front_right {
+			peripheral = motor4_uart; motor_index = 3; half_duplex = true;
+			input command : u16;
+			output telemetry : MotorTelemetry;
+			bit_rate = 3 Mbaud; bidirectional_telemetry = true;
+			command_min = 48; command_idle_fpv = 150; command_idle_camera = 80;
+			command_max = 2047; motor_pole_count = 14;
+		} dshot;
+		protocol wired_telemetry {
+			transport = usb_cdc; rate = 10 Hz;
+			messages = ["HEARTBEAT", "ATTITUDE", "GPS_RAW", "BATTERY_STATUS", "MOTOR_OUTPUTS"];
+		} mavlink;
+
+		// Typed fields preserve the source EKF's 24-state ordering while making
+		// each physical state group and its derivative dimension explicit.
+		model navigation_error {
+			sample_time = 260.4167 us;
+			discretize with integration.ode_rk4 at 260.4167 us;
+			state error : NavigationErrorState;
+			input specific_force_ned : vec3<m/s^2>;
+			input angular_rate_body : vec3<rad/s>;
+			input rotation_body_to_ned : f32[3,3];
+			input drag_coefficient : f32<1/s>;
+			input tau_gyro_bias : f32<s>;
+			input tau_accel_bias : f32<s>;
+			input tau_motor : f32<s>;
+			input tau_magnetometer : f32<s>;
+			input tau_barometer : f32<s>;
+			input tau_barometer_scale : f32<s>;
+			input tau_wind : f32<s>;
+			output derivative : NavigationErrorRate;
+			equations {
+				derivative.position = error.velocity;
+				// Angles are tracked as rad in UETD; radians are dimensionless in
+				// these first-order error-state cross products, so normalize once.
+				derivative.velocity = -cross(specific_force_ned, error.attitude) / 1 rad
+				- rotation_body_to_ned * error.accelerometer_bias
+				+ drag_coefficient * error.wind;
+				derivative.attitude = -cross(angular_rate_body, error.attitude) / 1 rad - error.gyro_bias;
+				derivative.gyro_bias = -error.gyro_bias / tau_gyro_bias;
+				derivative.accelerometer_bias = -error.accelerometer_bias / tau_accel_bias;
+				derivative.motor_time_constant = -error.motor_time_constant / tau_motor;
+				derivative.magnetometer_bias = -error.magnetometer_bias / tau_magnetometer;
+				derivative.barometer_bias = -error.barometer_bias / tau_barometer;
+				derivative.barometer_scale = -error.barometer_scale / tau_barometer_scale;
+				derivative.wind = -error.wind / tau_wind;
+			}
+			jacobians { F = jacobian(derivative, error); }
+		}
+
+		// The source accumulates each IMU sample and predicts every eighth sample.
+		// It uses a third-order Phi expansion and midpoint Qd propagation with a
+		// second-order correction; estimator contracts own the covariance details.
+		algorithm navigation_ekf {
+			model = navigation_error;
+			state_dimension = 24;
+			nominal_dt = 0.0002604167 s;
+			prediction_decimation = 8;
+			prediction_rate = 480 Hz;
+			transition_method = taylor_order_3;
+			process_noise_discretization = midpoint_plus_second_order_correction;
+			accumulate_every_imu_sample = true;
+			correction_form = joseph;
+			innovation_gate = normalized_innovation_squared;
+			error_state_order = ["position", "velocity", "attitude", "gyro_bias", "accelerometer_bias", "motor_time_constant", "magnetometer_bias", "barometer_bias", "barometer_scale", "wind"];
+		} error_state_ekf;
+		algorithm mahony_ahrs {
+			sample_time = 260.4167 us;
+			kp_acc = 2.0;
+			ki_acc = 0.005;
+			kp_mag = 1.0;
+			ki_mag = 0.002;
+		} mahony;
+
+		// This custom algorithm carries the source X-frame motor order and equations.
+		// select/max/clamp/sqrt/zeros are bounded UETD math functions, not user code.
+		custom algorithm x_frame_mixer {
+			input mode : FlightMode;
+			input motors_enabled : bool;
+			input thrust : f32<1>;
+			input torque : vec3<1>;
+			output motor_commands : u16[4];
+			parameter dshot_min : u16 = 48;
+			parameter dshot_max : u16 = 2047;
+			parameter dshot_idle_fpv : u16 = 150;
+			parameter dshot_idle_camera : u16 = 80;
+			parameter torque_scale_fpv : f32 = 0.28;
+			parameter torque_scale_camera : f32 = 0.22;
+			parameter thrust_linearisation : bool = false;
+			local idle : f32;
+			local dshot_min_value : f32;
+			local dshot_max_value : f32;
+			local torque_scale : f32;
+			local base_linear : f32;
+			local base_linearised : f32;
+			local base : f32;
+			local scale : f32;
+			local raw : f32[4];
+			local max_over : f32;
+			local max_under : f32;
+			local shifted : f32[4];
+			local bounded : f32[4];
+
+			step() {
+				// Keep command counts integer in the public parameters, and convert
+				// once to the f32 workspace used by the continuous mixer equations.
+				dshot_min_value = cast<f32>(dshot_min);
+				dshot_max_value = cast<f32>(dshot_max);
+				idle = cast<f32>(select(mode == FlightMode.fpv, dshot_idle_fpv, dshot_idle_camera));
+				torque_scale = select(mode == FlightMode.fpv, torque_scale_fpv, torque_scale_camera);
+				base_linear = idle + clamp(thrust, 0, 1) * (dshot_max_value - idle);
+				base_linearised = idle + sqrt(max(thrust, 0)) * (dshot_max_value - idle);
+				base = select(thrust_linearisation, base_linearised, base_linear);
+				scale = torque_scale * (dshot_max_value - idle);
+				raw[0] = base + (-torque.x - torque.y + torque.z) * scale;
+				raw[1] = base + ( torque.x - torque.y - torque.z) * scale;
+				raw[2] = base + ( torque.x + torque.y + torque.z) * scale;
+				raw[3] = base + (-torque.x + torque.y - torque.z) * scale;
+				max_over = 0;
+				max_under = 0;
+				for index in 0 .. 4 {
+					if raw[index] > dshot_max_value { max_over = max(max_over, raw[index] - dshot_max_value); }
+					if raw[index] < idle { max_under = max(max_under, idle - raw[index]); }
+				}
+				for index in 0 .. 4 {
+					shifted[index] = raw[index] - max_over + max_under;
+					bounded[index] = clamp(shifted[index], dshot_min_value, dshot_max_value);
+					motor_commands[index] = select(motors_enabled, cast<u16>(bounded[index]), 0);
+				}
+			}
+		}
+
+		// The source captures the current thrust on landing entry, then ramps it
+		// down at 0.2/s until motors are disarmed. The state also exposes the
+		// completion event to the FlightMode machine.
+		custom algorithm landing_throttle_ramp {
+			input active : bool;
+			input entry_thrust : f32<1>;
+			input dt : f32<s>;
+			output throttle : f32<1>;
+			output complete : bool;
+			state stored_throttle : f32<1> = 0;
+			state was_active : bool = false;
+			step() {
+				if active and not was_active { stored_throttle = entry_thrust; }
+				else { if active { stored_throttle = max(0, stored_throttle - 0.2 1/s * dt); } }
+				if not active { stored_throttle = 0; }
+				was_active = active;
+				throttle = stored_throttle;
+				complete = active and stored_throttle == 0;
+			}
+		}
+
+		// The source's BatteryState is a shared snapshot built from ADC voltage,
+		// current measurement and a bounded coulomb counter in the service task.
+		custom algorithm battery_state_estimator {
+			input voltage : f32<V>;
+			input current : f32<A>;
+			input dt : f32<s>;
+			output state : BatteryState;
+			parameter capacity : f32<mAh> = battery_capacity;
+			state consumed_mAh : f32<mAh> = 0 mAh;
+			local remaining_percent : f32<1>;
+			step() {
+				if capacity > 0 mAh {
+					consumed_mAh = clamp(consumed_mAh + max(current, 0 A) * dt * (1000 mAh / (3600 A*s)), 0 mAh, capacity);
+					remaining_percent = 100 * (capacity - consumed_mAh) / capacity;
+					state.voltage = voltage;
+					state.current = current;
+					state.consumed_capacity = consumed_mAh;
+					state.remaining_percent = cast<u8>(clamp(remaining_percent, 0, 100));
+				} else {
+					state.voltage = voltage;
+					state.current = current;
+					state.consumed_capacity = 0 mAh;
+					state.remaining_percent = 0;
+				}
+			}
+		}
+
+		custom algorithm velocity_to_tilt_mapping {
+			input surge_acceleration : f32<m/s^2>;
+			input sway_acceleration : f32<m/s^2>;
+			output desired_tilt : vec2<rad>;
+			step() {
+				desired_tilt.x = clamp(surge_acceleration / 9.80665 m/s^2 * 1 rad, -0.4363 rad, 0.4363 rad);
+				desired_tilt.y = clamp(sway_acceleration / 9.80665 m/s^2 * 1 rad, -0.4363 rad, 0.4363 rad);
+			}
+		}
+
+		// Four independent UART instances match the source's DShot transmit/receive
+		// callbacks and per-motor GCR telemetry decode. Turnaround belongs to DShot.
+		subsystem motor_output {
+			input command : u16[4] { rate = 3840 Hz; max_age = 260 us; };
+			output telemetry : MotorTelemetryBank { rate = 100 Hz; max_age = 10 ms; };
+			output average_frequency : f32<Hz> { rate = 100 Hz; max_age = 10 ms; };
+			output outputs_valid : bool { rate = 100 Hz; max_age = 10 ms; };
+			use motor_front_left as front_left;
+			use motor_rear_left as rear_left;
+			use motor_rear_right as rear_right;
+			use motor_front_right as front_right;
+			stage fl = front_left(command = command[0]);
+			stage rl = rear_left(command = command[1]);
+			stage rr = rear_right(command = command[2]);
+			stage fr = front_right(command = command[3]);
+			let mean_frequency : f32<Hz> =
+			(fl.telemetry.rotation_frequency + rl.telemetry.rotation_frequency +
+			rr.telemetry.rotation_frequency + fr.telemetry.rotation_frequency) / 4;
+			output telemetry = map(
+			motors = [fl.telemetry, rl.telemetry, rr.telemetry, fr.telemetry],
+			average_frequency = mean_frequency,
+			average_second_harmonic = 2 * mean_frequency,
+			all_motors_valid = fl.telemetry.valid and rl.telemetry.valid and
+			rr.telemetry.valid and fr.telemetry.valid
+			);
+			output average_frequency = mean_frequency;
+			output outputs_valid = fl.telemetry.valid and rl.telemetry.valid and
+			rr.telemetry.valid and fr.telemetry.valid;
+		}
+
+		// Three registered PID modules form the body-rate loop. Six registered
+		// notch modules track each motor's fundamental and second harmonic.
+		algorithm rate_notch_roll_fundamental { q = 15; sample_time = 260.4167 us; } notch;
+		algorithm rate_notch_roll_harmonic { q = 15; sample_time = 260.4167 us; } notch;
+		algorithm rate_notch_pitch_fundamental { q = 15; sample_time = 260.4167 us; } notch;
+		algorithm rate_notch_pitch_harmonic { q = 15; sample_time = 260.4167 us; } notch;
+		algorithm rate_notch_yaw_fundamental { q = 15; sample_time = 260.4167 us; } notch;
+		algorithm rate_notch_yaw_harmonic { q = 15; sample_time = 260.4167 us; } notch;
+
+		algorithm rate_roll_pid {
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = select(flight_mode.state == FlightMode.fpv, 0.045, 0.030);
+			ki = select(flight_mode.state == FlightMode.fpv, 0.040, 0.025);
+			kd = select(flight_mode.state == FlightMode.fpv, 0.0012, 0.0008);
+			derivative_filter_n = 500;
+			sample_time = 260.4167 us;
+			output_min = -1.0;
+			output_max = 1.0;
+			integral_min = -0.30;
+			integral_max = 0.30;
+			anti_windup = clamp;
+		} pid;
+		algorithm rate_pitch_pid {
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = select(flight_mode.state == FlightMode.fpv, 0.047, 0.032);
+			ki = select(flight_mode.state == FlightMode.fpv, 0.040, 0.025);
+			kd = select(flight_mode.state == FlightMode.fpv, 0.0014, 0.0009);
+			derivative_filter_n = 500;
+			sample_time = 260.4167 us;
+			output_min = -1.0;
+			output_max = 1.0;
+			integral_min = -0.30;
+			integral_max = 0.30;
+			anti_windup = clamp;
+		} pid;
+		algorithm rate_yaw_pid {
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = select(flight_mode.state == FlightMode.fpv, 0.060, 0.040);
+			ki = select(flight_mode.state == FlightMode.fpv, 0.030, 0.020);
+			kd = 0.0;
+			derivative_filter_n = 200;
+			sample_time = 260.4167 us;
+			output_min = -1.0;
+			output_max = 1.0;
+			integral_min = -0.30;
+			integral_max = 0.30;
+			anti_windup = clamp;
+		} pid;
+
+		subsystem rate_controller {
+			input reference : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input measured_rate : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input motor_frequency : f32<Hz> { rate = 3840 Hz; max_age = 260 us; };
+			output output : vec3<1> { rate = 3840 Hz; max_age = 260 us; };
+			use rate_roll_pid as roll_pid; use rate_pitch_pid as pitch_pid; use rate_yaw_pid as yaw_pid;
+			use rate_notch_roll_fundamental as roll_fundamental; use rate_notch_roll_harmonic as roll_harmonic;
+			use rate_notch_pitch_fundamental as pitch_fundamental; use rate_notch_pitch_harmonic as pitch_harmonic;
+			use rate_notch_yaw_fundamental as yaw_fundamental; use rate_notch_yaw_harmonic as yaw_harmonic;
+			stage roll_1 = roll_fundamental(input = measured_rate.x, center_frequency = motor_frequency);
+			stage roll_2 = roll_harmonic(input = roll_1.output, center_frequency = 2 * motor_frequency);
+			stage pitch_1 = pitch_fundamental(input = measured_rate.y, center_frequency = motor_frequency);
+			stage pitch_2 = pitch_harmonic(input = pitch_1.output, center_frequency = 2 * motor_frequency);
+			stage yaw_1 = yaw_fundamental(input = measured_rate.z, center_frequency = motor_frequency);
+			stage yaw_2 = yaw_harmonic(input = yaw_1.output, center_frequency = 2 * motor_frequency);
+			stage roll = roll_pid(reference = reference.x, measurement = roll_2.output);
+			stage pitch = pitch_pid(reference = reference.y, measurement = pitch_2.output);
+			stage yaw = yaw_pid(reference = reference.z, measurement = yaw_2.output);
+			output output = [roll.output, pitch.output, yaw.output];
+		}
+		custom algorithm camera_attitude_controller {
+			input attitude : quaternion;
+			input current_yaw : f32<rad>;
+			input desired_tilt : vec2<rad>;
+			input yaw_rate_command : f32<rad/s>;
+			input mode : FlightMode;
+			input dt : f32<s>;
+			output rate_setpoint : vec3<rad/s>;
+			parameter kp : vec3<rad/s> = [7.0, 7.0, 3.5];
+			parameter rate_limit : vec3<rad/s> = [3.84, 3.84, 2.79];
+			state desired_yaw : f32<rad> = 0 rad;
+			state previous_mode : FlightMode = FlightMode.disarmed;
+			local cr : f32<1>; local sr : f32<1>;
+			local cp : f32<1>; local sp : f32<1>;
+			local cy : f32<1>; local sy : f32<1>;
+			local q_desired : quaternion; local q_error : quaternion;
+			step() {
+				if mode == FlightMode.camera and previous_mode != FlightMode.camera {
+					desired_yaw = current_yaw;
+				} else {
+					desired_yaw = desired_yaw + yaw_rate_command * dt;
+				}
+				desired_yaw = atan2(sin(desired_yaw), cos(desired_yaw));
+				previous_mode = mode;
+				cr = cos(desired_tilt.x / 2); sr = sin(desired_tilt.x / 2);
+				cp = cos(desired_tilt.y / 2); sp = sin(desired_tilt.y / 2);
+				cy = cos(desired_yaw / 2); sy = sin(desired_yaw / 2);
+				// UETD quaternion values use scalar-first Hamilton order [w,x,y,z].
+				q_desired.w = cr*cp*cy + sr*sp*sy;
+				q_desired.x = sr*cp*cy - cr*sp*sy;
+				q_desired.y = cr*sp*cy + sr*cp*sy;
+				q_desired.z = cr*cp*sy - sr*sp*cy;
+				// q_error = q_desired * conjugate(attitude), then take the shortest
+				// equivalent quaternion before applying the source's bounded P law.
+				q_error.w = q_desired.w*attitude.w + q_desired.x*attitude.x + q_desired.y*attitude.y + q_desired.z*attitude.z;
+				q_error.x = -q_desired.w*attitude.x + q_desired.x*attitude.w - q_desired.y*attitude.z + q_desired.z*attitude.y;
+				q_error.y = -q_desired.w*attitude.y + q_desired.x*attitude.z + q_desired.y*attitude.w - q_desired.z*attitude.x;
+				q_error.z = -q_desired.w*attitude.z - q_desired.x*attitude.y + q_desired.y*attitude.x + q_desired.z*attitude.w;
+				if q_error.w < 0 {
+					q_error.w = -q_error.w;
+					q_error.x = -q_error.x;
+					q_error.y = -q_error.y;
+					q_error.z = -q_error.z;
+				}
+				rate_setpoint.x = clamp(2*kp.x*q_error.x, -rate_limit.x, rate_limit.x);
+				rate_setpoint.y = clamp(2*kp.y*q_error.y, -rate_limit.y, rate_limit.y);
+				rate_setpoint.z = clamp(2*kp.z*q_error.z, -rate_limit.z, rate_limit.z);
+			}
+		}
+		algorithm velocity_surge_pid {
+			derivative_filter_n = 100;
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = 1.5;
+			ki = 0.3;
+			kd = 0.0;
+			sample_time = 10 ms;
+			output_min = -9.81 m/s^2;
+			output_max = 9.81 m/s^2;
+			integral_min = -5.0;
+			integral_max = 5.0;
+			anti_windup = clamp;
+		} pid;
+		algorithm velocity_sway_pid {
+			derivative_filter_n = 100;
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = 1.5;
+			ki = 0.3;
+			kd = 0.0;
+			sample_time = 10 ms;
+			output_min = -9.81 m/s^2;
+			output_max = 9.81 m/s^2;
+			integral_min = -5.0;
+			integral_max = 5.0;
+			anti_windup = clamp;
+		} pid;
+		algorithm velocity_heave_pid {
+			derivative_filter_n = 100;
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = 2.5;
+			ki = 0.5;
+			kd = 0.5;
+			sample_time = 10 ms;
+			output_min = -0.4;
+			output_max = 0.4;
+			integral_min = -0.3;
+			integral_max = 0.3;
+			anti_windup = clamp;
+		} pid;
+		subsystem velocity_controller {
+			input sticks : vec2<1> { rate = 500 Hz; max_age = 2 ms; };
+			input throttle : f32<1> { rate = 500 Hz; max_age = 2 ms; };
+			input heading : f32<rad> { rate = 480 Hz; max_age = 3 ms; };
+			input alt_hold : bool { rate = 500 Hz; max_age = 2 ms; };
+			input gnss_valid : bool { rate = 10 Hz; max_age = 100 ms; };
+			input mode : FlightMode;
+			input position_velocity_reference : vec3<m/s> { rate = 50 Hz; max_age = 20 ms; };
+			input estimated_velocity : vec3<m/s> { rate = 480 Hz; max_age = 3 ms; };
+			output desired_tilt : vec2<rad> { rate = 100 Hz; max_age = 10 ms; };
+			output thrust_delta : f32 { rate = 100 Hz; max_age = 10 ms; };
+			output output : CameraReference { rate = 100 Hz; max_age = 10 ms; };
+			use velocity_surge_pid as surge_pid; use velocity_sway_pid as sway_pid; use velocity_heave_pid as heave_pid;
+			use camera_velocity_mapping as camera_mapping;
+			stage camera_reference = camera_mapping(sticks = sticks, throttle = throttle, heading = heading);
+			let pilot_or_hold_reference : vec3<m/s> = select(
+			alt_hold and gnss_valid,
+			position_velocity_reference,
+			camera_reference.velocity_setpoint
+			);
+			let reference : vec3<m/s> = select(
+			mode == FlightMode.failsafe,
+			[0, 0, 0.5],
+			pilot_or_hold_reference
+			);
+			stage surge = surge_pid(reference = reference.x, measurement = estimated_velocity.x);
+			stage sway = sway_pid(reference = reference.y, measurement = estimated_velocity.y);
+			stage heave = heave_pid(reference = reference.z, measurement = estimated_velocity.z);
+			use velocity_to_tilt_mapping as tilt_mapping;
+			stage tilt = tilt_mapping(surge_acceleration = surge.output, sway_acceleration = sway.output);
+			output desired_tilt = tilt.desired_tilt;
+			output thrust_delta = heave.output;
+			output output = map(desired_tilt = desired_tilt, thrust_delta = thrust_delta);
+		}
+
+		algorithm position_north_pid {
+			derivative_filter_n = 100;
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = 0.8;
+			ki = 0.05;
+			kd = 0.20;
+			sample_time = 20 ms;
+			output_min = -3.0 m/s^2;
+			output_max = 3.0 m/s^2;
+			integral_min = -0.20;
+			integral_max = 0.20;
+			anti_windup = clamp;
+		} pid;
+		algorithm position_east_pid {
+			derivative_filter_n = 100;
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = 0.8;
+			ki = 0.05;
+			kd = 0.20;
+			sample_time = 20 ms;
+			output_min = -3.0 m/s^2;
+			output_max = 3.0 m/s^2;
+			integral_min = -0.20;
+			integral_max = 0.20;
+			anti_windup = clamp;
+		} pid;
+		algorithm position_altitude_pid {
+			derivative_filter_n = 100;
+			proportional_weight_b = 1.0;
+			derivative_weight_c = 0.0;
+			tracking_time = 0 s;
+			saturation_enabled = true;
+			kp = 3.0;
+			ki = 0.5;
+			kd = 1.5;
+			sample_time = 20 ms;
+			output_min = -0.40;
+			output_max = 0.40;
+			integral_min = -0.30;
+			integral_max = 0.30;
+			anti_windup = clamp;
+		} pid;
+		custom algorithm position_to_velocity_mapping {
+			input north_acceleration : f32<m/s^2>;
+			input east_acceleration : f32<m/s^2>;
+			input vertical_command : f32<1>;
+			input heading : f32<rad>;
+			output velocity_setpoint : vec3<m/s>;
+			local cosine_heading : f32<1>;
+			local sine_heading : f32<1>;
+			local roll_unbounded : f32<rad>;
+			local pitch_unbounded : f32<rad>;
+			local tilt_magnitude : f32<rad>;
+			local tilt_scale : f32<1>;
+			step() {
+				cosine_heading = cos(heading);
+				sine_heading = sin(heading);
+				roll_unbounded = (cosine_heading * east_acceleration + sine_heading * north_acceleration) / 9.80665 m/s^2 * 1 rad;
+				pitch_unbounded = (-sine_heading * east_acceleration + cosine_heading * north_acceleration) / 9.80665 m/s^2 * 1 rad;
+				tilt_magnitude = sqrt(roll_unbounded**2 + pitch_unbounded**2);
+				tilt_scale = select(tilt_magnitude > 0.436332 rad, 0.436332 rad / tilt_magnitude, 1);
+				velocity_setpoint = [
+				roll_unbounded * tilt_scale * (3.0 m/s / 1 rad),
+				pitch_unbounded * tilt_scale * (3.0 m/s / 1 rad),
+				-vertical_command * 2.0 m/s
+				];
+			}
+		}
+		subsystem position_controller {
+			input reference : vec3<m> { rate = 50 Hz; max_age = 20 ms; };
+			input measured_position : vec3<m> { rate = 480 Hz; max_age = 3 ms; };
+			input measured_velocity : vec3<m/s> { rate = 480 Hz; max_age = 3 ms; };
+			input heading : f32<rad> { rate = 480 Hz; max_age = 3 ms; };
+			output velocity_setpoint : vec3<m/s> { rate = 50 Hz; max_age = 20 ms; };
+			use position_north_pid as north_pid; use position_east_pid as east_pid; use position_altitude_pid as altitude_pid;
+			use position_to_velocity_mapping as velocity_mapping;
+			stage north = north_pid(reference = reference.x, measurement = measured_position.x);
+			stage east = east_pid(reference = reference.y, measurement = measured_position.y);
+			stage altitude = altitude_pid(reference = reference.z, measurement = measured_position.z);
+			stage mapped = velocity_mapping(
+			north_acceleration = north.output,
+			east_acceleration = east.output,
+			vertical_command = altitude.output,
+			heading = heading
+			);
+			output velocity_setpoint = mapped.velocity_setpoint;
+		}
+
+		// FPV bypasses the camera velocity/attitude/position path. Camera mode uses
+		// position -> velocity -> attitude -> rate; the mode selector below makes
+		// the path and output ownership explicit.
+		custom algorithm camera_velocity_mapping {
+			input sticks : vec2<1>;
+			input throttle : f32<1>;
+			input heading : f32<rad>;
+			output velocity_setpoint : vec3<m/s>;
+			parameter maximum_speed : f32<m/s> = 5.0 m/s;
+			parameter maximum_climb_rate : f32<m/s> = 2.0 m/s;
+			local forward : f32<m/s>;
+			local lateral : f32<m/s>;
+			local cosine_heading : f32<1>;
+			local sine_heading : f32<1>;
+
+			step() {
+				forward = -sticks.y * maximum_speed;
+				lateral = sticks.x * maximum_speed;
+				cosine_heading = cos(heading);
+				sine_heading = sin(heading);
+				velocity_setpoint.x = forward * cosine_heading - lateral * sine_heading;
+				velocity_setpoint.y = forward * sine_heading + lateral * cosine_heading;
+				velocity_setpoint.z = -(2 * throttle - 1) * maximum_climb_rate;
+			}
+		}
+
+		custom algorithm fpv_rate_mapping {
+			input sticks : vec3<1>;
+			output rate_setpoint : vec3<rad/s>;
+			parameter rate_limit : vec3<rad/s> = [13.962634 rad/s, 13.962634 rad/s, 10.471976 rad/s];
+			parameter expo : vec3<1> = [0.40, 0.40, 0.20];
+			parameter deadband : f32<1> = 0.02;
+			local roll : f32<1>; local pitch : f32<1>; local yaw : f32<1>;
+
+			step() {
+				// sticks are normalized roll, pitch, yaw axes after receiver mapping.
+				if sticks.x > deadband { roll = (sticks.x - deadband) / (1 - deadband); }
+				else { if sticks.x < -deadband { roll = (sticks.x + deadband) / (1 - deadband); } else { roll = 0; } }
+				if sticks.y > deadband { pitch = (sticks.y - deadband) / (1 - deadband); }
+				else { if sticks.y < -deadband { pitch = (sticks.y + deadband) / (1 - deadband); } else { pitch = 0; } }
+				if sticks.z > deadband { yaw = (sticks.z - deadband) / (1 - deadband); }
+				else { if sticks.z < -deadband { yaw = (sticks.z + deadband) / (1 - deadband); } else { yaw = 0; } }
+				roll = (1 - expo.x)*roll + expo.x*roll**3;
+				pitch = (1 - expo.y)*pitch + expo.y*pitch**3;
+				yaw = (1 - expo.z)*yaw + expo.z*yaw**3;
+				rate_setpoint.x = rate_limit.x * roll;
+				rate_setpoint.y = rate_limit.y * pitch;
+				rate_setpoint.z = rate_limit.z * yaw;
+			}
+		}
+		subsystem estimation {
+			input gyroscope : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input accelerometer : vec3<m/s^2> { rate = 3840 Hz; max_age = 260 us; };
+			input magnetometer : vec3<uT> { rate = 100 Hz; max_age = 10 ms; };
+			input gps : GPSData { rate = 10 Hz; max_age = 100 ms; };
+			input navigation_origin : NavOrigin;
+			input barometer_altitude : f32<m> { rate = 50 Hz; max_age = 20 ms; };
+			input motor_feedback : MotorTelemetryBank { rate = 100 Hz; max_age = 10 ms; };
+			output attitude : quaternion { rate = 3840 Hz; max_age = 260 us; };
+			output euler_rpy_rad : vec3<rad> { rate = 3840 Hz; max_age = 260 us; };
+			output euler_rpy_deg : vec3<deg> { rate = 3840 Hz; max_age = 260 us; };
+			output position_ned : vec3<m> { rate = 480 Hz; max_age = 3 ms; };
+			output velocity_ned : vec3<m/s> { rate = 480 Hz; max_age = 3 ms; };
+			output valid : bool { rate = 480 Hz; max_age = 3 ms; };
+			use mahony_ahrs as attitude_filter;
+			use navigation_ekf as navigation_filter;
+			stage attitude = attitude_filter(gyroscope = gyroscope, accelerometer = accelerometer, magnetometer = magnetometer);
+			stage navigation = navigation_filter(
+			attitude = attitude.attitude,
+			measurement = map(
+			gps = gps,
+			navigation_origin = navigation_origin,
+			gps_velocity = gps.velocity_ned,
+			gps_accuracy = [gps.horizontal_accuracy, gps.vertical_accuracy, gps.satellite_count],
+			barometer = barometer_altitude,
+			magnetometer = magnetometer,
+			motor_feedback = motor_feedback
+			)
+			);
+			output attitude = attitude.attitude;
+			output euler_rpy_rad = attitude.euler_rpy_rad;
+			output euler_rpy_deg = attitude.euler_rpy_deg;
+			output position_ned = navigation.position_ned;
+			output velocity_ned = navigation.velocity_ned;
+			output valid = navigation.valid and attitude.valid;
+		}
+
+		// Mirrors ControlLoopTask: update the AHRS for every IMU data-ready event,
+		// accumulate EKF input on every event, predict on each eighth event, then
+		// execute mode control. The estimator module owns that internal decimation.
+		subsystem imu_control_pipeline {
+			input gyroscope : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input gyro_raw : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input accelerometer : vec3<m/s^2> { rate = 3840 Hz; max_age = 260 us; };
+			input magnetometer : vec3<uT> { rate = 100 Hz; max_age = 10 ms; };
+			input magnetometer_normalized : vec3<1> { rate = 100 Hz; max_age = 10 ms; };
+			input magnetic_heading : f32<deg> { rate = 100 Hz; max_age = 10 ms; };
+			input gps : GPSData { rate = 10 Hz; max_age = 100 ms; };
+			input barometer_altitude : f32<m> { rate = 50 Hz; max_age = 20 ms; };
+			input barometer_altitude_agl : f32<m> { rate = 50 Hz; max_age = 20 ms; };
+			input barometer_temperature : f32<degC> { rate = 50 Hz; max_age = 20 ms; };
+			input home_altitude_msl : f32<m>;
+			input battery_state : BatteryState { rate = 100 Hz; max_age = 10 ms; };
+			input navigation_origin : NavOrigin;
+			input arm_state : ArmState;
+			input faults : FlightFaults;
+			input motors_killed : bool;
+			input imu_ready_count : u32;
+			input control_cycle_time : u32<us>;
+			input motor_feedback : MotorTelemetryBank { rate = 100 Hz; max_age = 10 ms; };
+			input pilot : RCInputs { rate = 500 Hz; max_age = 300 ms; };
+			input camera_reference : CameraReference { rate = 100 Hz; max_age = 10 ms; };
+			input measured_rate : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input motor_frequency : f32<Hz> { rate = 100 Hz; max_age = 10 ms; };
+			input mode : FlightMode;
+			input motors_enabled : bool;
+			output navigation : NavigationSnapshot { rate = 480 Hz; max_age = 3 ms; };
+			output state_snapshot : SharedFlightState { rate = 3840 Hz; max_age = 260 us; };
+			output motor_commands : u16[4] { rate = 3840 Hz; max_age = 260 us; };
+			output rate_setpoint : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			output torque_output : vec3<1> { rate = 3840 Hz; max_age = 260 us; };
+			output thrust_output : f32<1> { rate = 3840 Hz; max_age = 260 us; };
+			output valid : bool { rate = 3840 Hz; max_age = 260 us; };
+			output landing_complete : bool { rate = 3840 Hz; max_age = 260 us; };
+			use estimation as estimator;
+			use flight_controller as controller;
+			stage estimate = estimator(
+			gyroscope = gyroscope,
+			accelerometer = accelerometer,
+			magnetometer = magnetometer,
+			gps = gps,
+			navigation_origin = navigation_origin,
+			barometer_altitude = barometer_altitude,
+			motor_feedback = motor_feedback
+			);
+			stage control = controller(
+			pilot = pilot,
+			attitude = estimate.attitude,
+			current_yaw = estimate.euler_rpy_rad.z,
+			estimate_valid = estimate.valid,
+			desired_tilt = camera_reference.desired_tilt,
+			measured_rate = measured_rate,
+			motor_frequency = motor_frequency,
+			thrust_delta = camera_reference.thrust_delta,
+			mode = mode,
+			motors_enabled = motors_enabled,
+			dt = 0.0002604167 s
+			);
+			output navigation = map(
+			attitude = estimate.attitude,
+			euler_rpy_rad = estimate.euler_rpy_rad,
+			euler_rpy_deg = estimate.euler_rpy_deg,
+			position_ned = estimate.position_ned,
+			velocity_ned = estimate.velocity_ned,
+			valid = estimate.valid
+			);
+			output state_snapshot = map(
+			gyro_body = gyroscope,
+			gyro_raw_body = gyro_raw,
+			acceleration_body = accelerometer,
+			attitude_body_to_ned = estimate.attitude,
+			euler_rpy_deg = estimate.euler_rpy_deg,
+			heading_magnetic_deg = magnetic_heading,
+			position_ned = estimate.position_ned,
+			velocity_ned = estimate.velocity_ned,
+			barometer_altitude_msl = barometer_altitude,
+			barometer_altitude_agl = barometer_altitude_agl,
+			barometer_temperature = barometer_temperature,
+			home_altitude_msl = home_altitude_msl,
+			magnetic_field_normalized = magnetometer_normalized,
+			receiver = pilot,
+			gps = gps,
+			origin = navigation_origin,
+			battery = battery_state,
+			motor_commands = control.motor_commands,
+			motor_telemetry = motor_feedback.motors,
+			flight_mode = mode,
+			arm_state = arm_state,
+			faults = faults,
+			motors_killed = motors_killed,
+			rate_setpoint = control.rate_reference,
+			torque_output = control.torque_output,
+			thrust_output = control.thrust_output,
+			control_cycle_time = control_cycle_time,
+			imu_ready_count = imu_ready_count,
+			average_motor_frequency = motor_feedback.average_frequency,
+			average_motor_second_harmonic = motor_feedback.average_second_harmonic
+			);
+			output motor_commands = control.motor_commands;
+			output rate_setpoint = control.rate_reference;
+			output torque_output = control.torque_output;
+			output thrust_output = control.thrust_output;
+			output valid = control.valid;
+			output landing_complete = control.landing_complete;
+		}
+		hybrid algorithm flight_controller {
+			input pilot : RCInputs;
+			input attitude : quaternion { rate = 480 Hz; max_age = 3 ms; };
+			input current_yaw : f32<rad> { rate = 3840 Hz; max_age = 260 us; };
+			input estimate_valid : bool { rate = 480 Hz; max_age = 3 ms; };
+			input desired_tilt : vec2<rad> { rate = 100 Hz; max_age = 10 ms; };
+			input measured_rate : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			input motor_frequency : f32<Hz> { rate = 100 Hz; max_age = 10 ms; };
+			input thrust_delta : f32<1> { rate = 100 Hz; max_age = 10 ms; };
+			input mode : FlightMode;
+			input motors_enabled : bool;
+			input dt : f32<s>;
+			output rate_reference : vec3<rad/s> { rate = 3840 Hz; max_age = 260 us; };
+			output motor_commands : u16[4] { rate = 3840 Hz; max_age = 260 us; };
+			output torque_output : vec3<1> { rate = 3840 Hz; max_age = 260 us; };
+			output thrust_output : f32<1> { rate = 3840 Hz; max_age = 260 us; };
+			output landing_complete : bool { rate = 3840 Hz; max_age = 260 us; };
+			output valid : bool { rate = 3840 Hz; max_age = 260 us; };
+			use fpv_rate_mapping as fpv;
+			use camera_attitude_controller as attitude_control;
+			use landing_throttle_ramp as landing_ramp;
+			use rate_controller as rates;
+			use x_frame_mixer as mixer;
+			stage fpv_reference = fpv(sticks = [pilot.roll, pilot.pitch, pilot.yaw])
+			when mode == FlightMode.fpv;
+			stage camera_reference = attitude_control(
+			attitude = attitude,
+			current_yaw = current_yaw,
+			desired_tilt = desired_tilt,
+			yaw_rate_command = pilot.yaw * camera_yaw_rate_limit,
+			mode = mode,
+			dt = dt
+			) when mode == FlightMode.camera or mode == FlightMode.failsafe;
+			let camera_thrust : f32<1> = select(thrust_delta < -0.5, 0, select(thrust_delta > 0.5, 1, 0.5 + thrust_delta));
+			stage landing = landing_ramp(
+			active = mode == FlightMode.landing,
+			entry_thrust = camera_thrust,
+			dt = dt
+			);
+			choose rate_reference {
+				when mode == FlightMode.fpv: fpv_reference.rate_setpoint;
+				when mode == FlightMode.camera or mode == FlightMode.failsafe: camera_reference.rate_setpoint;
+				otherwise: [0, 0, 0];
+			}
+			stage torque = rates(
+			reference = rate_reference,
+			measured_rate = measured_rate,
+			motor_frequency = motor_frequency
+			);
+			let thrust : f32<1> = select(
+			mode == FlightMode.fpv,
+			pilot.throttle,
+			select(
+			mode == FlightMode.camera or mode == FlightMode.failsafe,
+			camera_thrust,
+			landing.throttle
+			)
+			);
+			stage mixed = mixer(
+			mode = mode, motors_enabled = motors_enabled, thrust = thrust, torque = torque.output
+			);
+			output motor_commands = mixed.motor_commands;
+			output torque_output = torque.output;
+			output thrust_output = thrust;
+			output landing_complete = landing.complete;
+			output valid = estimate_valid and (pilot.valid or mode == FlightMode.failsafe) and motors_enabled;
+			on_failure = assert_hard_kill;
+			execution_budget = 260.4167 us;
+		}
+
+		// The supervisor publishes a bounded decision snapshot consumed by the
+		// arm/mode machines, motor gate and watchdog gate.
+		supervisor safety {
+			input faults : FlightFaults;
+			input navigation : NavigationSnapshot;
+			input battery : BatteryState;
+			input motor_telemetry : MotorTelemetryBank;
+			output kill_motors : bool;
+			output motor_enable_permitted : bool;
+			output arm_prechecks : bool;
+			output arm_hold_elapsed : u32<ms>;
+			output watchdog_feed_permitted : bool;
+			arm_hold_required = 500 ms;
+			require_receiver_fresh = true;
+			require_imu_healthy = true;
+			require_estimator_valid = true;
+			require_motor_telemetry_healthy = true;
+			require_battery_above_critical_threshold = true;
+			geofence_radius = geofence_radius;
+			on_motor_inhibit = assert_motor_inhibit;
+			on_receiver_loss = begin_controlled_descent;
+			on_landing_entry = begin_landing_ramp;
+		} supervisor;
+		fault safety_faults {
+			input imu_fault : bool;
+			input tilt_limit_fault : bool;
+			input receiver_loss : bool;
+			input motor_loss : bool;
+			input estimator_fault : bool;
+			input storage_fault : bool;
+			output snapshot : FlightFaults;
+			output snapshot = map(
+			imu_fault = imu_fault,
+			tilt_limit_fault = tilt_limit_fault,
+			receiver_loss = receiver_loss,
+			motor_loss = motor_loss,
+			estimator_fault = estimator_fault,
+			storage_fault = storage_fault
+			);
+			aggregation = latched_until_disarmed_and_reset;
+			critical = [imu_fault, tilt_limit_fault, motor_loss, estimator_fault];
+		} fault;
+		watchdog flight_watchdog {
+			peripheral = watchdog_timer;
+			timeout = watchdog_timeout;
+			refresh_gate = safety.watchdog_feed_permitted;
+			refresh_context = task_only;
+			require_progress = [imu_control_cycle, safety_monitor, receiver_poll];
+			on_expiry = hardware_reset;
+		} watchdog;
+		log flight_recorder {
+			input snapshot : SharedFlightState;
+			transport = storage_bus;
+			sample_rate = 500 Hz;
+			queue_capacity = 128;
+			overflow = drop_oldest_and_count;
+			encoding = bounded_binary;
+			include_fault_transitions = true;
+			output healthy : bool;
+		} log;
+
+	}
+}

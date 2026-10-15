@@ -1,0 +1,68 @@
+{
+  "id": "stm32h745xih6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-h7",
+  "series": "STM32H7",
+  "part_number": "STM32H745XIH6",
+  "aliases": ["STM32H745XI"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M7 + Cortex-M4",
+    "isa": "Armv7E-M",
+    "count": 2,
+    "fpu": "M7 double; M4 single",
+    "max_frequency_hz": 480000000,
+    "core_frequencies_hz": {
+      "Cortex-M7": 480000000,
+      "Cortex-M4": 240000000
+    }
+  },
+  "package": {
+    "name": "TFBGA240+25",
+    "pin_count": 240
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 1048576,
+    "notes": "Vendor headline memory totals; exact core-local/shared region layout and startup ownership remain unresolved."
+  },
+  "peripheral_groups": [
+    "BDMA",
+    "DMA",
+    "MDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ETHERNET_MAC",
+    "ADC",
+    "DAC",
+    "HRTIM",
+    "QSPI",
+    "FMC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32H745XI product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h745xi.html"
+    },
+    {
+      "title": "ST STM32H745xI/G datasheet DS12923",
+      "url": "https://www.st.com/resource/en/datasheet/stm32h745xi.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "core_frequencies",
+    "package",
+    "flash",
+    "SRAM",
+    "peripheral_groups"
+  ],
+  "generation_available": false,
+  "record_note": "Initial Tesla-node candidate. Exact target memory map, dual-core boot/ownership, clocks, package pins, IRQ/DMA routing, linker/startup, errata review, board binding, build, and flash profiles are not registered."
+}

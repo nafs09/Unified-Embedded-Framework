@@ -1,0 +1,524 @@
+// QCW DRSSTC H745 controller: M4 capture/phase pipeline and M7 estimation/MPC.
+// Plant equations, policy data, solver settings, and qualified timing remain
+// required profile inputs. No control rates or deadlines are assumed here.
+project QcwH745Controller {
+  target = "stm32h745xih6";
+  contract import "tesla_coil_system.uefs";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+  record PhaseMeasurement {
+    frequency_hz : f32<Hz>;
+    phase_rad : f32<rad>;
+    sequence : u8;
+    received_at_us : u64<us>;
+    valid : bool;
+    age_us : u32<us>;
+  }
+  record CoilMeasurement {
+    phase : PhaseMeasurement;
+    primary_current : f32<A>;
+    antenna_voltage : f32<V>;
+    bus_voltage : f32<V>;
+    valid : bool;
+  }
+  record CoilEstimate {
+    state : f32[plant_state_dimension];
+    covariance : f32[plant_state_dimension, plant_state_dimension];
+    valid : bool;
+    age_us : u32<us>;
+  }
+  record EnergyRequest {
+    reference : f32[energy_reference_dimension];
+    horizon_steps : u16;
+    force_online : bool;
+    cycle_id : u16;
+  }
+  record ContinuousProposal {
+    duty : f32<1>;
+    frequency_shift_hz : f32<Hz>;
+    audio_modulation : f32<1>;
+    valid : bool;
+    within_envelope : bool;
+  }
+  record ControllerTiming {
+    capture_rate : f32<Hz>;
+    capture_deadline : f32<us>;
+    publication_rate : f32<Hz>;
+    publication_deadline : f32<us>;
+    controller_rate : f32<Hz>;
+    controller_deadline : f32<us>;
+    link_rate : f32<Hz>;
+    link_deadline : f32<us>;
+    supervision_rate : f32<Hz>;
+    supervision_deadline : f32<us>;
+    diagnostic_rate : f32<Hz>;
+    diagnostic_deadline : f32<us>;
+    phase_max_age : f32<us>;
+    measurement_max_age : f32<us>;
+    control_input_max_age : f32<us>;
+    planner_budget : f32<us>;
+    full_controller_budget : f32<us>;
+    command_validity_window : u16<us>;
+    audio_interrupt_rate : u16<Hz>;
+    edge_history_capacity : u16;
+    measurement_mailbox_capacity : u16;
+    fault_mailbox_capacity : u16;
+    control_stack_words : u16;
+    priority_capture : u8;
+    priority_publication : u8;
+    priority_control : u8;
+    priority_link : u8;
+    priority_safety : u8;
+    priority_diagnostics : u8;
+    command_mailbox_capacity : u16;
+  }
+  record IntercoreProfile {
+    capture_memory_region : string;
+    shared_memory_region : string;
+    cache_policy : string;
+    barrier_policy : string;
+    notification : string;
+    clock_policy : string;
+  }
+  record H745BoardProfile {
+    primary_current_adc : string;
+    antenna_voltage_adc : string;
+    bus_voltage_adc : string;
+    primary_temperature_adc : string;
+    switch_temperature_adc : string;
+  }
+  record H745SensorCalibration {
+    current_gain : f32<A/count>;
+    current_offset : f32<A>;
+    antenna_voltage_gain : f32<V/count>;
+    antenna_voltage_offset : f32<V>;
+    bus_voltage_gain : f32<V/count>;
+    bus_voltage_offset : f32<V>;
+    primary_temperature_gain : f32<delta_degC/count>;
+    primary_temperature_offset : f32<degC>;
+    switch_temperature_gain : f32<delta_degC/count>;
+    switch_temperature_offset : f32<degC>;
+  }
+  parameter timing : ControllerTiming;
+  parameter intercore : IntercoreProfile;
+  parameter board : H745BoardProfile;
+  parameter calibration : H745SensorCalibration;
+  parameter plant_state_dimension : u16;
+  parameter plant_input_dimension : u16;
+  parameter plant_parameter_dimension : u16;
+  parameter plant_output_dimension : u16;
+  parameter energy_reference_dimension : u16;
+  // Electrical design must supply an explicitly inhibited, protocol-valid command.
+  parameter disabled_setpoint : CoilSetpoint;
+  peripheral primary_current_adc : adc;
+  peripheral antenna_voltage_adc : adc;
+  peripheral bus_voltage_adc : adc;
+  peripheral primary_temperature_adc : adc;
+  peripheral switch_temperature_adc : adc;
+  sensor primary_current : current;
+  sensor antenna_voltage : voltage;
+  sensor bus_voltage : voltage;
+  sensor primary_temperature : temp;
+  sensor switch_temperature : temp;
+  algorithm state_estimator : ukf;
+  algorithm explicit_policy : enmpc;
+  algorithm online_sqp : nmpc_rti;
+  algorithm switching_mpc : fs_mpc;
+  custom algorithm capture_phase_reconstruction;
+  fpga controls_endpoint;
+  supervisor controller_authority;
+  fault controller_faults;
+  log control_trace;
+  model resonant_plant : continuous;
+  hybrid algorithm energy_planner;
+  hybrid algorithm coil_controller;
+  subsystem measurement_pipeline;
+  operatingsystem QcwH745Runtime {
+    runtime = FreeRTOS;
+    component_failure_policy = drop_session_and_inhibit;
+    startup_policy = outputs_inhibited_until_estimate_and_command_valid;
+    state_machine controller_mode : ControllerMode {
+      state inhibited;
+      state qualifying;
+      state pipeline_hold;
+      state table_plan_active;
+      state sqp_plan_active;
+      state shutdown;
+      state latched_fault;
+
+      initial inhibited;
+      owner = supervise;
+      consumers = [estimate_and_control];
+      transition any -> latched_fault when controller_authority.trip_latched or controller_faults.critical;
+      transition any -> shutdown when controller_authority.shutdown_requested;
+      transition inhibited -> qualifying when controller_authority.local_permissives;
+      transition qualifying -> pipeline_hold when controller_authority.executor_link_connected;
+      transition table_plan_active -> pipeline_hold when not coil_controller.command_valid or not state_estimator.estimate.valid;
+      transition sqp_plan_active -> pipeline_hold when not coil_controller.command_valid or not state_estimator.estimate.valid;
+      transition pipeline_hold -> table_plan_active when coil_controller.command_valid and coil_controller.source == PlannerSource.explicit_enmpc;
+      transition pipeline_hold -> sqp_plan_active when coil_controller.command_valid and coil_controller.source == PlannerSource.online_nmpc_sqp;
+      transition table_plan_active -> sqp_plan_active when coil_controller.source == PlannerSource.online_nmpc_sqp and coil_controller.command_valid;
+      transition sqp_plan_active -> table_plan_active when coil_controller.source == PlannerSource.explicit_enmpc and coil_controller.command_valid;
+      transition shutdown -> inhibited when controller_authority.reset_authorized and controller_authority.stage_off;
+      transition latched_fault -> inhibited when controller_authority.reset_authorized and controller_authority.stage_off;
+    }
+
+
+    channel phase_mailbox {
+      source = capture_phase_reconstruction.phase;
+      destination = measurement_pipeline.phase;
+      producer = reconstruct_phase;
+      consumers = [publish_measurements];
+      capacity = timing.measurement_mailbox_capacity;
+      overflow = replace_oldest_and_mark_phase_invalid;
+      maximum_age = timing.phase_max_age;
+      memory_region = intercore.shared_memory_region;
+      cache_policy = intercore.cache_policy;
+      barrier_policy = intercore.barrier_policy;
+      notification = intercore.notification;
+      clock_policy = intercore.clock_policy;
+      ownership = immutable_snapshot;
+    }
+    channel command_mailbox {
+      source = coil_controller.command;
+      destination = controls_endpoint.send.setpoint;
+      producer = estimate_and_control;
+      consumers = [link_service];
+      capacity = timing.command_mailbox_capacity;
+      overflow = replace_oldest;
+      maximum_age = timing.command_validity_window;
+      memory_region = intercore.shared_memory_region;
+      cache_policy = intercore.cache_policy;
+      barrier_policy = intercore.barrier_policy;
+      notification = intercore.notification;
+      clock_policy = intercore.clock_policy;
+      ownership = immutable_value;
+    }
+    channel control_mailbox {
+      source = controller_authority.remote_control;
+      destination = controls_endpoint.send.control;
+      producer = supervise;
+      consumers = [link_service];
+      capacity = 1;
+      overflow = replace_oldest;
+      maximum_age = timing.control_input_max_age;
+      memory_region = intercore.shared_memory_region;
+      cache_policy = intercore.cache_policy;
+      barrier_policy = intercore.barrier_policy;
+      notification = intercore.notification;
+      clock_policy = intercore.clock_policy;
+      ownership = immutable_value;
+    }
+    channel endpoint_health_mailbox {
+      source = controls_endpoint.connected;
+      destination = controller_authority.executor_link_connected;
+      producer = link_service;
+      consumers = [supervise];
+      capacity = 1;
+      overflow = replace_oldest;
+      maximum_age = timing.control_input_max_age;
+      memory_region = intercore.shared_memory_region;
+      cache_policy = intercore.cache_policy;
+      barrier_policy = intercore.barrier_policy;
+      notification = intercore.notification;
+      clock_policy = intercore.clock_policy;
+      ownership = immutable_snapshot;
+    }
+    channel executor_status_mailbox {
+      source = controls_endpoint.receive.status;
+      destination = controller_authority.executor_status;
+      producer = link_service;
+      consumers = [supervise];
+      capacity = 1;
+      overflow = replace_oldest;
+      maximum_age = timing.control_input_max_age;
+      memory_region = intercore.shared_memory_region;
+      cache_policy = intercore.cache_policy;
+      barrier_policy = intercore.barrier_policy;
+      notification = intercore.notification;
+      clock_policy = intercore.clock_policy;
+      ownership = immutable_snapshot;
+    }
+    channel executor_fault_mailbox {
+      source = controls_endpoint.receive.fault;
+      destination = controller_faults.remote_event;
+      producer = link_service;
+      consumers = [remote_fault_service];
+      capacity = timing.fault_mailbox_capacity;
+      overflow = report_and_inhibit;
+      maximum_age = timing.control_input_max_age;
+      memory_region = intercore.shared_memory_region;
+      cache_policy = intercore.cache_policy;
+      barrier_policy = intercore.barrier_policy;
+      notification = intercore.notification;
+      clock_policy = intercore.clock_policy;
+      ownership = immutable_snapshot;
+    }
+
+    taskset m4_capture_domain {
+      core = M4; scheduler = fixed_priority;
+      channel capture_edge_queue {
+        source = controls_endpoint.receive.measurement;
+        destination = capture_phase_reconstruction.edge;
+        producer = link_service;
+        consumers = [reconstruct_phase];
+        capacity = timing.edge_history_capacity;
+        overflow = discard_oldest_and_mark_phase_invalid;
+        maximum_age = timing.phase_max_age;
+        ownership = immutable_value;
+      }
+      task reconstruct_phase {
+        run = capture_phase_reconstruction;
+        trigger = capture_edge_queue.not_empty;
+        rate = timing.capture_rate;
+        priority = timing.priority_capture;
+        deadline = timing.capture_deadline;
+        on_miss = invalidate_phase;
+      }
+      task link_service { run = controls_endpoint; rate = timing.link_rate; priority = timing.priority_link; deadline = timing.link_deadline; on_miss = drop_session_and_inhibit; }
+    }
+
+    taskset m7_control_domain {
+      core = M7; scheduler = fixed_priority;
+      channel measurement_mailbox {
+        source = measurement_pipeline.measurement;
+        destination = coil_controller.measurement;
+        producer = publish_measurements;
+        consumers = [estimate_and_control];
+        capacity = timing.measurement_mailbox_capacity;
+        overflow = replace_oldest_and_mark_sequence_gap;
+        maximum_age = timing.measurement_max_age;
+        ownership = immutable_snapshot;
+      }
+      task publish_measurements {
+        run = measurement_pipeline(
+          primary_current = primary_current.value,
+          antenna_voltage = antenna_voltage.value,
+          bus_voltage = bus_voltage.value,
+          primary_current_valid = primary_current.valid,
+          antenna_voltage_valid = antenna_voltage.valid,
+          bus_voltage_valid = bus_voltage.valid
+        );
+        trigger = phase_mailbox.not_empty;
+        rate = timing.publication_rate;
+        priority = timing.priority_publication;
+        deadline = timing.publication_deadline;
+        on_miss = invalidate_measurement;
+      }
+      task estimate_and_control {
+        run = coil_controller;
+        rate = timing.controller_rate;
+        priority = timing.priority_control;
+        deadline = timing.controller_deadline;
+        stack = timing.control_stack_words;
+        when = controller_mode.state == ControllerMode.pipeline_hold or controller_mode.state == ControllerMode.table_plan_active or controller_mode.state == ControllerMode.sqp_plan_active;
+        on_miss = inhibit_outputs;
+      }
+      task supervise {
+        run = controller_authority;
+        rate = timing.supervision_rate;
+        priority = timing.priority_safety;
+        deadline = timing.supervision_deadline;
+        on_miss = inhibit_outputs;
+      }
+      task remote_fault_service {
+        run = controller_faults;
+        trigger = executor_fault_mailbox.not_empty;
+        rate = timing.supervision_rate;
+        priority = timing.priority_safety;
+        deadline = timing.supervision_deadline;
+        on_miss = inhibit_outputs;
+      }
+      task diagnostics { run = control_trace; rate = timing.diagnostic_rate; priority = timing.priority_diagnostics; deadline = timing.diagnostic_deadline; }
+    }
+  }
+
+  implementation {
+    peripheral primary_current_adc { role = primary_current_sense; resource = board.primary_current_adc; } adc;
+    peripheral antenna_voltage_adc { role = antenna_voltage_sense; resource = board.antenna_voltage_adc; } adc;
+    peripheral bus_voltage_adc { role = bus_voltage_sense; resource = board.bus_voltage_adc; } adc;
+    peripheral primary_temperature_adc { role = primary_temperature_sense; resource = board.primary_temperature_adc; } adc;
+    peripheral switch_temperature_adc { role = switch_temperature_sense; resource = board.switch_temperature_adc; } adc;
+    sensor primary_current { peripheral = primary_current_adc; gain = calibration.current_gain; offset = calibration.current_offset; output value : f32<A>; } current;
+    sensor antenna_voltage { peripheral = antenna_voltage_adc; gain = calibration.antenna_voltage_gain; offset = calibration.antenna_voltage_offset; output value : f32<V>; } voltage;
+    sensor bus_voltage { peripheral = bus_voltage_adc; gain = calibration.bus_voltage_gain; offset = calibration.bus_voltage_offset; output value : f32<V>; } voltage;
+    sensor primary_temperature {
+      peripheral = primary_temperature_adc;
+      gain = calibration.primary_temperature_gain;
+      offset = calibration.primary_temperature_offset;
+      output value : f32<degC>;
+    } temp;
+    sensor switch_temperature {
+      peripheral = switch_temperature_adc;
+      gain = calibration.switch_temperature_gain;
+      offset = calibration.switch_temperature_offset;
+      output value : f32<degC>;
+    } temp;
+
+    model resonant_plant {
+      state x : f32[plant_state_dimension];
+      input u : f32[plant_input_dimension];
+      parameter p : f32[plant_parameter_dimension];
+      output y : f32[plant_output_dimension];
+      equations {
+        // The circuit schematic, measured component values, sensor transfer
+        // functions, and chosen electrical state definition supply the model.
+        // No unverified plant topology or numerical value is implied here.
+      }
+    }
+
+    custom algorithm capture_phase_reconstruction {
+      input edge : Received<CaptureSample>;
+      output phase : PhaseMeasurement;
+      timer_clock_hz = controls_endpoint.capture_clock.timer_clock_hz;
+      timer_counter_bits = controls_endpoint.capture_clock.counter_bits;
+      state timestamp_epoch : u64 = 0;
+      state prior_edges : Received<CaptureSample>[timing.edge_history_capacity];
+      step(dt : f32<s>) {
+        // Extend edge.value.capture_ticks in edge.sequence order, using the
+        // selected G4 timer width/frequency. edge.received_at_us is H745-M4
+        // local arrival time and bounds local queue age.
+        // TODO: implement the reviewed wrap/ambiguity policy, CT and antenna
+        // edge history, frequency/phase reconstruction, and bounded PLL update.
+      }
+    }
+
+    algorithm state_estimator {
+      model = resonant_plant;
+      input measurement : CoilMeasurement;
+      output estimate : CoilEstimate;
+      // Bind the source's state/measurement maps, process and sensor noise,
+      // initialization, innovation gates, and age rules from measured data.
+    } ukf;
+
+    algorithm explicit_policy {
+      model = resonant_plant;
+      input estimate : CoilEstimate;
+      input request : EnergyRequest;
+      output proposal : ContinuousProposal;
+      // Supply the offline-generated policy table, feature map, certified
+      // domain, and validity metadata for the selected model revision.
+    } enmpc;
+
+    algorithm online_sqp {
+      model = resonant_plant;
+      input estimate : CoilEstimate;
+      input request : EnergyRequest;
+      output proposal : ContinuousProposal;
+      // Supply the reviewed NMPC-SQP objective, constraints, warm start,
+      // stopping rules, solver implementation, and target WCET evidence.
+    } nmpc_rti;
+
+    algorithm switching_mpc {
+      model = resonant_plant;
+      input estimate : CoilEstimate;
+      input reference : ContinuousProposal;
+      input previous : CoilSetpoint;
+      output switching_gate_pattern : u32;
+      output valid : bool;
+      // Search only the reviewed finite set of opaque inverter patterns;
+      // constrain legal transitions and reject unsafe model predictions.
+    } fs_mpc;
+
+    hybrid algorithm energy_planner {
+      input estimate : CoilEstimate { rate = timing.controller_rate; max_age = timing.control_input_max_age; clock_domain = h745_m7; };
+      input request : EnergyRequest { rate = timing.controller_rate; max_age = timing.control_input_max_age; clock_domain = h745_m7; };
+      output proposal : ContinuousProposal { rate = timing.controller_rate; max_age = timing.control_input_max_age; clock_domain = h745_m7; };
+      output source : PlannerSource;
+      output valid : bool;
+      use explicit_policy as table; use online_sqp as sqp;
+      stage table_result = table(estimate = estimate, request = request);
+      stage sqp_result = sqp(estimate = estimate, request = request)
+        when request.force_online or not table_result.valid or not table_result.within_envelope;
+      choose proposal {
+        when not request.force_online and table_result.valid and table_result.within_envelope: table_result.proposal;
+        otherwise: sqp_result.proposal;
+      }
+      choose source {
+        when not request.force_online and table_result.valid and table_result.within_envelope: PlannerSource.explicit_enmpc;
+        otherwise: PlannerSource.online_nmpc_sqp;
+      }
+      choose valid {
+        when not request.force_online and table_result.valid and table_result.within_envelope: true;
+        otherwise: sqp_result.valid;
+      }
+      on_failure = invalid_proposal;
+      execution_budget = timing.planner_budget;
+    }
+
+    hybrid algorithm coil_controller {
+      input measurement : CoilMeasurement { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m4; };
+      input request : EnergyRequest { rate = timing.controller_rate; max_age = timing.control_input_max_age; clock_domain = h745_m7; };
+      input previous : CoilSetpoint { rate = timing.controller_rate; max_age = timing.control_input_max_age; clock_domain = h745_m7; };
+      output command : CoilSetpoint { rate = timing.controller_rate; max_age = timing.control_input_max_age; clock_domain = h745_m7; };
+      output source : PlannerSource;
+      output command_valid : bool;
+      output failure : ControlFailure;
+      use state_estimator as estimator;
+      use energy_planner as continuous;
+      use switching_mpc as finite_set;
+      stage estimate = estimator(measurement = measurement);
+      stage plan = continuous(estimate = estimate, request = request)
+        when estimate.valid;
+      stage switch = finite_set(estimate = estimate, reference = plan.proposal, previous = previous)
+        when plan.valid;
+      choose command {
+        when not estimate.valid: disabled_setpoint;
+        when not plan.valid: disabled_setpoint;
+        when not switch.valid: disabled_setpoint;
+        otherwise: map(
+          generation = request.cycle_id,
+          valid_for_us = timing.command_validity_window,
+          source_timestamp_us = runtime.monotonic_time_us,
+          duty = plan.proposal.duty,
+          audio_modulation = plan.proposal.audio_modulation,
+          frequency_shift_hz = plan.proposal.frequency_shift_hz,
+          audio_interrupt_hz = timing.audio_interrupt_rate,
+          switching_gate_pattern = switch.switching_gate_pattern,
+          enable = controller_authority.output_enable_permitted
+        );
+      }
+      choose source {
+        when plan.valid: plan.source;
+        otherwise: PlannerSource.none;
+      }
+      output command_valid = estimate.valid and plan.valid and switch.valid;
+      choose failure {
+        when not estimate.valid: ControlFailure.estimate_invalid;
+        when not plan.valid: ControlFailure.planner_invalid;
+        when not switch.valid: ControlFailure.no_feasible_switching_state;
+        otherwise: ControlFailure.none;
+      }
+      on_failure = disabled_setpoint;
+      execution_budget = timing.full_controller_budget;
+    }
+
+    fpga controls_endpoint {
+      protocol = qcw_fibre;
+      endpoint = controller_side;
+    } fpga;
+    supervisor controller_authority { require_fresh_executor_status = true; require_fresh_estimate = true; reset_requires_power_stage_off = true; } supervisor;
+
+    subsystem measurement_pipeline {
+      input phase : PhaseMeasurement { rate = timing.publication_rate; max_age = timing.phase_max_age; clock_domain = h745_m4; };
+      input primary_current : f32<A> { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      input antenna_voltage : f32<V> { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      input bus_voltage : f32<V> { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      input primary_current_valid : bool { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      input antenna_voltage_valid : bool { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      input bus_voltage_valid : bool { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      output measurement : CoilMeasurement { rate = timing.publication_rate; max_age = timing.measurement_max_age; clock_domain = h745_m7; };
+      output measurement = map(
+        phase = phase,
+        primary_current = primary_current,
+        antenna_voltage = antenna_voltage,
+        bus_voltage = bus_voltage,
+        valid = phase.valid and primary_current_valid and antenna_voltage_valid and bus_voltage_valid
+      );
+    }
+  }
+}

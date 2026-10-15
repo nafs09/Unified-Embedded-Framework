@@ -1,0 +1,56 @@
+{
+  "id": "esp8684h4",
+  "vendor": "Espressif",
+  "family_id": "esp32-c2",
+  "series": "ESP32-C2",
+  "part_number": "ESP8684H4",
+  "aliases": [
+    "ESP32-C2"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "RISC-V",
+    "isa": "RISC-V",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 120000000
+  },
+  "package": {
+    "name": "QFN32",
+    "pin_count": 32
+  },
+  "memory": {
+    "flash_bytes": 4194304,
+    "sram_bytes": 278528
+  },
+  "peripheral_groups": [
+    "GDMA",
+    "GPIO",
+    "SPI",
+    "I2C",
+    "UART",
+    "ADC",
+    "Wi-Fi",
+    "Bluetooth LE"
+  ],
+  "source_references": [
+    {
+      "title": "Espressif ESP32-C2 series page",
+      "url": "https://www.espressif.com/en/chip-category/esp32-c2-series"
+    },
+    {
+      "title": "Espressif ESP32-C2 chip packaging information",
+      "url": "https://docs.espressif.com/projects/esp-packaging/en/latest/esp32c2/01-marking/index_chip.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "in_package_flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "ESP8684H4 is a C2-family 4-MiB in-package-flash chip variant; the family also has different flash/package variants."
+}

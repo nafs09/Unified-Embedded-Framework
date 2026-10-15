@@ -1,0 +1,8 @@
+/* Rename to cache.c only after the selected AVR part's cache capabilities are described. */
+/* void uhal_cache_clean(const void *address, uetd_u32_t size); */
+/* void uhal_cache_invalidate(void *address, uetd_u32_t size); */
+/* void uhal_cache_clean_invalidate(void *address, uetd_u32_t size); */
+/* void uhal_dcache_enable(void); */
+/* void uhal_icache_enable(void); */
+/* TODO: Report unsupported cache operations through the capability policy; do not invent a
+ * cache effect or invalidate ordinary SRAM on parts that have no cache. */

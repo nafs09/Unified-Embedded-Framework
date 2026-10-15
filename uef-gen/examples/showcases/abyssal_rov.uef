@@ -1,0 +1,826 @@
+// Abyssal ROV: a six-thruster inspection vehicle with station keeping,
+// current rejection, vehicle-health supervision, and a wired tether interface.
+// Hydrodynamic coefficients, actuator geometry, sensor calibration, and trip
+// limits are illustrative design inputs, not commissioning values.
+project AbyssalRov {
+  target = "stm32h743zit6";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+  enum RovControlMode : u8 {
+    unknown = 0, manual_dive = 1, depth_hold = 2,
+    station_keeping = 3
+  }
+  record ImuSample {
+    acceleration : f32[3]<m/s^2>;
+    angular_rate : f32[3]<rad/s>;
+  }
+  record VehicleState {
+    north : f32<m>;
+    east : f32<m>;
+    depth : f32<m>;
+    surge : f32<m/s>;
+    sway : f32<m/s>;
+    heave : f32<m/s>;
+    heading : f32<rad>;
+    yaw_rate : f32<rad/s>;
+  }
+  record VehicleHealth {
+    estimate_valid : bool;
+    pressure_valid : bool;
+    tether_valid : bool;
+    leak_detected : bool;
+    health_flags : u16;
+  }
+  record PilotCommand {
+    surge : f32;
+    sway : f32;
+    heave : f32;
+    yaw : f32<1>;
+    mode : RovControlMode;
+    arm : bool;
+    return_surface : bool;
+  }
+  record RovTelemetry {
+    north : f32<m>;
+    east : f32<m>;
+    depth : f32<m>;
+    surge : f32<m/s>;
+    sway : f32<m/s>;
+    heave : f32<m/s>;
+    heading : f32<rad>;
+    yaw_rate : f32<rad/s>;
+    health_flags : u16;
+  }
+  record RovLogRecord {
+    mode : RovMissionMode;
+    state : VehicleState;
+    health : VehicleHealth;
+    thruster_commands : f32[6];
+    critical_fault : bool;
+  }
+  record WrenchDemand {
+    surge_force : f32<N>;
+    sway_force : f32<N>;
+    heave_force : f32<N>;
+    yaw_moment : f32<N*m>;
+  }
+  record ThrusterDemand {
+    command : f32[6];
+    valid : bool;
+  }
+  record ThrusterLimits {
+    minimum : f32[6];
+    maximum : f32[6];
+    slew_per_second : f32[6];
+  }
+  parameter thruster_geometry : f32[6, 4];
+  parameter thruster_limits : ThrusterLimits;
+  parameter mission_reference : VehicleState;
+  parameter disturbance_limit : WrenchDemand;
+  parameter watchdog_timeout : f32<s>;
+  parameter low_battery_threshold : f32<V>;
+  parameter maximum_enclosure_temperature : f32<degC>;
+  sensor imu : imu;
+  sensor pressure : pressure;
+  sensor magnetometer : magnetometer;
+  sensor surface_gnss : gnss;
+  sensor forward_sonar : range;
+  sensor down_sonar : range;
+  sensor battery_voltage : voltage;
+  sensor battery_current : current;
+  sensor enclosure_temperature : temp;
+  actuator thruster_bank : h_bridge;
+  watchdog vehicle_watchdog;
+  supervisor vehicle_safety;
+  fault vehicle_faults;
+  log flight_recorder;
+  algorithm attitude_filter : mahony;
+  algorithm navigation_filter : ukf;
+  algorithm current_observer : dob;
+  algorithm station_keeping_mpc : robust_mpc;
+  algorithm thruster_allocator : control_allocator;
+  algorithm ascent_heave_pid : pid;
+  custom protocol tether_v1;
+  model rov_dynamics : continuous;
+  custom algorithm pilot_command_conditioner;
+  custom algorithm output_guard;
+  subsystem state_estimation;
+  subsystem station_keeping;
+  subsystem vehicle_control;
+  subsystem thruster_output;
+  subsystem surface_return;
+  peripheral imu_spi : spi;
+  peripheral pressure_i2c : i2c;
+  peripheral magnetometer_i2c : i2c;
+  bus sensor_spi : spi;
+  bus sensor_i2c : i2c;
+  bus magnetometer_bus : i2c;
+  peripheral tether_uart : uart;
+  peripheral gnss_uart : uart;
+  peripheral sonar_uart : uart;
+  peripheral thruster_pwm : timer;
+  peripheral battery_adc : adc;
+  peripheral current_adc : adc;
+  peripheral enclosure_temp_adc : adc;
+  peripheral leak_input : gpio;
+  peripheral hardware_kill : gpio;
+  peripheral thruster_inhibit : gpio;
+  peripheral imu_data_ready : gpio;
+
+  operatingsystem ROVRuntime {
+    runtime = FreeRTOS;
+    component_failure_policy = inhibit_thrusters;
+    scheduler = fixed_priority;
+    tick = 1 kHz;
+    startup_timeout = 3 s;
+    unhandled_fault_policy = inhibit_thrusters;
+    state_machine mission_mode : RovMissionMode {
+      state boot;
+      state self_test;
+      state disarmed_surface;
+      state armed_surface;
+      state manual_dive;
+      state depth_hold;
+      state station_keeping;
+      state return_to_surface;
+      state surfacing;
+      state link_lost;
+      state emergency_ascent;
+      state fault_latched;
+
+      initial boot;
+      owner = safety_supervision;
+      consumers = [mission_command, predictive_control, surface_return_control];
+      // fault_latched intentionally has no outgoing transition; recovery is an authorized safe-state reset.
+      transition any -> fault_latched when mission_mode.state != RovMissionMode.fault_latched and (vehicle_safety.trip_latched or vehicle_faults.critical);
+      transition any -> emergency_ascent when mission_mode.state != RovMissionMode.fault_latched and mission_mode.state != RovMissionMode.emergency_ascent and not vehicle_safety.trip_latched and not vehicle_faults.critical and vehicle_safety.emergency_ascent_requested;
+      transition any -> link_lost when not tether_v1.fresh.command and (mission_mode.state == RovMissionMode.manual_dive or mission_mode.state == RovMissionMode.depth_hold or mission_mode.state == RovMissionMode.station_keeping);
+      transition boot -> self_test when vehicle_safety.startup_permitted;
+      transition self_test -> disarmed_surface when vehicle_safety.self_test_passed and pressure.valid and pressure.surface_detected;
+      transition self_test -> fault_latched when not vehicle_safety.self_test_passed;
+      transition disarmed_surface -> armed_surface when tether_v1.fresh.command and tether_v1.receive.command.value.arm and vehicle_safety.arm_permitted;
+      transition armed_surface -> disarmed_surface when pressure.valid and pressure.surface_detected and vehicle_safety.surface_qualified and not vehicle_safety.trip_latched and not vehicle_faults.critical and (not tether_v1.fresh.command or not tether_v1.receive.command.value.arm);
+      transition armed_surface -> manual_dive when tether_v1.fresh.command and tether_v1.receive.command.value.mode == RovControlMode.manual_dive and vehicle_safety.dive_permitted;
+      transition armed_surface -> depth_hold when tether_v1.fresh.command and tether_v1.receive.command.value.mode == RovControlMode.depth_hold and vehicle_safety.dive_permitted;
+      transition manual_dive -> return_to_surface when tether_v1.fresh.command and (tether_v1.receive.command.value.return_surface or not tether_v1.receive.command.value.arm);
+      transition depth_hold -> return_to_surface when tether_v1.fresh.command and (tether_v1.receive.command.value.return_surface or not tether_v1.receive.command.value.arm);
+      transition station_keeping -> return_to_surface when tether_v1.fresh.command and (tether_v1.receive.command.value.return_surface or not tether_v1.receive.command.value.arm);
+      transition manual_dive -> station_keeping when tether_v1.fresh.command and tether_v1.receive.command.value.mode == RovControlMode.station_keeping and state_estimation.health.estimate_valid;
+      transition depth_hold -> station_keeping when tether_v1.fresh.command and tether_v1.receive.command.value.mode == RovControlMode.station_keeping and state_estimation.health.estimate_valid;
+      transition station_keeping -> depth_hold when tether_v1.fresh.command and tether_v1.receive.command.value.mode == RovControlMode.depth_hold;
+      transition return_to_surface -> surfacing when pressure.valid and pressure.depth_m <= 0.5 m;
+      transition surfacing -> disarmed_surface when pressure.valid and pressure.surface_detected and vehicle_safety.surface_qualified and not vehicle_safety.trip_latched and not vehicle_faults.critical;
+      transition link_lost -> disarmed_surface when pressure.valid and pressure.surface_detected and vehicle_safety.surface_qualified and not vehicle_safety.trip_latched and not vehicle_faults.critical;
+      transition link_lost -> return_to_surface when vehicle_safety.autonomous_ascent_permitted;
+      transition emergency_ascent -> disarmed_surface when pressure.valid and pressure.surface_detected and vehicle_safety.surface_qualified and not vehicle_safety.trip_latched and not vehicle_faults.critical;
+      on_enter boot call vehicle_watchdog.start;
+      on_enter fault_latched call vehicle_safety.inhibit_all;
+      on_enter disarmed_surface call thruster_bank.disable;
+    }
+
+      task safety_supervision {
+        run = vehicle_safety(
+          leak_detected = leak_input.active,
+          hardware_kill_active = hardware_kill.active,
+          pressure_valid = pressure.valid,
+          estimate_valid = state_estimation.health.estimate_valid,
+          tether_valid = tether_v1.fresh.command
+        );
+        rate = 1 kHz; priority = 7; deadline = 1 ms; on_miss = inhibit_thrusters;
+      }
+      interrupt leak_interrupt { source = leak_input.rising_edge; handler = vehicle_faults.signal_leak; priority = 7; context = isr_signal_only; }
+      interrupt kill_interrupt { source = hardware_kill.rising_edge; handler = vehicle_safety.signal_kill; priority = 7; context = isr_signal_only; }
+      task watchdog_service { run = vehicle_watchdog; rate = 100 Hz; priority = 6; feed_only_when = vehicle_safety.watchdog_feed_permitted and not vehicle_faults.critical; }
+      task fault_service {
+        run = vehicle_faults(
+          leak_detected = leak_input.active,
+          hardware_kill_active = hardware_kill.active,
+          pressure_valid = pressure.valid,
+          estimate_valid = state_estimation.health.estimate_valid,
+          battery_voltage = battery_voltage.value,
+          enclosure_temperature = enclosure_temperature.value
+        );
+        rate = 200 Hz; priority = 6; deadline = 5 ms;
+      }
+      channel imu_samples {
+        source = imu.sample;
+        destination = state_estimation.imu_sample;
+        producer = imu_acquisition;
+        consumers = [navigation_update];
+        capacity = 8;
+        overflow = drop_oldest_and_mark_stale;
+        maximum_age = 2 ms;
+        ownership = immutable_snapshot;
+        memory_region = dma_sram;
+      }
+      task imu_acquisition { run = imu; trigger = imu_data_ready.edge; rate = 1 kHz; priority = 6; deadline = 800 us; on_miss = invalidate_estimate; }
+      task navigation_update {
+        run = state_estimation(
+          pressure_depth = pressure.depth_m,
+          magnetic_field = magnetometer.field_body,
+          pressure_valid = pressure.valid,
+          surface_position = surface_gnss.position_ned,
+          surface_fix_valid = surface_gnss.fix_valid,
+          forward_range = forward_sonar.range_m,
+          forward_range_valid = forward_sonar.valid,
+          down_range = down_sonar.range_m,
+          down_range_valid = down_sonar.valid,
+          tether_valid = tether_v1.fresh.command,
+          leak_detected = leak_input.active,
+          health_flags = vehicle_safety.health_flags
+        );
+        rate = 480 Hz; priority = 5; deadline = 2 ms;
+      }
+      task pressure_sample { run = pressure; rate = 100 Hz; priority = 4; deadline = 10 ms; }
+      task magnetometer_sample { run = magnetometer; rate = 50 Hz; priority = 3; deadline = 20 ms; }
+      task forward_sonar_update { run = forward_sonar; rate = 20 Hz; priority = 2; deadline = 50 ms; }
+      task down_sonar_update { run = down_sonar; rate = 20 Hz; priority = 2; deadline = 50 ms; }
+      task surface_gnss_update { run = surface_gnss; rate = 10 Hz; priority = 2; deadline = 100 ms; when = pressure.surface_detected; }
+      task battery_voltage_sample { run = battery_voltage; rate = 10 Hz; priority = 2; deadline = 100 ms; }
+      task battery_current_sample { run = battery_current; rate = 10 Hz; priority = 2; deadline = 100 ms; }
+      task enclosure_temperature_sample { run = enclosure_temperature; rate = 1 Hz; priority = 1; deadline = 1 s; }
+      task mission_command {
+        run = vehicle_control(
+          pilot = tether_v1.receive.command.value,
+          health = state_estimation.health,
+          station_keeping_wrench = station_keeping.wrench,
+          station_keeping_valid = station_keeping.valid,
+          return_wrench = surface_return.wrench,
+          return_valid = surface_return.valid,
+          ascent_permitted = vehicle_safety.autonomous_ascent_permitted,
+          mode = mission_mode.state,
+          dt = 0.005 s
+        );
+        rate = 200 Hz; priority = 5; deadline = 5 ms;
+      }
+      task disturbance_update {
+        run = current_observer(
+          state = state_estimation.state,
+          measured_state = state_estimation.state,
+          applied_wrench = vehicle_control.wrench
+        );
+        rate = 200 Hz; priority = 5; deadline = 5 ms;
+      }
+      task predictive_control {
+        run = station_keeping(
+          state = state_estimation.state,
+          reference = mission_reference,
+          disturbance = current_observer.disturbance
+        );
+        rate = 50 Hz;
+        priority = 4;
+        deadline = 20 ms;
+        when = mission_mode.state == RovMissionMode.station_keeping or mission_mode.state == RovMissionMode.depth_hold;
+        on_miss = preserve_safe_hold;
+      }
+      task surface_return_control {
+        run = surface_return(state = state_estimation.state, state_valid = state_estimation.health.estimate_valid);
+        rate = 50 Hz;
+        priority = 5;
+        deadline = 20 ms;
+        when = mission_mode.state == RovMissionMode.return_to_surface or mission_mode.state == RovMissionMode.surfacing or mission_mode.state == RovMissionMode.link_lost or mission_mode.state == RovMissionMode.emergency_ascent;
+        on_miss = inhibit_thrusters;
+      }
+      task actuator_allocation {
+        run = thruster_output(wrench = vehicle_control.wrench, health = state_estimation.health, kill_active = hardware_kill.active, autonomous_return = vehicle_control.autonomous_return, safety_permitted = vehicle_safety.output_enable_permitted);
+        rate = 200 Hz; priority = 6; deadline = 5 ms;
+      }
+      task tether_service {
+        run = tether_v1(telemetry = rov_telemetry_snapshot);
+        rate = 100 Hz; priority = 3; deadline = 10 ms; on_miss = invalidate_pilot_command;
+      }
+      task recorder_flush {
+        run = flight_recorder(snapshot = rov_log_snapshot);
+        rate = 20 Hz; priority = 1; deadline = 50 ms;
+      }
+  }
+
+  implementation {
+    signal rov_telemetry_snapshot : RovTelemetry = map(
+      north = state_estimation.state.north,
+      east = state_estimation.state.east,
+      depth = state_estimation.state.depth,
+      surge = state_estimation.state.surge,
+      sway = state_estimation.state.sway,
+      heave = state_estimation.state.heave,
+      heading = state_estimation.state.heading,
+      yaw_rate = state_estimation.state.yaw_rate,
+      health_flags = state_estimation.health.health_flags
+    );
+    signal rov_log_snapshot : RovLogRecord = map(
+      mode = mission_mode.state,
+      state = state_estimation.state,
+      health = state_estimation.health,
+      thruster_commands = thruster_output.commands,
+      critical_fault = vehicle_faults.critical
+    );
+    peripheral imu_spi { role = sensor_spi; } spi;
+    peripheral pressure_i2c { role = sensor_i2c; } i2c;
+    peripheral magnetometer_i2c { role = magnetometer_bus; } i2c;
+    bus sensor_spi { peripheral = imu_spi; } spi;
+    bus sensor_i2c { peripheral = pressure_i2c; } i2c;
+    bus magnetometer_bus { peripheral = magnetometer_i2c; } i2c;
+    peripheral tether_uart { role = tether_serial; } uart;
+    peripheral gnss_uart { role = gnss_receiver; } uart; peripheral sonar_uart { role = sonar; } uart;
+    peripheral battery_adc { role = battery_voltage_monitor; } adc;
+    peripheral current_adc { role = battery_current_monitor; } adc;
+    peripheral enclosure_temp_adc { role = enclosure_temperature_monitor; } adc;
+    peripheral leak_input { direction = input; active_level = high; debounce = hardware_qualified; } gpio;
+    peripheral hardware_kill { direction = input; active_level = high; asynchronous_inhibit = true; } gpio;
+    peripheral thruster_inhibit { direction = output; active_level = high; safe_state = asserted; } gpio;
+    peripheral imu_data_ready { edge = rising; context = isr_signal_only; } gpio;
+    peripheral thruster_pwm { frequency = 400 Hz; channels = 6; } timer;
+    sensor imu { bus = sensor_spi; data_ready = imu_data_ready; output sample : ImuSample; } imu;
+    sensor pressure { bus = sensor_i2c; output depth_m : f32<m>; output surface_detected : bool; output valid : bool; } pressure;
+    sensor magnetometer { bus = magnetometer_bus; output field_body : f32[3]<uT>; } magnetometer;
+    sensor surface_gnss { peripheral = gnss_uart; output position_ned : f32[2]<m>; output fix_valid : bool; } gnss;
+    sensor forward_sonar { peripheral = sonar_uart; output range_m : f32<m>; output valid : bool; } range;
+    sensor down_sonar { peripheral = sonar_uart; output range_m : f32<m>; output valid : bool; } range;
+    sensor battery_voltage { peripheral = battery_adc; output value : f32<V>; } voltage;
+    sensor battery_current { peripheral = current_adc; output value : f32<A>; } current;
+    sensor enclosure_temperature { peripheral = enclosure_temp_adc; output value : f32<degC>; } temp;
+    actuator thruster_bank { peripheral = thruster_pwm; channels = 6; command = thruster_output.commands; safe_state = all_zero; } h_bridge;
+
+    watchdog vehicle_watchdog {
+      timeout = watchdog_timeout;
+      feed_source = vehicle_safety.watchdog_feed_permitted;
+      expiry_action = assert_thruster_inhibit;
+      feed_context = task_only;
+    } watchdog;
+    fault vehicle_faults {
+      input leak_detected : bool;
+      input hardware_kill_active : bool;
+      input pressure_valid : bool;
+      input estimate_valid : bool;
+      input battery_voltage : f32<V>;
+      input enclosure_temperature : f32<degC>;
+      output critical : bool;
+      latch_until_authorized_reset = true;
+      critical_when = hardware_kill_active or not pressure_valid or not estimate_valid or battery_voltage < low_battery_threshold or enclosure_temperature > maximum_enclosure_temperature;
+      reset_requires_surface_disarmed_and_thrusters_inhibited = true;
+    } fault;
+    supervisor vehicle_safety {
+      input leak_detected : bool;
+      input hardware_kill_active : bool;
+      input pressure_valid : bool;
+      input estimate_valid : bool;
+      input tether_valid : bool;
+      hard_inhibit = thruster_inhibit;
+      require_pressure_and_imu_qualification = true;
+      require_tether_for_manual_dive = true;
+      allow_autonomous_surface_return_after_link_loss = true;
+      emergency_ascent_on_leak = true;
+      permit_thrusters_during_authorized_emergency_ascent = true;
+      allow_controlled_ascent_during_leak = true;
+      reset_requires_authorized_surface_service = true;
+      output startup_permitted : bool;
+      output self_test_passed : bool;
+      output arm_permitted : bool;
+      output dive_permitted : bool;
+      output surface_qualified : bool;
+      output autonomous_ascent_permitted : bool;
+      output emergency_ascent_requested : bool;
+      output trip_latched : bool;
+      output watchdog_feed_permitted : bool;
+      output health_flags : u16;
+      output output_enable_permitted : bool;
+    } supervisor;
+    log flight_recorder {
+      transport = onboard_storage;
+      input snapshot : RovLogRecord;
+      queue_capacity = 256;
+      overflow = drop_oldest_and_count;
+      flush_period = 50 ms;
+      healthy_required_for_watchdog_feed = false;
+    } log;
+
+    model rov_dynamics {
+      sample_time = 20 ms;
+      discretize with integration.ode_rk4 at 20 ms;
+      state north : f32<m>; state east : f32<m>; state depth : f32<m>;
+      state surge : f32<m/s>; state sway : f32<m/s>; state heave : f32<m/s>;
+      state heading : f32<rad>; state yaw_rate : f32<rad/s>;
+      input surge_force : f32<N>; input sway_force : f32<N>; input heave_force : f32<N>; input yaw_moment : f32<N*m>;
+      input disturbance : WrenchDemand;
+      output predicted_state : VehicleState;
+      parameter mass_surge : f32<kg> = 38 kg; parameter mass_sway : f32<kg> = 42 kg;
+      parameter mass_heave : f32<kg> = 45 kg; parameter yaw_inertia : f32<kg*m^2> = 8 kg*m^2;
+      parameter drag_linear_surge : f32<N*s/m>;
+      parameter drag_linear_sway : f32<N*s/m>;
+      parameter drag_linear_heave : f32<N*s/m>;
+      parameter drag_quadratic_surge : f32<N*s^2/m^2>;
+      parameter drag_quadratic_sway : f32<N*s^2/m^2>;
+      parameter drag_quadratic_heave : f32<N*s^2/m^2>;
+      parameter drag_linear_yaw : f32<N*m*s/rad>;
+      parameter drag_quadratic_yaw : f32<N*m*s^2/rad^2>;
+      equations {
+        derivative north = surge * cos(heading) - sway * sin(heading);
+        derivative east = surge * sin(heading) + sway * cos(heading);
+        derivative depth = heave;
+        derivative surge = (surge_force + disturbance.surge_force - drag_linear_surge * surge - drag_quadratic_surge * abs(surge) * surge) / mass_surge;
+        derivative sway = (sway_force + disturbance.sway_force - drag_linear_sway * sway - drag_quadratic_sway * abs(sway) * sway) / mass_sway;
+        derivative heave = (heave_force + disturbance.heave_force - drag_linear_heave * heave - drag_quadratic_heave * abs(heave) * heave) / mass_heave;
+        derivative heading = yaw_rate;
+        derivative yaw_rate = (yaw_moment + disturbance.yaw_moment - drag_linear_yaw * yaw_rate - drag_quadratic_yaw * abs(yaw_rate) * yaw_rate) / yaw_inertia * 1 rad;
+        predicted_state.north = north;
+        predicted_state.east = east;
+        predicted_state.depth = depth;
+        predicted_state.surge = surge;
+        predicted_state.sway = sway;
+        predicted_state.heave = heave;
+        predicted_state.heading = heading;
+        predicted_state.yaw_rate = yaw_rate;
+      }
+    }
+
+    algorithm attitude_filter {
+      model = rov_dynamics;
+      input gyroscope : f32[3]<rad/s>;
+      input accelerometer : f32[3]<m/s^2>;
+      input magnetometer : f32[3]<uT>;
+      output attitude : quaternion;
+      output valid : bool;
+      reference_frame = vehicle_body_to_ned;
+    } mahony;
+    algorithm navigation_filter {
+      model = rov_dynamics;
+      input attitude : quaternion;
+      input pressure : f32<m>;
+      input magnetic_field : f32[3]<uT>;
+      input surface_position : f32[2]<m>;
+      input surface_fix_valid : bool;
+      input forward_range : f32<m>;
+      input forward_range_valid : bool;
+      input down_range : f32<m>;
+      input down_range_valid : bool;
+      output state : VehicleState;
+      output valid : bool;
+      observation_sources = pressure_imu_magnetometer_surface_gnss_at_surface_and_short_range_sonar;
+      underwater_xy_policy = inertial_dead_reckoning_only_without_external_position_aiding;
+    } ukf;
+    algorithm current_observer {
+      model = rov_dynamics;
+      input state : VehicleState;
+      input measured_state : VehicleState;
+      input applied_wrench : WrenchDemand;
+      output disturbance : WrenchDemand;
+      bandwidth = 1.5 Hz;
+      saturation = disturbance_limit;
+    } dob;
+    algorithm station_keeping_mpc {
+      model = rov_dynamics;
+      horizon = 1 s;
+      sample_time = 20 ms;
+      constraints = thruster_limits;
+      objective = position_velocity_heading_energy;
+      disturbance_feedforward = current_observer.disturbance;
+      terminal_cost = invariant_set;
+      solve_mode = bounded_rti;
+      input state : VehicleState;
+      input reference : VehicleState;
+      input disturbance : WrenchDemand;
+      output wrench : WrenchDemand;
+      output valid : bool;
+    } robust_mpc;
+    algorithm thruster_allocator {
+      geometry = thruster_geometry;
+      objective = minimum_power_wrench_match;
+      output_limit = thruster_limits;
+      failure = reject_and_inhibit;
+      input wrench : WrenchDemand;
+      input health : VehicleHealth;
+      output commands : f32[6];
+      output valid : bool;
+    } control_allocator;
+    algorithm ascent_heave_pid {
+      derivative_filter_n = 100;
+      proportional_weight_b = 1.0;
+      derivative_weight_c = 0.0;
+      tracking_time = 0 s;
+      saturation_enabled = true;
+      kp = 120;
+      ki = 18;
+      kd = 25;
+      sample_time = 20 ms;
+      output_min = -120 N;
+      output_max = 120 N;
+      integral_min = -30;
+      integral_max = 30;
+      anti_windup = clamp;
+      input reference : f32<m/s>;
+      input measurement : f32<m/s>;
+      output output : f32<N>;
+    } pid;
+
+    custom protocol tether_v1 {
+      transport = tether_uart;
+      duplex = half;
+      framing { sync = [0xA5, 0x5A]; version = 1; byte_order = little_endian; max_frame_bytes = 48 B; }
+      header { version_offset = 2 B; message_id_offset = 3 B; payload_offset = 6 B; }
+      sequence { offset = 4 B; width = 16 bit; scope = per_message; }
+      message command {
+        id = 1;
+        logical_type = PilotCommand;
+        payload_bytes = 11 B;
+        field mode : RovControlMode {
+          offset = 0 B;
+          wire_encoding = u8;
+          application_field = PilotCommand.mode;
+        }
+        field arm : bool {
+          offset = 1 B;
+          encoding = bool_u8_zero_one;
+          application_field = PilotCommand.arm;
+        }
+        field surge : i16 {
+          offset = 2 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = PilotCommand.surge;
+          application_range = [-1, 1];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field sway : i16 {
+          offset = 4 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = PilotCommand.sway;
+          application_range = [-1, 1];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field heave : i16 {
+          offset = 6 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = PilotCommand.heave;
+          application_range = [-1, 1];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field yaw : i16 {
+          offset = 8 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = PilotCommand.yaw;
+          application_range = [-1, 1];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field return_surface : bool {
+          offset = 10 B;
+          encoding = bool_u8_zero_one;
+          application_field = PilotCommand.return_surface;
+        }
+      }
+      message telemetry {
+        id = 2;
+        logical_type = RovTelemetry;
+        payload_bytes = 24 B;
+        field north_mm : i32 {
+          offset = 0 B;
+          encoding = signed_i32_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.north;
+          application_range = [-2147483.648 m, 2147483.647 m];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field east_mm : i32 {
+          offset = 4 B;
+          encoding = signed_i32_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.east;
+          application_range = [-2147483.648 m, 2147483.647 m];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field depth_mm : i32 {
+          offset = 8 B;
+          encoding = signed_i32_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.depth;
+          application_range = [0 m, 2147483.647 m];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field surge_mmps : i16 {
+          offset = 12 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.surge;
+          application_range = [-32.768 m/s, 32.767 m/s];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field sway_mmps : i16 {
+          offset = 14 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.sway;
+          application_range = [-32.768 m/s, 32.767 m/s];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field heave_mmps : i16 {
+          offset = 16 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.heave;
+          application_range = [-32.768 m/s, 32.767 m/s];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field heading_mrad : i16 {
+          offset = 18 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.heading;
+          application_range = [-32.768 rad, 32.767 rad];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field yaw_rate_mradps : i16 {
+          offset = 20 B;
+          encoding = signed_i16_little_endian;
+          scale = 0.001;
+          application_field = RovTelemetry.yaw_rate;
+          application_range = [-32.768 rad/s, 32.767 rad/s];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field health_flags : u16 {
+          offset = 22 B;
+          encoding = unsigned_u16_little_endian;
+          application_field = RovTelemetry.health_flags;
+        }
+      }
+      checksum { position = trailer; width = 2 B; algorithm = crc16_ccitt; coverage = sync_through_payload; }
+      behavior { command_timeout = 250 ms; stale_policy = request_controlled_surface_return_if_permitted_else_inhibit; duplicate_sequence = reject; queue_capacity = 4; }
+    }
+
+    custom algorithm pilot_command_conditioner {
+      input command : PilotCommand; input health : VehicleHealth;
+      input dt : f32<s>;
+      output wrench_reference : WrenchDemand; output valid : bool;
+      parameter deadzone : f32 = 0.04;
+      parameter force_slew_rate : f32<N/s> = 80 N/s;
+      parameter moment_slew_rate : f32<N*m/s> = 12 N*m/s;
+      parameter maximum_force : f32<N> = 120 N; parameter maximum_moment : f32<N*m> = 18 N*m;
+      state previous_command : WrenchDemand = map(
+        surge_force = 0 N, sway_force = 0 N, heave_force = 0 N, yaw_moment = 0 N*m
+      );
+      local surge_request : f32; local sway_request : f32; local heave_request : f32; local yaw_request : f32;
+      step() {
+        valid = health.tether_valid and health.estimate_valid and not health.leak_detected;
+        if abs(command.surge) < deadzone { surge_request = 0; } else { surge_request = command.surge; }
+        if abs(command.sway) < deadzone { sway_request = 0; } else { sway_request = command.sway; }
+        if abs(command.heave) < deadzone { heave_request = 0; } else { heave_request = command.heave; }
+        if abs(command.yaw) < deadzone { yaw_request = 0; } else { yaw_request = command.yaw; }
+        wrench_reference.surge_force = clamp(surge_request * maximum_force, previous_command.surge_force - force_slew_rate * dt, previous_command.surge_force + force_slew_rate * dt);
+        wrench_reference.sway_force = clamp(sway_request * maximum_force, previous_command.sway_force - force_slew_rate * dt, previous_command.sway_force + force_slew_rate * dt);
+        wrench_reference.heave_force = clamp(heave_request * maximum_force, previous_command.heave_force - force_slew_rate * dt, previous_command.heave_force + force_slew_rate * dt);
+        wrench_reference.yaw_moment = clamp(yaw_request * maximum_moment, previous_command.yaw_moment - moment_slew_rate * dt, previous_command.yaw_moment + moment_slew_rate * dt);
+        previous_command.surge_force = wrench_reference.surge_force;
+        previous_command.sway_force = wrench_reference.sway_force;
+        previous_command.heave_force = wrench_reference.heave_force;
+        previous_command.yaw_moment = wrench_reference.yaw_moment;
+      }
+    }
+
+    custom algorithm output_guard {
+      input requested : ThrusterDemand;
+      input health : VehicleHealth;
+      input kill_active : bool;
+      input autonomous_return : bool;
+      input safety_permitted : bool;
+      output command : f32[6]; output valid : bool;
+      step() {
+        valid = requested.valid and health.estimate_valid and health.pressure_valid and (not health.leak_detected or autonomous_return) and (health.tether_valid or autonomous_return) and safety_permitted and not kill_active;
+        for index in 0..6 {
+          command[index] = select(valid, clamp(requested.command[index], -1, 1), 0);
+        }
+      }
+    }
+
+    subsystem state_estimation {
+      input imu_sample : ImuSample { rate = 1 kHz; max_age = 2 ms; };
+      input pressure_depth : f32<m> { rate = 100 Hz; max_age = 20 ms; };
+      input magnetic_field : f32[3]<uT> { rate = 50 Hz; max_age = 40 ms; };
+      input pressure_valid : bool { rate = 100 Hz; max_age = 20 ms; };
+      input surface_position : f32[2]<m> { rate = 10 Hz; max_age = 100 ms; };
+      input surface_fix_valid : bool { rate = 10 Hz; max_age = 100 ms; };
+      input forward_range : f32<m> { rate = 20 Hz; max_age = 50 ms; };
+      input forward_range_valid : bool { rate = 20 Hz; max_age = 50 ms; };
+      input down_range : f32<m> { rate = 20 Hz; max_age = 50 ms; };
+      input down_range_valid : bool { rate = 20 Hz; max_age = 50 ms; };
+      input tether_valid : bool { rate = 100 Hz; max_age = 250 ms; };
+      input leak_detected : bool { rate = 1 kHz; max_age = 1 ms; };
+      input health_flags : u16 { rate = 1 kHz; max_age = 1 ms; };
+      output state : VehicleState { rate = 480 Hz; max_age = 3 ms; };
+      output attitude : quaternion { rate = 480 Hz; max_age = 3 ms; };
+      output health : VehicleHealth { rate = 480 Hz; max_age = 3 ms; };
+      use attitude_filter as attitude_estimator;
+      use navigation_filter as navigation_estimator;
+      stage attitude_result = attitude_estimator(
+        gyroscope = imu_sample.angular_rate,
+        accelerometer = imu_sample.acceleration,
+        magnetometer = magnetic_field
+      );
+      stage navigation_result = navigation_estimator(
+        attitude = attitude_result.attitude,
+        pressure = pressure_depth,
+        magnetic_field = magnetic_field,
+        surface_position = surface_position,
+        surface_fix_valid = surface_fix_valid,
+        forward_range = forward_range,
+        forward_range_valid = forward_range_valid,
+        down_range = down_range,
+        down_range_valid = down_range_valid
+      );
+      output state = navigation_result.state;
+      output attitude = attitude_result.attitude;
+      output health = map(
+        estimate_valid = navigation_result.valid and attitude_result.valid,
+        pressure_valid = pressure_valid,
+        tether_valid = tether_valid,
+        leak_detected = leak_detected,
+        health_flags = health_flags
+      );
+    }
+
+    subsystem station_keeping {
+      input state : VehicleState { rate = 480 Hz; max_age = 3 ms; };
+      input reference : VehicleState { rate = 50 Hz; max_age = 100 ms; };
+      input disturbance : WrenchDemand { rate = 200 Hz; max_age = 10 ms; };
+      output wrench : WrenchDemand { rate = 50 Hz; max_age = 20 ms; };
+      output valid : bool { rate = 50 Hz; max_age = 20 ms; };
+      use station_keeping_mpc as controller;
+      stage control = controller(state = state, reference = reference, disturbance = disturbance);
+      output wrench = control.wrench;
+      output valid = control.valid;
+    }
+
+    subsystem vehicle_control {
+      input pilot : PilotCommand { rate = 100 Hz; max_age = 250 ms; };
+      input health : VehicleHealth { rate = 480 Hz; max_age = 3 ms; };
+      input station_keeping_wrench : WrenchDemand { rate = 50 Hz; max_age = 20 ms; };
+      input station_keeping_valid : bool { rate = 50 Hz; max_age = 20 ms; };
+      input return_wrench : WrenchDemand { rate = 50 Hz; max_age = 20 ms; };
+      input return_valid : bool { rate = 50 Hz; max_age = 20 ms; };
+      input ascent_permitted : bool;
+      input mode : RovMissionMode;
+      input dt : f32<s>;
+      output wrench : WrenchDemand { rate = 200 Hz; max_age = 10 ms; };
+      output valid : bool { rate = 200 Hz; max_age = 10 ms; };
+      output autonomous_return : bool { rate = 200 Hz; max_age = 10 ms; };
+      use pilot_command_conditioner as conditioner;
+      stage manual = conditioner(command = pilot, health = health, dt = dt);
+      let returning : bool = mode == RovMissionMode.return_to_surface or mode == RovMissionMode.surfacing or mode == RovMissionMode.link_lost or mode == RovMissionMode.emergency_ascent;
+      let holding : bool = mode == RovMissionMode.station_keeping or mode == RovMissionMode.depth_hold;
+      output wrench = select(returning, return_wrench, select(holding, station_keeping_wrench, manual.wrench_reference));
+      output valid = select(returning, return_valid and ascent_permitted, select(holding, station_keeping_valid, manual.valid)) and health.estimate_valid and (not health.leak_detected or returning);
+      output autonomous_return = returning and return_valid and ascent_permitted;
+    }
+
+    subsystem surface_return {
+      input state : VehicleState { rate = 480 Hz; max_age = 3 ms; };
+      input state_valid : bool { rate = 480 Hz; max_age = 3 ms; };
+      output wrench : WrenchDemand { rate = 50 Hz; max_age = 20 ms; };
+      output valid : bool { rate = 50 Hz; max_age = 20 ms; };
+      use ascent_heave_pid as vertical_speed;
+      stage ascent = vertical_speed(reference = -0.5 m/s, measurement = state.heave);
+      output wrench = map(surge_force = 0 N, sway_force = 0 N, heave_force = ascent.output, yaw_moment = 0 N*m);
+      output valid = state_valid;
+    }
+
+    subsystem thruster_output {
+      input wrench : WrenchDemand { rate = 200 Hz; max_age = 10 ms; };
+      input health : VehicleHealth { rate = 480 Hz; max_age = 3 ms; };
+      input kill_active : bool;
+      input autonomous_return : bool;
+      input safety_permitted : bool;
+      output commands : f32[6] { rate = 200 Hz; max_age = 5 ms; };
+      output outputs_valid : bool { rate = 200 Hz; max_age = 5 ms; };
+      use thruster_allocator as allocator;
+      use output_guard as guard;
+      use thruster_bank as actuator;
+      stage allocation = allocator(wrench = wrench, health = health);
+      stage protected = guard(
+        requested = map(command = allocation.commands, valid = allocation.valid),
+        health = health,
+        kill_active = kill_active,
+        autonomous_return = autonomous_return,
+        safety_permitted = safety_permitted
+      );
+      stage applied = actuator(command = protected.command);
+      output commands = protected.command;
+      output outputs_valid = protected.valid;
+    }
+  }
+}

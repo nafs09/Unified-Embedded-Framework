@@ -1,0 +1,20 @@
+{
+  "id": "arduino-uno-r3",
+  "name": "Arduino UNO R3",
+  "aliases": ["UNO Rev3", "Arduino Uno Rev3"],
+  "chip_id": "atmega328p-pu",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Arduino UNO R3 datasheet",
+      "url": "https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf"
+    },
+    {
+      "title": "Arduino UNO R3 hardware documentation",
+      "url": "https://docs.arduino.cc/hardware/uno-rev3"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "Identity and MCU binding only. Verify the board revision and fitted MCU package before using this record; board pin reservations and build/flash profiles are not yet specified."
+}

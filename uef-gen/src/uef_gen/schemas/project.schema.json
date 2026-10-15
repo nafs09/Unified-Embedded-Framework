@@ -1,0 +1,346 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexus.local/schemas/uef-gen-project-1.0.schema.json",
+  "title": "uef-gen hardware project configuration",
+  "type": "object",
+  "required": [
+    "target"
+  ],
+  "properties": {
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "target": {
+      "type": "object",
+      "anyOf": [
+        { "required": ["chip"] },
+        { "required": ["development_board"] }
+      ],
+      "properties": {
+        "chip": {
+          "type": "string",
+          "minLength": 1
+        },
+        "development_board": {
+          "type": "string",
+          "minLength": 1,
+          "description": "UETD development-board ID. If chip is omitted, the selected board supplies it."
+        },
+        "toolchain": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional explicit toolchain profile override; otherwise uses build.toolchain from the selected UETD development-board record."
+        },
+        "arithmetic": {
+          "enum": [
+            "float32",
+            "float64",
+            "q15",
+            "q31",
+            "custom"
+          ]
+        },
+        "rtos": {
+          "type": "string",
+          "minLength": 1
+        },
+        "freertos": {
+          "type": "object",
+          "properties": {
+            "tick_hz": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "static_allocation": {
+              "type": "boolean"
+            },
+            "heap_bytes": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "protocols": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      ]
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "peripherals": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/peripheral"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/peripheralConfig"
+          }
+        }
+      ]
+    },
+    "clock": {
+      "type": "object",
+      "properties": {
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "domain",
+              "frequency_hz"
+            ],
+            "properties": {
+              "domain": {
+                "type": "string"
+              },
+              "frequency_hz": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "tolerance_ppm": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "memory": {
+      "type": "object",
+      "properties": {
+        "flash_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sram_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "main_stack_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "heap_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": true
+    },
+    "rtos": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "tick_us": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "tasks": {
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/task"
+          }
+        }
+      ]
+    },
+    "middleware": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "object",
+          "boolean"
+        ]
+      }
+    },
+    "uetd": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "extra_modules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "defines": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*(=.*)?$"
+      }
+    },
+    "compiler_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "task": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "period_us": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rate_hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "context": {
+          "enum": [
+            "isr",
+            "task"
+          ]
+        },
+        "execution_context": {
+          "type": "string"
+        },
+        "isr_source": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "stack_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "period_us"
+          ]
+        },
+        {
+          "required": [
+            "rate_hz"
+          ]
+        }
+      ],
+      "additionalProperties": true
+    },
+    "peripheralConfig": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "pins": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "dma": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "irq_priority": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": true
+    },
+    "peripheral": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/peripheralConfig"
+        },
+        {
+          "type": "object",
+          "required": [
+            "instance"
+          ],
+          "properties": {
+            "instance": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": true
+}

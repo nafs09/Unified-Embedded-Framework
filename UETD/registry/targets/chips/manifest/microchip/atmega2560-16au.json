@@ -1,0 +1,33 @@
+{
+  "id": "atmega2560-16au",
+  "vendor": "Microchip",
+  "family_id": "megaavr-8bit",
+  "series": "megaAVR",
+  "part_number": "ATMEGA2560-16AU",
+  "aliases": ["ATmega2560"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "AVR 8-bit",
+    "isa": "AVR",
+    "word_bits": 8,
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 16000000
+  },
+  "package": { "name": "TQFP100", "pin_count": 100 },
+  "memory": { "flash_bytes": 262144, "sram_bytes": 8192, "eeprom_bytes": 4096 },
+  "peripheral_groups": ["GPIO", "TIMERS", "ADC", "USART", "SPI", "TWI", "JTAG"],
+  "source_references": [
+    {
+      "title": "Microchip ATmega2560 product page and datasheet",
+      "url": "https://www.microchip.com/en-us/product/ATmega2560"
+    },
+    {
+      "title": "Arduino Mega 2560 Rev3 datasheet",
+      "url": "https://docs.arduino.cc/resources/datasheets/A000067-datasheet.pdf"
+    }
+  ],
+  "source_verified_fields": ["identity", "core_width", "frequency", "package", "flash", "SRAM", "EEPROM", "peripheral_groups"],
+  "generation_available": false,
+  "record_note": "ATmega2560 speed-grade and package match the Arduino Mega 2560 Rev3 MCU. No pin, interrupt, timer, or startup map is asserted."
+}

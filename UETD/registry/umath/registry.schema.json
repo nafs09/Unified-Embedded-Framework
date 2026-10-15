@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/umath/functions-1.0.schema.json",
+  "title": "UETD UMATH public function index for project-language tooling",
+  "type": "object",
+  "required": ["schema_version", "source_of_truth", "generated_by", "callable_contexts", "source_call_policy", "binding_contract_required", "functions"],
+  "$defs": {
+    "math_type": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "c_name": { "type": "string", "minLength": 1 },
+            "type": { "type": "string", "minLength": 1 },
+            "kind": { "type": "string", "minLength": 1 },
+            "c_kind": { "type": "string", "minLength": 1 },
+            "shape": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  { "type": "integer", "minimum": 1 },
+                  { "type": "string", "pattern": "^(\\*|[A-Z][A-Za-z0-9_]*)$" }
+                ]
+              }
+            },
+            "unit": { "type": "string" },
+            "arguments": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/math_type" }
+            },
+            "signed": { "type": "boolean" },
+            "storage_bits": { "type": "integer", "minimum": 1 }
+          },
+          "anyOf": [
+            { "required": ["name"] },
+            { "required": ["c_name"] },
+            { "required": ["type"] },
+            { "required": ["kind"] }
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "math_result_type": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "allOf": [
+            { "$ref": "#/$defs/math_type" },
+            {
+              "type": "object",
+              "anyOf": [
+                { "required": ["name"] },
+                { "required": ["c_name"] },
+                { "required": ["type"] }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "source_of_truth": { "type": "string" },
+    "generated_by": { "type": "string" },
+    "callable_contexts": { "type": "array", "items": { "enum": ["custom_algorithm", "model_equation"] } },
+    "source_call_policy": { "type": "string" },
+    "binding_contract_required": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "functions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["c_name", "dsl_name", "dsl_signature", "dsl_binding_contract", "header", "c_signature", "parameters", "declaration_kind", "implementation_status", "dsl_binding_status", "available_for_generation", "callable_contexts"],
+        "properties": {
+          "c_name": { "type": "string", "pattern": "^umath_[A-Za-z0-9_]+$" },
+          "dsl_name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9_]*$" },
+          "dsl_aliases": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[a-z][A-Za-z0-9_]*$" }
+          },
+          "dsl_signature": { "type": ["string", "null"] },
+          "dsl_binding_contract": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "required": ["signature", "parameters", "result"],
+                "properties": {
+                  "signature": { "type": "string" },
+                  "parameters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["name", "type", "mode"],
+                      "properties": {
+                        "name": { "type": "string", "minLength": 1 },
+                        "type": { "$ref": "#/$defs/math_type" },
+                        "mode": { "enum": ["value", "borrow", "mutable_borrow"] },
+                        "shape": {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              { "type": "integer", "minimum": 1 },
+                              { "type": "string", "pattern": "^(\\*|[A-Z][A-Za-z0-9_]*)$" }
+                            ]
+                          }
+                        },
+                        "unit": { "type": "string" }
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "result": {
+                    "oneOf": [
+                      { "type": "null" },
+                      {
+                        "type": "object",
+                        "required": ["type"],
+                        "properties": {
+                          "type": { "$ref": "#/$defs/math_result_type" },
+                          "mode": { "enum": ["value", "status_result", "out_parameter"] }
+                        },
+                        "additionalProperties": true
+                      }
+                    ]
+                  },
+                  "failure": { "type": "object" },
+                  "availability": { "type": "object" },
+                  "bounded_cost": { "type": "object" },
+                  "operators": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": { "enum": ["+", "-", "*", "/", "**"] }
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "module_id": { "type": ["string", "null"] },
+          "header": { "type": "string" },
+          "c_signature": { "type": "string" },
+          "parameters": { "type": "string" },
+          "declaration_kind": { "enum": ["prototype", "inline_definition"] },
+          "implementation_status": { "enum": ["implemented", "scaffold", "future", "registry_review_required"] },
+          "dsl_binding_status": { "enum": ["signature_only", "reviewed", "ready", "blocked"] },
+          "available_for_generation": { "type": "boolean" },
+          "callable_contexts": { "type": "array", "items": { "enum": ["custom_algorithm", "model_equation"] } }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": { "dsl_binding_status": { "enum": ["reviewed", "ready"] } },
+              "required": ["dsl_binding_status"]
+            },
+            "then": {
+              "properties": {
+                "dsl_binding_contract": { "type": "object" },
+                "dsl_signature": { "type": "string" }
+              }
+            }
+          },
+          {
+            "if": { "properties": { "dsl_binding_status": { "const": "ready" } }, "required": ["dsl_binding_status"] },
+            "then": {
+              "properties": {
+                "dsl_binding_contract": {
+                  "type": "object",
+                  "required": ["signature", "parameters", "result", "failure", "availability", "bounded_cost"]
+                },
+                "dsl_signature": { "type": "string" }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uetd/registry/targets/toolchains/registry.schema.json",
+  "title": "UETD tool package registry index",
+  "type": "object",
+  "required": ["schema_version", "catalogue_kind", "canonical_owner", "entries"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "catalogue_kind": { "const": "uetd_tool_packages" },
+    "canonical_owner": { "const": "UETD" },
+    "description": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "path": {
+            "type": "string",
+            "pattern": "^registry/targets/toolchains/manifest/[a-z0-9-]+\\.json$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

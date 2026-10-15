@@ -1,0 +1,33 @@
+{
+  "id": "same70",
+  "vendor": "Microchip",
+  "family": "SAMD/SAME",
+  "series": "SAME70",
+  "parent_series": null,
+  "aliases": [],
+  "architectures": [
+    "Cortex-M7"
+  ],
+  "core_notes": "Distinct from SAME51.",
+  "roadmap_phase": null,
+  "catalogue_status": "catalogue_only",
+  "vendor_status": "established_series",
+  "representative_parts": [
+    "ATSAME70Q21"
+  ],
+  "representative_parts_are_examples_only": true,
+  "implementation_focus": [
+    "cache",
+    "memory",
+    "DMA"
+  ],
+  "source_references": [
+    "microchip"
+  ],
+  "exact_part_specs_registered": [
+    "ATSAME70Q21B-CNT"
+  ],
+  "verified_hardware_data": false,
+  "generation_available": false,
+  "uetd_c_profile_registered": false
+}

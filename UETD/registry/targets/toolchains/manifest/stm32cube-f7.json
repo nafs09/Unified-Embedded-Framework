@@ -1,0 +1,11 @@
+{
+  "id": "stm32cube-f7",
+  "name": "STM32CubeF7 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["CMSIS device headers", "startup sources", "STM32F7 HAL"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin an ST-published STM32CubeF7 release and archive hash; record license files and exact CMSIS device/header, startup, linker, and HAL paths for F7 targets."
+}

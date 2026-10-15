@@ -1,0 +1,26 @@
+{
+  "id": "raspberry-pi-pico-2",
+  "name": "Raspberry Pi Pico 2 (non-W)",
+  "aliases": ["Pico 2", "RP2350 Pico 2"],
+  "chip_id": "rp2350a",
+  "module": {
+    "name": "Raspberry Pi Pico 2 board",
+    "variant": "Pico 2 without wireless or pre-soldered headers",
+    "flash_bytes": 4194304,
+    "crystal_hz": 12000000
+  },
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Raspberry Pi Pico 2 datasheet",
+      "url": "https://datasheets.raspberrypi.com/pico/pico-2-datasheet.pdf"
+    },
+    {
+      "title": "Raspberry Pi Pico 2 product page",
+      "url": "https://www.raspberrypi.com/products/raspberry-pi-pico-2/"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "Pico 2 uses RP2350A with 4 MiB external flash and a 12 MHz crystal. This binding is for the non-wireless board. Architecture selection, security boot mode, GPIO reservations, build profile, and USB/SWD flash settings still require verification."
+}

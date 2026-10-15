@@ -1,0 +1,55 @@
+{
+  "id": "r7fa6m4af3cfb-aa0",
+  "vendor": "Renesas",
+  "family_id": "ra6m4",
+  "series": "RA6M4",
+  "part_number": "R7FA6M4AF3CFB#AA0",
+  "aliases": [
+    "R7FA6M4AF3CFB"
+  ],
+  "roadmap_phase": 3,
+  "core": {
+    "name": "Cortex-M33",
+    "isa": "Armv8-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 200000000
+  },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 262144
+  },
+  "peripheral_groups": [
+    "DMAC",
+    "Ethernet",
+    "CAN-FD",
+    "SDHI",
+    "OctaSPI",
+    "USB",
+    "ADC",
+    "DAC",
+    "SCI",
+    "I2C",
+    "SPI"
+  ],
+  "source_references": [
+    {
+      "title": "Renesas R7FA6M4AF3CFB#AA0 product page",
+      "url": "https://www.renesas.com/en/products/ra6m4/part-details/r7fa6m4af3cfb-aa0"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Specific 144-lead RA6M4 order code; peripheral groups summarize presence only, not channel assignment."
+}

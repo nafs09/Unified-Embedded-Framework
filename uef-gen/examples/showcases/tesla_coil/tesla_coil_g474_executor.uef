@@ -1,0 +1,253 @@
+// QCW DRSSTC STM32G474VET6 executor: local qualification, protection, and timer staging.
+// Safety thresholds and timer/output maps must come from the selected board,
+// gate-driver design, and reviewed electrical limits. Timing values are
+// required profile inputs and intentionally have no assumed defaults.
+project QcwG4Executor {
+  target = "stm32g474vet6";
+  contract import "tesla_coil_system.uefs";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+  record TimerSnapshot {
+    frequency_hz : f32<Hz>;
+    duty : f32<1>;
+    audio_modulation : f32<1>;
+    audio_interrupt_hz : u16<Hz>;
+    switching_gate_pattern : u32;
+    enable : bool;
+  }
+  record ExecutorHealth {
+    link_valid : bool;
+    command_fresh : bool;
+    control_fresh : bool;
+    local_interlock_ok : bool;
+    fault_latched : bool;
+  }
+  record ExecutorTiming {
+    safety_rate : f32<Hz>;
+    safety_deadline : f32<us>;
+    fault_rate : f32<Hz>;
+    link_rate : f32<Hz>;
+    link_deadline : f32<us>;
+    timer_update_rate : f32<Hz>;
+    timer_deadline : f32<us>;
+    diagnostic_rate : f32<Hz>;
+    diagnostic_deadline : f32<us>;
+    command_rate : f32<Hz>;
+    command_age_limit : f32<us>;
+    control_age_limit : f32<us>;
+    timer_snapshot_max_age : f32<us>;
+    health_rate : f32<Hz>;
+    health_max_age : f32<us>;
+    nominal_frequency : f32<Hz>;
+    priority_safety : u8;
+    priority_link : u8;
+    priority_timer : u8;
+    priority_diagnostics : u8;
+  }
+  record G4BoardProfile {
+    capture_channel : string;
+    capture_clock : CaptureClockProfile;
+    inverter_timer_map : string;
+    hardware_inhibit_pin : string;
+    inhibit_active_level : bool;
+    primary_current_adc : string;
+    antenna_voltage_adc : string;
+    bus_voltage_adc : string;
+    switch_temperature_adc : string;
+    primary_temperature_adc : string;
+  }
+  record G4SensorCalibration {
+    current_gain : f32<A/count>;
+    current_offset : f32<A>;
+    antenna_voltage_gain : f32<V/count>;
+    antenna_voltage_offset : f32<V>;
+    bus_voltage_gain : f32<V/count>;
+    bus_voltage_offset : f32<V>;
+    switch_temperature_gain : f32<delta_degC/count>;
+    switch_temperature_offset : f32<degC>;
+    primary_temperature_gain : f32<delta_degC/count>;
+    primary_temperature_offset : f32<degC>;
+  }
+  parameter timing : ExecutorTiming;
+  parameter board : G4BoardProfile;
+  parameter calibration : G4SensorCalibration;
+  peripheral capture_timer : timer;
+  peripheral inverter_timer : hrtim;
+  peripheral primary_current_adc : adc;
+  peripheral antenna_voltage_adc : adc;
+  peripheral bus_voltage_adc : adc;
+  peripheral switch_temperature_adc : adc;
+  peripheral primary_temperature_adc : adc;
+  peripheral hardware_inhibit : gpio;
+  sensor primary_current : current;
+  sensor antenna_voltage : voltage;
+  sensor bus_voltage : voltage;
+  sensor switch_temperature : temp;
+  sensor primary_temperature : temp;
+  fpga coil_endpoint;
+  supervisor local_safety;
+  fault local_faults;
+  log executor_trace;
+  subsystem command_executor;
+  operatingsystem QcwG4Runtime {
+    runtime = FreeRTOS;
+    component_failure_policy = assert_hardware_inhibit;
+    scheduler = fixed_priority;
+    startup_policy = timer_outputs_disabled_until_local_qualification;
+    state_machine executor_mode : ExecutorMode {
+      state inhibited;
+      state qualifying;
+      state remote_active;
+      state shutdown;
+      state latched_fault;
+
+      initial inhibited;
+      owner = safety_inputs;
+      consumers = [stage_timer_snapshot];
+      transition any -> latched_fault when local_safety.trip_latched or local_faults.critical;
+      transition any -> shutdown when local_safety.shutdown_requested or command_executor.remote_control.value.shutdown_requested;
+      transition inhibited -> qualifying when coil_endpoint.connected and local_safety.local_permissives;
+      transition qualifying -> remote_active when coil_endpoint.fresh.setpoint and coil_endpoint.fresh.control and command_executor.remote_command.value.enable and command_executor.remote_control.value.enable_requested and not command_executor.remote_control.value.software_inhibit and not command_executor.remote_control.value.shutdown_requested and local_safety.local_permissives;
+      transition remote_active -> inhibited when not coil_endpoint.fresh.setpoint or not coil_endpoint.fresh.control or not command_executor.remote_command.value.enable or not command_executor.remote_control.value.enable_requested or command_executor.remote_control.value.software_inhibit;
+      transition shutdown -> inhibited when local_safety.reset_authorized and local_safety.stage_off;
+      transition latched_fault -> inhibited when local_safety.reset_authorized and local_safety.stage_off;
+    }
+
+
+      task safety_inputs { run = local_safety; rate = timing.safety_rate; priority = timing.priority_safety; deadline = timing.safety_deadline; on_miss = assert_hardware_inhibit; }
+      task fault_latch { run = local_faults; rate = timing.fault_rate; priority = timing.priority_safety; deadline = timing.safety_deadline; on_miss = assert_hardware_inhibit; }
+
+      channel remote_setpoint {
+        source = coil_endpoint.receive.setpoint;
+        destination = command_executor.remote_command;
+        producer = link_monitor;
+        consumers = [stage_timer_snapshot, safety_inputs];
+        capacity = 1;
+        overflow = replace_oldest;
+        maximum_age = timing.command_age_limit;
+        ownership = immutable_snapshot;
+      }
+      channel remote_control {
+        source = coil_endpoint.receive.control;
+        destination = command_executor.remote_control;
+        producer = link_monitor;
+        consumers = [stage_timer_snapshot, safety_inputs];
+        capacity = 1;
+        overflow = replace_oldest;
+        maximum_age = timing.control_age_limit;
+        ownership = immutable_snapshot;
+      }
+      task link_monitor { run = coil_endpoint; rate = timing.link_rate; priority = timing.priority_link; deadline = timing.link_deadline; on_miss = inhibit_outputs; }
+      task stage_timer_snapshot {
+        run = command_executor(
+          mode = executor_mode.state,
+          link_connected = coil_endpoint.connected,
+          setpoint_fresh = coil_endpoint.fresh.setpoint,
+          control_fresh = coil_endpoint.fresh.control,
+          output_permitted = local_safety.output_enable_permitted,
+          local_permissives = local_safety.local_permissives,
+          fault_latched = local_faults.critical
+        );
+        rate = timing.timer_update_rate;
+        priority = timing.priority_timer;
+        deadline = timing.timer_deadline;
+        on_miss = inhibit_outputs;
+      }
+      task record_diagnostics { run = executor_trace; rate = timing.diagnostic_rate; priority = timing.priority_diagnostics; deadline = timing.diagnostic_deadline; }
+  }
+
+  implementation {
+    peripheral capture_timer {
+      role = local_phase_capture;
+      channel = board.capture_channel;
+      clock = board.capture_clock.timer_clock_hz;
+      counter_bits = board.capture_clock.counter_bits;
+      output edge : CaptureSample;
+    } timer;
+    peripheral inverter_timer {
+      role = resonant_inverter_execution;
+      update_boundary = reviewed_safe_preload_boundary;
+      complementary_outputs = board.inverter_timer_map;
+      independent_fault_input = board.hardware_inhibit_pin;
+      command_source = command_executor.timer_snapshot;
+    } hrtim;
+    peripheral primary_current_adc { role = primary_current_sense; resource = board.primary_current_adc; } adc;
+    peripheral antenna_voltage_adc { role = antenna_voltage_sense; resource = board.antenna_voltage_adc; } adc;
+    peripheral bus_voltage_adc { role = bus_voltage_sense; resource = board.bus_voltage_adc; } adc;
+    peripheral switch_temperature_adc { role = switch_temperature_sense; resource = board.switch_temperature_adc; } adc;
+    peripheral primary_temperature_adc { role = primary_temperature_sense; resource = board.primary_temperature_adc; } adc;
+    peripheral hardware_inhibit { role = dominant_gate_driver_inhibit; resource = board.hardware_inhibit_pin; active_level = board.inhibit_active_level; } gpio;
+
+    sensor primary_current { peripheral = primary_current_adc; gain = calibration.current_gain; offset = calibration.current_offset; output value : f32<A>; } current;
+    sensor antenna_voltage { peripheral = antenna_voltage_adc; gain = calibration.antenna_voltage_gain; offset = calibration.antenna_voltage_offset; output value : f32<V>; } voltage;
+    sensor bus_voltage { peripheral = bus_voltage_adc; gain = calibration.bus_voltage_gain; offset = calibration.bus_voltage_offset; output value : f32<V>; } voltage;
+    sensor switch_temperature {
+      peripheral = switch_temperature_adc;
+      gain = calibration.switch_temperature_gain;
+      offset = calibration.switch_temperature_offset;
+      output value : f32<degC>;
+    } temp;
+    sensor primary_temperature {
+      peripheral = primary_temperature_adc;
+      gain = calibration.primary_temperature_gain;
+      offset = calibration.primary_temperature_offset;
+      output value : f32<degC>;
+    } temp;
+
+    fpga coil_endpoint {
+      protocol = qcw_fibre;
+      endpoint = coil_side;
+      command_freshness_clock = g4_monotonic_clock;
+      send.measurement = capture_timer.edge;
+      send.status = map(
+        node_id = NodeId.G4,
+        node_mode = local_safety.reported_mode,
+        fault_code = local_faults.primary_code,
+        health_flags = local_safety.health_flags
+      );
+      send.fault = local_faults.latest_event;
+    } fpga;
+    supervisor local_safety {
+      local_inhibit = hardware_inhibit;
+      require_fresh_remote_command = true;
+      require_fresh_remote_control = true;
+      require_valid_complete_setpoint = true;
+      require_gate_pattern_in_approved_set = true;
+      reset_requires_authorized_stage_off_proof = true;
+      hardware_inhibit_is_independent = true;
+    } supervisor;
+
+    subsystem command_executor {
+      input remote_command : Received<CoilSetpoint> { rate = timing.command_rate; max_age = timing.command_age_limit; clock_domain = g4_monotonic_clock; };
+      input remote_control : Received<ControlMessage> { rate = timing.command_rate; max_age = timing.control_age_limit; clock_domain = g4_monotonic_clock; };
+      input mode : ExecutorMode;
+      input link_connected : bool;
+      input setpoint_fresh : bool;
+      input control_fresh : bool;
+      input output_permitted : bool;
+      input local_permissives : bool;
+      input fault_latched : bool;
+      output timer_snapshot : TimerSnapshot { rate = timing.timer_update_rate; max_age = timing.timer_snapshot_max_age; clock_domain = g4_timer_clock; };
+      output health : ExecutorHealth { rate = timing.health_rate; max_age = timing.health_max_age; clock_domain = g4_monotonic_clock; };
+      output timer_snapshot = map(
+        frequency_hz = timing.nominal_frequency + remote_command.value.frequency_shift_hz,
+        duty = remote_command.value.duty,
+        audio_modulation = remote_command.value.audio_modulation,
+        audio_interrupt_hz = remote_command.value.audio_interrupt_hz,
+        switching_gate_pattern = remote_command.value.switching_gate_pattern,
+        enable = mode == ExecutorMode.remote_active and setpoint_fresh and control_fresh and remote_control.value.enable_requested and not remote_control.value.software_inhibit and not remote_control.value.shutdown_requested and output_permitted
+      );
+      output health = map(
+        link_valid = link_connected,
+        command_fresh = setpoint_fresh,
+        control_fresh = control_fresh,
+        local_interlock_ok = local_permissives,
+        fault_latched = fault_latched
+      );
+    }
+  }
+}

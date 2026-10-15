@@ -1,0 +1,33 @@
+{
+  "id": "atmega328p-pu",
+  "vendor": "Microchip",
+  "family_id": "megaavr-8bit",
+  "series": "megaAVR",
+  "part_number": "ATMEGA328P-PU",
+  "aliases": ["ATmega328P"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "AVR 8-bit",
+    "isa": "AVR",
+    "word_bits": 8,
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 20000000
+  },
+  "package": { "name": "PDIP28", "pin_count": 28 },
+  "memory": { "flash_bytes": 32768, "sram_bytes": 2048, "eeprom_bytes": 1024 },
+  "peripheral_groups": ["GPIO", "TIMERS", "ADC", "USART", "SPI", "TWI"],
+  "source_references": [
+    {
+      "title": "Microchip ATmega328P product page and datasheet",
+      "url": "https://www.microchip.com/en-us/product/ATmega328P"
+    },
+    {
+      "title": "Arduino UNO R3 datasheet",
+      "url": "https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf"
+    }
+  ],
+  "source_verified_fields": ["identity", "core_width", "frequency", "package", "flash", "SRAM", "EEPROM", "peripheral_groups"],
+  "generation_available": false,
+  "record_note": "Arduino Uno R3 uses the ATmega328P; this record is the PDIP28 ordering code. No pin, interrupt, timer, or startup map is asserted."
+}

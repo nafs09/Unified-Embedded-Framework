@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "src/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.c"
+  ],
+  "headers": [
+    "include/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "RESONANT_EKF_LLC_SRC",
+  "priority": "DEFERRED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm DEFERRED; retained in the future backlog.",
+  "contract_status": "deferred_underspecified",
+  "outlined_functions": [
+    "ucon_resonant_ekf_llc_src_confirm_scope",
+    "ucon_resonant_ekf_llc_src_validate_model",
+    "ucon_resonant_ekf_llc_src_init",
+    "ucon_resonant_ekf_llc_src_reset",
+    "ucon_resonant_ekf_llc_src_predict",
+    "ucon_resonant_ekf_llc_src_correct",
+    "ucon_resonant_ekf_llc_src_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

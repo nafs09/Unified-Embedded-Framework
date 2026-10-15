@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/umath/vector/vector2.c"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h",
+    "include/umath/vector/vector2.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

@@ -1,0 +1,61 @@
+{
+  "id": "stm32u575zit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-u5",
+  "series": "STM32U5",
+  "part_number": "STM32U575ZIT6",
+  "aliases": [
+    "STM32U575ZI"
+  ],
+  "roadmap_phase": 2,
+  "core": {
+    "name": "Cortex-M33F",
+    "isa": "Armv8-M Mainline",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 160000000
+  },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 804864,
+    "notes": "2 MiB flash and 786 KiB SRAM."
+  },
+  "peripheral_groups": [
+    "GPDMA",
+    "LPDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ADC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "OCTOSPI",
+    "FMC"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32U575ZI product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32u575zi.html"
+    },
+    {
+      "title": "ST STM32U575 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32u575zi.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 2 representative; secure/non-secure memory boundaries need explicit project policy."
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/persistent-record-1.0.schema.json",
+  "title": "UETD persistent record envelope",
+  "type": "object",
+  "required": ["format", "record_kind", "key", "schema_id", "schema_version", "sequence", "owner_id", "target_id", "encoding", "payload_length", "payload_sha256", "payload", "commit_state"],
+  "properties": {
+    "format": { "const": "UETD-PERSIST-1" },
+    "record_kind": { "enum": ["configuration", "calibration", "fault_summary", "blackbox_index"] },
+    "key": { "type": "string", "minLength": 1, "maxLength": 63 },
+    "schema_id": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "owner_id": { "type": "string", "minLength": 1 },
+    "target_id": { "type": "string", "minLength": 1 },
+    "board_revision": { "type": "string" },
+    "device_identity": { "type": "string" },
+    "encoding": { "type": "string", "minLength": 1, "description": "Canonical encoding name and version; payload must not use compiler-native structure layout." },
+    "payload_length": { "type": "integer", "minimum": 0 },
+    "payload_sha256": { "$ref": "#/$defs/sha256" },
+    "payload_crc32": { "type": "string", "pattern": "^[A-Fa-f0-9]{8}$", "description": "Optional accidental-corruption check; not authentication." },
+    "created_at_utc": { "type": "string", "format": "date-time" },
+    "payload": { "type": "string", "contentEncoding": "base64" },
+    "commit_state": { "const": "committed", "description": "Only published generations are returned from a read; staging markers are backend-private." },
+    "migration_from": { "type": "integer", "minimum": 1 }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" } },
+  "additionalProperties": false
+}

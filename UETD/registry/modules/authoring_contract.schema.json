@@ -1,0 +1,595 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/modules/authoring-contract-1.0.schema.json",
+  "title": "UETD module authoring contract",
+  "description": "UETD-owned settings, ports, operations, capabilities, and generation metadata consumed by project-language frontends.",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "status",
+    "kind",
+    "display_name",
+    "parameters",
+    "ports",
+    "numerics",
+    "composition"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "1.0"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "reviewed"
+      ]
+    },
+    "kind": {
+      "enum": [
+        "module",
+        "algorithm",
+        "protocol",
+        "signal_block",
+        "sensor",
+        "actuator",
+        "peripheral",
+        "hybrid_strategy",
+        "math_function",
+        "runtime"
+      ]
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/parameter"
+      }
+    },
+    "ports": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "numerics": {
+      "type": "object",
+      "properties": {
+        "scalar_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "accumulator_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "fixed_point_formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "scheduling": {
+      "type": "object",
+      "properties": {
+        "contexts": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "isr",
+              "task",
+              "main"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "minimum_rate_hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maximum_rate_hz": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "priority_range": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "supports_deadline": { "type": "boolean" },
+        "supports_execution_budget": { "type": "boolean" },
+        "supports_stack_declaration": { "type": "boolean" },
+        "supports_core_affinity": { "type": "boolean" },
+        "scheduler_policies": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "supports_multi_rate": {
+          "type": "boolean"
+        },
+        "supports_mode_switching": {
+          "type": "boolean"
+        },
+        "supports_blending": {
+          "type": "boolean"
+        },
+        "supports_custom_parent": {
+          "type": "boolean",
+          "description": "Whether this UETD node may be used as a leaf in a project-local custom algorithm graph."
+        },
+        "supports_hybrid_mode": {
+          "type": "boolean"
+        },
+        "supports_state_transfer": {
+          "type": "boolean"
+        },
+        "allowed_child_kinds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "state_transfer_strategy_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "blend_strategy_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "required_blocks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "operations": {
+      "type": "array",
+      "description": "Named, bounded component operations that the standalone language may call, for example from an OS state entry/exit action.",
+      "items": { "$ref": "#/$defs/operation" },
+      "uniqueItems": true
+    },
+    "generation": {
+      "type": "object",
+      "description": "UETD-owned readiness and data-only route used to render this component in standalone projects.",
+      "required": ["status", "route_id"],
+      "properties": {
+        "status": { "enum": ["draft", "ready", "unsupported"] },
+        "route_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "A fixed, allowlisted generation route identifier; never a Python module or function name."
+        },
+        "template_paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "target_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "protocol_endpoint_binding": {
+      "type": "object",
+      "description": "Contract for binding project-declared protocol messages to an MCU-side FPGA endpoint.",
+      "required": [
+        "protocol_source",
+        "endpoint_role_source",
+        "logical_payload_type_source",
+        "send_namespace",
+        "receive_namespace",
+        "freshness_namespace",
+        "receive_timestamp",
+        "require_explicit_message_bindings",
+        "require_wire_field_application_mapping",
+        "binding_forms",
+        "unbound_message_policy"
+      ],
+      "properties": {
+        "protocol_source": { "const": "project_or_imported_contract" },
+        "endpoint_role_source": { "const": "system_link_contract" },
+        "logical_payload_type_source": { "const": "imported_protocol_message_contract" },
+        "send_namespace": { "const": "send" },
+        "receive_namespace": { "const": "receive" },
+        "freshness_namespace": { "const": "fresh" },
+        "receive_timestamp": { "const": "receiver_local_monotonic_clock" },
+        "require_explicit_message_bindings": { "const": true },
+        "require_wire_field_application_mapping": { "const": true },
+        "binding_forms": { "const": ["component_assignment", "operating_system_channel"] },
+        "unbound_message_policy": { "const": "error" }
+      },
+      "additionalProperties": false
+    },
+    "protocol_capabilities": {
+      "type": "object",
+      "description": "Data-only protocol features supported by a UETD protocol implementation/runtime.",
+      "properties": {
+        "supports_custom_definition": { "type": "boolean" },
+        "supports_hybrid_paths": { "type": "boolean" },
+        "transport_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "framing_feature_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "field_encoding_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "checksum_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "state_machine_event_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "state_machine_action_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "arbitration_strategy_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "delivery_guarantee_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "max_frame_bytes": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": true
+    },
+    "sensor_capabilities": {
+      "type": "object",
+      "description": "Measurement, timing, calibration, and bus features exposed by a UETD sensor driver.",
+      "properties": {
+        "transport_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "sample_rate_hz": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 } },
+        "measurement_ranges": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 } },
+        "calibration_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "interrupt_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "startup_time_ms": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "actuator_capabilities": {
+      "type": "object",
+      "description": "Command, feedback, timing, and safe-state features exposed by a UETD actuator driver.",
+      "properties": {
+        "transport_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "command_units": { "type": "string" },
+        "safe_state_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "minimum_update_rate_hz": { "type": "number", "exclusiveMinimum": 0 },
+        "maximum_update_rate_hz": { "type": "number", "exclusiveMinimum": 0 },
+        "feedback_signal_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "peripheral_capabilities": {
+      "type": "object",
+      "description": "Electrical and resource constraints for a target peripheral or bus driver.",
+      "properties": {
+        "bus_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "maximum_clock_hz": { "type": "number", "exclusiveMinimum": 0 },
+        "dma_channel_count": { "type": "integer", "minimum": 0 },
+        "interrupt_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "pin_signal_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "math_function_capabilities": {
+      "type": "object",
+      "description": "Typed overload and target-code-generation support for a mathematical function.",
+      "properties": {
+        "arities": { "type": "array", "items": { "type": "integer", "minimum": 0 }, "uniqueItems": true },
+        "input_types": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "output_type": { "type": "string", "minLength": 1 },
+        "shape_rules": { "type": "array", "items": { "type": "string" } },
+        "domain_constraints": { "type": "array", "items": { "type": "string" } },
+        "codegen_backends": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "numeric_modes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "hybrid_strategy_capabilities": {
+      "type": "object",
+      "description": "The exact member slots and cross-member contract for a hybrid composition strategy. A strategy is not itself an algorithm implementation.",
+      "properties": {
+        "accepted_algorithm_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "minimum_members": { "type": "integer", "minimum": 1 },
+        "maximum_members": { "type": "integer", "minimum": 1 },
+        "fusion_method_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "requires_compatible_outputs": { "type": "boolean" },
+        "supports_state_transfer": { "type": "boolean" },
+        "member_slots": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/hybrid_member_slot" },
+          "minItems": 1
+        },
+        "cross_member_contract": { "$ref": "#/$defs/hybrid_member_contract" }
+      },
+      "additionalProperties": true
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "documentation": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "hybrid_member_slot": {
+      "type": "object",
+      "required": ["id", "kind", "required", "minimum_members", "maximum_members"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "kind": { "const": "algorithm" },
+        "required": { "type": "boolean" },
+        "minimum_members": { "type": "integer", "minimum": 0 },
+        "maximum_members": { "type": "integer", "minimum": 1 },
+        "accepted_module_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "required_input_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "required_output_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "required_status_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "hybrid_member_contract": {
+      "type": "object",
+      "required": ["shared_input_ids", "common_output_ids", "output_compatibility_fields", "requires_primary_condition", "requires_fallback_condition", "requires_failure_action", "requires_execution_budget"],
+      "properties": {
+        "shared_input_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "common_output_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "output_compatibility_fields": { "type": "array", "items": { "enum": ["value_type", "units", "dimension", "numeric_mode", "command_limits"] }, "uniqueItems": true },
+        "requires_primary_condition": { "type": "boolean" },
+        "requires_fallback_condition": { "type": "boolean" },
+        "requires_failure_action": { "type": "boolean" },
+        "requires_execution_budget": { "type": "boolean" },
+        "state_transfer_policy": { "enum": ["forbidden", "optional", "required"] },
+        "failure_action_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "operation": {
+      "type": "object",
+      "required": ["id", "description", "result"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "symbol": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+          "description": "UETD API symbol for this operation; never supplied by a project file."
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "result": {
+          "enum": ["void", "status", "bool"],
+          "description": "Published C result category. State-machine callbacks require status so UETD can latch failure."
+        },
+        "arguments": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/operation_argument" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "operation_argument": {
+      "type": "object",
+      "required": ["id", "value_type", "description"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+        "value_type": { "type": "string", "minLength": 1 },
+        "unit": { "type": "string" },
+        "description": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "parameter": {
+      "type": "object",
+      "required": [
+        "id",
+        "value_type",
+        "destination",
+        "required",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+        },
+        "value_type": {
+          "enum": [
+            "number",
+            "integer",
+            "boolean",
+            "string",
+            "enum",
+            "vector",
+            "matrix"
+          ]
+        },
+        "destination": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default": {},
+        "unit": {
+          "type": "string"
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "exclusive_minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "exclusive_maximum": {
+          "type": "number"
+        },
+        "enum_values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "dimension": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "shape": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "enum"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "enum_values"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "port": {
+      "type": "object",
+      "required": [
+        "id",
+        "direction",
+        "value_type",
+        "units",
+        "dimension",
+        "optional",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+        },
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ]
+        },
+        "value_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "units": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimension": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "kind": { "const": "hybrid_strategy" } }, "required": ["kind"] },
+      "then": {
+        "required": ["hybrid_strategy_capabilities"],
+        "properties": {
+          "hybrid_strategy_capabilities": {
+            "required": ["member_slots", "cross_member_contract"]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

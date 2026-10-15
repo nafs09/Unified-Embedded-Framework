@@ -1,0 +1,26 @@
+{
+  "id": "raspberry-pi-pico",
+  "name": "Raspberry Pi Pico (original, non-W)",
+  "aliases": ["Pico", "RP2040 Pico"],
+  "chip_id": "rp2040",
+  "module": {
+    "name": "Raspberry Pi Pico board",
+    "variant": "Original Pico with RP2040",
+    "flash_bytes": 2097152,
+    "crystal_hz": 12000000
+  },
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Raspberry Pi Pico datasheet",
+      "url": "https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf"
+    },
+    {
+      "title": "Raspberry Pi Pico series documentation",
+      "url": "https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "The original Pico board provides 2 MiB external flash and a 12 MHz crystal for the RP2040. This is not the Pico W; confirm board revision and complete GPIO reservations, build profile, and SWD/USB flash settings before use."
+}

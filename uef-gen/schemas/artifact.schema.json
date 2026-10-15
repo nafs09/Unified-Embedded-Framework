@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uef-gen/artifact.schema.json",
+  "title": "uef-gen built firmware artifact sidecar",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "project",
+    "target",
+    "uetd",
+    "build",
+    "files",
+    "segments"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "created_at_utc": { "type": "string", "format": "date-time" },
+    "project": {
+      "type": "object",
+      "required": ["name", "configuration_path", "configuration_sha256", "source_fingerprint"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "configuration_path": { "type": "string", "minLength": 1 },
+        "configuration_sha256": { "$ref": "#/$defs/sha256" },
+        "source_fingerprint": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": ["chip_id", "chip_sha256"],
+      "properties": {
+        "chip_id": { "type": "string", "minLength": 1 },
+        "chip_sha256": { "$ref": "#/$defs/sha256" },
+        "development_board_id": { "type": "string", "minLength": 1 },
+        "core_id": { "type": "string" },
+        "flash_start_addr": { "type": "integer", "minimum": 0 },
+        "flash_end_addr": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "uetd": {
+      "type": "object",
+      "required": ["version", "source_sha256", "module_ids"],
+      "properties": {
+        "version": { "type": "string", "minLength": 1 },
+        "source_sha256": { "$ref": "#/$defs/sha256" },
+        "module_ids": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "build": {
+      "type": "object",
+      "required": ["backend_id", "toolchain_id", "toolchain_version", "host_platform", "settings_sha256"],
+      "properties": {
+        "backend_id": { "type": "string", "minLength": 1 },
+        "toolchain_id": { "type": "string", "minLength": 1 },
+        "toolchain_version": { "type": "string", "minLength": 1 },
+        "host_platform": { "type": "string", "minLength": 1 },
+        "settings_sha256": { "$ref": "#/$defs/sha256" },
+        "size_bytes": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } }
+      },
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "object",
+      "required": ["elf"],
+      "properties": {
+        "elf": { "$ref": "#/$defs/file_record" },
+        "hex": { "$ref": "#/$defs/file_record" },
+        "bin": { "$ref": "#/$defs/file_record" },
+        "map": { "$ref": "#/$defs/file_record" }
+      },
+      "additionalProperties": { "$ref": "#/$defs/file_record" }
+    },
+    "segments": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/image_segment" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" },
+    "file_record": {
+      "type": "object",
+      "required": ["path", "sha256", "size_bytes"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "size_bytes": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "image_segment": {
+      "type": "object",
+      "required": ["role", "path", "start_addr", "end_addr", "sha256", "image_format"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "start_addr": { "type": "integer", "minimum": 0 },
+        "end_addr": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "image_format": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

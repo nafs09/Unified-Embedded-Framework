@@ -1,0 +1,30 @@
+{
+  "sources": [
+    "src/ucon/trajectory/profiles/trapezoid_profile.c"
+  ],
+  "headers": [
+    "include/ucon/trajectory/profiles/trapezoid_profile.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "TRAPEZOID_PROFILE",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_trapezoid_profile_validate_limits",
+    "ucon_trapezoid_profile_init",
+    "ucon_trapezoid_profile_reset",
+    "ucon_trapezoid_profile_plan",
+    "ucon_trapezoid_profile_sample",
+    "ucon_trapezoid_profile_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

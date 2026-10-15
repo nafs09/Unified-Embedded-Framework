@@ -1,0 +1,20 @@
+{
+  "id": "nrf9160-dk",
+  "name": "Nordic nRF9160 DK",
+  "aliases": ["nRF9160 Development Kit", "PCA10090"],
+  "chip_id": "nrf9160-sica-b1a-r",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Nordic nRF9160 DK user guide",
+      "url": "https://docs-be.nordicsemi.com/bundle/nRF9160_DK/raw/resource/enus/nRF9160_DK_User_Guide_v0.9.pdf"
+    },
+    {
+      "title": "Nordic nRF9160 development kit overview",
+      "url": "https://www.nordicsemi.com/Products/nRF9160/GetStarted?lang=en"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "Board identity and primary SiP binding only. Confirm DK hardware revision, fitted SiP order code, auxiliary nRF52840/debug path, clock configuration, build profile, and flash profile before generation."
+}

@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "src/ucon/future/control/predictive/adaptive_mpc.c"
+  ],
+  "headers": [
+    "include/ucon/future/control/predictive/adaptive_mpc.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "ADAPTIVE_MPC",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_adaptive_mpc_validate_problem",
+    "ucon_adaptive_mpc_init",
+    "ucon_adaptive_mpc_reset",
+    "ucon_adaptive_mpc_prepare_problem",
+    "ucon_adaptive_mpc_solve_problem",
+    "ucon_adaptive_mpc_verify_solution",
+    "ucon_adaptive_mpc_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

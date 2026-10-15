@@ -1,0 +1,56 @@
+{
+  "id": "atsame51j20a-au",
+  "vendor": "Microchip",
+  "family_id": "samd51-same51",
+  "series": "SAME51",
+  "part_number": "ATSAME51J20A-AU",
+  "aliases": [
+    "ATSAME51J20A"
+  ],
+  "roadmap_phase": 3,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 120000000
+  },
+  "package": {
+    "name": "TQFP64",
+    "pin_count": 64
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 262144
+  },
+  "peripheral_groups": [
+    "DMAC",
+    "SDHC",
+    "QSPI",
+    "USB",
+    "SERCOM",
+    "ADC",
+    "DAC",
+    "TCC"
+  ],
+  "source_references": [
+    {
+      "title": "Microchip ATSAME51J20A product page",
+      "url": "https://www.microchip.com/en-us/product/atsame51j20a"
+    },
+    {
+      "title": "Microchip SAM D5x/E5x family data sheet",
+      "url": "https://ww1.microchip.com/downloads/aemDocuments/documents/MCU32/ProductDocuments/DataSheets/DS60001507G.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "SAM E51 J20A variant; the family includes neighboring parts with different memory sizes."
+}

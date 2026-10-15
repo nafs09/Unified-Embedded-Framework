@@ -1,0 +1,466 @@
+// Precision Optical Bench: a six-axis active-isolation stage for an optical
+// instrument. The example demonstrates modal state estimation, narrow-band
+// resonance rejection, disturbance-observer feedforward, constrained MPC,
+// force allocation, safety modes, and a wired metrology interface.
+// Matrices and limits must be identified and reviewed on the actual bench.
+project PrecisionOpticalBench {
+  target = "stm32h743zit6";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+  record BenchState {
+    displacement : f32[6]<m>;
+    velocity : f32[6]<m/s>;
+    acceleration : f32[6]<m/s^2>;
+  }
+  record BenchMeasurement {
+    platform_acceleration : f32[3]<m/s^2>;
+    base_acceleration : f32[3]<m/s^2>;
+    strut_position : f32[6]<m>;
+  }
+  record BenchHealth {
+    estimate_valid : bool;
+    actuator_valid : bool;
+    limits_clear : bool;
+  }
+  record IsolationCommand {
+    reference_pose : f32[6]<m>;
+    enabled : bool;
+  }
+  record ActuatorCommand {
+    force : f32[6]<N>;
+    valid : bool;
+  }
+  record BenchTelemetry {
+    displacement : f32[6]<m>;
+    estimate_valid : bool;
+    actuator_valid : bool;
+    limits_clear : bool;
+  }
+  parameter maximum_strut_current : f32<A>;
+  parameter maximum_actuator_temperature : f32<degC>;
+  parameter minimum_stroke : f32<m>;
+  parameter maximum_stroke : f32<m>;
+  sensor platform_imu : imu;
+  sensor base_imu : imu;
+  sensor strut_encoder : encoder;
+  sensor actuator_current : current;
+  sensor actuator_temperature : temp;
+  actuator strut_bank : h_bridge;
+  watchdog isolation_watchdog;
+  supervisor isolation_safety;
+  fault isolation_faults;
+  log vibration_trace;
+  algorithm modal_estimator : ukf;
+  algorithm resonance_rejection : notch;
+  algorithm disturbance_observer : dob;
+  algorithm isolation_controller : robust_mpc;
+  algorithm force_allocator : control_allocator;
+  custom algorithm actuator_health_check;
+  custom protocol metrology_v1;
+  model bench_dynamics : continuous;
+  subsystem state_estimation;
+  subsystem active_isolation;
+  subsystem protected_actuation;
+  peripheral platform_imu_spi : spi;
+  peripheral base_imu_spi : spi;
+  peripheral encoder_timer : timer;
+  peripheral actuator_adc : adc;
+  peripheral temperature_adc : adc;
+  peripheral strut_pwm : timer;
+  peripheral metrology_uart : uart;
+  peripheral hard_inhibit : gpio;
+  operatingsystem IsolationRuntime {
+    runtime = FreeRTOS;
+    component_failure_policy = assert_hard_inhibit;
+    startup_policy = outputs_inhibited_until_sensor_and_actuator_qualification;
+    deadline_miss_policy = inhibit_actuators;
+    state_machine isolation_mode : IsolationMode {
+      state safe;
+      state qualifying;
+      state isolated;
+      state hold_position;
+      state degraded;
+      state shutdown;
+      state latched_fault;
+
+      initial safe;
+      owner = hard_fault_monitor;
+      consumers = [constrained_control];
+      transition any -> latched_fault when isolation_safety.trip_latched or isolation_faults.critical;
+      transition any -> shutdown when isolation_safety.shutdown_requested;
+      transition safe -> qualifying when isolation_safety.startup_permitted;
+      transition qualifying -> isolated when state_estimation.health.estimate_valid and isolation_safety.actuator_test_passed;
+      transition isolated -> hold_position when not metrology_v1.receive.command.value.enabled or not metrology_v1.fresh.command;
+      transition hold_position -> isolated when metrology_v1.receive.command.value.enabled and metrology_v1.fresh.command and state_estimation.health.estimate_valid;
+      transition isolated -> degraded when not state_estimation.health.estimate_valid or not protected_actuation.health.actuator_valid;
+      transition degraded -> qualifying when isolation_safety.requalification_permitted;
+      transition shutdown -> safe when isolation_safety.reset_authorized and isolation_safety.actuators_disabled;
+      transition latched_fault -> safe when isolation_safety.reset_authorized and isolation_safety.actuators_disabled;
+    }
+
+
+    interrupt overcurrent_trip { source = actuator_adc.comparator_trip; handler = isolation_safety.signal_trip; priority = 7; context = isr_signal_only; }
+    interrupt hard_inhibit_feedback { source = hard_inhibit.feedback; handler = isolation_safety.signal_inhibit_feedback; priority = 7; context = isr_signal_only; }
+    channel disturbance_snapshot {
+      source = disturbance_observer.disturbance;
+      destination = active_isolation.disturbance_estimate;
+      producer = disturbance_update;
+      consumers = [constrained_control];
+      capacity = 1;
+      overflow = replace_oldest;
+      maximum_age = 2 ms;
+      ownership = immutable_snapshot;
+    }
+    task hard_fault_monitor {
+      run = isolation_safety(
+        estimate_valid = state_estimation.health.estimate_valid,
+        actuator_valid = state_estimation.health.actuator_valid,
+        limits_clear = state_estimation.health.limits_clear,
+        critical_fault = isolation_faults.critical
+      );
+      rate = 1 kHz; priority = 7; deadline = 1 ms; on_miss = assert_hard_inhibit;
+    }
+    task platform_imu_sample { run = platform_imu; rate = 2 kHz; priority = 6; deadline = 500 us; }
+    task base_imu_sample { run = base_imu; rate = 2 kHz; priority = 6; deadline = 500 us; }
+    task stroke_sample { run = strut_encoder; rate = 2 kHz; priority = 6; deadline = 500 us; }
+    task current_sample { run = actuator_current; rate = 2 kHz; priority = 7; deadline = 500 us; }
+    task temperature_sample { run = actuator_temperature; rate = 100 Hz; priority = 3; deadline = 10 ms; }
+    task sensor_fusion {
+      run = state_estimation(
+        platform_acceleration = platform_imu.acceleration,
+        base_acceleration = base_imu.acceleration,
+        stroke = strut_encoder.position,
+        current = actuator_current.current,
+        temperature = actuator_temperature.value
+      );
+      rate = 2 kHz; priority = 6; deadline = 500 us; on_miss = hold_outputs_safe;
+    }
+    task disturbance_update {
+      run = disturbance_observer(
+        state = state_estimation.state,
+        measured_acceleration = state_estimation.filtered_acceleration,
+        base_acceleration = base_imu.acceleration,
+        applied_force = protected_actuation.command.force
+      );
+      rate = 1 kHz; priority = 5; deadline = 1 ms; on_miss = zero_feedforward_and_degrade;
+    }
+    task constrained_control {
+      run = active_isolation(
+        command = metrology_v1.receive.command.value,
+        state = state_estimation.state
+      );
+      rate = 1 kHz;
+      priority = 5;
+      deadline = 1 ms;
+      when = isolation_mode.state == IsolationMode.isolated;
+      on_miss = hold_position;
+    }
+    task protected_output {
+      run = protected_actuation(
+        force_request = active_isolation.force_request,
+        force_request_valid = active_isolation.valid,
+        current = actuator_current.current,
+        stroke = strut_encoder.position
+      );
+      rate = 2 kHz; priority = 7; deadline = 500 us; on_miss = inhibit_actuators;
+    }
+    task metrology_service {
+      run = metrology_v1(telemetry = metrology_snapshot);
+      rate = 100 Hz; priority = 2; deadline = 10 ms;
+    }
+    task fault_evaluation { run = isolation_faults(health = state_estimation.health); rate = 1 kHz; priority = 6; deadline = 1 ms; }
+    task diagnostic_recording {
+      run = vibration_trace(snapshot = vibration_snapshot);
+      rate = 100 Hz; priority = 1; deadline = 10 ms;
+    }
+    task watchdog_service {
+      run = isolation_watchdog;
+      rate = 100 Hz;
+      priority = 7;
+        feed_only_when = isolation_safety.watchdog_feed_permitted and state_estimation.health.estimate_valid and state_estimation.health.actuator_valid;
+    }
+  }
+
+  implementation {
+    signal metrology_snapshot : BenchTelemetry = map(
+      displacement = state_estimation.state.displacement,
+      estimate_valid = state_estimation.health.estimate_valid,
+      actuator_valid = protected_actuation.health.actuator_valid,
+      limits_clear = protected_actuation.health.limits_clear
+    );
+    signal vibration_snapshot : BenchTelemetry = map(
+      displacement = state_estimation.state.displacement,
+      estimate_valid = state_estimation.health.estimate_valid,
+      actuator_valid = protected_actuation.health.actuator_valid,
+      limits_clear = protected_actuation.health.limits_clear
+    );
+    peripheral platform_imu_spi { role = platform_accelerometer; } spi;
+    peripheral base_imu_spi { role = base_motion_reference; } spi;
+    peripheral encoder_timer { channels = 6; role = actuator_stroke_feedback; } timer;
+    peripheral actuator_adc { channels = 6; role = actuator_current_feedback; hardware_overcurrent_trip = enabled; } adc;
+    peripheral temperature_adc { channels = 6; role = actuator_thermal_feedback; } adc;
+    peripheral strut_pwm { channels = 6; frequency = 25 kHz; } timer;
+    peripheral metrology_uart { role = isolated_host_link; } uart;
+    peripheral hard_inhibit { direction = output; active_level = high; safe_state = asserted; feedback = enabled; } gpio;
+    sensor platform_imu { peripheral = platform_imu_spi; output acceleration : f32[3]<m/s^2>; } imu;
+    sensor base_imu { peripheral = base_imu_spi; output acceleration : f32[3]<m/s^2>; } imu;
+    sensor strut_encoder { peripheral = encoder_timer; output position : f32[6]<m>; } encoder;
+    sensor actuator_current { peripheral = actuator_adc; output current : f32[6]<A>; } current;
+    sensor actuator_temperature { peripheral = temperature_adc; output value : f32[6]<degC>; } temp;
+    actuator strut_bank { peripheral = strut_pwm; channels = 6; command = protected_actuation.command.force; safe_state = all_zero; } h_bridge;
+
+    watchdog isolation_watchdog {
+      timeout = 100 ms;
+      feed_source = isolation_safety.watchdog_feed_permitted;
+      expiry_action = assert_hard_inhibit;
+      feed_context = task_only;
+    } watchdog;
+    fault isolation_faults {
+      input health : BenchHealth;
+      output critical : bool;
+      critical_when = not health.estimate_valid or not health.actuator_valid or not health.limits_clear;
+      latch_until_authorized_reset = true;
+      reset_requires_actuators_disabled = true;
+    } fault;
+    supervisor isolation_safety {
+      input estimate_valid : bool;
+      input actuator_valid : bool;
+      input limits_clear : bool;
+      input critical_fault : bool;
+      hard_inhibit = hard_inhibit;
+      require_valid_state = true;
+      require_fresh_current_and_stroke = true;
+      trip_on_overcurrent = maximum_strut_current;
+      trip_on_overstroke = [minimum_stroke, maximum_stroke];
+      trip_on_overtemperature = maximum_actuator_temperature;
+      recovery_requires_requalification = true;
+      reset_requires_authorized_actuator_disabled_proof = true;
+      output output_permitted : bool;
+      output startup_permitted : bool;
+      output actuator_test_passed : bool;
+      output trip_latched : bool;
+      output shutdown_requested : bool;
+      output requalification_permitted : bool;
+      output reset_authorized : bool;
+      output actuators_disabled : bool;
+      output watchdog_feed_permitted : bool;
+      output limits_clear : bool;
+    } supervisor;
+    log vibration_trace {
+      input snapshot : BenchTelemetry;
+      transport = onboard_storage;
+      queue_capacity = 512;
+      overflow = drop_oldest_and_count;
+      flush_period = 10 ms;
+      include_raw_sensor_samples = true;
+    } log;
+
+    custom algorithm actuator_health_check {
+      input estimate_valid : bool;
+      input current : f32[6]<A>;
+      input temperature : f32[6]<degC>;
+      input stroke : f32[6]<m>;
+      output health : BenchHealth;
+      local actuators_ok : bool;
+      local stroke_ok : bool;
+      step() {
+        actuators_ok = true;
+        stroke_ok = true;
+        for index in 0..6 {
+          if abs(current[index]) > maximum_strut_current or temperature[index] > maximum_actuator_temperature {
+            actuators_ok = false;
+          }
+          if stroke[index] < minimum_stroke or stroke[index] > maximum_stroke {
+            stroke_ok = false;
+          }
+        }
+        health.estimate_valid = estimate_valid;
+        health.actuator_valid = actuators_ok;
+        health.limits_clear = stroke_ok;
+      }
+    }
+
+    model bench_dynamics {
+      sample_time = 1 ms;
+      discretize with integration.ode_rk4 at 1 ms;
+      state displacement : f32[6]<m>;
+      state velocity : f32[6]<m/s>;
+      input force : f32[6]<N>;
+      input base_acceleration : f32[3]<m/s^2>;
+      output state : BenchState;
+      output acceleration : f32[6]<m/s^2>;
+      parameter inverse_mass : f32[6,6]<m/N/s^2>;
+      parameter base_motion_map : f32[6,3];
+      parameter damping : f32[6,6]<1/s>;
+      parameter stiffness : f32[6,6]<1/s^2>;
+      equations {
+        derivative displacement = velocity;
+        derivative velocity = inverse_mass * force - damping * velocity - stiffness * displacement + base_motion_map * base_acceleration;
+        acceleration = inverse_mass * force - damping * velocity - stiffness * displacement + base_motion_map * base_acceleration;
+        state.displacement = displacement;
+        state.velocity = velocity;
+        state.acceleration = acceleration;
+      }
+      // Matrix parameters contain the identified coupled six-axis rig and its
+      // retained flexible modes; input acceleration is the measured base/floor
+      // disturbance, not an assumed white-noise term.
+    }
+
+    algorithm modal_estimator {
+      model = bench_dynamics;
+      input measurement : BenchMeasurement;
+      output state : BenchState;
+      output valid : bool;
+      innovation_gate = modal_residual_gate;
+      stale_measurement_policy = invalidate_state;
+    } ukf;
+    algorithm resonance_rejection {
+      input relative_acceleration : f32[3]<m/s^2>;
+      output output : f32[3]<m/s^2>;
+      center_frequencies = measured_resonance_modes;
+      bandwidths = measured_mode_bandwidths;
+    } notch;
+    algorithm disturbance_observer {
+      model = bench_dynamics;
+      input state : BenchState;
+      input measured_acceleration : f32[3]<m/s^2>;
+      input base_acceleration : f32[3]<m/s^2>;
+      input applied_force : f32[6]<N>;
+      output disturbance : f32[6]<N>;
+      bandwidth = 8 Hz;
+      saturation = identified_disturbance_bound;
+    } dob;
+    algorithm isolation_controller {
+      model = bench_dynamics;
+      input state : BenchState;
+      input reference : f32[6]<m>;
+      input disturbance : f32[6]<N>;
+      output force : f32[6]<N>;
+      output valid : bool;
+      horizon = 40 ms;
+      sample_time = 1 ms;
+      constraints = stroke_current_force_and_rate_limits;
+      objective = optical_pointing_and_platform_energy;
+      solver = bounded_rti;
+      failure = hold_position_and_inhibit_if_unstable;
+    } robust_mpc;
+    algorithm force_allocator {
+      input request : f32[6]<N>;
+      input current : f32[6]<A>;
+      input stroke : f32[6]<m>;
+      output force : f32[6]<N>;
+      output valid : bool;
+      geometry = six_strut_jacobian;
+      objective = minimize_current_subject_to_pose_wrench;
+      bounds = measured_current_and_stroke_limits;
+    } control_allocator;
+
+    custom protocol metrology_v1 {
+      transport = metrology_uart;
+      framing { sync = [0xA5, 0x5A]; version = 1; max_frame_bytes = 64 B; byte_order = little_endian; }
+      header { version_offset = 2 B; message_id_offset = 3 B; payload_offset = 6 B; }
+      sequence { offset = 4 B; width = 16 bit; scope = per_message; }
+      message command {
+        id = 1;
+        logical_type = IsolationCommand;
+        payload_bytes = 25 B;
+        field enabled : bool { offset = 0 B; encoding = bool_u8_zero_one; application_field = IsolationCommand.enabled; }
+        field reference_pose : f32[6]<m> { offset = 1 B; encoding = ieee754_binary32_little_endian; application_field = IsolationCommand.reference_pose; }
+      }
+      message telemetry {
+        id = 2;
+        logical_type = BenchTelemetry;
+        payload_bytes = 27 B;
+        field displacement : f32[6]<m> { offset = 0 B; encoding = ieee754_binary32_little_endian; application_field = BenchTelemetry.displacement; }
+        field estimate_valid : bool { offset = 24 B; encoding = bool_u8_zero_one; application_field = BenchTelemetry.estimate_valid; }
+        field actuator_valid : bool { offset = 25 B; encoding = bool_u8_zero_one; application_field = BenchTelemetry.actuator_valid; }
+        field limits_clear : bool { offset = 26 B; encoding = bool_u8_zero_one; application_field = BenchTelemetry.limits_clear; }
+      }
+      checksum { position = trailer; width = 4 B; algorithm = crc32_iso_hdlc; coverage = version_through_payload; }
+      behavior { command_timeout = 100 ms; stale_policy = hold_position; duplicate_sequence = reject; queue_capacity = 8; }
+    }
+
+    subsystem state_estimation {
+      input platform_acceleration : f32[3]<m/s^2> { rate = 2 kHz; max_age = 1 ms; };
+      input base_acceleration : f32[3]<m/s^2> { rate = 2 kHz; max_age = 1 ms; };
+      input stroke : f32[6]<m> { rate = 2 kHz; max_age = 1 ms; };
+      input current : f32[6]<A> { rate = 2 kHz; max_age = 1 ms; };
+      input temperature : f32[6]<degC> { rate = 100 Hz; max_age = 20 ms; };
+      output state : BenchState { rate = 2 kHz; max_age = 1 ms; };
+      output filtered_acceleration : f32[3]<m/s^2> { rate = 2 kHz; max_age = 1 ms; };
+      output health : BenchHealth { rate = 2 kHz; max_age = 1 ms; };
+      use modal_estimator as estimator;
+      use resonance_rejection as filter;
+      use actuator_health_check as health_check;
+      stage estimate = estimator(
+        measurement = map(
+          platform_acceleration = platform_acceleration,
+          base_acceleration = base_acceleration,
+          strut_position = stroke
+        )
+      );
+      stage filtered = filter(relative_acceleration = platform_acceleration - base_acceleration);
+      stage health_result = health_check(
+        estimate_valid = estimate.valid,
+        current = current,
+        temperature = temperature,
+        stroke = stroke
+      );
+      output state = estimate.state;
+      output filtered_acceleration = filtered.output;
+      output health = health_result.health;
+    }
+
+    subsystem active_isolation {
+      input command : IsolationCommand { rate = 100 Hz; max_age = 100 ms; };
+      input state : BenchState { rate = 2 kHz; max_age = 1 ms; };
+      input disturbance_estimate : f32[6]<N> { rate = 1 kHz; max_age = 2 ms; };
+      output force_request : f32[6]<N> { rate = 1 kHz; max_age = 1 ms; };
+      output valid : bool { rate = 1 kHz; max_age = 1 ms; };
+      use isolation_controller as controller;
+      stage control = controller(
+        state = state,
+        reference = command.reference_pose,
+        disturbance = disturbance_estimate
+      );
+      output force_request = control.force;
+      output valid = control.valid;
+    }
+
+    subsystem protected_actuation {
+      input force_request : f32[6]<N> { rate = 1 kHz; max_age = 1 ms; };
+      input current : f32[6]<A> { rate = 2 kHz; max_age = 1 ms; };
+      input stroke : f32[6]<m> { rate = 2 kHz; max_age = 1 ms; };
+      input force_request_valid : bool { rate = 1 kHz; max_age = 1 ms; };
+      output command : ActuatorCommand { rate = 2 kHz; max_age = 500 us; };
+      output health : BenchHealth { rate = 2 kHz; max_age = 500 us; };
+      use force_allocator as allocator;
+      use strut_bank as actuators;
+      stage allocation = allocator(request = force_request, current = current, stroke = stroke);
+      stage applied = actuators(
+        command = select(
+          allocation.valid and force_request_valid and isolation_safety.output_permitted,
+          allocation.force,
+          [0, 0, 0, 0, 0, 0]
+        )
+      );
+      output command = map(
+        force = select(
+          allocation.valid and force_request_valid and isolation_safety.output_permitted,
+          allocation.force,
+          [0, 0, 0, 0, 0, 0]
+        ),
+        valid = allocation.valid and isolation_safety.output_permitted
+      );
+      output health = map(
+        estimate_valid = state_estimation.health.estimate_valid,
+        actuator_valid = allocation.valid and force_request_valid and isolation_safety.output_permitted,
+        limits_clear = state_estimation.health.limits_clear
+      );
+    }
+  }
+}

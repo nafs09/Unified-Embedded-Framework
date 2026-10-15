@@ -1,0 +1,119 @@
+{
+  "name": "uef-project-language",
+  "displayName": "UEF Project Language",
+  "description": "UEF-PL syntax colors, UETD registry intelligence, diagnostics, and language-server support.",
+  "version": "0.1.4",
+  "publisher": "uef",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nafs09/Unified-Embedded-Framework.git",
+    "directory": "uef-gen/editors/vscode"
+  },
+  "main": "./extension.js",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "10.1.2"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:uef-project",
+    "onLanguage:uef-system"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "uef-project",
+        "aliases": [
+          "UEF Project",
+          "UEF-PL"
+        ],
+        "extensions": [
+          ".uef"
+        ],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "uef-system",
+        "aliases": [
+          "UEF System",
+          "UEF-PL System"
+        ],
+        "extensions": [
+          ".uefs"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "uef-project",
+        "scopeName": "source.uef-project",
+        "path": "./syntaxes/uef.tmLanguage.json"
+      },
+      {
+        "language": "uef-system",
+        "scopeName": "source.uef-system",
+        "path": "./syntaxes/uefs.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "UEF-PL Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/uef-pl-dark-color-theme.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "uef-project",
+        "path": "./snippets/uef.json"
+      },
+      {
+        "language": "uef-system",
+        "path": "./snippets/uefs.json"
+      }
+    ],
+    "configuration": {
+      "title": "UEF Project Language",
+      "properties": {
+        "uef-project-language.uefRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the UETD checkout. Leave blank to discover it from the current workspace."
+        },
+        "uef-project-language.languageServer.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the shared uef-gen language server. Install uef-gen with its language-server extra first; set false to use registry hints without compiler diagnostics."
+        },
+        "uef-project-language.languageServer.executable": {
+          "type": "string",
+          "default": "",
+          "description": "Optional server executable path. If it is unavailable, the extension tries the PATH entry point and then the Python module launcher."
+        },
+        "uef-project-language.languageServer.pythonExecutable": {
+          "type": "string",
+          "default": "python",
+          "description": "Python executable used as a fallback with -m uef_gen.language.server. Use the interpreter where uef-gen[language-server] is installed."
+        },
+        "uef-project-language.languageServer.arguments": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Additional command-line arguments passed to the language server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "4.0.0"
+  }
+}

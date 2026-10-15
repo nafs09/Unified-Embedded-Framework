@@ -1,0 +1,24 @@
+{
+  "id": "arduino-nano-every",
+  "name": "Arduino Nano Every (ABX00028)",
+  "aliases": ["Nano Every"],
+  "chip_id": "atmega4809-afr",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Arduino Nano Every ABX00028 datasheet",
+      "url": "https://docs.arduino.cc/resources/datasheets/ABX00028-datasheet.pdf"
+    },
+    {
+      "title": "Arduino Nano Every hardware documentation",
+      "url": "https://docs.arduino.cc/hardware/nano-every"
+    },
+    {
+      "title": "Arduino Nano Every schematic",
+      "url": "https://docs.arduino.cc/resources/schematics/ABX00028-schematics.pdf"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "The main MCU is ATmega4809-AFR. The USB bridge and schematic change across board revisions; verify the physical revision before recording pin reservations, clock sources, build settings, or flash settings."
+}

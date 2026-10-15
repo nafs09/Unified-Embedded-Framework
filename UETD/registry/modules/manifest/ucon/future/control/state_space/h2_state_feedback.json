@@ -1,0 +1,27 @@
+{
+  "sources": [
+    "src/ucon/future/control/state_space/h2_state_feedback.c"
+  ],
+  "headers": [
+    "include/ucon/future/control/state_space/h2_state_feedback.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "H2_STATE_FEEDBACK",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_h2_state_feedback_validate_config",
+    "ucon_h2_state_feedback_init",
+    "ucon_h2_state_feedback_reset",
+    "ucon_h2_state_feedback_compute_feedback",
+    "ucon_h2_state_feedback_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

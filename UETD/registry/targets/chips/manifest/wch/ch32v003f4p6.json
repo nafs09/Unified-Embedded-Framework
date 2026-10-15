@@ -1,0 +1,54 @@
+{
+  "id": "ch32v003f4p6",
+  "vendor": "WCH",
+  "family_id": "ch32v003",
+  "series": "CH32V003",
+  "part_number": "CH32V003F4P6",
+  "aliases": [
+    "CH32V003"
+  ],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "QingKe V2A",
+    "isa": "RV32EC",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 48000000
+  },
+  "package": {
+    "name": "TSSOP20",
+    "pin_count": 20
+  },
+  "memory": {
+    "flash_bytes": 16384,
+    "sram_bytes": 2048
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "TIM",
+    "USART",
+    "I2C",
+    "SPI"
+  ],
+  "source_references": [
+    {
+      "title": "WCH CH32V003 resource page",
+      "url": "https://www.wch-ic.com/downloads/category/27.html"
+    },
+    {
+      "title": "WCH CH32V003 reference manual entry",
+      "url": "https://www.wch-ic.com/downloads/CH32V003RM_PDF.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Small low-cost RISC-V part; boot/debug conventions and peripheral mappings need a vendor-specific target implementation."
+}

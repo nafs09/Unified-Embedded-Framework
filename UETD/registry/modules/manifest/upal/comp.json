@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/upal/comp/comp.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "requires_cap": [
+    "comp"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/gpio.h",
+    "include/upal/comp.h"
+  ]
+}

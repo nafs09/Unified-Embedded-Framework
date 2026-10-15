@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/uef-gen/system-language-registry-1.0.schema.json",
+  "title": "uef-gen multi-target system-language registry",
+  "type": "object",
+  "required": ["registry_version", "language", "ownership", "shared_type_contract", "lexical", "grammar", "semantics"],
+  "properties": {
+    "registry_version": { "const": "1.0" },
+    "language": {
+      "type": "object",
+      "required": ["id", "version", "file_extensions", "entrypoint"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "file_extensions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "uniqueItems": true },
+        "entrypoint": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "ownership": {
+      "type": "object",
+      "required": ["uetd_registry_facts", "project_facts", "language_facts"],
+      "properties": {
+        "uetd_registry_facts": { "type": "string", "minLength": 1 },
+        "project_facts": { "type": "string", "minLength": 1 },
+        "language_facts": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "shared_type_contract": { "type": "string", "minLength": 1 },
+    "lexical": {
+      "type": "object",
+      "required": ["line_comments", "identifier", "finite_decimal", "hex_integer", "integer_token", "number_token", "token_names", "string_quotes", "string_escapes", "numeric_units_are_tokens", "signs_are_operators", "numeric_locale", "forbidden_numeric_values"],
+      "properties": {
+        "line_comments": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "identifier": { "type": "string", "minLength": 1 },
+        "finite_decimal": { "type": "string", "minLength": 1 },
+        "hex_integer": { "type": "string", "minLength": 1 },
+        "integer_token": { "type": "string", "minLength": 1 },
+        "number_token": { "type": "string", "minLength": 1 },
+        "token_names": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "minLength": 1 } },
+        "string_quotes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "string_escapes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "numeric_units_are_tokens": { "type": "boolean" },
+        "signs_are_operators": { "type": "boolean" },
+        "numeric_locale": { "type": "string", "minLength": 1 },
+        "forbidden_numeric_values": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "grammar": {
+      "type": "object",
+      "required": ["entrypoint", "productions"],
+      "properties": {
+        "entrypoint": { "type": "string", "minLength": 1 },
+        "productions": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": false
+    },
+    "semantics": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": ["string", "boolean"] }
+    }
+  },
+  "additionalProperties": false
+}

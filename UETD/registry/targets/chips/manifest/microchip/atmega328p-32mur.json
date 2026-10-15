@@ -1,0 +1,33 @@
+{
+  "id": "atmega328p-32mur",
+  "vendor": "Microchip",
+  "family_id": "megaavr-8bit",
+  "series": "megaAVR",
+  "part_number": "ATMEGA328P-32MUR",
+  "aliases": ["ATmega328P VQFN32", "Arduino Nano classic MCU"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "AVR 8-bit",
+    "isa": "AVR",
+    "word_bits": 8,
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 20000000
+  },
+  "package": { "name": "VQFN32 5x5 mm", "pin_count": 32 },
+  "memory": { "flash_bytes": 32768, "sram_bytes": 2048, "eeprom_bytes": 1024 },
+  "peripheral_groups": ["GPIO", "TIMERS", "ADC", "USART", "SPI", "TWI"],
+  "source_references": [
+    {
+      "title": "Microchip ATmega328P datasheet",
+      "url": "https://ww1.microchip.com/downloads/aemDocuments/documents/MCU08/ProductDocuments/DataSheets/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf"
+    },
+    {
+      "title": "Arduino Nano A000005 datasheet",
+      "url": "https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf"
+    }
+  ],
+  "source_verified_fields": ["identity", "core_width", "frequency", "package", "flash", "SRAM", "EEPROM", "peripheral_groups"],
+  "generation_available": false,
+  "record_note": "The Arduino Nano A000005 datasheet identifies ATMEGA328P-32MUR. Chip maximum clock is 20 MHz; the classic Nano board runs it at 16 MHz. No package pin, interrupt, timer, or startup map is asserted."
+}

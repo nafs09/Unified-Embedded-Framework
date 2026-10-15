@@ -1,0 +1,231 @@
+{
+  "sources": [
+    "src/ucon/control/classical/pid.c"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "phase": 0,
+  "headers": [
+    "include/ucon/control/classical/pid.h",
+    "include/ucon/status.h",
+    "include/ucon/types.h",
+    "include/ucore/types.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h"
+  ],
+  "authoring": {
+    "contract_version": "1.0",
+    "status": "draft",
+    "kind": "algorithm",
+    "display_name": "Two-degree-of-freedom PID",
+    "description": "Discrete Tustin PID/PI/PD controller with explicit saturation and anti-windup configuration.",
+    "parameters": [
+      {
+        "id": "kp",
+        "value_type": "number",
+        "destination": "config_params.kp",
+        "required": true,
+        "description": "Proportional gain."
+      },
+      {
+        "id": "ki",
+        "value_type": "number",
+        "destination": "config_params.ki",
+        "required": true,
+        "description": "Integral gain."
+      },
+      {
+        "id": "kd",
+        "value_type": "number",
+        "destination": "config_params.kd",
+        "required": true,
+        "description": "Derivative gain."
+      },
+      {
+        "id": "derivative_filter_n",
+        "value_type": "number",
+        "destination": "config_params.derivative_filter_n",
+        "required": true,
+        "description": "Derivative filter coefficient N."
+      },
+      {
+        "id": "proportional_weight_b",
+        "value_type": "number",
+        "destination": "config_params.proportional_weight_b",
+        "required": true,
+        "description": "Two-degree-of-freedom proportional setpoint weight."
+      },
+      {
+        "id": "derivative_weight_c",
+        "value_type": "number",
+        "destination": "config_params.derivative_weight_c",
+        "required": true,
+        "description": "Two-degree-of-freedom derivative setpoint weight."
+      },
+      {
+        "id": "sample_time",
+        "value_type": "number",
+        "destination": "config_params.sample_time",
+        "required": true,
+        "unit": "s",
+        "exclusive_minimum": 0,
+        "description": "Fixed controller sample period in seconds; must be strictly positive."
+      },
+      {
+        "id": "output_min",
+        "value_type": "number",
+        "destination": "config_params.output_min",
+        "required": true,
+        "description": "Lower output saturation limit."
+      },
+      {
+        "id": "output_max",
+        "value_type": "number",
+        "destination": "config_params.output_max",
+        "required": true,
+        "description": "Upper output saturation limit; must exceed output_min."
+      },
+      {
+        "id": "integral_min",
+        "value_type": "number",
+        "destination": "config_params.integral_min",
+        "required": true,
+        "description": "Lower integral-state limit."
+      },
+      {
+        "id": "integral_max",
+        "value_type": "number",
+        "destination": "config_params.integral_max",
+        "required": true,
+        "description": "Upper integral-state limit; must not be below integral_min."
+      },
+      {
+        "id": "tracking_time",
+        "value_type": "number",
+        "destination": "config_params.tracking_time",
+        "required": true,
+        "unit": "s",
+        "minimum": 0,
+        "description": "Back-calculation tracking time in seconds; cross-field requirements follow the UETD API contract."
+      },
+      {
+        "id": "saturation_enabled",
+        "value_type": "boolean",
+        "destination": "config_params.saturation_enabled",
+        "required": true,
+        "description": "Enable output saturation."
+      },
+      {
+        "id": "anti_windup",
+        "value_type": "enum",
+        "destination": "config_params.anti_windup",
+        "required": true,
+        "enum_values": [
+          "none",
+          "clamp",
+          "back_calculation",
+          "conditional"
+        ],
+        "description": "Anti-windup strategy."
+      }
+    ],
+    "ports": [
+      {
+        "id": "reference",
+        "direction": "input",
+        "value_type": "scalar",
+        "units": "signal-defined",
+        "dimension": 1,
+        "optional": false,
+        "description": "Setpoint input."
+      },
+      {
+        "id": "measurement",
+        "direction": "input",
+        "value_type": "scalar",
+        "units": "signal-defined",
+        "dimension": 1,
+        "optional": false,
+        "description": "Measured process value."
+      },
+      {
+        "id": "feedforward",
+        "direction": "input",
+        "value_type": "scalar",
+        "units": "output-defined",
+        "dimension": 1,
+        "optional": true,
+        "description": "Optional additive feedforward input."
+      },
+      {
+        "id": "tracking_output",
+        "direction": "input",
+        "value_type": "scalar",
+        "units": "output-defined",
+        "dimension": 1,
+        "optional": true,
+        "description": "Optional external tracking signal for back-calculation."
+      },
+      {
+        "id": "output",
+        "direction": "output",
+        "value_type": "scalar",
+        "units": "output-defined",
+        "dimension": 1,
+        "optional": false,
+        "description": "Controller output."
+      }
+    ],
+    "numerics": {
+      "scalar_types": [
+        "float32",
+        "float64",
+        "q15",
+        "q31"
+      ],
+      "accumulator_types": [
+        "float32",
+        "float64"
+      ],
+      "fixed_point_formats": [],
+      "constraints": [
+        "All coefficients and limits must be finite.",
+        "output_max must exceed output_min.",
+        "integral_max must not be below integral_min.",
+        "sample_time must be strictly positive."
+      ]
+    },
+    "scheduling": {
+      "contexts": [
+        "task",
+        "isr"
+      ]
+    },
+    "composition": {
+      "supports_multi_rate": false,
+      "supports_mode_switching": true,
+      "supports_blending": false,
+      "required_blocks": []
+    },
+    "operations": [
+      {
+        "id": "reset",
+        "symbol": "ucon_pid_reset",
+        "description": "Reset PID history and integral state before enabling or switching modes.",
+        "result": "status"
+      }
+    ],
+    "generation": {
+      "status": "draft",
+      "route_id": "uetd_algorithm_instance",
+      "template_paths": [],
+      "notes": [
+        "Standalone component rendering and target-specific source/link checks are not yet verified."
+      ]
+    },
+    "documentation": [
+      "include/ucon/control/classical/pid.h"
+    ]
+  }
+}

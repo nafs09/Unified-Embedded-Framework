@@ -1,0 +1,20 @@
+{
+  "id": "arduino-nano-classic",
+  "name": "Arduino Nano (Classic, A000005)",
+  "aliases": ["Arduino Nano", "Nano Classic"],
+  "chip_id": "atmega328p-32mur",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Arduino Nano A000005 datasheet",
+      "url": "https://docs.arduino.cc/resources/datasheets/A000005-datasheet.pdf"
+    },
+    {
+      "title": "Arduino Nano hardware documentation",
+      "url": "https://docs.arduino.cc/hardware/nano"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "The A000005 datasheet names ATMEGA328P-32MUR and a 16 MHz board clock. Confirm the physical board revision and USB-serial interface before completing pins, build settings, and flash settings."
+}

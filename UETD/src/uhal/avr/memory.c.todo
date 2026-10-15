@@ -1,0 +1,6 @@
+/* Rename to memory.c only after memory capabilities and retained registers are specified. */
+/* void uhal_mpu_configure(void); */
+/* void uhal_backup_write(uetd_u8_t index, uetd_u32_t value); */
+/* uetd_u32_t uhal_backup_read(uetd_u8_t index); */
+/* TODO: Report MPU unsupported where absent; map only documented backup/retention storage,
+ * with index bounds and reset/power-domain behavior from the exact chip. */

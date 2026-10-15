@@ -1,0 +1,25 @@
+{
+  "UETD system shell": {
+    "prefix": "uef-system",
+    "body": [
+      "system ${1:SystemName} {",
+      "  node ${2:controls} { project = \"${3:controls.uef}\"; role = ${4:controller}; }",
+      "  node ${5:executor} { project = \"${6:executor.uef}\"; role = ${7:local_safety}; }",
+      "",
+      "  record ${8:Command} {",
+      "    ${9:sequence} : u32;",
+      "    ${10:enable} : bool;",
+      "  }",
+      "",
+      "  link ${11:control_link} {",
+      "    from = ${2:controls}.${12:command_tx};",
+      "    to = ${5:executor}.${13:command_rx};",
+      "    contract = ${8:Command};",
+      "    transport = ${14:SPI}; delivery = ${15:latest_value};",
+      "    timeout = ${16:command_age_limit}; recovery = ${17:inhibit};",
+      "  }",
+      "}"
+    ],
+    "description": "Compose target-local .uef projects through explicit typed message links"
+  }
+}

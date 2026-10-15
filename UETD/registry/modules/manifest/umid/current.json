@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "src/umid/drivers/current.c"
+  ],
+  "dependencies": [
+    "upal/adc"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/umid/drivers/current.h",
+    "include/upal/adc.h",
+    "include/upal/dma.h"
+  ]
+}

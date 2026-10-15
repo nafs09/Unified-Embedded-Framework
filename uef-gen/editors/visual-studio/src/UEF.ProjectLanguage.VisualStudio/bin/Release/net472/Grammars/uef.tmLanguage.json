@@ -1,0 +1,489 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "UEF Project",
+  "scopeName": "source.uef-project",
+  "fileTypes": ["uef"],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#annotated-types"
+    },
+    {
+      "include": "#registered-types"
+    },
+    {
+      "include": "#named-declarations"
+    },
+    {
+      "include": "#implementation-descriptor-suffix"
+    },
+    {
+      "include": "#typed-bindings"
+    },
+    {
+      "include": "#declarations"
+    },
+    {
+      "include": "#dsl-builtins"
+    },
+    {
+      "include": "#enum-types"
+    },
+    {
+      "include": "#property-names"
+    },
+    {
+      "include": "#flow-control"
+    },
+    {
+      "include": "#function-calls"
+    },
+    {
+      "include": "#member-references"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#names"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.uef-project",
+          "match": "#.*$"
+        },
+        {
+          "name": "comment.line.double-slash.uef-project",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.uef-project",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.uef-project"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.uef-project"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.uef-project",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.uef-project",
+          "begin": "'",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.uef-project"
+            }
+          },
+          "end": "'",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.uef-project"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.uef-project",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.uef-project",
+          "match": "(?<![A-Za-z0-9_])(?:0[xX][0-9A-Fa-f]+|(?:[0-9]+(?:\\.(?!\\.)[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?)(?![A-Za-z0-9_])"
+        }
+      ]
+    },
+    "annotated-types": {
+      "patterns": [
+        {
+          "name": "meta.type.unit.uef-project",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(\\[)([0-9]+(?:\\s*,\\s*[0-9]+)*)(\\])(<)([^<>\\s]+)(>)",
+          "captures": {
+            "1": { "name": "storage.type.uef-project" },
+            "2": { "name": "punctuation.definition.array.begin.uef-project" },
+            "3": { "name": "constant.numeric.type-dimension.uef-project" },
+            "4": { "name": "punctuation.definition.array.end.uef-project" },
+            "5": { "name": "punctuation.definition.type.uef-project" },
+            "6": { "name": "keyword.other.unit.uef-project" },
+            "7": { "name": "punctuation.definition.type.uef-project" }
+          }
+        },
+        {
+          "name": "meta.type.array.uef-project",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(\\[)([0-9]+(?:\\s*,\\s*[0-9]+)*)(\\])",
+          "captures": {
+            "1": { "name": "storage.type.uef-project" },
+            "2": { "name": "punctuation.definition.array.begin.uef-project" },
+            "3": { "name": "constant.numeric.type-dimension.uef-project" },
+            "4": { "name": "punctuation.definition.array.end.uef-project" }
+          }
+        },
+        {
+          "name": "meta.type.unit.uef-project",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)(<)([^<>\\s]+)(>)",
+          "captures": {
+            "1": { "name": "storage.type.uef-project" },
+            "2": { "name": "punctuation.definition.type.uef-project" },
+            "3": { "name": "keyword.other.unit.uef-project" },
+            "4": { "name": "punctuation.definition.type.uef-project" }
+          }
+        }
+      ]
+    },
+    "named-declarations": {
+      "patterns": [
+        {
+          "name": "meta.declaration.project-routine.uef-project",
+          "match": "\\b(project)\\s+(routine)\\s+([A-Za-z_][A-Za-z0-9_]*)(\\.)([A-Za-z_][A-Za-z0-9_]*)(\\s*\\(\\s*\\))",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.project.uef-project" },
+            "2": { "name": "keyword.control.declaration.algorithm.uef-project" },
+            "3": { "name": "entity.name.type.registered.uef-project" },
+            "4": { "name": "punctuation.accessor.uef-project" },
+            "5": { "name": "entity.name.function.uef-project" },
+            "6": { "name": "punctuation.definition.parameters.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.project-routine.uef-project",
+          "match": "\\b(project)\\s+(routine)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(\\(\\s*\\))",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.project.uef-project" },
+            "2": { "name": "keyword.control.declaration.algorithm.uef-project" },
+            "3": { "name": "entity.name.function.uef-project" },
+            "4": { "name": "punctuation.definition.parameters.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.named.uef-project",
+          "match": "\\b(custom|hybrid)\\s+(algorithm|protocol)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.algorithm.uef-project" },
+            "2": { "name": "keyword.control.declaration.algorithm.uef-project" },
+            "3": { "name": "entity.name.declaration.algorithm.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.named.uef-project",
+          "match": "\\b(project)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.project.uef-project" },
+            "2": { "name": "entity.name.declaration.project.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.named.uef-project",
+          "match": "\\b(subsystem|model|state_machine)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.algorithm.uef-project" },
+            "2": { "name": "entity.name.declaration.algorithm.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.named.uef-project",
+          "match": "\\b(operatingsystem|taskset|task|loop)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.runtime.uef-project" },
+            "2": { "name": "entity.name.declaration.runtime.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.state.uef-project",
+          "match": "\\b(state)\\s+([A-Za-z_][A-Za-z0-9_]*)(?:\\s*(=)\\s*([0-9]+))?\\s*;",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.type.uef-project" },
+            "2": { "name": "constant.other.enum-member.uef-project" },
+            "3": { "name": "keyword.operator.assignment.uef-project" },
+            "4": { "name": "constant.numeric.integer.uef-project" }
+          }
+        },
+        {
+          "name": "meta.type.enum.uef-project",
+          "begin": "\\b(enum)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.declaration.type.uef-project" },
+            "2": { "name": "entity.name.declaration.type.uef-project" },
+            "3": { "name": "keyword.operator.assignment.uef-project" },
+            "4": { "name": "storage.type.uef-project" },
+            "5": { "name": "punctuation.section.block.begin.uef-project" }
+          },
+          "end": "\\}",
+          "endCaptures": { "0": { "name": "punctuation.section.block.end.uef-project" } },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#strings" },
+            {
+              "name": "constant.other.enum-member.uef-project",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\s*(?==|,)"
+            },
+            { "include": "#numbers" }
+          ]
+        },
+        {
+          "name": "meta.type.record.uef-project",
+          "begin": "\\b(record|shared_record|persistent_record)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.declaration.type.uef-project" },
+            "2": { "name": "entity.name.declaration.type.uef-project" },
+            "3": { "name": "punctuation.section.block.begin.uef-project" }
+          },
+          "end": "\\}",
+          "endCaptures": { "0": { "name": "punctuation.section.block.end.uef-project" } },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#strings" },
+            {
+              "name": "meta.record.field.uef-project",
+              "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\s*(:)",
+              "captures": {
+                "1": { "name": "variable.other.field.uef-project" },
+                "2": { "name": "keyword.operator.assignment.uef-project" }
+              }
+            },
+            { "include": "#annotated-types" },
+            { "include": "#types" },
+            { "include": "#numbers" },
+            { "include": "#operators" },
+            { "include": "#names" }
+          ]
+        },
+        {
+          "name": "meta.declaration.named.uef-project",
+          "match": "\\b(variant|flags|fixed)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.type.uef-project" },
+            "2": { "name": "entity.name.declaration.type.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.hardware.uef-project",
+          "match": "\\b(peripheral|bus|sensor|actuator|fpga|plc|watchdog|supervisor|fault|log)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.hardware.uef-project" },
+            "2": { "name": "entity.name.declaration.hardware.uef-project" }
+          }
+        },
+        {
+          "name": "keyword.control.declaration.hardware.uef-project",
+          "match": "\\b(?:peripheral|bus|sensor|actuator|fpga|plc|watchdog|supervisor|fault|log)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.algorithm.uef-project",
+          "match": "\\b(?:algorithm|custom|hybrid|protocol|subsystem|model|state_machine)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.runtime.uef-project",
+          "match": "\\b(?:operatingsystem|runtime|loop|taskset|scheduler|task|interrupt|channel|resource|startup)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.type.uef-project",
+          "match": "\\b(?:record|shared_record|persistent_record|enum|variant|flags|fixed|case)\\b"
+        },
+        {
+          "name": "keyword.control.declaration.binding.uef-project",
+          "match": "\\b(?:input|output|parameter|local|signal|field|state|let|stage|use|as)\\b"
+        },
+        {
+          "name": "keyword.control.flow.uef-project",
+          "match": "\\b(?:if|else|for|in|when|otherwise|transition|run|initialize|predict|update|step|choose|on_failure|after)\\b"
+        }
+      ]
+    },
+    "implementation-descriptor-suffix": {
+      "patterns": [
+        {
+          "name": "meta.annotation.module-descriptor.uef-project",
+          "match": "(\\})[ \\t]+([A-Za-z_][A-Za-z0-9_]*)[ \\t]*;",
+          "captures": {
+            "1": { "name": "punctuation.section.block.end.uef-project" },
+            "2": { "name": "entity.name.type.registered.uef-project" }
+          }
+        }
+      ]
+    },
+    "typed-bindings": {
+      "patterns": [
+        {
+          "name": "meta.binding.typed.uef-project",
+          "match": "\\b(input|output|state|parameter|local|signal|field)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.uef-project" },
+            "2": { "name": "entity.name.variable.uef-project" },
+            "3": { "name": "keyword.operator.assignment.uef-project" },
+            "4": { "name": "entity.name.type.uef-project" }
+          }
+        },
+        {
+          "name": "meta.binding.named.uef-project",
+          "match": "\\b(let|stage|output|state|parameter|local)\\s+([A-Za-z_][A-Za-z0-9_]*)(?=\\s*(?:=|:))",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.uef-project" },
+            "2": { "name": "entity.name.variable.uef-project" }
+          }
+        }
+      ]
+    },
+    "declarations": {
+      "name": "keyword.control.declaration.uef-project",
+      "match": "\\b(?:project|routine|target|numeric|record|enum|variant|flags|fixed|shared_record|persistent_record|case|implementation|peripheral|bus|signal|sensor|actuator|model|continuous|discrete|linear|equations|jacobians|sample_time|state_order|input_order|output_order|derivative|next|discretize|algorithm|custom|hybrid|subsystem|state_machine|operatingsystem|runtime|loop|taskset|scheduler|task|run|rate|max_age|clock_domain|context|priority|deadline|budget|stack|after|resources|core|startup|interrupt|source|handler|channel|producer|consumer|kind|capacity|overflow|resource|access|constraint|input|output|parameter|local|let|state|initial|transition|when|otherwise|any|initialize|predict|update|step|for|in|if|else|use|as|stage|choose|member|on_failure|execution_budget|protocol|transport|framing|message|fragment|field|flag|offset|scale|unit|encoding|checksum|on|from|behavior|id|sync|length_encoding|max_frame_bytes|timeout|malformed_frame|debounce|state_transfer|transfer_algorithm|health|duplicate_policy|maximum_utilization|require_deadline_analysis|weight|watchdog|out)\\b"
+    },
+    "registered-types": {
+      "patterns": [
+        {
+          "name": "meta.declaration.registered-module.uef-project",
+          "match": "\\b(algorithm|protocol)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.algorithm.uef-project" },
+            "2": { "name": "entity.name.declaration.algorithm.uef-project" },
+            "3": { "name": "keyword.operator.assignment.uef-project" },
+            "4": { "name": "entity.name.type.registered.uef-project" }
+          }
+        },
+        {
+          "name": "meta.declaration.registered-module.uef-project",
+          "match": "\\b(sensor|actuator|peripheral|bus)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.hardware.uef-project" },
+            "2": { "name": "entity.name.declaration.hardware.uef-project" },
+            "3": { "name": "keyword.operator.assignment.uef-project" },
+            "4": { "name": "entity.name.type.registered.uef-project" }
+          }
+        }
+      ]
+    },
+    "enum-types": {
+      "patterns": [
+        {
+          "name": "meta.declaration.enum.uef-project",
+          "match": "\\b(enum)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(:)\\s*(u8|u16|u32|u64|i8|i16|i32|i64)\\b",
+          "captures": {
+            "1": { "name": "keyword.control.declaration.uef-project" },
+            "2": { "name": "entity.name.type.enum.uef-project" },
+            "3": { "name": "keyword.operator.assignment.uef-project" },
+            "4": { "name": "storage.type.uef-project" }
+          }
+        },
+        {
+          "name": "meta.enum.case.qualified.uef-project",
+          "match": "\\b([a-z][A-Za-z0-9_]*_t)\\.([A-Z][A-Z0-9_]*)\\b",
+          "captures": {
+            "1": { "name": "entity.name.type.registered.uef-project" },
+            "2": { "name": "constant.other.enum-case.uef-project" }
+          }
+        },
+        {
+          "name": "meta.enum.case.qualified.uef-project",
+          "match": "\\b([A-Z][A-Za-z0-9_]*)\\.([a-z][A-Za-z0-9_]*)\\b",
+          "captures": {
+            "1": { "name": "entity.name.type.enum.uef-project" },
+            "2": { "name": "constant.other.enum-case.uef-project" }
+          }
+        }
+      ]
+    },
+    "property-names": {
+      "name": "variable.other.property.uef-project",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)*\\s*(?==)"
+    },
+    "function-calls": {
+      "name": "entity.name.function.uef-project",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()"
+    },
+    "flow-control": {
+      "name": "keyword.control.flow.uef-project",
+      "match": "\\b(?:if|else|for|in|when|otherwise|choose|on_failure|on|from|to|after)\\b"
+    },
+    "member-references": {
+      "patterns": [
+        {
+          "name": "meta.member.reference.uef-project",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\.([A-Za-z_][A-Za-z0-9_]*)\\b",
+          "captures": {
+            "1": { "name": "variable.other.uef-project" },
+            "2": { "name": "variable.other.property.uef-project" }
+          }
+        }
+      ]
+    },
+    "dsl-builtins": {
+      "name": "support.function.builtin.uef-project",
+      "match": "\\b(?:map|select|cast|choose|convert_unit|Some|Ok|Err|has|set|clear)(?=\\s*\\()|\\bNone\\b"
+    },
+    "types": {
+      "name": "storage.type.uef-project",
+      "match": "\\b(?:Received|Option|Result|Bytes|Utf8|f32|f64|bool|vector|matrix|vec2|vec3|vec4|u8|u16|u32|u64|i8|i16|i32|i64|q15|q16|q31|q63|string)\\b"
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.uef-project",
+          "match": "->|==|!=|<=|>=|=|<|>"
+        },
+        {
+          "name": "keyword.operator.range.uef-project",
+          "match": "\\.\\."
+        },
+        {
+          "name": "keyword.operator.logical.uef-project",
+          "match": "\\b(?:and|or|not)\\b"
+        },
+        {
+          "name": "keyword.operator.arithmetic.uef-project",
+          "match": "(?:\\*\\*|\\+|-|\\*|/)"
+        },
+        {
+          "name": "keyword.operator.bitwise.uef-project",
+          "match": "[&|^]"
+        },
+        {
+          "name": "punctuation.section.block.uef-project",
+          "match": "[{}\\[\\]():,.;]"
+        }
+      ]
+    },
+    "constants": {
+      "name": "constant.language.uef-project",
+      "match": "\\b(?:true|false)\\b"
+    },
+    "names": {
+      "name": "variable.other.uef-project",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_-]*\\b"
+    }
+  }
+}

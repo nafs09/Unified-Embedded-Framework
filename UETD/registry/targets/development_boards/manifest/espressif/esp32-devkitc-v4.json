@@ -1,0 +1,26 @@
+{
+  "id": "esp32-devkitc-v4",
+  "name": "Espressif ESP32-DevKitC V4 with ESP-WROOM-32",
+  "aliases": ["ESP32-DevKitC V4", "ESP-WROOM-32 DevKitC"],
+  "chip_id": "esp32-d0wdq6-v3",
+  "module": {
+    "name": "ESP-WROOM-32",
+    "flash_bytes": 4194304,
+    "crystal_hz": 40000000,
+    "antenna": "On-board PCB antenna"
+  },
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "Espressif ESP32-DevKitC V4 user guide",
+      "url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html"
+    },
+    {
+      "title": "Espressif ESP32-WROOM-32 datasheet",
+      "url": "https://documentation.espressif.com/esp32-wroom-32_datasheet_en.html"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "Module facts are for ESP-WROOM-32. DevKitC V4 also ships with different module variants; confirm the fitted module/SoC stepping and board revision before selecting this binding. Board pin reservations and build/flash profiles remain incomplete."
+}

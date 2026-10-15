@@ -1,0 +1,25 @@
+{
+  "id": "generic-reference",
+  "vendor": "UETD",
+  "family_id": "uetd-reference",
+  "series": "Generic",
+  "part_number": "generic-reference",
+  "aliases": [],
+  "roadmap_phase": null,
+  "target_kind": "pipeline_fixture",
+  "core": {
+    "name": "generic-word32",
+    "isa": "generic",
+    "word_bits": 32,
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 1
+  },
+  "package": { "name": "non-physical-fixture", "pin_count": 1 },
+  "memory": { "flash_bytes": 0, "sram_bytes": 0 },
+  "peripheral_groups": [],
+  "source_references": [],
+  "source_verified_fields": ["fixture_identity"],
+  "generation_available": true,
+  "record_note": "Generator fixture only. It has no physical pins, memory, clock, build target or flash interface."
+}

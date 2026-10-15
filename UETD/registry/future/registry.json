@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0",
+  "registry_schema": "registry/future/registry.schema.json",
+  "schemas": {
+    "persistent_record": "registry/future/persistent_record.schema.json",
+    "plc_process_image": "registry/future/plc_process_image.schema.json",
+    "external_artifact": "registry/future/external_artifact.schema.json",
+    "calibration_record": "registry/future/calibration_record.schema.json",
+    "blackbox_stream": "registry/future/blackbox_stream.schema.json",
+    "qualification_evidence": "registry/future/qualification_evidence.schema.json",
+    "signed_artifact_manifest": "registry/future/signed_artifact_manifest.schema.json",
+    "crash_record": "registry/future/crash_record.schema.json",
+    "update_progress": "registry/future/update_progress.schema.json",
+    "trust_policy": "registry/future/trust_policy.schema.json"
+  },
+  "items": {
+    "upal.uart_modes": {
+      "area": "upal",
+      "title": "UART framing and half-duplex direction modes",
+      "status": "design_only",
+      "contract_file": "include/upal/future/CATALOGUE_GAPS.md#uart-framing-and-half-duplex-direction",
+      "api_outline": "include/upal/future/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "Needs typed framing, DE timing, turnaround, collision and DShot-UART semantics plus target mappings.",
+      "depends_on": ["upal/uart"],
+      "project_relevance": ["drone", "PLC", "industrial serial"]
+    },
+    "upal.timer_capture_events": {
+      "area": "upal",
+      "title": "Timer capture result/event publication",
+      "status": "design_only",
+      "contract_file": "include/upal/future/CATALOGUE_GAPS.md#timer-capture-publication",
+      "api_outline": "include/upal/future/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "Needs edge/filter/wrap semantics, result delivery, overcapture policy and target implementation.",
+      "depends_on": ["upal/timer", "upal/dma"],
+      "project_relevance": ["drone", "power conversion", "motor control"]
+    },
+    "upal.synchronized_io": {
+      "area": "upal",
+      "title": "Synchronized ADC, timer, DMA and PWM groups",
+      "status": "design_only",
+      "contract_file": "include/upal/future/CATALOGUE_GAPS.md#synchronized-acquisition-and-output-update",
+      "api_outline": "include/upal/future/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "Trigger routes and atomic start boundaries are target-specific and require capability resolution.",
+      "depends_on": ["upal/adc", "upal/timer", "upal/hrtim", "upal/dma"],
+      "project_relevance": ["power conversion", "motor control", "high-rate sensing"]
+    },
+    "upal.usb_profiles": {
+      "area": "upal",
+      "title": "USB CDC and HID profiles",
+      "status": "design_only",
+      "contract_file": "include/upal/future/CATALOGUE_GAPS.md#usb-profiles",
+      "api_outline": "include/upal/future/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "The existing USB boundary is reserved; class descriptors, endpoint budgets and lifecycle are not defined.",
+      "depends_on": ["upal/usb"],
+      "project_relevance": ["diagnostics", "wired control"]
+    },
+    "upal.ethernet_mac": {
+      "area": "upal",
+      "title": "Ethernet MAC and PHY boundary",
+      "status": "design_only",
+      "contract_file": "include/upal/future/CATALOGUE_GAPS.md#ethernet-mac-boundary",
+      "api_outline": "include/upal/future/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "No Ethernet MAC capability/driver contract; network protocol stacks remain separate services.",
+      "depends_on": ["target peripheral and board PHY metadata"],
+      "project_relevance": ["PLC", "networked embedded systems"]
+    },
+    "umid.storage_transactions": {
+      "area": "umid",
+      "title": "Backend-neutral transactional storage",
+      "status": "design_only",
+      "contract_file": "include/umid/future/DATA_SERVICES.md#common-storage-service",
+      "api_outline": "include/umid/future/data_services.h",
+      "generation": "blocked",
+      "reason": "Needs bounded record formats, atomic commit, recovery, schema version and backend capability rules.",
+      "depends_on": ["upal/flash", "upal/qspi", "upal/sdmmc", "optional FatFS"],
+      "project_relevance": ["all persistent configurations"]
+    },
+    "umid.calibration_records": {
+      "area": "umid",
+      "title": "Driver-owned calibration record envelope and persistence",
+      "status": "design_only",
+      "contract_file": "include/umid/future/DATA_SERVICES.md#calibration-records",
+      "api_outline": "include/umid/future/data_services.h",
+      "generation": "blocked",
+      "reason": "Driver math remains user-owned; the common identity, version, validity and atomic storage envelope is not defined.",
+      "depends_on": ["umid.storage_transactions", "UMID driver calibration contract"],
+      "project_relevance": ["sensor drivers"]
+    },
+    "umid.blackbox": {
+      "area": "umid",
+      "title": "Binary blackbox acquisition logging",
+      "status": "design_only",
+      "contract_file": "include/umid/future/DATA_SERVICES.md#binary-blackbox",
+      "api_outline": "include/umid/future/data_services.h",
+      "generation": "blocked",
+      "reason": "Needs record schema, rate/capacity calculation, bounded buffering, backpressure, recovery and wear policy.",
+      "depends_on": ["umid.storage_transactions", "UMID log queue"],
+      "project_relevance": ["drone", "power conversion", "system diagnosis"]
+    },
+    "umid.plc_process_image": {
+      "area": "umid",
+      "title": "Typed PLC/external-peer process image",
+      "status": "design_only",
+      "contract_file": "include/umid/future/DATA_SERVICES.md#plc-process-image",
+      "api_outline": "include/umid/future/data_services.h",
+      "generation": "blocked",
+      "reason": "Needs atomic scan generations, data quality/freshness, authority and safe-state contracts independent of bus protocol.",
+      "depends_on": ["uproto industrial adapter", "future external endpoint types"],
+      "project_relevance": ["PLC", "industrial control"]
+    },
+    "uapp.secure_update": {
+      "area": "uapp",
+      "title": "Authenticated and recoverable firmware update profiles",
+      "status": "design_only",
+      "contract_file": "include/uapp/future/SECURITY_AND_UPDATE.md",
+      "api_outline": "include/uapp/future/secure_update.h",
+      "generation": "blocked",
+      "reason": "Needs target boot capability, signature/key lifecycle, staging, trial boot and rollback contracts.",
+      "depends_on": ["uef-gen signed artifact metadata", "target bootloader profile"],
+      "project_relevance": ["field-maintained devices"]
+    },
+    "uproto.modbus": {
+      "area": "uproto",
+      "title": "Modbus RTU and TCP adapter",
+      "status": "design_only",
+      "contract_file": "include/uproto/future/INDUSTRIAL.md#modbus-rtu",
+      "api_outline": "include/uproto/future/industrial_contracts.h",
+      "generation": "blocked",
+      "reason": "Needs role/function subset, RTU timing, TCP transaction limits, register mapping and bounded server/client state.",
+      "depends_on": ["upal/uart", "future Ethernet MAC", "umid.plc_process_image"],
+      "project_relevance": ["PLC", "industrial sensors and drives"]
+    },
+    "uproto.canopen": {
+      "area": "uproto",
+      "title": "CANopen bounded object-dictionary adapter",
+      "status": "design_only",
+      "contract_file": "include/uproto/future/INDUSTRIAL.md#canopen",
+      "api_outline": "include/uproto/future/industrial_contracts.h",
+      "generation": "blocked",
+      "reason": "Needs CANopen profile, object-dictionary limits, NMT/heartbeat/PDO/SDO behavior and optional stack boundary.",
+      "depends_on": ["upal/can", "umid.plc_process_image"],
+      "project_relevance": ["PLC", "industrial control"]
+    },
+    "uapp.fault_history": {
+      "area": "uapp",
+      "title": "Retained crash and fault history",
+      "status": "design_only",
+      "contract_file": "include/uapp/future/FAULT_HISTORY.md",
+      "api_outline": "include/uapp/future/fault_history.h",
+      "generation": "blocked",
+      "reason": "The current fatal path has limited backup-register fields; retained records need architecture-captured context, integrity, atomic commit, and acknowledge/clear semantics.",
+      "depends_on": ["target retained memory profile", "uhal fault context capture"],
+      "project_relevance": ["diagnostics", "field recovery"]
+    },
+    "project_language.type_interchange": {
+      "area": "project_language",
+      "title": "Option/result, tagged variants, flags, fixed point and boundary codecs",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/language/frontends/project/TYPE_INTERCHANGE.md",
+      "generation": "blocked",
+      "reason": "Requires one end-to-end compiler path across AST, validation, lowering, C layout and editor contracts.",
+      "depends_on": ["uef-gen project-language compiler"],
+      "project_relevance": ["all typed projects"]
+    },
+    "system_language.external_evidence": {
+      "area": "system_language",
+      "title": "External FPGA/PLC artifact identity and qualification evidence",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/language/frontends/system/future/EXTERNAL_ENDPOINTS_AND_EVIDENCE.md",
+      "generation": "blocked",
+      "reason": "System composition needs typed external artifact and evidence links tied to exact node/link hashes and conditions.",
+      "depends_on": [".uefs system compiler", "future evidence schemas"],
+      "project_relevance": ["FPGA-connected systems", "PLC-connected systems", "qualified releases"]
+    },
+    "deploy.signed_update": {
+      "area": "deploy",
+      "title": "Signed artifact and target update orchestration",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/deploy/future/SECURE_UPDATE.md",
+      "generation": "blocked",
+      "reason": "Artifact signing, boot verification, safe staging and release policy are distinct from build hashes and ordinary flashing.",
+      "depends_on": ["uapp.secure_update", "future artifact schema"],
+      "project_relevance": ["field-maintained devices"]
+    },
+    "evidence.qualification": {
+      "area": "evidence",
+      "title": "Capability-linked build, test and hardware qualification evidence",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/language/frontends/system/future/EXTERNAL_ENDPOINTS_AND_EVIDENCE.md#evidence-records",
+      "generation": "blocked",
+      "reason": "Build provenance and structured evidence are different claims and need separate schemas and aggregation rules.",
+      "depends_on": ["target identity", "artifact identity", "test/harness provenance"],
+      "project_relevance": ["all release profiles"]
+    }
+  }
+}

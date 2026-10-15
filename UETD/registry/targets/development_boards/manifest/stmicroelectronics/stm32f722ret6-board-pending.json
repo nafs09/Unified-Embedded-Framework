@@ -1,0 +1,10 @@
+{
+  "id": "stm32f722ret6-board-pending",
+  "name": "STM32F722RET6 carrier (board model pending)",
+  "aliases": [],
+  "chip_id": "stm32f722ret6",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "generation_available": false,
+  "record_note": "Selection placeholder only. No specific STM32F722RET6 carrier or board revision was provided; replace this record with the actual model before using it as a target."
+}

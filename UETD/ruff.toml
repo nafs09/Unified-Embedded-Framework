@@ -1,0 +1,18 @@
+line-length = 154
+target-version = "py311"
+exclude = ["third_party", "vendor", "vendors", "build", "out", "dist"]
+
+[format]
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = true
+
+[lint]
+select = ["I"]
+
+[lint.isort]
+combine-as-imports = true
+lines-after-imports = 1
+lines-between-types = 0
+no-sections = true
+split-on-trailing-comma = false

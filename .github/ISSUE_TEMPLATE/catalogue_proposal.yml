@@ -1,0 +1,59 @@
+name: Catalogue or target proposal
+description: Propose a UETD module, algorithm, protocol, target, board, or hardware contract.
+title: "[Catalogue]: "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Proposals need a precise boundary and public evidence. Link to vendor
+        documents; do not upload copyrighted datasheets or confidential designs.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Catalogue area
+      options:
+        - Target family, chip, or development board
+        - Peripheral or generic driver contract
+        - Sensor or actuator contract
+        - Protocol or transport
+        - Math, estimation, or control algorithm
+        - Data type, storage, diagnostics, or service
+        - Other UETD/uef-gen contract
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: Use case and gap
+      description: Describe the project need and what the current catalogue cannot express.
+    validations:
+      required: true
+  - type: textarea
+    id: boundary
+    attributes:
+      label: Proposed catalogue boundary
+      description: Define ownership, portable versus target-specific behavior, inputs, outputs, and dependencies.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Public technical sources
+      description: Provide vendor/standards URLs, document titles and revisions, and relevant sections or equations.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: variants
+    attributes:
+      label: Variants and compatibility
+      description: List exact part/board revisions or protocol/algorithm variants; distinguish verified facts from assumptions.
+    validations:
+      required: false
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation and safety considerations
+      description: State available host, target, simulation, timing, or hardware evidence and failure/safe-state concerns.
+    validations:
+      required: false

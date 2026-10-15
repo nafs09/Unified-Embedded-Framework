@@ -1,0 +1,11 @@
+{
+  "id": "cmake",
+  "name": "CMake build system",
+  "purpose": "build-system",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "windows-arm64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["cmake"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin a stable release meeting UETD's declared minimum and verify generator/build-driver requirements for each host."
+}

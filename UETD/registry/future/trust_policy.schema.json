@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/trust-policy-1.0.schema.json",
+  "title": "UETD update trust-anchor policy",
+  "description": "Policy metadata references protected public-key material; private key bytes are never part of a generated project or manifest.",
+  "type": "object",
+  "required": ["format", "policy_epoch", "keys"],
+  "properties": {
+    "format": { "const": "UETD-TRUST-POLICY-1" },
+    "policy_epoch": { "type": "integer", "minimum": 0 },
+    "keys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key_id", "algorithm", "public_key_sha256", "protected_key_ref", "state", "allowed_projects", "allowed_target_ids"],
+        "properties": {
+          "key_id": { "type": "string", "minLength": 1 },
+          "algorithm": { "type": "string", "minLength": 1 },
+          "public_key_sha256": { "$ref": "#/$defs/sha256" },
+          "protected_key_ref": { "type": "string", "minLength": 1, "description": "Secure-element, ROM, HSM or protected verifier key slot reference, not key material." },
+          "state": { "enum": ["active", "retired_for_new_signing", "revoked"] },
+          "allowed_projects": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+          "allowed_target_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+          "not_before_utc": { "type": "string", "format": "date-time" },
+          "not_after_utc": { "type": "string", "format": "date-time" },
+          "minimum_security_index": { "type": "integer", "minimum": 0 },
+          "recovery_key": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "revocation_sequence": { "type": "integer", "minimum": 0 },
+    "debug_unlock_policy": { "enum": ["forbidden", "physical_presence_required", "development_only"] }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" } },
+  "additionalProperties": false
+}

@@ -1,0 +1,63 @@
+{
+  "id": "stm32g474vet6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-g4",
+  "series": "STM32G4",
+  "part_number": "STM32G474VET6",
+  "aliases": ["STM32G474VE"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "word_bits": 32,
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 170000000
+  },
+  "package": {
+    "name": "LQFP100",
+    "pin_count": 100
+  },
+  "memory": {
+    "flash_bytes": 524288,
+    "sram_bytes": 131072,
+    "notes": "512 KiB flash and 128 KiB SRAM."
+  },
+  "peripheral_groups": [
+    "DMAMUX",
+    "HRTIM",
+    "FDCAN",
+    "CORDIC",
+    "FMAC",
+    "OPAMP",
+    "COMP",
+    "ADC",
+    "DAC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "USB"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32G474VE product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32g474ve.html"
+    },
+    {
+      "title": "ST STM32G474xB/xC/xE datasheet DS12288",
+      "url": "https://www.st.com/resource/en/datasheet/stm32g474ve.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM",
+    "HRTIM"
+  ],
+  "generation_available": false,
+  "record_note": "Initial Tesla executor candidate. Exact pin, timer instance, clock, DMA/IRQ, linker/startup, errata, board binding, build, and flash profiles still require project hardware data."
+}

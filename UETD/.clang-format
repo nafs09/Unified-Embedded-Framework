@@ -1,0 +1,28 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 130
+PenaltyBreakAssignment: 10000
+BreakBeforeBraces: Attach
+AlignAfterOpenBracket: Align
+BinPackArguments: true
+BinPackParameters: BinPack
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortEnumsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+DerivePointerAlignment: false
+PointerAlignment: Left
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+SortIncludes: CaseSensitive
+IncludeBlocks: Merge
+IncludeCategories:
+  - Regex: '.*'
+    Priority: 1
+---
+Language: C
+AllowShortFunctionsOnASingleLine: All
+---
+Language: Cpp
+IndentExternBlock: NoIndent

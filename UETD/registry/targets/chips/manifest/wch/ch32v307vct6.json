@@ -1,0 +1,59 @@
+{
+  "id": "ch32v307vct6",
+  "vendor": "WCH",
+  "family_id": "ch32v307",
+  "series": "CH32V307",
+  "part_number": "CH32V307VCT6",
+  "aliases": [
+    "CH32V307"
+  ],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "QingKe V4F",
+    "isa": "RV32IMAF",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 144000000
+  },
+  "package": {
+    "name": "LQFP100",
+    "pin_count": 100
+  },
+  "memory": {
+    "flash_bytes": 262144,
+    "sram_bytes": 65536
+  },
+  "peripheral_groups": [
+    "DMA",
+    "USB-HS",
+    "Ethernet",
+    "SDIO",
+    "CAN",
+    "ADC",
+    "DAC",
+    "TIM",
+    "USART",
+    "I2C",
+    "SPI"
+  ],
+  "source_references": [
+    {
+      "title": "WCH CH32V307 product page",
+      "url": "https://wch-ic.com/products/CH32V307.html"
+    },
+    {
+      "title": "WCH CH32V307 datasheet",
+      "url": "https://wch-ic.com/downloads/CH32V307DS0_PDF.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "RISC-V V4F variant with single-precision floating point; USB/Ethernet host and PHY details remain target-specific."
+}

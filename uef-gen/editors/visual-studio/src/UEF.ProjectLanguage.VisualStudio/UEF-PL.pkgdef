@@ -1,0 +1,9 @@
+[$RootKey$\TextMate\Repositories]
+"UEF-PL"="$PackageFolder$\Grammars"
+
+[$RootKey$\TextMate\LanguageConfiguration\GrammarMapping]
+"source.uef-project"="$PackageFolder$\language-configuration.json"
+"source.uef-system"="$PackageFolder$\language-configuration.json"
+
+[$RootKey$\TextMate\LanguageConfiguration\ContentTypeMapping]
+"uetd-pl"="$PackageFolder$\language-configuration.json"

@@ -1,0 +1,37 @@
+{
+  "id": "stm32f103c8t6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-f1",
+  "series": "STM32F1",
+  "part_number": "STM32F103C8T6",
+  "aliases": ["STM32F103C8", "Blue Pill MCU (board variant not implied)"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M3",
+    "isa": "Armv7-M",
+    "word_bits": 32,
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 72000000
+  },
+  "package": { "name": "LQFP48", "pin_count": 48 },
+  "memory": { "flash_bytes": 65536, "sram_bytes": 20480 },
+  "peripheral_groups": ["DMA", "ADC", "TIM", "USART", "SPI", "I2C", "USB", "CAN", "GPIO"],
+  "source_references": [
+    {
+      "title": "ST STM32F103C8 product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f103c8"
+    },
+    {
+      "title": "ST STM32F103C8 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32f103c8.pdf"
+    },
+    {
+      "title": "ST STM32F103C8T6 package listing",
+      "url": "https://estore.st.com/en/products/microcontrollers-microprocessors/stm32-32-bit-arm-174-cortex-174-mcus/stm32-mainstream-mcus/stm32f1-series/stm32f103/stm32f103c8.html"
+    }
+  ],
+  "source_verified_fields": ["identity", "core", "frequency", "package", "flash", "SRAM", "peripheral_groups"],
+  "generation_available": false,
+  "record_note": "Common STM32F1 exact-part record. Blue Pill-style carrier boards vary by manufacturer and revision, so no generic board binding is asserted. Full pin, clock, DMA, interrupt, startup, linker, and errata data remain unregistered."
+}

@@ -1,0 +1,33 @@
+{
+  "sources": [
+    "src/uhal/arm_cm/atomic.c",
+    "src/uhal/arm_cm/cache.c",
+    "src/uhal/arm_cm/clock.c",
+    "src/uhal/arm_cm/core.c",
+    "src/uhal/arm_cm/fault.c",
+    "src/uhal/arm_cm/gpio.c",
+    "src/uhal/arm_cm/irq.c",
+    "src/uhal/arm_cm/memory.c",
+    "src/uhal/arm_cm/timing.c"
+  ],
+  "dependencies": [
+    "ucore"
+  ],
+  "target": "CORTEX_M",
+  "variant_of": "uhal",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/time.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/atomic.h",
+    "include/uhal/cache.h",
+    "include/uhal/clock.h",
+    "include/uhal/core.h",
+    "include/uhal/fault.h",
+    "include/uhal/gpio.h",
+    "include/uhal/irq.h",
+    "include/uhal/memory.h"
+  ]
+}

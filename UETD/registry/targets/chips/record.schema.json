@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uetd/registry/targets/chips/record.schema.json",
+  "title": "UETD exact-part chip record",
+  "type": "object",
+  "required": [
+    "id",
+    "vendor",
+    "family_id",
+    "series",
+    "part_number",
+    "core",
+    "package",
+    "memory",
+    "source_references",
+    "source_verified_fields",
+    "generation_available"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "vendor": {
+      "type": "string"
+    },
+    "family_id": {
+      "type": "string"
+    },
+    "series": {
+      "type": "string"
+    },
+    "part_number": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "roadmap_phase": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 4
+    },
+    "core": {
+      "type": "object",
+      "required": [
+        "name",
+        "count",
+        "fpu",
+        "max_frequency_hz"
+      ],
+      "properties": {
+        "word_bits": { "type": "integer", "enum": [8, 16, 32, 64] },
+        "isa": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "package": {
+      "type": "object",
+      "required": [
+        "name",
+        "pin_count"
+      ]
+    },
+    "memory": {
+      "type": "object",
+      "required": [
+        "flash_bytes",
+        "sram_bytes"
+      ]
+    },
+    "peripheral_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "url"
+        ]
+      }
+    },
+    "source_verified_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "generation_available": { "type": "boolean" },
+    "target_kind": { "enum": ["hardware", "pipeline_fixture"] },
+    "resources": { "$ref": "#/$defs/resources" },
+    "record_note": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "generation_available": { "const": true },
+          "target_kind": { "not": { "const": "pipeline_fixture" } }
+        },
+        "required": ["generation_available"]
+      },
+      "then": {
+        "required": ["resources"],
+        "properties": {
+          "resources": {
+            "required": ["architecture", "peripheral_types", "peripherals", "dma", "clock_domains", "memory_regions", "startup", "linker_script", "errata_review"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "target_kind": { "const": "pipeline_fixture" } },
+        "required": ["target_kind"]
+      },
+      "then": { "properties": { "generation_available": { "const": true } } }
+    }
+  ],
+  "$defs": {
+    "resources": {
+      "type": "object",
+      "properties": {
+        "architecture": {
+          "type": "object",
+          "required": ["word_bits"],
+          "properties": {
+            "word_bits": { "type": "integer", "enum": [8, 16, 32, 64] },
+            "capabilities": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+            "compiler_flags": { "type": "array", "items": { "type": "string" } },
+            "dsp_simd": { "type": "boolean" }, "dcache": { "type": "boolean" },
+            "icache": { "type": "boolean" }, "mpu": { "type": "boolean" },
+            "dwt": { "type": "boolean" }, "hw_divide": { "type": "boolean" },
+            "cmsis_dsp": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        },
+        "capabilities": { "type": "object", "additionalProperties": { "type": "boolean" } },
+        "dma": {
+          "type": "object",
+          "properties": {
+            "controller_count": { "type": "integer", "minimum": 0 },
+            "channels_per_controller": { "type": "integer", "minimum": 0 },
+            "muxed": { "type": "boolean" }, "request_map": { "type": "object", "additionalProperties": true }
+          },
+          "additionalProperties": false
+        },
+        "peripheral_types": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "generic_signals": { "type": "array", "items": { "type": "string" } },
+              "dma_directions": { "type": "array", "items": { "type": "string" } },
+              "type_caps": { "type": "object" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "peripherals": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": { "type": "string" }, "clock_domain": { "type": "string" },
+              "pins": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+              "af": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+              "dma_requests": { "type": "object", "additionalProperties": { "type": "string" } },
+              "irqs": { "type": "array", "items": { "type": "string" } },
+              "instance_caps": { "type": "object" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "clock_domains": { "type": "object", "additionalProperties": { "type": "object" } },
+        "memory_regions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["origin", "length_bytes"],
+            "properties": {
+              "origin": { "type": "integer", "minimum": 0 },
+              "length_bytes": { "type": "integer", "minimum": 1 },
+              "kind": { "type": "string" }, "dma_accessible": { "type": "boolean" },
+              "notes": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "startup": { "type": "object" },
+        "linker_script": { "type": "object" },
+        "errata_review": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

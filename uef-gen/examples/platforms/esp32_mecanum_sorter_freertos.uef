@@ -1,0 +1,440 @@
+// A direct FreeRTOS design based on the supplied ESP32 sorting-robot sketch.
+// It keeps the five STEP/DIR axes, IR-guided mission, limit switch, gyro read,
+// arm move, payload solenoid, and two-core task split. The Arduino wrapper is
+// removed; the unregistered `stepper` descriptor is intentionally visible.
+project Esp32MecanumSorter {
+  target = "esp32-devkitc-v4";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+
+  enum DriveCommand : u8 {
+    stop = 0, forward = 1, backward = 2,
+    diagonal_back_left = 3, left = 4, alignment_hold = 5
+  }
+  record IRDistance {
+    distance_cm : f32<cm>;
+    valid : bool;
+    in_range : bool;
+  }
+  record IRPair {
+    left : IRDistance;
+    forward : IRDistance;
+  }
+  record WheelStepRate {
+    left_front_hz : f32<Hz>;
+    left_rear_hz : f32<Hz>;
+    right_front_hz : f32<Hz>;
+    right_rear_hz : f32<Hz>;
+  }
+  enum StepperCommandMode : u8 { relative_position = 0, velocity = 1 }
+  record StepperCommand {
+    mode : StepperCommandMode;
+    relative_steps : i32;
+    step_rate_hz : f32<Hz>;
+    stop : bool;
+  }
+  record MissionAction {
+    drive_command : DriveCommand;
+    publish_drive : bool;
+    arm_trigger : bool;
+    scan_count : u8;
+    alignment_complete : bool;
+    release_confirmed : bool;
+  }
+
+  parameter obstacle_threshold : f32<cm> = 14.728 cm;
+  parameter maximum_reported_ir_distance : f32<cm> = 30 cm;
+  parameter ir_error_distance : f32<cm> = 999 cm;
+
+  peripheral left_front_step_pin : gpio;
+  peripheral left_front_dir_pin : gpio;
+  peripheral left_rear_step_pin : gpio;
+  peripheral left_rear_dir_pin : gpio;
+  peripheral right_front_step_pin : gpio;
+  peripheral right_front_dir_pin : gpio;
+  peripheral right_rear_step_pin : gpio;
+  peripheral right_rear_dir_pin : gpio;
+  peripheral arm_step_pin : gpio;
+  peripheral arm_dir_pin : gpio;
+  peripheral gyro_power : gpio;
+  peripheral ready_led : gpio;
+  peripheral finished_led : gpio;
+  peripheral limit_switch : gpio;
+  peripheral payload_solenoid : gpio;
+  peripheral start_button : gpio;
+  peripheral ir_sensor_s_adc : adc;
+  peripheral ir_sensor_l_adc : adc;
+  peripheral life_voltage_adc : adc;
+  peripheral i2c0 : i2c;
+  peripheral debug_uart : uart;
+
+  bus gyro_bus : i2c;
+  sensor gyro : imu;
+  sensor ir_sensor_s_voltage : voltage;
+  sensor ir_sensor_l_voltage : voltage;
+  sensor life_voltage : voltage;
+  actuator lf_stepper : stepper;
+  actuator lr_stepper : stepper;
+  actuator rf_stepper : stepper;
+  actuator rr_stepper : stepper;
+  actuator arm_stepper : stepper;
+  custom algorithm ir_voltage_to_distance;
+  custom algorithm mission_dispatcher;
+  custom algorithm mecanum_step_map;
+  subsystem ir_pair;
+  subsystem mecanum_command_router;
+  subsystem drive_pulse_service;
+
+  operatingsystem SortingRobotRuntime {
+    runtime = FreeRTOS;
+    scheduler = fixed_priority;
+    tick = 1 kHz;
+    component_failure_policy = stop_drive_and_latch_fault;
+    deadline_miss_policy = stop_drive_and_latch_fault;
+
+    state_machine mission_state : MissionState {
+      state waiting_for_start;
+      state arming;
+      state approaching;
+      state alignment_pause;
+      state scan;
+      state retreat;
+      state release_payload;
+      state complete;
+      state fault;
+
+      initial waiting_for_start;
+      owner = mission_poll;
+      consumers = [gyro_scan_sample];
+      transition any -> fault when ir_snapshot.not_empty and (not ir_snapshot.value.left.valid or not ir_snapshot.value.forward.valid);
+      transition waiting_for_start -> arming when start_button.active;
+      transition arming -> approaching when arm_stepper.distance_to_target != 0;
+      transition approaching -> alignment_pause when ir_snapshot.value.left.distance_cm >= obstacle_threshold;
+      transition alignment_pause -> scan when mission_dispatcher.action.alignment_complete;
+      transition scan -> retreat when mission_dispatcher.action.scan_count >= 51;
+      transition retreat -> release_payload when limit_switch.active or ir_snapshot.value.forward.distance_cm >= obstacle_threshold;
+      transition release_payload -> complete when mission_dispatcher.action.release_confirmed;
+      on_enter fault call lf_stepper.disable;
+      on_enter fault call lr_stepper.disable;
+      on_enter fault call rf_stepper.disable;
+      on_enter fault call rr_stepper.disable;
+      on_enter fault call arm_stepper.disable;
+    }
+
+    channel ir_snapshot {
+      source = ir_pair.snapshot;
+      destination = mission_dispatcher.sensors;
+      producer = ir_sample;
+      consumers = [mission_poll];
+      capacity = 1;
+      overflow = replace_oldest;
+      maximum_age = 100 ms;
+      ownership = immutable_snapshot;
+    }
+    channel drive_commands {
+      source = mission_dispatcher.action.drive_command;
+      destination = mecanum_command_router.command;
+      producer = mission_poll;
+      consumers = [drive_command_dispatch];
+      capacity = 10;
+      overflow = block_producer_until_space;
+      ownership = immutable_value;
+      publish_when = mission_dispatcher.action.publish_drive;
+    }
+    channel arm_requests {
+      source = mission_dispatcher.action.arm_trigger;
+      destination = arm_step_start.trigger;
+      producer = mission_poll;
+      consumers = [arm_step_start];
+      capacity = 1;
+      overflow = block_producer_until_space;
+      ownership = immutable_value;
+      publish_when = mission_dispatcher.action.arm_trigger;
+    }
+
+    taskset drive_core {
+      core = 0;
+      scheduler = fixed_priority;
+      task ir_sample {
+        run = ir_pair(
+          left_voltage = ir_sensor_l_voltage.voltage,
+          left_sample_valid = ir_sensor_l_voltage.valid,
+          forward_voltage = ir_sensor_s_voltage.voltage,
+          forward_sample_valid = ir_sensor_s_voltage.valid
+        );
+        rate = 20 Hz;
+        priority = 3;
+        deadline = 50 ms;
+        stack = 768 words;
+      }
+      task drive_command_dispatch {
+        run = mecanum_command_router;
+        trigger = drive_commands.not_empty;
+        priority = 2;
+        stack = 768 words;
+        on_miss = stop_drive;
+      }
+      task drive_step_service {
+        run = drive_pulse_service();
+        rate = 1 kHz;
+        priority = 2;
+        deadline = 1 ms;
+        stack = 512 words;
+        on_miss = stop_drive;
+      }
+    }
+
+    taskset mission_core {
+      core = 1;
+      scheduler = fixed_priority;
+      task mission_poll {
+        run = mission_dispatcher(
+          mode = mission_state.state
+        );
+        rate = 20 Hz;
+        priority = 3;
+        deadline = 50 ms;
+        stack = 1024 words;
+      }
+      task arm_step_start {
+        run = arm_stepper(command = arm_step_command);
+        trigger = arm_requests.not_empty;
+        priority = 1;
+        stack = 512 words;
+      }
+      task arm_step_service {
+        run = arm_stepper.service();
+        rate = 1 kHz;
+        when = arm_stepper.distance_to_target != 0;
+        priority = 1;
+        deadline = 1 ms;
+        stack = 512 words;
+      }
+      task gyro_scan_sample {
+        run = gyro;
+        rate = 10 Hz;
+        when = mission_state.state == MissionState.scan;
+        priority = 1;
+        deadline = 100 ms;
+        stack = 512 words;
+      }
+      task life_voltage_sample {
+        run = life_voltage;
+        rate = 10 Hz;
+        priority = 1;
+        deadline = 100 ms;
+        stack = 256 words;
+      }
+    }
+    constraint core_0_budget { maximum_utilization = 0.70; require_deadline_analysis = true; }
+    constraint core_1_budget { maximum_utilization = 0.70; require_deadline_analysis = true; }
+  }
+
+  implementation {
+    signal arm_step_command : StepperCommand = map(
+      mode = StepperCommandMode.relative_position,
+      relative_steps = -50,
+      step_rate_hz = 0 Hz,
+      stop = false
+    );
+    // Pin choices reproduce the supplied sketch. GPIO2, GPIO12, and GPIO15
+    // are ESP32 boot-strapping pins; verify attached-driver reset levels.
+    peripheral left_front_step_pin { pin = "GPIO27"; direction = output; } gpio;
+    peripheral left_front_dir_pin { pin = "GPIO26"; direction = output; } gpio;
+    peripheral left_rear_step_pin { pin = "GPIO18"; direction = output; } gpio;
+    peripheral left_rear_dir_pin { pin = "GPIO32"; direction = output; } gpio;
+    peripheral right_front_step_pin { pin = "GPIO2"; direction = output; } gpio;
+    peripheral right_front_dir_pin { pin = "GPIO15"; direction = output; } gpio;
+    peripheral right_rear_step_pin { pin = "GPIO19"; direction = output; } gpio;
+    peripheral right_rear_dir_pin { pin = "GPIO3"; direction = output; } gpio;
+    peripheral arm_step_pin { pin = "GPIO4"; direction = output; } gpio;
+    peripheral arm_dir_pin { pin = "GPIO5"; direction = output; } gpio;
+    peripheral gyro_power { pin = "GPIO13"; direction = output; initial = high; } gpio;
+    peripheral ready_led { pin = "GPIO22"; direction = output; active_level = high; active = mission_state.state == MissionState.waiting_for_start; } gpio;
+    peripheral finished_led { pin = "GPIO12"; direction = output; active_level = high; active = mission_state.state == MissionState.complete; } gpio;
+    peripheral limit_switch { pin = "GPIO34"; direction = input; active_level = high; } gpio;
+    peripheral payload_solenoid { pin = "GPIO33"; direction = output; safe_state = low; active = mission_state.state == MissionState.release_payload or mission_state.state == MissionState.complete; } gpio;
+    peripheral start_button { pin = "GPIO25"; direction = input; pull = up; active_level = low; } gpio;
+    peripheral ir_sensor_s_adc { pin = "GPIO14"; resolution = 12 bit; reference = 3.3 V; } adc;
+    peripheral ir_sensor_l_adc { pin = "GPIO39"; resolution = 12 bit; reference = 3.3 V; } adc;
+    peripheral life_voltage_adc { pin = "GPIO36"; resolution = 12 bit; reference = 3.3 V; } adc;
+    peripheral i2c0 { instance = "I2C0"; frequency = 400 kHz; board_default_pins = true; } i2c;
+    // The source prints status over UART0 but does not read serial input. Keep
+    // this output TX-only so GPIO3 can remain the right-rear DIR pin.
+    peripheral debug_uart { instance = "UART0"; tx_pin = "GPIO1"; baud = 115200; } uart;
+
+    bus gyro_bus { peripheral = i2c0; address = 0x68; frequency = 400 kHz; } i2c;
+    sensor gyro {
+      bus = gyro_bus;
+      device = "MPU-6050";
+      power_enable = gyro_power;
+      sample_rate = 10 Hz;
+      register_writes = [[0x6B, 0x00], [0x1A, 0x05], [0x1B, 0x08]];
+      output raw_gyro_counts : i16[3];
+      output healthy : bool;
+      note = "The sketch reads raw gyro counts during the scan and does not use them in the drive command.";
+    } imu;
+    sensor ir_sensor_s_voltage { peripheral = ir_sensor_s_adc; sample_rate = 20 Hz; output voltage : f32<V>; output valid : bool; } voltage;
+    sensor ir_sensor_l_voltage { peripheral = ir_sensor_l_adc; sample_rate = 20 Hz; output voltage : f32<V>; output valid : bool; } voltage;
+    sensor life_voltage { peripheral = life_voltage_adc; sample_rate = 10 Hz; output voltage : f32<V>; } voltage;
+
+    actuator lf_stepper {
+      step_pin = left_front_step_pin; direction_pin = left_front_dir_pin;
+      maximum_step_rate_hz = 1000 Hz; acceleration = 500 Hz/s;
+      command_type = StepperCommand; safe_state = disable_step_pulses;
+    } stepper;
+    actuator lr_stepper {
+      step_pin = left_rear_step_pin; direction_pin = left_rear_dir_pin;
+      maximum_step_rate_hz = 1000 Hz; acceleration = 500 Hz/s;
+      command_type = StepperCommand; safe_state = disable_step_pulses;
+    } stepper;
+    actuator rf_stepper {
+      step_pin = right_front_step_pin; direction_pin = right_front_dir_pin;
+      maximum_step_rate_hz = 1000 Hz; acceleration = 500 Hz/s;
+      command_type = StepperCommand; safe_state = disable_step_pulses;
+    } stepper;
+    actuator rr_stepper {
+      step_pin = right_rear_step_pin; direction_pin = right_rear_dir_pin;
+      maximum_step_rate_hz = 1000 Hz; acceleration = 500 Hz/s;
+      command_type = StepperCommand; safe_state = disable_step_pulses;
+    } stepper;
+    actuator arm_stepper {
+      step_pin = arm_step_pin; direction_pin = arm_dir_pin;
+      maximum_step_rate_hz = 1000 Hz; acceleration = 500 Hz/s;
+      command_type = StepperCommand; safe_state = disable_step_pulses;
+    } stepper;
+
+    custom algorithm ir_voltage_to_distance {
+      input voltage : f32<V>;
+      input sample_valid : bool;
+      output distance : IRDistance;
+      local predicted_cm : f32<cm>;
+      step() {
+        if voltage > 0 V {
+          predicted_cm = 9.5 cm * exp(-0.7225 * ln(voltage / 1 V));
+          distance.in_range = sample_valid and predicted_cm > 0 cm and predicted_cm <= maximum_reported_ir_distance;
+          distance.distance_cm = select(distance.in_range, predicted_cm, ir_error_distance);
+          distance.valid = sample_valid;
+        } else {
+          distance.distance_cm = ir_error_distance;
+          distance.valid = sample_valid;
+          distance.in_range = false;
+        }
+      }
+    }
+    subsystem ir_pair {
+      input left_voltage : f32<V> { rate = 20 Hz; max_age = 50 ms; };
+      input left_sample_valid : bool { rate = 20 Hz; max_age = 50 ms; };
+      input forward_voltage : f32<V> { rate = 20 Hz; max_age = 50 ms; };
+      input forward_sample_valid : bool { rate = 20 Hz; max_age = 50 ms; };
+      output snapshot : IRPair { rate = 20 Hz; max_age = 50 ms; };
+      use ir_voltage_to_distance as convert;
+      stage left_result = convert(voltage = left_voltage, sample_valid = left_sample_valid);
+      stage forward_result = convert(voltage = forward_voltage, sample_valid = forward_sample_valid);
+      output snapshot = map(left = left_result.distance, forward = forward_result.distance);
+    }
+
+    custom algorithm mission_dispatcher {
+      input mode : MissionState;
+      input sensors : IRPair;
+      output action : MissionAction;
+      state previous_mode : MissionState = MissionState.waiting_for_start;
+      state scan_count : u8 = 0;
+      state scan_phase : bool = false;
+      state alignment_ticks : u8 = 0;
+      local drive_command : DriveCommand;
+      local publish_drive : bool;
+      local arm_trigger : bool;
+      step() {
+        publish_drive = false;
+        arm_trigger = mode == MissionState.arming and previous_mode != MissionState.arming;
+        if mode != previous_mode {
+          if mode == MissionState.scan { scan_count = 0; scan_phase = false; }
+          if mode == MissionState.alignment_pause { alignment_ticks = 0; }
+          previous_mode = mode;
+        }
+        drive_command = DriveCommand.stop;
+        if mode == MissionState.approaching { drive_command = DriveCommand.forward; publish_drive = true; }
+        if mode == MissionState.alignment_pause {
+          alignment_ticks = alignment_ticks + 1;
+          if alignment_ticks == 1 { drive_command = DriveCommand.alignment_hold; publish_drive = true; }
+        }
+        if mode == MissionState.scan {
+          scan_phase = not scan_phase;
+          if scan_phase {
+            scan_count = scan_count + 1;
+            if not sensors.left.in_range or sensors.left.distance_cm >= obstacle_threshold or (sensors.left.distance_cm > 4 cm and sensors.left.distance_cm < 30 cm) {
+              drive_command = DriveCommand.alignment_hold;
+            } else {
+              drive_command = DriveCommand.left;
+            }
+            publish_drive = true;
+          }
+        }
+        // The supplied sketch queues the diagonal retreat only once; this
+        // publishes it periodically so the stepper targets continue advancing.
+        if mode == MissionState.retreat { drive_command = DriveCommand.diagonal_back_left; publish_drive = true; }
+        if mode == MissionState.release_payload or mode == MissionState.complete { drive_command = DriveCommand.stop; publish_drive = true; }
+         action.drive_command = drive_command;
+         action.publish_drive = publish_drive;
+         action.arm_trigger = arm_trigger;
+         action.scan_count = scan_count;
+         action.alignment_complete = mode == MissionState.alignment_pause and alignment_ticks >= 4;
+         action.release_confirmed = mode == MissionState.release_payload;
+      }
+    }
+
+    custom algorithm mecanum_step_map {
+      input command : DriveCommand;
+      output targets : WheelStepRate;
+      step() {
+        if command == DriveCommand.forward {
+          targets.left_front_hz = 1000 Hz; targets.left_rear_hz = -1000 Hz; targets.right_front_hz = -1000 Hz; targets.right_rear_hz = 1000 Hz;
+        } else { if command == DriveCommand.backward {
+          targets.left_front_hz = -1000 Hz; targets.left_rear_hz = 1000 Hz; targets.right_front_hz = 1000 Hz; targets.right_rear_hz = -1000 Hz;
+        } else { if command == DriveCommand.diagonal_back_left {
+          targets.left_front_hz = 0 Hz; targets.left_rear_hz = -1000 Hz; targets.right_front_hz = 0 Hz; targets.right_rear_hz = -1000 Hz;
+        } else { if command == DriveCommand.left {
+          targets.left_front_hz = 1000 Hz; targets.left_rear_hz = 1000 Hz; targets.right_front_hz = -1000 Hz; targets.right_rear_hz = -1000 Hz;
+        } else {
+          targets.left_front_hz = 0 Hz; targets.left_rear_hz = 0 Hz; targets.right_front_hz = 0 Hz; targets.right_rear_hz = 0 Hz;
+        } } } }
+      }
+    }
+    subsystem mecanum_command_router {
+      input command : DriveCommand;
+      output targets : WheelStepRate;
+      use mecanum_step_map as pattern;
+      use lf_stepper as left_front;
+      use lr_stepper as left_rear;
+      use rf_stepper as right_front;
+      use rr_stepper as right_rear;
+      stage target = pattern(command = command);
+      let left_front_command : StepperCommand = map(mode = StepperCommandMode.velocity, relative_steps = 0, step_rate_hz = target.targets.left_front_hz, stop = command == DriveCommand.stop or command == DriveCommand.alignment_hold);
+      let left_rear_command : StepperCommand = map(mode = StepperCommandMode.velocity, relative_steps = 0, step_rate_hz = target.targets.left_rear_hz, stop = command == DriveCommand.stop or command == DriveCommand.alignment_hold);
+      let right_front_command : StepperCommand = map(mode = StepperCommandMode.velocity, relative_steps = 0, step_rate_hz = target.targets.right_front_hz, stop = command == DriveCommand.stop or command == DriveCommand.alignment_hold);
+      let right_rear_command : StepperCommand = map(mode = StepperCommandMode.velocity, relative_steps = 0, step_rate_hz = target.targets.right_rear_hz, stop = command == DriveCommand.stop or command == DriveCommand.alignment_hold);
+      stage lf = left_front(command = left_front_command);
+      stage lr = left_rear(command = left_rear_command);
+      stage rf = right_front(command = right_front_command);
+      stage rr = right_rear(command = right_rear_command);
+      output targets = target.targets;
+    }
+    subsystem drive_pulse_service {
+      output service_complete : bool;
+      use lf_stepper as left_front;
+      use lr_stepper as left_rear;
+      use rf_stepper as right_front;
+      use rr_stepper as right_rear;
+      stage lf = left_front.service();
+      stage lr = left_rear.service();
+      stage rf = right_front.service();
+      stage rr = right_rear.service();
+      output service_complete = lf.complete and lr.complete and rf.complete and rr.complete;
+    }
+  }
+}

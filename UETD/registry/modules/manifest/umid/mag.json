@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/umid/drivers/mag.c"
+  ],
+  "dependencies": [
+    "upal/i2c"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/umid/drivers/magnetometer.h",
+    "include/upal/dma.h",
+    "include/upal/i2c.h"
+  ]
+}

@@ -1,0 +1,87 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <RootNamespace>UEF.ProjectLanguage.VisualStudio</RootNamespace>
+    <AssemblyName>UEF.ProjectLanguage.VisualStudio</AssemblyName>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <VsixManifest>source.extension.vsixmanifest</VsixManifest>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <!-- Import the VSIX targets after Microsoft.Common has initialized the
+         intermediate and output directories. -->
+    <CustomAfterMicrosoftCommonTargets>$(MSBuildThisFileDirectory)UEF.ProjectLanguage.VisualStudio.targets</CustomAfterMicrosoftCommonTargets>
+  </PropertyGroup>
+
+  <!-- F5 starts the Visual Studio experimental hive for extension debugging. -->
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Only source.extension.vsixmanifest is authoritative. Exclude the
+         legacy output-name manifest so the packaging task cannot select its
+         stale version/asset list. -->
+    <None Remove="extension.vsixmanifest" />
+
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VisualStudio.LanguageServer.Client" Version="17.14.60" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.14.2142">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- The .NET Framework targeting pack provides the MEF v1 contract types
+       used by Visual Studio's ILanguageClient export model. -->
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+
+  <!-- The VS Code grammar and language configuration are the shared sources. -->
+  <ItemGroup>
+    <Content Include="..\..\..\vscode\syntaxes\uef.tmLanguage.json">
+      <Link>Grammars\uef.tmLanguage.json</Link>
+      <VSIXSubPath>Grammars</VSIXSubPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\..\..\vscode\syntaxes\uefs.tmLanguage.json">
+      <Link>Grammars\uefs.tmLanguage.json</Link>
+      <VSIXSubPath>Grammars</VSIXSubPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <!-- Keep each packaged TextMate theme filename paired with its grammar,
+         while maintaining one editable theme source. -->
+    <Content Include="UEF-PL.tmTheme">
+      <Link>Grammars\uef.tmLanguage.tmTheme</Link>
+      <TargetPath>uef.tmLanguage.tmTheme</TargetPath>
+      <VSIXSubPath>Grammars</VSIXSubPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="UEF-PL.tmTheme">
+      <Link>Grammars\uefs.tmLanguage.tmTheme</Link>
+      <TargetPath>uefs.tmLanguage.tmTheme</TargetPath>
+      <VSIXSubPath>Grammars</VSIXSubPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\..\..\vscode\language-configuration.json">
+      <Link>language-configuration.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="UEF-PL.pkgdef">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+  </ItemGroup>
+
+</Project>

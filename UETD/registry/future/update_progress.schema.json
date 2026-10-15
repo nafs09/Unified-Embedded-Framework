@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/update-progress-1.0.schema.json",
+  "title": "UETD durable field-update progress",
+  "description": "Backend-private atomic progress record. Resume must revalidate signed identity and rehash staged bytes; progress alone never authorizes boot.",
+  "type": "object",
+  "required": ["format", "schema_version", "sequence", "state", "policy", "artifact_sha256", "manifest_sha256", "received_bytes", "verified_segment_count", "staging_slot_id", "confirmed_slot_id", "integrity_crc32"],
+  "properties": {
+    "format": { "const": "UETD-UPDATE-PROGRESS-1" },
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "state": { "enum": ["idle", "receiving", "staged", "hash_verified", "signature_verified", "compatible", "pending_trial", "trial_boot", "confirmed", "rollback", "failed"] },
+    "policy": {
+      "type": "object",
+      "required": ["authentication_required", "recovery_required", "anti_rollback_required", "encryption_required", "unsigned_development_allowed"],
+      "properties": {
+        "authentication_required": { "type": "boolean" },
+        "recovery_required": { "type": "boolean" },
+        "anti_rollback_required": { "type": "boolean" },
+        "encryption_required": { "type": "boolean" },
+        "unsigned_development_allowed": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "artifact_sha256": { "$ref": "#/$defs/sha256" },
+    "manifest_sha256": { "$ref": "#/$defs/sha256" },
+    "received_bytes": { "type": "integer", "minimum": 0 },
+    "verified_segment_count": { "type": "integer", "minimum": 0 },
+    "boot_attempt_count": { "type": "integer", "minimum": 0 },
+    "staging_slot_id": { "type": "string", "maxLength": 23 },
+    "confirmed_slot_id": { "type": "string", "maxLength": 23 },
+    "last_error": { "type": "integer", "minimum": 0 },
+    "integrity_crc32": { "type": "string", "pattern": "^[A-Fa-f0-9]{8}$", "description": "Accidental-corruption check only; never an authorization proof." }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" } },
+  "additionalProperties": false
+}

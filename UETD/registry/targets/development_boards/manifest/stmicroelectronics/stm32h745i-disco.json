@@ -1,0 +1,16 @@
+{
+  "id": "stm32h745i-disco",
+  "name": "ST STM32H745I-DISCO",
+  "aliases": [],
+  "chip_id": "stm32h745xih6",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "ST STM32H745I-DISCO product page",
+      "url": "https://www.st.com/en/evaluation-tools/stm32h745i-disco.html"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "Evaluation board uses STM32H745XIH6. Board clock, connector/pin reservations, dual-core startup, build, debug, and flash profiles remain to be registered before generation."
+}

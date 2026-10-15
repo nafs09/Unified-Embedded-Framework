@@ -1,0 +1,2758 @@
+{
+  "schema_version": "1.0",
+  "source_of_truth": "UETD public C headers under include",
+  "generated_by": "tools/generate_project_language_catalogues.py",
+  "types": [
+    {
+      "c_name": "IRQn_Type",
+      "kind": "alias",
+      "header": "include/uhal/target.h",
+      "declaration": "typedef int32_t IRQn_Type;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_component_t",
+      "kind": "struct",
+      "header": "include/uapp/lifecycle.h",
+      "declaration": "typedef struct { uapp_state_t state; const char* name; uetd_status_t (*init)(void* ctx); uetd_status_t (*start)(void* ctx); uetd_status_t (*stop)(void* ctx); void (*on_fault)(void* ctx, uetd_u32_t fault_code); void* ctx; uetd_u32_t fault_code; } uapp_component_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_crash_record_state_t",
+      "kind": "enum",
+      "header": "include/uapp/future/fault_history.h",
+      "declaration": "typedef enum { UAPP_CRASH_RECORD_UNREAD = 0, UAPP_CRASH_RECORD_EXPORTED, UAPP_CRASH_RECORD_ACKNOWLEDGED, } uapp_crash_record_state_t;",
+      "enum_members": [
+        "UAPP_CRASH_RECORD_UNREAD",
+        "UAPP_CRASH_RECORD_EXPORTED",
+        "UAPP_CRASH_RECORD_ACKNOWLEDGED"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_crash_record_t",
+      "kind": "struct",
+      "header": "include/uapp/future/fault_history.h",
+      "declaration": "typedef struct { uetd_u16_t format_version; uetd_u16_t header_bytes; uetd_u32_t magic; uetd_u32_t sequence; uetd_u32_t fault_code; uetd_u32_t fault_type; uetd_u32_t reset_cause; uetd_u32_t core_id; uetd_u32_t task_or_irq_id; uetd_u32_t pc; uetd_u32_t lr; uetd_u32_t cfsr; uetd_u32_t hfsr; uetd_u32_t dfsr; uetd_u32_t mmfar; uetd_u32_t bfar; uetd_u32_t afsr; uetd_u64_t capture_valid_mask; uetd_u32_t clock_id; uetd_u64_t monotonic_us; uetd_u64_t rtc_time; char project_id[UAPP_CRASH_PROJECT_ID_CAPACITY]; char firmware_version[UAPP_CRASH_FIRMWARE_VERSION_CAPACITY]; char target_id[UAPP_CRASH_TARGET_ID_CAPACITY]; char board_id[UAPP_CRASH_BOARD_ID_CAPACITY]; char hardware_revision[UAPP_CRASH_HARDWARE_REVISION_CAPACITY]; uetd_u8_t artifact_sha256[32]; uetd_u16_t detail_length; uetd_u16_t detail_flags; char detail[UAPP_CRASH_DETAIL_CAPACITY]; uetd_u16_t architecture_context_length; uetd_u16_t architecture_context_schema; uetd_u32_t integrity_crc32; uapp_crash_record_state_t state; } uapp_crash_record_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_fault_record_t",
+      "kind": "struct",
+      "header": "include/uapp/fault.h",
+      "declaration": "typedef struct { uetd_u32_t sequence; uetd_u32_t fault_code; uetd_u32_t flags; uetd_u64_t occurred_at_us; char detail[UAPP_FAULT_DETAIL_CAPACITY]; } uapp_fault_record_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_fault_recovery_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/fault.h",
+      "declaration": "typedef void (*uapp_fault_recovery_fn)(const uapp_fault_record_t* record, void* context);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_image_segment_role_t",
+      "kind": "enum",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef enum { UAPP_IMAGE_SEGMENT_EXECUTABLE = 0, UAPP_IMAGE_SEGMENT_CONFIGURATION, UAPP_IMAGE_SEGMENT_RESOURCE, } uapp_image_segment_role_t;",
+      "enum_members": [
+        "UAPP_IMAGE_SEGMENT_EXECUTABLE",
+        "UAPP_IMAGE_SEGMENT_CONFIGURATION",
+        "UAPP_IMAGE_SEGMENT_RESOURCE"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_sm_action_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef uetd_status_t (*uapp_sm_action_fn)(const uapp_sm_event_t* event, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_sm_config_t",
+      "kind": "struct",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef struct { const uapp_sm_transition_t* transitions; uetd_u8_t transition_count; const uapp_sm_state_hooks_t* state_hooks; uetd_u8_t state_count; uapp_sm_state_t initial_state; uapp_sm_unhandled_fn on_unhandled; uapp_sm_fault_fn on_fault; void* ctx; } uapp_sm_config_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_sm_event_t",
+      "kind": "struct",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef struct { uetd_u8_t id; uetd_u8_t size; uetd_u8_t payload[UAPP_SM_EVENT_PAYLOAD_CAPACITY]; } uapp_sm_event_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_sm_fault_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef void (*uapp_sm_fault_fn)(uapp_sm_state_t state, const uapp_sm_event_t* event, uetd_status_t status, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_sm_guard_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef bool (*uapp_sm_guard_fn)(const uapp_sm_event_t* event, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_sm_state_hook_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef uetd_status_t (*uapp_sm_state_hook_fn)(uapp_sm_state_t state, const uapp_sm_event_t* event, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_sm_state_hooks_t",
+      "kind": "struct",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef struct { uapp_sm_state_hook_fn on_enter; uapp_sm_state_hook_fn on_exit; } uapp_sm_state_hooks_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_sm_state_t",
+      "kind": "alias",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef uetd_u8_t uapp_sm_state_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_sm_transition_t",
+      "kind": "struct",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef struct { uapp_sm_state_t from; uetd_u8_t event_id; uapp_sm_state_t to; uapp_sm_action_fn action; uapp_sm_guard_fn guard; } uapp_sm_transition_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_sm_unhandled_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef void (*uapp_sm_unhandled_fn)(uapp_sm_state_t state, const uapp_sm_event_t* event, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_state_t",
+      "kind": "enum",
+      "header": "include/uapp/lifecycle.h",
+      "declaration": "typedef enum { UAPP_STATE_CREATED = 0, UAPP_STATE_INITIALISED = 1, UAPP_STATE_RUNNING = 2, UAPP_STATE_STOPPING = 3, UAPP_STATE_FAULTED = 4, UAPP_STATE_INITIALISING = 5, UAPP_STATE_STARTING = 6, } uapp_state_t;",
+      "enum_members": [
+        "UAPP_STATE_CREATED",
+        "UAPP_STATE_INITIALISED",
+        "UAPP_STATE_RUNNING",
+        "UAPP_STATE_STOPPING",
+        "UAPP_STATE_FAULTED",
+        "UAPP_STATE_INITIALISING",
+        "UAPP_STATE_STARTING"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uapp_statemachine_t",
+      "kind": "struct",
+      "header": "include/uapp/statemachine.h",
+      "declaration": "typedef struct { uapp_sm_state_t current; uapp_sm_state_t initial; const uapp_sm_transition_t* transitions; const uapp_sm_state_hooks_t* state_hooks; uetd_u8_t transition_count; uetd_u8_t state_count; uapp_sm_event_t event_queue[UAPP_SM_EVENT_QUEUE_CAPACITY]; uetd_u8_t queue_head; uetd_u8_t queue_tail; uetd_u8_t queue_count; uapp_sm_unhandled_fn on_unhandled; uapp_sm_fault_fn on_fault; void* ctx; uetd_status_t fault_status; bool initialized; bool processing; bool faulted; bool state_active; } uapp_statemachine_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_supervisor_cfg_t",
+      "kind": "struct",
+      "header": "include/uapp/supervisor.h",
+      "declaration": "typedef struct { uetd_u32_t check_period_ms; uetd_u32_t fault_threshold; uetd_u32_t stale_after_ms; void (*on_fault)(uetd_u8_t id, umid_health_status_t s, void* ctx); void (*on_event)(const uapp_supervisor_event_t* event, void* ctx); void* ctx; } uapp_supervisor_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_supervisor_event_t",
+      "kind": "struct",
+      "header": "include/uapp/supervisor.h",
+      "declaration": "typedef struct { uetd_u8_t id; umid_health_status_t reported_status; umid_health_status_t effective_status; uapp_supervisor_reason_t reason; uetd_u32_t fault_code; uetd_u64_t report_age_us; } uapp_supervisor_event_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_supervisor_reason_t",
+      "kind": "enum",
+      "header": "include/uapp/supervisor.h",
+      "declaration": "typedef enum { UAPP_SUPERVISOR_REASON_NONE = 0, UAPP_SUPERVISOR_REASON_REPORTED_FAULT = 1, UAPP_SUPERVISOR_REASON_STALE_REPORT = 2, } uapp_supervisor_reason_t;",
+      "enum_members": [
+        "UAPP_SUPERVISOR_REASON_NONE",
+        "UAPP_SUPERVISOR_REASON_REPORTED_FAULT",
+        "UAPP_SUPERVISOR_REASON_STALE_REPORT"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uapp_supervisor_t",
+      "kind": "struct",
+      "header": "include/uapp/supervisor.h",
+      "declaration": "typedef struct { uapp_supervisor_cfg_t cfg; uetd_u32_t fault_counts[UMID_HEALTH_MAX_ENTRIES]; uapp_supervisor_reason_t active_reasons[UMID_HEALTH_MAX_ENTRIES]; uetd_u64_t last_check_us; } uapp_supervisor_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_update_backend_t",
+      "kind": "struct",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef struct { uetd_status_t (*verify_signature)(void* context, const uapp_update_descriptor_t* descriptor); uetd_status_t (*check_compatibility)(void* context, const uapp_update_descriptor_t* descriptor); uetd_status_t (*begin_staging)(void* context, uetd_u32_t image_bytes); uetd_status_t (*write_staging)(void* context, uetd_u32_t offset, const uetd_u8_t* bytes, uetd_u32_t length); uetd_status_t (*verify_staged_image)(void* context, const uapp_update_descriptor_t* descriptor); uetd_status_t (*select_trial_image)(void* context); uetd_status_t (*confirm_trial_image)(void* context); uetd_status_t (*rollback_trial_image)(void* context); uetd_status_t (*read_security_index)(void* context, uetd_u64_t* index); uetd_status_t (*advance_security_index)(void* context, uetd_u64_t index); uetd_status_t (*read_progress)(void* context, uapp_update_progress_t* progress); uetd_status_t (*commit_progress_atomic)(void* context, const uapp_update_progress_t* progress); uetd_status_t (*clear_progress)(void* context, uetd_u32_t expected_sequence); void* context; uapp_update_capabilities_t capabilities; } uapp_update_backend_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_capabilities_t",
+      "kind": "struct",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef struct { bool verifies_signatures; bool protected_trust_anchor; bool has_staging_region; bool has_trial_boot; bool has_rollback; bool has_monotonic_security_index; bool supports_artifact_decryption; bool supports_secure_transport; uetd_u32_t maximum_image_bytes; uetd_u32_t minimum_bootloader_version; uetd_u32_t maximum_transfer_chunk_bytes; uetd_u32_t maximum_session_time_ms; } uapp_update_capabilities_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_descriptor_t",
+      "kind": "struct",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef struct { const char* project_id; uetd_u16_t manifest_schema_version; const char* chip_id; const char* board_id; const char* minimum_hardware_revision; const char* maximum_hardware_revision; const char* firmware_version; uetd_u32_t minimum_bootloader_version; uetd_u32_t trial_health_window_ms; uetd_u64_t security_index; uetd_u32_t total_image_bytes; uetd_u16_t segment_count; const uapp_update_segment_t* segments; uetd_u8_t artifact_sha256[32]; const char* canonicalization_id; const uetd_u8_t* canonical_manifest; uetd_u32_t manifest_bytes; uapp_update_policy_t declared_policy; const uetd_u8_t* signature; uetd_u16_t signature_bytes; const char* signature_algorithm; const char* key_id; uetd_u16_t key_id_bytes; } uapp_update_descriptor_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_policy_t",
+      "kind": "alias",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef uetd_u32_t uapp_update_policy_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_progress_t",
+      "kind": "struct",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef struct { uetd_u16_t schema_version; uetd_u16_t record_bytes; uetd_u32_t sequence; uapp_update_state_t state; uapp_update_policy_t policy; uetd_u8_t artifact_sha256[32]; uetd_u8_t manifest_sha256[32]; uetd_u32_t received_bytes; uetd_u16_t verified_segment_count; uetd_u16_t boot_attempt_count; char staging_slot_id[24]; char confirmed_slot_id[24]; uetd_u32_t last_error; uetd_u32_t integrity_crc32; } uapp_update_progress_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_segment_t",
+      "kind": "struct",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef struct { uapp_image_segment_role_t role; uetd_u32_t load_address; uetd_u32_t byte_length; uetd_u8_t sha256[32]; } uapp_update_segment_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_session_t",
+      "kind": "struct",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef struct { uapp_update_backend_t backend; uapp_update_policy_t policy; uapp_update_state_t state; const uapp_update_descriptor_t* descriptor; uetd_u32_t received_bytes; uetd_u32_t next_expected_offset; uetd_u64_t last_progress_us; uetd_status_t last_error; } uapp_update_session_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_update_state_t",
+      "kind": "enum",
+      "header": "include/uapp/future/secure_update.h",
+      "declaration": "typedef enum { UAPP_UPDATE_IDLE = 0, UAPP_UPDATE_RECEIVING, UAPP_UPDATE_STAGED, UAPP_UPDATE_HASH_VERIFIED, UAPP_UPDATE_SIGNATURE_VERIFIED, UAPP_UPDATE_COMPATIBLE, UAPP_UPDATE_PENDING_TRIAL, UAPP_UPDATE_TRIAL_BOOT, UAPP_UPDATE_CONFIRMED, UAPP_UPDATE_ROLLBACK, UAPP_UPDATE_FAILED, } uapp_update_state_t;",
+      "enum_members": [
+        "UAPP_UPDATE_IDLE",
+        "UAPP_UPDATE_RECEIVING",
+        "UAPP_UPDATE_STAGED",
+        "UAPP_UPDATE_HASH_VERIFIED",
+        "UAPP_UPDATE_SIGNATURE_VERIFIED",
+        "UAPP_UPDATE_COMPATIBLE",
+        "UAPP_UPDATE_PENDING_TRIAL",
+        "UAPP_UPDATE_TRIAL_BOOT",
+        "UAPP_UPDATE_CONFIRMED",
+        "UAPP_UPDATE_ROLLBACK",
+        "UAPP_UPDATE_FAILED"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uapp_watchdog_gate_cfg_t",
+      "kind": "struct",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef struct { const uapp_watchdog_lease_t* required_leases; uetd_u8_t required_lease_count; uetd_u64_t boot_grace_us; uapp_watchdog_refresh_fn refresh; uapp_watchdog_gate_event_fn on_event; void* context; } uapp_watchdog_gate_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_watchdog_gate_event_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef void (*uapp_watchdog_gate_event_fn)(const uapp_watchdog_gate_event_t* event, void* context);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uapp_watchdog_gate_event_t",
+      "kind": "struct",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef struct { uapp_watchdog_gate_reason_t reason; uetd_u8_t health_id; umid_health_status_t observed_status; uetd_u32_t fault_code; uetd_u64_t age_us; uetd_status_t refresh_status; bool feed_permitted; } uapp_watchdog_gate_event_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_watchdog_gate_reason_t",
+      "kind": "enum",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef enum { UAPP_WDG_GATE_HEALTHY = 0, UAPP_WDG_GATE_BOOT_GRACE, UAPP_WDG_GATE_MISSING_HEALTH_ID, UAPP_WDG_GATE_STALE_LEASE, UAPP_WDG_GATE_UNHEALTHY_LEASE, UAPP_WDG_GATE_REFRESH_FAILED, UAPP_WDG_GATE_LATCHED, } uapp_watchdog_gate_reason_t;",
+      "enum_members": [
+        "UAPP_WDG_GATE_HEALTHY",
+        "UAPP_WDG_GATE_BOOT_GRACE",
+        "UAPP_WDG_GATE_MISSING_HEALTH_ID",
+        "UAPP_WDG_GATE_STALE_LEASE",
+        "UAPP_WDG_GATE_UNHEALTHY_LEASE",
+        "UAPP_WDG_GATE_REFRESH_FAILED",
+        "UAPP_WDG_GATE_LATCHED"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uapp_watchdog_gate_t",
+      "kind": "struct",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef struct { uapp_watchdog_lease_t leases[UMID_HEALTH_MAX_ENTRIES]; uetd_u8_t lease_count; uetd_u64_t boot_started_us; uapp_watchdog_refresh_fn refresh; uapp_watchdog_gate_event_fn on_event; void* context; uetd_u32_t latched_fault_code; uapp_watchdog_gate_reason_t last_reason; uetd_u8_t last_health_id; umid_health_status_t last_observed_status; uetd_u32_t last_fault_code; uetd_status_t last_refresh_status; bool initialized; bool latched; bool event_pending; } uapp_watchdog_gate_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_watchdog_lease_t",
+      "kind": "struct",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef struct { uetd_u8_t health_id; umid_health_status_t maximum_accepted_status; uetd_u64_t maximum_age_us; } uapp_watchdog_lease_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uapp_watchdog_refresh_fn",
+      "kind": "function_pointer",
+      "header": "include/uapp/watchdog_gate.h",
+      "declaration": "typedef uetd_status_t (*uapp_watchdog_refresh_fn)(void* context);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "ucon_algorithm_scaffold_call_t",
+      "kind": "struct",
+      "header": "include/ucon/detail/algorithm_call.h",
+      "declaration": "typedef struct { const void* configuration; void* state; const ucon_scalar_t* inputs; size_t input_count; ucon_scalar_t* outputs; size_t output_count; } ucon_algorithm_scaffold_call_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "ucon_anti_windup_t",
+      "kind": "enum",
+      "header": "include/ucon/control/classical/pid.h",
+      "declaration": "typedef enum { UCON_ANTI_WINDUP_NONE = 0, UCON_ANTI_WINDUP_CLAMP, UCON_ANTI_WINDUP_BACK_CALCULATION, UCON_ANTI_WINDUP_CONDITIONAL } ucon_anti_windup_t;",
+      "enum_members": [
+        "UCON_ANTI_WINDUP_NONE",
+        "UCON_ANTI_WINDUP_CLAMP",
+        "UCON_ANTI_WINDUP_BACK_CALCULATION",
+        "UCON_ANTI_WINDUP_CONDITIONAL"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "ucon_lead_lag_config_t",
+      "kind": "struct",
+      "header": "include/ucon/control/classical/lead_lag.h",
+      "declaration": "typedef struct { ucon_scalar_t gain; ucon_scalar_t lead_time; ucon_scalar_t lag_time; ucon_scalar_t sample_time; } ucon_lead_lag_config_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "ucon_lead_lag_state_t",
+      "kind": "struct",
+      "header": "include/ucon/control/classical/lead_lag.h",
+      "declaration": "typedef struct { ucon_scalar_t previous_input; ucon_scalar_t previous_output; bool initialized; } ucon_lead_lag_state_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "ucon_pid_config_t",
+      "kind": "struct",
+      "header": "include/ucon/control/classical/pid.h",
+      "declaration": "typedef struct { ucon_scalar_t kp; ucon_scalar_t ki; ucon_scalar_t kd; ucon_scalar_t derivative_filter_n; ucon_scalar_t proportional_weight_b; ucon_scalar_t derivative_weight_c; ucon_scalar_t sample_time; ucon_scalar_t output_min; ucon_scalar_t output_max; ucon_scalar_t integral_min; ucon_scalar_t integral_max; ucon_scalar_t tracking_time; bool saturation_enabled; ucon_anti_windup_t anti_windup; } ucon_pid_config_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "ucon_pid_state_t",
+      "kind": "struct",
+      "header": "include/ucon/control/classical/pid.h",
+      "declaration": "typedef struct { ucon_scalar_t previous_integral_error; ucon_scalar_t previous_derivative_error; ucon_scalar_t integral_state; ucon_scalar_t derivative_state; bool initialized; } ucon_pid_state_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "ucon_scalar_t",
+      "kind": "alias",
+      "header": "include/ucon/types.h",
+      "declaration": "typedef umath_scalar_t ucon_scalar_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "ucon_status_t",
+      "kind": "enum",
+      "header": "include/ucon/status.h",
+      "declaration": "typedef enum { UCON_OK = 0, UCON_INVALID_ARGUMENT, UCON_NUMERIC_FAILURE, UCON_SOLVER_FAILURE, UCON_INFEASIBLE, UCON_NO_FEASIBLE_CANDIDATE, UCON_MEASUREMENT_REJECTED, UCON_ITERATION_LIMIT, UCON_NOT_IMPLEMENTED } ucon_status_t;",
+      "enum_members": [
+        "UCON_OK",
+        "UCON_INVALID_ARGUMENT",
+        "UCON_NUMERIC_FAILURE",
+        "UCON_SOLVER_FAILURE",
+        "UCON_INFEASIBLE",
+        "UCON_NO_FEASIBLE_CANDIDATE",
+        "UCON_MEASUREMENT_REJECTED",
+        "UCON_ITERATION_LIMIT",
+        "UCON_NOT_IMPLEMENTED"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uetd_dur_us_t",
+      "kind": "alias",
+      "header": "include/ucore/time.h",
+      "declaration": "typedef uetd_u64_t uetd_dur_us_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uetd_f32_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef float uetd_f32_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "f32"
+    },
+    {
+      "c_name": "uetd_f64_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef double uetd_f64_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "f64"
+    },
+    {
+      "c_name": "uetd_i16_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int16_t uetd_i16_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "i16"
+    },
+    {
+      "c_name": "uetd_i32_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int32_t uetd_i32_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "i32"
+    },
+    {
+      "c_name": "uetd_i64_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int64_t uetd_i64_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "i64"
+    },
+    {
+      "c_name": "uetd_i8_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int8_t uetd_i8_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "i8"
+    },
+    {
+      "c_name": "uetd_q15_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int16_t uetd_q15_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "q15"
+    },
+    {
+      "c_name": "uetd_q16_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int32_t uetd_q16_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "q16"
+    },
+    {
+      "c_name": "uetd_q31_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int32_t uetd_q31_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "q31"
+    },
+    {
+      "c_name": "uetd_q63_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef int64_t uetd_q63_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "q63"
+    },
+    {
+      "c_name": "uetd_status_t",
+      "kind": "enum",
+      "header": "include/ucore/status.h",
+      "declaration": "typedef enum { UETD_OK = 0, UETD_BUSY = 1, UETD_ERROR = 2, UETD_TIMEOUT = 3, UETD_OVERFLOW = 4, UETD_UNDERFLOW = 5, UETD_INVALID_ARG = 6, UETD_NOT_SUPPORTED = 7, UETD_DMA_ERROR = 8, UETD_CACHE_ERROR = 9, UETD_CRC_ERROR = 10, UETD_NOT_READY = 11, UETD_CONFLICT = 12, } uetd_status_t;",
+      "enum_members": [
+        "UETD_OK",
+        "UETD_BUSY",
+        "UETD_ERROR",
+        "UETD_TIMEOUT",
+        "UETD_OVERFLOW",
+        "UETD_UNDERFLOW",
+        "UETD_INVALID_ARG",
+        "UETD_NOT_SUPPORTED",
+        "UETD_DMA_ERROR",
+        "UETD_CACHE_ERROR",
+        "UETD_CRC_ERROR",
+        "UETD_NOT_READY",
+        "UETD_CONFLICT"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uetd_target_profile_id_t",
+      "kind": "enum",
+      "header": "include/uhal/target_profiles.h",
+      "declaration": "typedef enum { UETD_TARGET_PROFILE_STM32G4 = 0, UETD_TARGET_PROFILE_STM32F4, UETD_TARGET_PROFILE_STM32H7, UETD_TARGET_PROFILE_STM32F7, UETD_TARGET_PROFILE_STM32G0, UETD_TARGET_PROFILE_NRF52840, UETD_TARGET_PROFILE_STM32L4PLUS, UETD_TARGET_PROFILE_COUNT } uetd_target_profile_id_t;",
+      "enum_members": [
+        "UETD_TARGET_PROFILE_STM32G4",
+        "UETD_TARGET_PROFILE_STM32F4",
+        "UETD_TARGET_PROFILE_STM32H7",
+        "UETD_TARGET_PROFILE_STM32F7",
+        "UETD_TARGET_PROFILE_STM32G0",
+        "UETD_TARGET_PROFILE_NRF52840",
+        "UETD_TARGET_PROFILE_STM32L4PLUS",
+        "UETD_TARGET_PROFILE_COUNT"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uetd_target_profile_t",
+      "kind": "struct",
+      "header": "include/uhal/target_profiles.h",
+      "declaration": "typedef struct { uetd_target_profile_id_t id; uetd_u8_t phase; const char* family_key; const char* core; const char* integration_notes; bool profile_complete; } uetd_target_profile_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uetd_time_us_t",
+      "kind": "alias",
+      "header": "include/ucore/time.h",
+      "declaration": "typedef uetd_u64_t uetd_time_us_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uetd_u16_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef uint16_t uetd_u16_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "u16"
+    },
+    {
+      "c_name": "uetd_u32_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef uint32_t uetd_u32_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "u32"
+    },
+    {
+      "c_name": "uetd_u64_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef uint64_t uetd_u64_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "u64"
+    },
+    {
+      "c_name": "uetd_u8_t",
+      "kind": "alias",
+      "header": "include/ucore/types.h",
+      "declaration": "typedef uint8_t uetd_u8_t;",
+      "enum_members": [],
+      "language_visibility": "registered numeric type",
+      "source_status": "public_header",
+      "language_contract": "numeric",
+      "dsl_name": "u8"
+    },
+    {
+      "c_name": "uhal_clk_t",
+      "kind": "enum",
+      "header": "include/uhal/clock.h",
+      "declaration": "typedef enum { UHAL_CLK_SYSCLK, UHAL_CLK_HCLK, UHAL_CLK_APB1, UHAL_CLK_APB2, UHAL_CLK_APB3, UHAL_CLK_AHB, UHAL_CLK_ADC, UHAL_CLK_USB, UHAL_CLK_PLL_Q, } uhal_clk_t;",
+      "enum_members": [
+        "UHAL_CLK_SYSCLK",
+        "UHAL_CLK_HCLK",
+        "UHAL_CLK_APB1",
+        "UHAL_CLK_APB2",
+        "UHAL_CLK_APB3",
+        "UHAL_CLK_AHB",
+        "UHAL_CLK_ADC",
+        "UHAL_CLK_USB",
+        "UHAL_CLK_PLL_Q"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uhal_critical_t",
+      "kind": "alias",
+      "header": "include/uhal/irq.h",
+      "declaration": "typedef uetd_u32_t uhal_critical_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uhal_fault_context_t",
+      "kind": "struct",
+      "header": "include/uhal/fault.h",
+      "declaration": "typedef struct { uetd_u32_t r0, r1, r2, r3, r12; uetd_u32_t lr; uetd_u32_t pc; uetd_u32_t psr; uetd_f32_t s[16]; uetd_u32_t fpscr; } uhal_fault_context_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uhal_gpio_cfg_t",
+      "kind": "struct",
+      "header": "include/uhal/gpio.h",
+      "declaration": "typedef struct { uhal_gpio_mode_t mode; uhal_gpio_speed_t speed; uhal_gpio_pull_t pull; uetd_u8_t alternate; } uhal_gpio_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uhal_gpio_mode_t",
+      "kind": "enum",
+      "header": "include/uhal/gpio.h",
+      "declaration": "typedef enum { UHAL_GPIO_INPUT, UHAL_GPIO_OUTPUT_PP, UHAL_GPIO_OUTPUT_OD, UHAL_GPIO_ALTERNATE, UHAL_GPIO_ANALOG, } uhal_gpio_mode_t;",
+      "enum_members": [
+        "UHAL_GPIO_INPUT",
+        "UHAL_GPIO_OUTPUT_PP",
+        "UHAL_GPIO_OUTPUT_OD",
+        "UHAL_GPIO_ALTERNATE",
+        "UHAL_GPIO_ANALOG"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uhal_gpio_pin_t",
+      "kind": "struct",
+      "header": "include/uhal/gpio.h",
+      "declaration": "typedef struct { void* port; uetd_u8_t pin; } uhal_gpio_pin_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uhal_gpio_pull_t",
+      "kind": "enum",
+      "header": "include/uhal/gpio.h",
+      "declaration": "typedef enum { UHAL_GPIO_PULL_NONE, UHAL_GPIO_PULL_UP, UHAL_GPIO_PULL_DOWN, } uhal_gpio_pull_t;",
+      "enum_members": [
+        "UHAL_GPIO_PULL_NONE",
+        "UHAL_GPIO_PULL_UP",
+        "UHAL_GPIO_PULL_DOWN"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uhal_gpio_speed_t",
+      "kind": "enum",
+      "header": "include/uhal/gpio.h",
+      "declaration": "typedef enum { UHAL_GPIO_SPEED_LOW, UHAL_GPIO_SPEED_MEDIUM, UHAL_GPIO_SPEED_HIGH, UHAL_GPIO_SPEED_VERY_HIGH, } uhal_gpio_speed_t;",
+      "enum_members": [
+        "UHAL_GPIO_SPEED_LOW",
+        "UHAL_GPIO_SPEED_MEDIUM",
+        "UHAL_GPIO_SPEED_HIGH",
+        "UHAL_GPIO_SPEED_VERY_HIGH"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uhal_mem_region_t",
+      "kind": "enum",
+      "header": "include/uhal/memory.h",
+      "declaration": "typedef enum { UHAL_MEM_DTCM, UHAL_MEM_ITCM, UHAL_MEM_CCM, UHAL_MEM_AXI_SRAM, UHAL_MEM_DMA_COHERENT, UHAL_MEM_SRAM, UHAL_MEM_FLASH, } uhal_mem_region_t;",
+      "enum_members": [
+        "UHAL_MEM_DTCM",
+        "UHAL_MEM_ITCM",
+        "UHAL_MEM_CCM",
+        "UHAL_MEM_AXI_SRAM",
+        "UHAL_MEM_DMA_COHERENT",
+        "UHAL_MEM_SRAM",
+        "UHAL_MEM_FLASH"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uhal_periph_clk_t",
+      "kind": "alias",
+      "header": "include/uhal/clock.h",
+      "declaration": "typedef uetd_u32_t uhal_periph_clk_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uhal_reset_cause_t",
+      "kind": "enum",
+      "header": "include/uhal/clock.h",
+      "declaration": "typedef enum { UHAL_RESET_POWER_ON = (1u << 0), UHAL_RESET_PIN = (1u << 1), UHAL_RESET_SOFTWARE = (1u << 2), UHAL_RESET_IWDG = (1u << 3), UHAL_RESET_WWDG = (1u << 4), UHAL_RESET_LOW_POWER = (1u << 5), UHAL_RESET_FAULT = (1u << 6), } uhal_reset_cause_t;",
+      "enum_members": [
+        "UHAL_RESET_POWER_ON",
+        "UHAL_RESET_PIN",
+        "UHAL_RESET_SOFTWARE",
+        "UHAL_RESET_IWDG",
+        "UHAL_RESET_WWDG",
+        "UHAL_RESET_LOW_POWER",
+        "UHAL_RESET_FAULT"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umath_accumulator_t",
+      "kind": "alias",
+      "header": "include/umath/config.h",
+      "declaration": "typedef UMATH_ACCUMULATOR_TYPE umath_accumulator_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umath_complex_t",
+      "kind": "struct",
+      "header": "include/umath/complex.h",
+      "declaration": "typedef struct { umath_scalar_t real; umath_scalar_t imag; } umath_complex_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque",
+      "dsl_name": "complex"
+    },
+    {
+      "c_name": "umath_csr_matrix_t",
+      "kind": "struct",
+      "header": "include/umath/future/matrix/sparse_csr.h",
+      "declaration": "typedef struct { size_t rows, columns, nonzeros; const size_t* row_offsets; const size_t* column_indices; const umath_scalar_t* values; } umath_csr_matrix_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umath_dual_t",
+      "kind": "struct",
+      "header": "include/umath/derivatives/dual.h",
+      "declaration": "typedef struct { umath_scalar_t value, derivative; } umath_dual_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque",
+      "dsl_name": "dual"
+    },
+    {
+      "c_name": "umath_fft_plan_t",
+      "kind": "struct",
+      "header": "include/umath/signal/fft.h",
+      "declaration": "typedef struct { size_t length; umath_complex_t* workspace; size_t workspace_count; } umath_fft_plan_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umath_jacobian_scheme_t",
+      "kind": "enum",
+      "header": "include/umath/derivatives/jacobian.h",
+      "declaration": "typedef enum { UMATH_JACOBIAN_FORWARD = 0, UMATH_JACOBIAN_CENTRAL } umath_jacobian_scheme_t;",
+      "enum_members": [
+        "UMATH_JACOBIAN_FORWARD",
+        "UMATH_JACOBIAN_CENTRAL"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umath_ode_rhs_fn",
+      "kind": "function_pointer",
+      "header": "include/umath/numerical/integration.h",
+      "declaration": "typedef umath_status_t (*umath_ode_rhs_fn)(umath_scalar_t time, const umath_scalar_t* state, size_t dimension, umath_scalar_t* derivative, void* context);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "umath_pose2_t",
+      "kind": "struct",
+      "header": "include/umath/lie/se2.h",
+      "declaration": "typedef struct { umath_vec2_t translation; umath_scalar_t angle_radians; } umath_pose2_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umath_prng_t",
+      "kind": "struct",
+      "header": "include/umath/random/prng.h",
+      "declaration": "typedef struct { uetd_u64_t state; uetd_u64_t stream; } umath_prng_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umath_quaternion_t",
+      "kind": "struct",
+      "header": "include/umath/geometry/quaternion.h",
+      "declaration": "typedef struct { umath_scalar_t w, x, y, z; } umath_quaternion_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "fixed_numeric_vector",
+      "dsl_name": "quaternion",
+      "vector_dimension": 4
+    },
+    {
+      "c_name": "umath_scalar_t",
+      "kind": "alias",
+      "header": "include/umath/config.h",
+      "declaration": "typedef UMATH_SCALAR_TYPE umath_scalar_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umath_status_t",
+      "kind": "enum",
+      "header": "include/umath/status.h",
+      "declaration": "typedef enum { UMATH_OK = 0, UMATH_INVALID_ARGUMENT, UMATH_DIMENSION_MISMATCH, UMATH_NUMERIC_FAILURE, UMATH_SINGULAR, UMATH_NOT_POSITIVE_DEFINITE, UMATH_NO_CONVERGENCE, UMATH_NOT_IMPLEMENTED } umath_status_t;",
+      "enum_members": [
+        "UMATH_OK",
+        "UMATH_INVALID_ARGUMENT",
+        "UMATH_DIMENSION_MISMATCH",
+        "UMATH_NUMERIC_FAILURE",
+        "UMATH_SINGULAR",
+        "UMATH_NOT_POSITIVE_DEFINITE",
+        "UMATH_NO_CONVERGENCE",
+        "UMATH_NOT_IMPLEMENTED"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umath_transform3_t",
+      "kind": "struct",
+      "header": "include/umath/geometry/transform3.h",
+      "declaration": "typedef struct { umath_quaternion_t rotation; umath_vec3_t translation; } umath_transform3_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umath_vec2_t",
+      "kind": "struct",
+      "header": "include/umath/vector/vector2.h",
+      "declaration": "typedef struct { umath_scalar_t x, y; } umath_vec2_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "fixed_numeric_vector",
+      "dsl_name": "vec2",
+      "vector_dimension": 2
+    },
+    {
+      "c_name": "umath_vec3_t",
+      "kind": "struct",
+      "header": "include/umath/vector/vector3.h",
+      "declaration": "typedef struct { umath_scalar_t x, y, z; } umath_vec3_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "fixed_numeric_vector",
+      "dsl_name": "vec3",
+      "vector_dimension": 3
+    },
+    {
+      "c_name": "umath_vec4_t",
+      "kind": "struct",
+      "header": "include/umath/vector/vector4.h",
+      "declaration": "typedef struct { umath_scalar_t x, y, z, w; } umath_vec4_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "fixed_numeric_vector",
+      "dsl_name": "vec4",
+      "vector_dimension": 4
+    },
+    {
+      "c_name": "umath_vector_function_fn",
+      "kind": "function_pointer",
+      "header": "include/umath/derivatives/jacobian.h",
+      "declaration": "typedef umath_status_t (*umath_vector_function_fn)(const umath_scalar_t* input, size_t input_dimension, void* context, umath_scalar_t* output, size_t output_dimension);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "umid_blackbox_channel_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { const char* id; const char* type_id; const char* units_id; uetd_u32_t rate_millihz; uetd_u16_t maximum_encoded_bytes; } umid_blackbox_channel_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_blackbox_config_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { const umid_blackbox_channel_t* channels; uetd_u16_t channel_count; uetd_u64_t queue_capacity_bytes; uetd_u64_t usable_storage_bytes; uetd_u64_t worst_storage_stall_us; uetd_u64_t burst_margin_bytes; uetd_u64_t sustained_write_bytes_per_second; umid_blackbox_overflow_policy_t overflow_policy; } umid_blackbox_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_blackbox_overflow_policy_t",
+      "kind": "enum",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef enum { UMID_BLACKBOX_DROP_NEWEST = 0, UMID_BLACKBOX_DROP_OLDEST, UMID_BLACKBOX_DECIMATE, UMID_BLACKBOX_STOP_ON_FULL, } umid_blackbox_overflow_policy_t;",
+      "enum_members": [
+        "UMID_BLACKBOX_DROP_NEWEST",
+        "UMID_BLACKBOX_DROP_OLDEST",
+        "UMID_BLACKBOX_DECIMATE",
+        "UMID_BLACKBOX_STOP_ON_FULL"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_blackbox_record_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_u64_t timestamp_us; uetd_u32_t sequence; uetd_u16_t channel_id; uetd_u16_t payload_length; const uetd_u8_t* payload; uetd_u16_t flags; uetd_u32_t payload_crc32; } umid_blackbox_record_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_blackbox_stats_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_u64_t records_written; uetd_u64_t records_dropped; uetd_u64_t bytes_written; uetd_u64_t storage_stalls; uetd_u64_t last_committed_sequence; uetd_status_t last_storage_error; } umid_blackbox_stats_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_calibration_record_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { char driver_id[UMID_CAL_DRIVER_ID_CAPACITY]; uetd_u16_t driver_id_length; char sensor_identity[UMID_CAL_SENSOR_ID_CAPACITY]; uetd_u16_t sensor_identity_length; char board_id[UMID_CAL_BOARD_ID_CAPACITY]; uetd_u16_t board_id_length; char units_id[UMID_CAL_UNITS_ID_CAPACITY]; uetd_u16_t units_id_length; uetd_u16_t calibration_schema_version; char method_id[UMID_CAL_METHOD_ID_CAPACITY]; uetd_u16_t method_id_length; uetd_u16_t method_revision; uetd_u32_t clock_id; uetd_u64_t calibrated_at_us; uetd_u32_t payload_length; const uetd_u8_t* opaque_driver_payload; uetd_u32_t payload_crc32; uetd_u8_t payload_sha256[32]; } umid_calibration_record_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_current_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/current.h",
+      "declaration": "typedef struct { upal_adc_t* adc; uetd_u8_t channel_index; uetd_f32_t scale; uetd_f32_t offset; uetd_f32_t shunt_ohm; } umid_current_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_encoder_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/encoder.h",
+      "declaration": "typedef struct { upal_timer_t* timer; umid_encoder_type_t type; uetd_i32_t counts_per_rev; uetd_f32_t gear_ratio; uetd_u32_t vel_filter_taps; } umid_encoder_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_encoder_type_t",
+      "kind": "enum",
+      "header": "include/umid/drivers/encoder.h",
+      "declaration": "typedef enum { UMID_ENC_QUADRATURE, UMID_ENC_HALL, UMID_ENC_SINGLEEDGE, } umid_encoder_type_t;",
+      "enum_members": [
+        "UMID_ENC_QUADRATURE",
+        "UMID_ENC_HALL",
+        "UMID_ENC_SINGLEEDGE"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umid_fpga_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/fpga.h",
+      "declaration": "typedef struct { bool link_qualified; bool has_valid_data; uetd_time_us_t last_valid_message_at_us; } umid_fpga_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_gnss_data_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/gnss.h",
+      "declaration": "typedef struct { uetd_f64_t latitude_deg; uetd_f64_t longitude_deg; uetd_f32_t altitude_m; uetd_f32_t vel_north_mps; uetd_f32_t vel_east_mps; uetd_f32_t vel_down_mps; uetd_f32_t horiz_accuracy_m; uetd_f32_t vert_accuracy_m; uetd_u8_t n_sats; uetd_u8_t fix_type; uetd_u32_t tow_ms; uetd_u64_t timestamp_us; } umid_gnss_data_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_gnss_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/gnss.h",
+      "declaration": "typedef struct { upal_uart_t* uart; uetd_u8_t* parse_buf; uetd_u32_t parse_buf_size; void (*on_fix)(umid_gnss_data_t* data, void* ctx); void* on_fix_ctx; } umid_gnss_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_health_entry_t",
+      "kind": "struct",
+      "header": "include/umid/health.h",
+      "declaration": "typedef struct { const char* name; umid_health_status_t status; uetd_u32_t fault_code; uetd_u64_t last_update_us; } umid_health_entry_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_health_status_t",
+      "kind": "enum",
+      "header": "include/umid/health.h",
+      "declaration": "typedef enum { UMID_HEALTH_OK = 0, UMID_HEALTH_WARN = 1, UMID_HEALTH_FAULT = 2, UMID_HEALTH_FAIL = 3, } umid_health_status_t;",
+      "enum_members": [
+        "UMID_HEALTH_OK",
+        "UMID_HEALTH_WARN",
+        "UMID_HEALTH_FAULT",
+        "UMID_HEALTH_FAIL"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umid_imu_bus_t",
+      "kind": "enum",
+      "header": "include/umid/drivers/imu.h",
+      "declaration": "typedef enum { UMID_IMU_BUS_SPI, UMID_IMU_BUS_I2C, } umid_imu_bus_t;",
+      "enum_members": [
+        "UMID_IMU_BUS_SPI",
+        "UMID_IMU_BUS_I2C"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umid_imu_data_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/imu.h",
+      "declaration": "typedef struct { uetd_f32_t accel_x_mps2; uetd_f32_t accel_y_mps2; uetd_f32_t accel_z_mps2; uetd_f32_t gyro_x_rps; uetd_f32_t gyro_y_rps; uetd_f32_t gyro_z_rps; uetd_f32_t temp_degC; uetd_u64_t timestamp_us; } umid_imu_data_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_imu_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/imu.h",
+      "declaration": "typedef struct { umid_imu_bus_t bus_type; union { struct { upal_spi_t* spi; uhal_gpio_pin_t cs; } spi; struct { upal_i2c_t* i2c; uetd_u8_t addr; } i2c; } bus; uetd_f32_t accel_scale; uetd_f32_t gyro_scale; uetd_f32_t accel_bias[3]; uetd_f32_t gyro_bias[3]; uetd_f32_t gyro_misalignment[9]; uetd_u8_t* dma_buf; uetd_u32_t dma_buf_len; void (*on_data)(umid_imu_data_t* data, void* ctx); void* on_data_ctx; } umid_imu_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_log_level_t",
+      "kind": "enum",
+      "header": "include/umid/log.h",
+      "declaration": "typedef enum { UMID_LOG_DEBUG, UMID_LOG_INFO, UMID_LOG_WARN, UMID_LOG_ERROR, UMID_LOG_FATAL, } umid_log_level_t;",
+      "enum_members": [
+        "UMID_LOG_DEBUG",
+        "UMID_LOG_INFO",
+        "UMID_LOG_WARN",
+        "UMID_LOG_ERROR",
+        "UMID_LOG_FATAL"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umid_mag_data_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/magnetometer.h",
+      "declaration": "typedef struct { uetd_f32_t x_uT, y_uT, z_uT; uetd_u64_t timestamp_us; } umid_mag_data_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_magnetometer_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/magnetometer.h",
+      "declaration": "typedef struct { upal_i2c_t* i2c; uetd_u8_t addr; uetd_f32_t hard_iron[3]; uetd_f32_t soft_iron[9]; } umid_magnetometer_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_pressure_data_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/pressure.h",
+      "declaration": "typedef struct { uetd_f32_t pressure_pa; uetd_f32_t temperature_degC; uetd_u64_t timestamp_us; } umid_pressure_data_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_pressure_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/pressure.h",
+      "declaration": "typedef struct { upal_spi_t* spi; uhal_gpio_pin_t cs; uetd_u32_t calib[12]; } umid_pressure_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_process_authority_t",
+      "kind": "enum",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef enum { UMID_PROCESS_AUTHORITY_LOCAL_ONLY = 0, UMID_PROCESS_AUTHORITY_PEER_COMMAND, UMID_PROCESS_AUTHORITY_LOCAL_ARBITRATION, } umid_process_authority_t;",
+      "enum_members": [
+        "UMID_PROCESS_AUTHORITY_LOCAL_ONLY",
+        "UMID_PROCESS_AUTHORITY_PEER_COMMAND",
+        "UMID_PROCESS_AUTHORITY_LOCAL_ARBITRATION"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_command_semantics_t",
+      "kind": "enum",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef enum { UMID_PROCESS_COMMAND_LEVEL_HELD = 0, UMID_PROCESS_COMMAND_EDGE_TRIGGERED, } umid_process_command_semantics_t;",
+      "enum_members": [
+        "UMID_PROCESS_COMMAND_LEVEL_HELD",
+        "UMID_PROCESS_COMMAND_EDGE_TRIGGERED"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_direction_t",
+      "kind": "enum",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef enum { UMID_PROCESS_DIRECTION_INPUT = 0, UMID_PROCESS_DIRECTION_OUTPUT, UMID_PROCESS_DIRECTION_INPUT_OUTPUT, } umid_process_direction_t;",
+      "enum_members": [
+        "UMID_PROCESS_DIRECTION_INPUT",
+        "UMID_PROCESS_DIRECTION_OUTPUT",
+        "UMID_PROCESS_DIRECTION_INPUT_OUTPUT"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_image_config_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_u16_t maximum_points; uetd_u32_t maximum_payload_bytes; uetd_u32_t stale_after_ms; uetd_u32_t maximum_scan_commit_us; const umid_process_point_schema_t* point_schema; uetd_u16_t point_schema_count; } umid_process_image_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_point_schema_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_u16_t point_id; const char* data_type_id; const char* units_id; const char* owner_id; const char* timestamp_domain_id; umid_process_direction_t direction; umid_process_authority_t write_authority; umid_process_command_semantics_t command_semantics; uetd_u32_t update_period_ms; uetd_u32_t stale_after_ms; uetd_u32_t maximum_encoded_bytes; const uetd_u8_t* minimum_encoded_value; const uetd_u8_t* maximum_encoded_value; const uetd_u8_t* safe_encoded_value; bool requires_acknowledgement; } umid_process_point_schema_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_point_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_u16_t point_id; umid_process_direction_t direction; umid_process_quality_t quality; uetd_u64_t source_timestamp_us; uetd_u32_t payload_length; const uetd_u8_t* payload; } umid_process_point_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_quality_t",
+      "kind": "enum",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef enum { UMID_PROCESS_QUALITY_GOOD = 0, UMID_PROCESS_QUALITY_UNCERTAIN, UMID_PROCESS_QUALITY_BAD, UMID_PROCESS_QUALITY_STALE, } umid_process_quality_t;",
+      "enum_members": [
+        "UMID_PROCESS_QUALITY_GOOD",
+        "UMID_PROCESS_QUALITY_UNCERTAIN",
+        "UMID_PROCESS_QUALITY_BAD",
+        "UMID_PROCESS_QUALITY_STALE"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_process_scan_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_u32_t generation; uetd_u64_t committed_at_us; uetd_u16_t point_count; const umid_process_point_t* points; } umid_process_scan_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_range_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/range.h",
+      "declaration": "typedef struct { umid_range_type_t type; uetd_f32_t range_m; uetd_f32_t max_range_m; uetd_f32_t min_range_m; uetd_u64_t timestamp_us; } umid_range_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_range_type_t",
+      "kind": "enum",
+      "header": "include/umid/drivers/range.h",
+      "declaration": "typedef enum { UMID_RANGE_ULTRASONIC, UMID_RANGE_LIDAR_I2C, UMID_RANGE_TOF_SPI, } umid_range_type_t;",
+      "enum_members": [
+        "UMID_RANGE_ULTRASONIC",
+        "UMID_RANGE_LIDAR_I2C",
+        "UMID_RANGE_TOF_SPI"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umid_ringbuf_t",
+      "kind": "struct",
+      "header": "include/umid/ringbuf.h",
+      "declaration": "typedef struct { uetd_u8_t* buf; uetd_u32_t size; volatile uetd_u32_t head; volatile uetd_u32_t tail; } umid_ringbuf_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_store_backend_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { uetd_status_t (*begin_generation)(void* context, const umid_store_key_t* key, uetd_u32_t generation, uetd_u32_t total_length); uetd_status_t (*read)(void* context, const umid_store_key_t* key, uetd_u32_t offset, uetd_u8_t* data, uetd_u32_t length); uetd_status_t (*write)(void* context, const umid_store_key_t* key, uetd_u32_t generation, uetd_u32_t offset, const uetd_u8_t* data, uetd_u32_t length); uetd_status_t (*commit_generation)(void* context, const umid_store_key_t* key, uetd_u32_t generation, uetd_u32_t total_length, uetd_u32_t payload_crc32, const uetd_u8_t payload_sha256[32]); uetd_status_t (*abort_generation)(void* context, const umid_store_key_t* key, uetd_u32_t generation); void* context; uetd_u32_t maximum_record_bytes; uetd_u32_t required_alignment; uetd_u32_t atomic_commit_bytes; uetd_u32_t maximum_write_stall_us; } umid_store_backend_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_store_key_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { char bytes[UMID_STORE_KEY_CAPACITY]; uetd_u16_t length; } umid_store_key_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_store_record_kind_t",
+      "kind": "enum",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef enum { UMID_STORE_CONFIGURATION = 0, UMID_STORE_CALIBRATION, UMID_STORE_FAULT_SUMMARY, } umid_store_record_kind_t;",
+      "enum_members": [
+        "UMID_STORE_CONFIGURATION",
+        "UMID_STORE_CALIBRATION",
+        "UMID_STORE_FAULT_SUMMARY"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_store_record_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { char schema_id[UMID_STORE_SCHEMA_ID_CAPACITY]; uetd_u16_t schema_id_length; uetd_u16_t schema_version; umid_store_record_kind_t kind; char owner_id[UMID_STORE_OWNER_ID_CAPACITY]; uetd_u16_t owner_id_length; char target_id[UMID_STORE_TARGET_ID_CAPACITY]; uetd_u16_t target_id_length; char device_identity[UMID_STORE_DEVICE_ID_CAPACITY]; uetd_u16_t device_identity_length; char encoding_id[UMID_STORE_ENCODING_ID_CAPACITY]; uetd_u16_t encoding_id_length; uetd_u32_t sequence; uetd_u32_t payload_length; uetd_u8_t payload_sha256[32]; uetd_u32_t payload_crc32; const uetd_u8_t* payload; } umid_store_record_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_store_t",
+      "kind": "struct",
+      "header": "include/umid/future/data_services.h",
+      "declaration": "typedef struct { umid_store_backend_t backend; bool initialized; bool transaction_active; umid_store_key_t active_key; uetd_u32_t active_generation; } umid_store_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "umid_temp_type_t",
+      "kind": "enum",
+      "header": "include/umid/drivers/temperature.h",
+      "declaration": "typedef enum { UMID_TEMP_THERMOCOUPLE_K, UMID_TEMP_THERMOCOUPLE_J, UMID_TEMP_NTC, UMID_TEMP_PT100, UMID_TEMP_INTERNAL_MCU, } umid_temp_type_t;",
+      "enum_members": [
+        "UMID_TEMP_THERMOCOUPLE_K",
+        "UMID_TEMP_THERMOCOUPLE_J",
+        "UMID_TEMP_NTC",
+        "UMID_TEMP_PT100",
+        "UMID_TEMP_INTERNAL_MCU"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "umid_temperature_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/temperature.h",
+      "declaration": "typedef struct { umid_temp_type_t type; upal_spi_t* spi; uhal_gpio_pin_t cs; uetd_f32_t ntc_r25_ohm; uetd_f32_t ntc_beta; } umid_temperature_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "umid_voltage_t",
+      "kind": "struct",
+      "header": "include/umid/drivers/voltage.h",
+      "declaration": "typedef struct { upal_adc_t* adc; uetd_u8_t channel_index; uetd_f32_t divider_ratio; uetd_f32_t vref_v; } umid_voltage_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_dur_t",
+      "kind": "alias",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef uetd_u64_t uos_dur_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_event_t",
+      "kind": "struct",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef struct { UETD_ALIGNAS(UOS_STORAGE_ALIGN) uetd_u8_t storage[UOS_EVENT_STORAGE_BYTES]; } uos_event_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_mutex_t",
+      "kind": "struct",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef struct { UETD_ALIGNAS(UOS_STORAGE_ALIGN) uetd_u8_t storage[UOS_MUTEX_STORAGE_BYTES]; } uos_mutex_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_queue_t",
+      "kind": "struct",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef struct { UETD_ALIGNAS(UOS_STORAGE_ALIGN) uetd_u8_t storage[UOS_QUEUE_STORAGE_BYTES]; } uos_queue_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_sem_t",
+      "kind": "struct",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef struct { UETD_ALIGNAS(UOS_STORAGE_ALIGN) uetd_u8_t storage[UOS_SEM_STORAGE_BYTES]; } uos_sem_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_task_fn_t",
+      "kind": "function_pointer",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef void (*uos_task_fn_t)(void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "uos_task_t",
+      "kind": "struct",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef struct { UETD_ALIGNAS(UOS_STORAGE_ALIGN) uetd_u8_t storage[UOS_TASK_STORAGE_BYTES]; } uos_task_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uos_time_t",
+      "kind": "alias",
+      "header": "include/uos/uos.h",
+      "declaration": "typedef uetd_u64_t uos_time_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_adc_channel_cfg_t",
+      "kind": "struct",
+      "header": "include/upal/adc.h",
+      "declaration": "typedef struct { uetd_u8_t channel; uetd_u8_t rank; uetd_u8_t sampling_cycles; bool differential; } upal_adc_channel_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_adc_hw_t",
+      "kind": "struct",
+      "header": "include/upal/adc.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma; IRQn_Type irqn; uetd_u32_t dma_request; uetd_u32_t ext_trigger; uetd_u32_t ext_trigger_edge; } upal_adc_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_adc_t",
+      "kind": "struct",
+      "header": "include/upal/adc.h",
+      "declaration": "typedef struct { const upal_adc_hw_t* hw; const upal_adc_channel_cfg_t* channels; uetd_u8_t n_channels; uetd_u16_t* dma_buf; uetd_u32_t dma_buf_len; bool circular; upal_dma_callback_t callback; void* callback_ctx; volatile uetd_u32_t state; } upal_adc_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_can_cfg_t",
+      "kind": "struct",
+      "header": "include/upal/can.h",
+      "declaration": "typedef struct { uetd_u32_t nominal_baud; uetd_u32_t data_baud; bool fd_mode; bool loopback; bool silent; } upal_can_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_can_frame_t",
+      "kind": "struct",
+      "header": "include/upal/can.h",
+      "declaration": "typedef struct { uetd_u32_t id; bool extended; bool remote; bool fd; bool brs; uetd_u8_t dlc; uetd_u8_t data[64]; } upal_can_frame_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_can_hw_t",
+      "kind": "struct",
+      "header": "include/upal/can.h",
+      "declaration": "typedef struct { void* instance; IRQn_Type rx_irqn; IRQn_Type tx_irqn; IRQn_Type err_irqn; uhal_gpio_pin_t tx_pin, rx_pin; uetd_u8_t tx_af, rx_af; } upal_can_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_can_rx_cb_t",
+      "kind": "function_pointer",
+      "header": "include/upal/can.h",
+      "declaration": "typedef void (*upal_can_rx_cb_t)(const upal_can_frame_t* frame, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "upal_can_t",
+      "kind": "struct",
+      "header": "include/upal/can.h",
+      "declaration": "typedef struct { const upal_can_hw_t* hw; upal_can_cfg_t cfg; upal_can_rx_cb_t rx_cb; void* rx_ctx; volatile uetd_u32_t state; } upal_can_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_capture_delivery_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_CAPTURE_DELIVERY_QUEUE = 0, UPAL_CAPTURE_DELIVERY_DEFERRED_CALLBACK, UPAL_CAPTURE_DELIVERY_DMA_BLOCK, } upal_capture_delivery_t;",
+      "enum_members": [
+        "UPAL_CAPTURE_DELIVERY_QUEUE",
+        "UPAL_CAPTURE_DELIVERY_DEFERRED_CALLBACK",
+        "UPAL_CAPTURE_DELIVERY_DMA_BLOCK"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_capture_edge_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_CAPTURE_EDGE_RISING = 1u, UPAL_CAPTURE_EDGE_FALLING = 2u, UPAL_CAPTURE_EDGE_BOTH = 3u, } upal_capture_edge_t;",
+      "enum_members": [
+        "UPAL_CAPTURE_EDGE_RISING",
+        "UPAL_CAPTURE_EDGE_FALLING",
+        "UPAL_CAPTURE_EDGE_BOTH"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_capture_overflow_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_CAPTURE_OVERFLOW_DROP_NEWEST = 0, UPAL_CAPTURE_OVERFLOW_DROP_OLDEST, UPAL_CAPTURE_OVERFLOW_STOP, } upal_capture_overflow_t;",
+      "enum_members": [
+        "UPAL_CAPTURE_OVERFLOW_DROP_NEWEST",
+        "UPAL_CAPTURE_OVERFLOW_DROP_OLDEST",
+        "UPAL_CAPTURE_OVERFLOW_STOP"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_comp_cb_t",
+      "kind": "function_pointer",
+      "header": "include/upal/comp.h",
+      "declaration": "typedef void (*upal_comp_cb_t)(bool output_state, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "upal_comp_hw_t",
+      "kind": "struct",
+      "header": "include/upal/comp.h",
+      "declaration": "typedef struct { void* instance; IRQn_Type irqn; uhal_gpio_pin_t inp_pin; uhal_gpio_pin_t inn_pin; uhal_gpio_pin_t out_pin; uetd_u8_t out_af; } upal_comp_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_comp_inm_t",
+      "kind": "enum",
+      "header": "include/upal/comp.h",
+      "declaration": "typedef enum { UPAL_COMP_INM_VREF_1_4, UPAL_COMP_INM_VREF_1_2, UPAL_COMP_INM_VREF_3_4, UPAL_COMP_INM_VREF, UPAL_COMP_INM_DAC1_CH1, UPAL_COMP_INM_DAC1_CH2, UPAL_COMP_INM_PIN, } upal_comp_inm_t;",
+      "enum_members": [
+        "UPAL_COMP_INM_VREF_1_4",
+        "UPAL_COMP_INM_VREF_1_2",
+        "UPAL_COMP_INM_VREF_3_4",
+        "UPAL_COMP_INM_VREF",
+        "UPAL_COMP_INM_DAC1_CH1",
+        "UPAL_COMP_INM_DAC1_CH2",
+        "UPAL_COMP_INM_PIN"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_comp_t",
+      "kind": "struct",
+      "header": "include/upal/comp.h",
+      "declaration": "typedef struct { const upal_comp_hw_t* hw; upal_comp_inm_t inm; uetd_u32_t hysteresis; bool inverted_out; upal_comp_cb_t callback; void* ctx; } upal_comp_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_dac_hw_t",
+      "kind": "struct",
+      "header": "include/upal/dac.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma_ch1; upal_dma_t* dma_ch2; uetd_u32_t dma_request_ch1; uetd_u32_t dma_request_ch2; } upal_dac_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_dac_t",
+      "kind": "struct",
+      "header": "include/upal/dac.h",
+      "declaration": "typedef struct { const upal_dac_hw_t* hw; volatile uetd_u32_t state; } upal_dac_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_dma_callback_t",
+      "kind": "function_pointer",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef void (*upal_dma_callback_t)(upal_dma_event_t event, void* ctx);",
+      "enum_members": [],
+      "language_visibility": "function pointer; unavailable to UEF-PL",
+      "source_status": "public_header"
+    },
+    {
+      "c_name": "upal_dma_dir_t",
+      "kind": "enum",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef enum { UPAL_DMA_DIR_MEM_TO_PERIPH, UPAL_DMA_DIR_PERIPH_TO_MEM, UPAL_DMA_DIR_MEM_TO_MEM, } upal_dma_dir_t;",
+      "enum_members": [
+        "UPAL_DMA_DIR_MEM_TO_PERIPH",
+        "UPAL_DMA_DIR_PERIPH_TO_MEM",
+        "UPAL_DMA_DIR_MEM_TO_MEM"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_dma_event_t",
+      "kind": "enum",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef enum { UPAL_DMA_EVENT_COMPLETE, UPAL_DMA_EVENT_HALF_COMPLETE, UPAL_DMA_EVENT_ERROR_TRANSFER, UPAL_DMA_EVENT_ERROR_FIFO, } upal_dma_event_t;",
+      "enum_members": [
+        "UPAL_DMA_EVENT_COMPLETE",
+        "UPAL_DMA_EVENT_HALF_COMPLETE",
+        "UPAL_DMA_EVENT_ERROR_TRANSFER",
+        "UPAL_DMA_EVENT_ERROR_FIFO"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_dma_hw_t",
+      "kind": "struct",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef struct { void* controller; uetd_u8_t channel; uetd_u8_t request; IRQn_Type irqn; uetd_u8_t irq_priority; } upal_dma_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_dma_t",
+      "kind": "struct",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef struct { const upal_dma_hw_t* hw; upal_dma_callback_t callback; void* callback_ctx; volatile uetd_u32_t state; } upal_dma_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_dma_width_t",
+      "kind": "enum",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef enum { UPAL_DMA_WIDTH_BYTE = 0, UPAL_DMA_WIDTH_HALF = 1, UPAL_DMA_WIDTH_WORD = 2, } upal_dma_width_t;",
+      "enum_members": [
+        "UPAL_DMA_WIDTH_BYTE",
+        "UPAL_DMA_WIDTH_HALF",
+        "UPAL_DMA_WIDTH_WORD"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_dma_xfer_t",
+      "kind": "struct",
+      "header": "include/upal/dma.h",
+      "declaration": "typedef struct { upal_dma_dir_t direction; upal_dma_width_t data_width; bool circular; bool periph_increment; bool mem_increment; bool double_buffer; void* buf0; void* buf1; uetd_u32_t length; uetd_u32_t periph_addr; } upal_dma_xfer_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_ethernet_config_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { uetd_u16_t maximum_frame_bytes; uetd_u16_t rx_descriptor_count; uetd_u16_t tx_descriptor_count; uetd_u16_t cache_line_bytes; uetd_u8_t* rx_descriptor_storage; uetd_u8_t* tx_descriptor_storage; uetd_u16_t rx_buffer_bytes; uetd_u16_t tx_buffer_bytes; bool request_hardware_timestamps; } upal_ethernet_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_ethernet_t",
+      "kind": "alias",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct upal_ethernet upal_ethernet_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_fdcan_fd_config_t",
+      "kind": "struct",
+      "header": "include/upal/fdcan_fd.h",
+      "declaration": "typedef struct { void* instance; uetd_u32_t nominal_bitrate; uetd_u32_t data_bitrate; uetd_u16_t tx_element_count; uetd_u16_t rx_element_count; uetd_u8_t nominal_sample_point_percent; uetd_u8_t data_sample_point_percent; } upal_fdcan_fd_config_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_fdcan_fd_frame_t",
+      "kind": "struct",
+      "header": "include/upal/fdcan_fd.h",
+      "declaration": "typedef struct { uetd_u32_t identifier; uetd_u8_t data_length; bool extended_identifier; bool flexible_data_rate; bool bit_rate_switching; bool error_state_indicator; uetd_u8_t data[UPAL_FDCAN_FD_MAX_DATA_BYTES]; } upal_fdcan_fd_frame_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_fdcan_fd_t",
+      "kind": "struct",
+      "header": "include/upal/fdcan_fd.h",
+      "declaration": "typedef struct { void* instance; const upal_fdcan_fd_config_t* config; bool initialized; } upal_fdcan_fd_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_fmac_cfg_t",
+      "kind": "struct",
+      "header": "include/upal/fmac.h",
+      "declaration": "typedef struct { upal_fmac_func_t func; const uetd_q15_t* coefficients; uetd_u32_t n_coefficients; uetd_u32_t input_buf_size; uetd_u32_t output_buf_size; } upal_fmac_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_fmac_func_t",
+      "kind": "enum",
+      "header": "include/upal/fmac.h",
+      "declaration": "typedef enum { UPAL_FMAC_FIR, UPAL_FMAC_IIR } upal_fmac_func_t;",
+      "enum_members": [
+        "UPAL_FMAC_FIR",
+        "UPAL_FMAC_IIR"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_hrtim_hw_t",
+      "kind": "struct",
+      "header": "include/upal/hrtim.h",
+      "declaration": "typedef struct { void* instance; IRQn_Type master_irqn; IRQn_Type timer_irqns[5]; IRQn_Type fault_irqn; upal_dma_t* dma[5]; } upal_hrtim_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_hrtim_pwm_cfg_t",
+      "kind": "struct",
+      "header": "include/upal/hrtim.h",
+      "declaration": "typedef struct { upal_hrtim_timer_t timer; uhal_gpio_pin_t out1_pin, out2_pin; uetd_u8_t out1_af, out2_af; uetd_u32_t period_ns; uetd_u32_t dead_time_rise_ns; uetd_u32_t dead_time_fall_ns; bool blanking_enable; uetd_u32_t blanking_source; } upal_hrtim_pwm_cfg_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_hrtim_t",
+      "kind": "struct",
+      "header": "include/upal/hrtim.h",
+      "declaration": "typedef struct { const upal_hrtim_hw_t* hw; volatile uetd_u32_t state; } upal_hrtim_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_hrtim_timer_t",
+      "kind": "enum",
+      "header": "include/upal/hrtim.h",
+      "declaration": "typedef enum { UPAL_HRTIM_MASTER = 0, UPAL_HRTIM_TIMER_A, UPAL_HRTIM_TIMER_B, UPAL_HRTIM_TIMER_C, UPAL_HRTIM_TIMER_D, UPAL_HRTIM_TIMER_E, } upal_hrtim_timer_t;",
+      "enum_members": [
+        "UPAL_HRTIM_MASTER",
+        "UPAL_HRTIM_TIMER_A",
+        "UPAL_HRTIM_TIMER_B",
+        "UPAL_HRTIM_TIMER_C",
+        "UPAL_HRTIM_TIMER_D",
+        "UPAL_HRTIM_TIMER_E"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_i2c_hw_t",
+      "kind": "struct",
+      "header": "include/upal/i2c.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma_tx; upal_dma_t* dma_rx; IRQn_Type ev_irqn; IRQn_Type er_irqn; uhal_gpio_pin_t scl_pin, sda_pin; uetd_u8_t scl_af, sda_af; } upal_i2c_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_i2c_speed_t",
+      "kind": "enum",
+      "header": "include/upal/i2c.h",
+      "declaration": "typedef enum { UPAL_I2C_SPEED_STANDARD = 100000, UPAL_I2C_SPEED_FAST = 400000, UPAL_I2C_SPEED_FAST_PLUS = 1000000, } upal_i2c_speed_t;",
+      "enum_members": [
+        "UPAL_I2C_SPEED_STANDARD",
+        "UPAL_I2C_SPEED_FAST",
+        "UPAL_I2C_SPEED_FAST_PLUS"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_i2c_t",
+      "kind": "struct",
+      "header": "include/upal/i2c.h",
+      "declaration": "typedef struct { const upal_i2c_hw_t* hw; upal_i2c_speed_t speed; volatile uetd_u32_t state; } upal_i2c_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_opamp_hw_t",
+      "kind": "struct",
+      "header": "include/upal/opamp.h",
+      "declaration": "typedef struct { void* instance; uhal_gpio_pin_t inp_pin, inn_pin, out_pin; } upal_opamp_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_opamp_mode_t",
+      "kind": "enum",
+      "header": "include/upal/opamp.h",
+      "declaration": "typedef enum { UPAL_OPAMP_MODE_PGA, UPAL_OPAMP_MODE_FOLLOWER, UPAL_OPAMP_MODE_STANDALONE, } upal_opamp_mode_t;",
+      "enum_members": [
+        "UPAL_OPAMP_MODE_PGA",
+        "UPAL_OPAMP_MODE_FOLLOWER",
+        "UPAL_OPAMP_MODE_STANDALONE"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_opamp_t",
+      "kind": "struct",
+      "header": "include/upal/opamp.h",
+      "declaration": "typedef struct { const upal_opamp_hw_t* hw; upal_opamp_mode_t mode; uetd_u8_t pga_gain; } upal_opamp_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_qspi_hw_t",
+      "kind": "struct",
+      "header": "include/upal/qspi.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma; uetd_u32_t dma_request; uhal_gpio_pin_t clk_pin, ncs_pin; uhal_gpio_pin_t io0_pin, io1_pin, io2_pin, io3_pin; uetd_u8_t af; uetd_u32_t flash_size_bytes; uetd_u32_t max_clock_hz; } upal_qspi_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_qspi_t",
+      "kind": "struct",
+      "header": "include/upal/qspi.h",
+      "declaration": "typedef struct { const upal_qspi_hw_t* hw; volatile uetd_u32_t state; } upal_qspi_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_rtc_date_t",
+      "kind": "struct",
+      "header": "include/upal/rtc.h",
+      "declaration": "typedef struct { uetd_u8_t day, month; uetd_u16_t year; uetd_u8_t weekday; } upal_rtc_date_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_rtc_time_t",
+      "kind": "struct",
+      "header": "include/upal/rtc.h",
+      "declaration": "typedef struct { uetd_u8_t hours, minutes, seconds; uetd_u16_t subseconds; } upal_rtc_time_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_sdmmc_card_info_t",
+      "kind": "struct",
+      "header": "include/upal/sdmmc.h",
+      "declaration": "typedef struct { upal_sdmmc_card_type_t type; uetd_u32_t block_count; uetd_u32_t block_size; uetd_u32_t speed_hz; uetd_u8_t cid[16]; } upal_sdmmc_card_info_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_sdmmc_card_type_t",
+      "kind": "enum",
+      "header": "include/upal/sdmmc.h",
+      "declaration": "typedef enum { UPAL_SDMMC_CARD_NONE = 0, UPAL_SDMMC_CARD_SD_V1, UPAL_SDMMC_CARD_SD_V2_SC, UPAL_SDMMC_CARD_SD_V2_HC, UPAL_SDMMC_CARD_MMC, UPAL_SDMMC_CARD_EMMC, } upal_sdmmc_card_type_t;",
+      "enum_members": [
+        "UPAL_SDMMC_CARD_NONE",
+        "UPAL_SDMMC_CARD_SD_V1",
+        "UPAL_SDMMC_CARD_SD_V2_SC",
+        "UPAL_SDMMC_CARD_SD_V2_HC",
+        "UPAL_SDMMC_CARD_MMC",
+        "UPAL_SDMMC_CARD_EMMC"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_sdmmc_hw_t",
+      "kind": "struct",
+      "header": "include/upal/sdmmc.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma; uetd_u32_t dma_request; IRQn_Type irqn; uhal_gpio_pin_t clk_pin; uhal_gpio_pin_t cmd_pin; uhal_gpio_pin_t d0_pin; uhal_gpio_pin_t d1_pin; uhal_gpio_pin_t d2_pin; uhal_gpio_pin_t d3_pin; uetd_u8_t gpio_af; uhal_gpio_pin_t detect_pin; bool detect_active_low; } upal_sdmmc_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_sdmmc_t",
+      "kind": "struct",
+      "header": "include/upal/sdmmc.h",
+      "declaration": "typedef struct { const upal_sdmmc_hw_t* hw; uetd_u32_t clock_hz; upal_sdmmc_width_t bus_width; bool dma_enabled; upal_sdmmc_card_info_t card; volatile uetd_u32_t state; upal_dma_callback_t transfer_cb; void* transfer_ctx; } upal_sdmmc_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_sdmmc_width_t",
+      "kind": "enum",
+      "header": "include/upal/sdmmc.h",
+      "declaration": "typedef enum { UPAL_SDMMC_BUS_WIDTH_1 = 1, UPAL_SDMMC_BUS_WIDTH_4 = 4, } upal_sdmmc_width_t;",
+      "enum_members": [
+        "UPAL_SDMMC_BUS_WIDTH_1",
+        "UPAL_SDMMC_BUS_WIDTH_4"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_spi_hw_t",
+      "kind": "struct",
+      "header": "include/upal/spi.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma_tx; upal_dma_t* dma_rx; IRQn_Type irqn; uhal_gpio_pin_t sck_pin, mosi_pin, miso_pin; uetd_u8_t sck_af, mosi_af, miso_af; } upal_spi_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_spi_mode_t",
+      "kind": "enum",
+      "header": "include/upal/spi.h",
+      "declaration": "typedef enum { UPAL_SPI_MODE_0 = 0, UPAL_SPI_MODE_1 = 1, UPAL_SPI_MODE_2 = 2, UPAL_SPI_MODE_3 = 3, } upal_spi_mode_t;",
+      "enum_members": [
+        "UPAL_SPI_MODE_0",
+        "UPAL_SPI_MODE_1",
+        "UPAL_SPI_MODE_2",
+        "UPAL_SPI_MODE_3"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "upal_spi_t",
+      "kind": "struct",
+      "header": "include/upal/spi.h",
+      "declaration": "typedef struct { const upal_spi_hw_t* hw; uetd_u32_t clock_hz; upal_spi_mode_t mode; uetd_u8_t data_bits; bool msb_first; volatile uetd_u32_t state; } upal_spi_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_sync_event_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_SYNC_EVENT_UPDATE = 0, UPAL_SYNC_EVENT_COMPARE, UPAL_SYNC_EVENT_EXTERNAL_TRIGGER, } upal_sync_event_t;",
+      "enum_members": [
+        "UPAL_SYNC_EVENT_UPDATE",
+        "UPAL_SYNC_EVENT_COMPARE",
+        "UPAL_SYNC_EVENT_EXTERNAL_TRIGGER"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_sync_group_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { upal_sync_member_t* members; uetd_u8_t member_count; uetd_u8_t master_index; uetd_u32_t timer_clock_hz; upal_sync_event_t master_event; uetd_u32_t maximum_start_skew_ns; uetd_u32_t maximum_commit_skew_ns; bool rollback_on_partial_start; bool commit_preloaded_outputs_at_group_event; } upal_sync_group_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_sync_member_kind_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_SYNC_MEMBER_TIMER = 0, UPAL_SYNC_MEMBER_ADC, UPAL_SYNC_MEMBER_HRTIM, } upal_sync_member_kind_t;",
+      "enum_members": [
+        "UPAL_SYNC_MEMBER_TIMER",
+        "UPAL_SYNC_MEMBER_ADC",
+        "UPAL_SYNC_MEMBER_HRTIM"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_sync_member_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { upal_sync_member_kind_t kind; union { upal_timer_t* timer; upal_adc_t* adc; upal_hrtim_t* hrtim; } instance; uetd_u32_t trigger_route_id; uetd_s32_t phase_ticks; uetd_u8_t cohort_id; uetd_u16_t dma_frame_samples; void* caller_owned_dma_frame; } upal_sync_member_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_timer_capture_callback_t",
+      "kind": "function_pointer",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef void (*upal_timer_capture_callback_t)(const upal_timer_capture_event_t* event, void* context);",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_timer_capture_config_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { uetd_u8_t channel; upal_capture_edge_t edge; uetd_u8_t digital_filter; uetd_u64_t timer_tick_hz; uetd_u64_t maximum_unambiguous_interval_ticks; upal_capture_delivery_t delivery; upal_capture_overflow_t overflow; upal_timer_capture_event_t* event_storage; uetd_u16_t event_capacity; upal_timer_capture_callback_t callback; void* callback_context; uetd_u32_t* dma_tick_storage; uetd_u32_t dma_tick_capacity; } upal_timer_capture_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_timer_capture_event_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { uetd_u8_t channel; uetd_u8_t edge; uetd_u16_t flags; uetd_u32_t raw_counter; uetd_u64_t extended_ticks; uetd_u64_t captured_at_us; } upal_timer_capture_event_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_timer_hw_t",
+      "kind": "struct",
+      "header": "include/upal/timer.h",
+      "declaration": "typedef struct { void* instance; IRQn_Type up_irqn; IRQn_Type cc_irqn; upal_dma_t* dma_update; } upal_timer_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_timer_t",
+      "kind": "struct",
+      "header": "include/upal/timer.h",
+      "declaration": "typedef struct { const upal_timer_hw_t* hw; uetd_u32_t period; uetd_u32_t prescaler; volatile uetd_u32_t state; void (*on_update)(void* ctx); void* update_ctx; } upal_timer_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_uart_advanced_config_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { uetd_u8_t data_bits; upal_uart_parity_t parity; upal_uart_stop_bits_t stop_bits; upal_uart_flow_control_t flow_control; upal_uart_duplex_t duplex; bool invert_rx; bool invert_tx; uetd_u8_t oversampling; uetd_u32_t maximum_baud_error_ppm; bool rs485_de_enabled; uhal_gpio_pin_t de_pin; uetd_u8_t de_af; bool de_active_high; uetd_u32_t de_assert_delay_us; uetd_u32_t de_release_delay_us; upal_uart_de_release_t de_release_boundary; upal_uart_echo_policy_t echo_policy; uetd_u32_t turnaround_timeout_us; } upal_uart_advanced_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_de_release_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_UART_DE_RELEASE_AT_DMA_COMPLETE = 0, UPAL_UART_DE_RELEASE_AT_UART_COMPLETE, } upal_uart_de_release_t;",
+      "enum_members": [
+        "UPAL_UART_DE_RELEASE_AT_DMA_COMPLETE",
+        "UPAL_UART_DE_RELEASE_AT_UART_COMPLETE"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_duplex_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_UART_DUPLEX_FULL = 0, UPAL_UART_DUPLEX_HALF, } upal_uart_duplex_t;",
+      "enum_members": [
+        "UPAL_UART_DUPLEX_FULL",
+        "UPAL_UART_DUPLEX_HALF"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_echo_policy_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_UART_ECHO_IGNORE = 0, UPAL_UART_ECHO_EXPECT, UPAL_UART_ECHO_DISCARD, } upal_uart_echo_policy_t;",
+      "enum_members": [
+        "UPAL_UART_ECHO_IGNORE",
+        "UPAL_UART_ECHO_EXPECT",
+        "UPAL_UART_ECHO_DISCARD"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_flow_control_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_UART_FLOW_NONE = 0, UPAL_UART_FLOW_RTS_CTS, } upal_uart_flow_control_t;",
+      "enum_members": [
+        "UPAL_UART_FLOW_NONE",
+        "UPAL_UART_FLOW_RTS_CTS"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_hw_t",
+      "kind": "struct",
+      "header": "include/upal/uart.h",
+      "declaration": "typedef struct { void* instance; upal_dma_t* dma_tx; upal_dma_t* dma_rx; uetd_u32_t dma_tx_request; uetd_u32_t dma_rx_request; IRQn_Type irqn; uetd_u8_t irq_priority; uhal_gpio_pin_t tx_pin, rx_pin; uetd_u8_t tx_af, rx_af; } upal_uart_hw_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_uart_parity_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_UART_PARITY_NONE = 0, UPAL_UART_PARITY_EVEN, UPAL_UART_PARITY_ODD, } upal_uart_parity_t;",
+      "enum_members": [
+        "UPAL_UART_PARITY_NONE",
+        "UPAL_UART_PARITY_EVEN",
+        "UPAL_UART_PARITY_ODD"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_stop_bits_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_UART_STOP_1 = 1, UPAL_UART_STOP_2 = 2, } upal_uart_stop_bits_t;",
+      "enum_members": [
+        "UPAL_UART_STOP_1",
+        "UPAL_UART_STOP_2"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_t",
+      "kind": "struct",
+      "header": "include/upal/uart.h",
+      "declaration": "typedef struct { const upal_uart_hw_t* hw; uetd_u32_t baud; uetd_u8_t* rx_buf; uetd_u32_t rx_buf_size; volatile uetd_u32_t rx_head; upal_dma_callback_t tx_callback; void* tx_ctx; volatile uetd_u32_t state; } upal_uart_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "upal_uart_transfer_callback_t",
+      "kind": "function_pointer",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef void (*upal_uart_transfer_callback_t)(const upal_uart_transfer_result_t* result, void* context);",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_uart_transfer_result_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { uetd_status_t status; uetd_u32_t bytes_transferred; uetd_u32_t terminal_flags; uetd_u64_t completed_at_us; } upal_uart_transfer_result_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_usb_profile_config_t",
+      "kind": "struct",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct { upal_usb_profile_kind_t kind; uetd_u16_t vendor_id; uetd_u16_t product_id; uetd_u16_t max_packet_bytes; uetd_u16_t poll_interval_us; const char* manufacturer; const char* product; const char* serial_number; bool identity_is_project_owned; uetd_u8_t endpoint_count; uetd_u16_t endpoint_budget_bytes; uetd_u16_t report_bytes; } upal_usb_profile_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_usb_profile_kind_t",
+      "kind": "enum",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef enum { UPAL_USB_PROFILE_CDC_ACM = 0, UPAL_USB_PROFILE_HID, } upal_usb_profile_kind_t;",
+      "enum_members": [
+        "UPAL_USB_PROFILE_CDC_ACM",
+        "UPAL_USB_PROFILE_HID"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "upal_usb_t",
+      "kind": "alias",
+      "header": "include/upal/future/capability_contracts.h",
+      "declaration": "typedef struct upal_usb upal_usb_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_access_t",
+      "kind": "enum",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef enum { UPROTO_CANOPEN_OD_READ_ONLY = 0, UPROTO_CANOPEN_OD_WRITE_ONLY, UPROTO_CANOPEN_OD_READ_WRITE, UPROTO_CANOPEN_OD_CONSTANT, } uproto_canopen_access_t;",
+      "enum_members": [
+        "UPROTO_CANOPEN_OD_READ_ONLY",
+        "UPROTO_CANOPEN_OD_WRITE_ONLY",
+        "UPROTO_CANOPEN_OD_READ_WRITE",
+        "UPROTO_CANOPEN_OD_CONSTANT"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_config_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uetd_u8_t node_id; uetd_u8_t maximum_nodes; uetd_u16_t maximum_sdo_bytes; uetd_u16_t maximum_pending_sdo; uetd_u16_t heartbeat_producer_ms; uetd_u16_t heartbeat_consumer_timeout_ms; uetd_u32_t sync_period_us; uetd_u8_t pdo_count; uetd_u8_t maximum_pdo_bytes; const uproto_canopen_object_t* object_dictionary; uetd_u16_t object_count; } uproto_canopen_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_event_kind_t",
+      "kind": "enum",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef enum { UPROTO_CANOPEN_EVENT_NMT = 0, UPROTO_CANOPEN_EVENT_BOOTUP, UPROTO_CANOPEN_EVENT_HEARTBEAT_TIMEOUT, UPROTO_CANOPEN_EVENT_PDO, UPROTO_CANOPEN_EVENT_SDO_COMPLETE, UPROTO_CANOPEN_EVENT_SDO_ABORT, UPROTO_CANOPEN_EVENT_EMCY, UPROTO_CANOPEN_EVENT_SYNC, } uproto_canopen_event_kind_t;",
+      "enum_members": [
+        "UPROTO_CANOPEN_EVENT_NMT",
+        "UPROTO_CANOPEN_EVENT_BOOTUP",
+        "UPROTO_CANOPEN_EVENT_HEARTBEAT_TIMEOUT",
+        "UPROTO_CANOPEN_EVENT_PDO",
+        "UPROTO_CANOPEN_EVENT_SDO_COMPLETE",
+        "UPROTO_CANOPEN_EVENT_SDO_ABORT",
+        "UPROTO_CANOPEN_EVENT_EMCY",
+        "UPROTO_CANOPEN_EVENT_SYNC"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_event_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uproto_canopen_event_kind_t kind; uetd_u8_t node_id; uetd_u8_t flags; uetd_u16_t index; uetd_u8_t subindex; uetd_u8_t data_length; uetd_u8_t data[8]; uetd_u64_t timestamp_us; } uproto_canopen_event_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_nmt_state_t",
+      "kind": "enum",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef enum { UPROTO_CANOPEN_NMT_INITIALIZING = 0, UPROTO_CANOPEN_NMT_PRE_OPERATIONAL, UPROTO_CANOPEN_NMT_OPERATIONAL, UPROTO_CANOPEN_NMT_STOPPED, } uproto_canopen_nmt_state_t;",
+      "enum_members": [
+        "UPROTO_CANOPEN_NMT_INITIALIZING",
+        "UPROTO_CANOPEN_NMT_PRE_OPERATIONAL",
+        "UPROTO_CANOPEN_NMT_OPERATIONAL",
+        "UPROTO_CANOPEN_NMT_STOPPED"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_object_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uetd_u16_t index; uetd_u8_t subindex; uetd_u8_t type_id; uproto_canopen_access_t access; uetd_u16_t process_point_id; uetd_u16_t maximum_bytes; } uproto_canopen_object_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_sdo_transaction_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uetd_u16_t index; uetd_u8_t subindex; uetd_u8_t node_id; bool write; uetd_u64_t deadline_us; uetd_u16_t length; uetd_u8_t bytes[256]; } uproto_canopen_sdo_transaction_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_canopen_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uproto_canopen_config_t config; uproto_canopen_nmt_state_t node_states[UPROTO_CANOPEN_NODE_CAPACITY]; uetd_u64_t heartbeat_deadlines_us[UPROTO_CANOPEN_NODE_CAPACITY]; uproto_canopen_sdo_transaction_t sdo[UPROTO_CANOPEN_SDO_CAPACITY]; uproto_canopen_event_t events[UPROTO_CANOPEN_EVENT_CAPACITY]; uetd_u8_t event_read_index; uetd_u8_t event_write_index; uetd_u32_t dropped_events; } uproto_canopen_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_crsf_rc_t",
+      "kind": "struct",
+      "header": "include/uproto/crsf.h",
+      "declaration": "typedef struct { uetd_i32_t channels[UPROTO_CRSF_MAX_CHANNELS]; uetd_i16_t rssi_dbm; uetd_u8_t link_quality; uetd_u8_t snr_db; uetd_u8_t active_antenna; uetd_u8_t rf_mode; uetd_u8_t tx_power; } uproto_crsf_rc_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_crsf_t",
+      "kind": "struct",
+      "header": "include/uproto/crsf.h",
+      "declaration": "typedef struct { upal_uart_t* uart; umid_ringbuf_t rx_ring; uetd_u8_t rx_ring_buf[256]; uproto_crsf_rc_t last_rc; uetd_u64_t last_rx_us; uetd_u32_t frame_count; uetd_u32_t error_count; } uproto_crsf_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_dshot_rate_t",
+      "kind": "enum",
+      "header": "include/uproto/dshot.h",
+      "declaration": "typedef enum { UPROTO_DSHOT150 = 150, UPROTO_DSHOT300 = 300, UPROTO_DSHOT600 = 600, UPROTO_DSHOT1200 = 1200, } uproto_dshot_rate_t;",
+      "enum_members": [
+        "UPROTO_DSHOT150",
+        "UPROTO_DSHOT300",
+        "UPROTO_DSHOT600",
+        "UPROTO_DSHOT1200"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uproto_dshot_t",
+      "kind": "struct",
+      "header": "include/uproto/dshot.h",
+      "declaration": "typedef struct { uproto_dshot_rate_t rate; uproto_dshot_transport_t transport; union { struct { upal_timer_t* timer; uetd_u8_t channel; } timer; struct { upal_uart_t* uart; } uart; }; uetd_u16_t symbol_buf[18]; } uproto_dshot_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_dshot_transport_t",
+      "kind": "enum",
+      "header": "include/uproto/dshot.h",
+      "declaration": "typedef enum { UPROTO_DSHOT_TRANSPORT_TIMER, UPROTO_DSHOT_TRANSPORT_UART, } uproto_dshot_transport_t;",
+      "enum_members": [
+        "UPROTO_DSHOT_TRANSPORT_TIMER",
+        "UPROTO_DSHOT_TRANSPORT_UART"
+      ],
+      "language_visibility": "registered enum; enumerators are available by qualified name",
+      "source_status": "public_header",
+      "language_contract": "enum"
+    },
+    {
+      "c_name": "uproto_future_call_t",
+      "kind": "struct",
+      "header": "include/uproto/future/scaffold_call.h",
+      "declaration": "typedef struct { void* instance; const void* config; const void* input; uetd_u32_t input_size; void* output; uetd_u32_t output_capacity; uetd_u32_t output_size; void* transport_context; } uproto_future_call_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_mavlink_t",
+      "kind": "struct",
+      "header": "include/uproto/mavlink.h",
+      "declaration": "typedef struct { uproto_stream_t transport; uetd_u8_t sys_id; uetd_u8_t comp_id; uetd_u8_t target_sys; uetd_u8_t target_comp; uetd_u32_t seq; uetd_u8_t rx_buf[280]; uetd_u32_t rx_pos; } uproto_mavlink_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_modbus_config_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uproto_modbus_transport_t transport; uproto_modbus_role_t role; uetd_u8_t unit_id; uetd_u16_t maximum_pdu_bytes; uetd_u16_t maximum_adu_bytes; uetd_u8_t maximum_connections; uetd_u8_t maximum_outstanding_transactions; uetd_u32_t request_timeout_ms; uetd_u32_t inter_byte_timeout_us; uetd_u32_t silent_interval_us; const uproto_modbus_mapping_t* mapping; uetd_u16_t mapping_count; } uproto_modbus_config_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_event_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uetd_u16_t transaction_id; uetd_u8_t function_code; uetd_u8_t exception_code; uetd_u16_t payload_length; uetd_u8_t payload[253]; uetd_u32_t flags; } uproto_modbus_event_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_function_t",
+      "kind": "enum",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef enum { UPROTO_MODBUS_FC_READ_COILS = 1, UPROTO_MODBUS_FC_READ_DISCRETE_INPUTS = 2, UPROTO_MODBUS_FC_READ_HOLDING_REGISTERS = 3, UPROTO_MODBUS_FC_READ_INPUT_REGISTERS = 4, UPROTO_MODBUS_FC_WRITE_SINGLE_COIL = 5, UPROTO_MODBUS_FC_WRITE_SINGLE_REGISTER = 6, UPROTO_MODBUS_FC_WRITE_MULTIPLE_COILS = 15, UPROTO_MODBUS_FC_WRITE_MULTIPLE_REGISTERS = 16, } uproto_modbus_function_t;",
+      "enum_members": [
+        "UPROTO_MODBUS_FC_READ_COILS",
+        "UPROTO_MODBUS_FC_READ_DISCRETE_INPUTS",
+        "UPROTO_MODBUS_FC_READ_HOLDING_REGISTERS",
+        "UPROTO_MODBUS_FC_READ_INPUT_REGISTERS",
+        "UPROTO_MODBUS_FC_WRITE_SINGLE_COIL",
+        "UPROTO_MODBUS_FC_WRITE_SINGLE_REGISTER",
+        "UPROTO_MODBUS_FC_WRITE_MULTIPLE_COILS",
+        "UPROTO_MODBUS_FC_WRITE_MULTIPLE_REGISTERS"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_mapping_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uetd_u16_t first_address; uetd_u16_t quantity; uetd_u16_t process_point_id; uetd_u8_t function_code; bool writable; } uproto_modbus_mapping_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_role_t",
+      "kind": "enum",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef enum { UPROTO_MODBUS_CLIENT = 0, UPROTO_MODBUS_SERVER, } uproto_modbus_role_t;",
+      "enum_members": [
+        "UPROTO_MODBUS_CLIENT",
+        "UPROTO_MODBUS_SERVER"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uproto_modbus_config_t config; uetd_u8_t rx_bytes[UPROTO_MODBUS_RX_CAPACITY]; uetd_u16_t rx_length; uetd_u64_t last_byte_at_us; uetd_u16_t next_transaction_id; uproto_modbus_transaction_t transactions[UPROTO_MODBUS_TRANSACTION_CAPACITY]; uproto_modbus_event_t events[UPROTO_MODBUS_EVENT_CAPACITY]; uetd_u8_t event_read_index; uetd_u8_t event_write_index; uetd_u32_t dropped_events; } uproto_modbus_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_transaction_t",
+      "kind": "struct",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef struct { uetd_u16_t transaction_id; uetd_u8_t function_code; bool active; uetd_u64_t deadline_us; } uproto_modbus_transaction_t;",
+      "enum_members": [],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_modbus_transport_t",
+      "kind": "enum",
+      "header": "include/uproto/future/industrial_contracts.h",
+      "declaration": "typedef enum { UPROTO_MODBUS_RTU = 0, UPROTO_MODBUS_TCP, } uproto_modbus_transport_t;",
+      "enum_members": [
+        "UPROTO_MODBUS_RTU",
+        "UPROTO_MODBUS_TCP"
+      ],
+      "language_visibility": "future-only type; unavailable to UEF-PL",
+      "source_status": "future_header"
+    },
+    {
+      "c_name": "uproto_ppm_config_t",
+      "kind": "struct",
+      "header": "include/uproto/ppm.h",
+      "declaration": "typedef struct { uetd_u16_t min_pulse_us; uetd_u16_t max_pulse_us; uetd_u16_t sync_gap_us; uetd_u8_t min_channels; uetd_u8_t max_channels; } uproto_ppm_config_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_ppm_frame_t",
+      "kind": "struct",
+      "header": "include/uproto/ppm.h",
+      "declaration": "typedef struct { uetd_u16_t channels_us[UPROTO_PPM_MAX_CHANNELS]; uetd_u8_t channel_count; uetd_u32_t sequence; uetd_u64_t timestamp_us; } uproto_ppm_frame_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_ppm_t",
+      "kind": "struct",
+      "header": "include/uproto/ppm.h",
+      "declaration": "typedef struct { uproto_ppm_config_t config; uetd_u16_t working_channels_us[UPROTO_PPM_MAX_CHANNELS]; uetd_u8_t working_count; bool synchronized; bool frame_available; uproto_ppm_frame_t latest_frame; } uproto_ppm_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_sbus_frame_t",
+      "kind": "struct",
+      "header": "include/uproto/sbus.h",
+      "declaration": "typedef struct { uetd_u16_t channels[UPROTO_SBUS_CHANNELS]; bool failsafe; bool frame_lost; uetd_u64_t timestamp_us; } uproto_sbus_frame_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_sbus_t",
+      "kind": "struct",
+      "header": "include/uproto/sbus.h",
+      "declaration": "typedef struct { upal_uart_t* uart; uetd_u8_t rx_buf[25]; uetd_u8_t rx_pos; uproto_sbus_frame_t last_frame; } uproto_sbus_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_stream_t",
+      "kind": "struct",
+      "header": "include/uproto/uproto.h",
+      "declaration": "typedef struct { uetd_status_t (*write)(const uetd_u8_t* data, uetd_u32_t len, void* ctx); uetd_u32_t (*read)(uetd_u8_t* buf, uetd_u32_t max_len, void* ctx); void* ctx; } uproto_stream_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_uavcan_t",
+      "kind": "struct",
+      "header": "include/uproto/uavcan.h",
+      "declaration": "typedef struct { upal_can_t* can; uetd_u8_t node_id; uetd_u64_t tx_timestamp_us; void* canard_instance; } uproto_uavcan_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    },
+    {
+      "c_name": "uproto_waveform_t",
+      "kind": "struct",
+      "header": "include/uproto/uproto.h",
+      "declaration": "typedef struct { uetd_status_t (*output)(const uetd_u16_t* symbols, uetd_u32_t count, void* ctx); void* ctx; } uproto_waveform_t;",
+      "enum_members": [],
+      "language_visibility": "registered opaque type; C fields and constructors are not exposed",
+      "source_status": "public_header",
+      "language_contract": "opaque"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/upal/hrtim/hrtim.c"
+  ],
+  "dependencies": [
+    "uhal",
+    "upal/timer"
+  ],
+  "requires_cap": [
+    "hrtim"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/upal/dma.h",
+    "include/upal/hrtim.h"
+  ]
+}

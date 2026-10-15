@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uetd/registry/targets/development_boards/registry.schema.json",
+  "title": "UETD development-board registry index",
+  "type": "object",
+  "required": ["schema_version", "catalogue_kind", "canonical_owner", "entries"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "catalogue_kind": { "const": "uetd_development_boards" },
+    "canonical_owner": { "const": "UETD" },
+    "description": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "path": { "type": "string", "pattern": "^registry/targets/development_boards/manifest/[a-z0-9-]+/[a-z0-9-]+\\.json$" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

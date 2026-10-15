@@ -1,0 +1,24 @@
+{
+  "id": "nucleo-h745zi-q",
+  "name": "ST NUCLEO-H745ZI-Q",
+  "aliases": [],
+  "chip_id": "stm32h745zit6",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "ST NUCLEO-H745ZI-Q data brief",
+      "url": "https://www.st.com/resource/en/data_brief/NUCLEO-H745ZI.pdf"
+    },
+    {
+      "title": "ST NUCLEO-H745ZI-Q product page",
+      "url": "https://www.st.com/en/evaluation-tools/nucleo-h745zi-q.html"
+    },
+    {
+      "title": "ST MB1363 board user manual",
+      "url": "https://www.st.com/resource/en/user_manual/dm00499171-stm32h7-nucleo144-boards-mb1363-stmicroelectronics.pdf"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "ST identifies STM32H745ZIT6, LQFP144 and STLINK-V3E on board MB1363. ST currently marks this board out of production. Board revision, clocks, pin reservations, dual-core startup, build profile, and flash profile are not yet encoded."
+}

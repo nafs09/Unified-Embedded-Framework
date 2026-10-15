@@ -1,0 +1,59 @@
+{
+  "id": "tms320f28388dptpsr",
+  "vendor": "Texas Instruments",
+  "family_id": "c2000-delfino",
+  "series": "C2000 Delfino",
+  "part_number": "TMS320F28388DPTPSR",
+  "aliases": [
+    "TMS320F28388D"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Dual C28x + Cortex-M4",
+    "isa": "TI C28x + Armv7E-M",
+    "count": 3,
+    "fpu": "single",
+    "max_frequency_hz": 200000000
+  },
+  "package": {
+    "name": "HLQFP176",
+    "pin_count": 176
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 208896
+  },
+  "peripheral_groups": [
+    "DMA",
+    "CLA",
+    "ADC",
+    "ePWM",
+    "CAN-FD",
+    "Ethernet",
+    "USB",
+    "EMIF",
+    "SPI",
+    "I2C",
+    "SCI"
+  ],
+  "source_references": [
+    {
+      "title": "TI TMS320F28388D product page",
+      "url": "https://www.ti.com/product/TMS320F28388D"
+    },
+    {
+      "title": "TI TMS320F28388D data sheet",
+      "url": "https://www.ti.com/lit/ds/symlink/tms320f28388s.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core_count",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Heterogeneous control SoC: two C28x cores and one Cortex-M4 subsystem. A full target map must describe independent images, boot and shared-memory ownership."
+}

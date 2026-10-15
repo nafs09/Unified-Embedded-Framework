@@ -1,0 +1,11 @@
+{
+  "id": "jlink",
+  "name": "SEGGER J-Link software and command-line tools",
+  "purpose": "debugger",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["JLinkExe", "JLinkGDBServerCLExe"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: record SEGGER distribution links, accepted license/registration steps, executable names by host, probe driver requirements, and supported unattended installation policy."
+}

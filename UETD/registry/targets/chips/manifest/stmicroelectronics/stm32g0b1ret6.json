@@ -1,0 +1,59 @@
+{
+  "id": "stm32g0b1ret6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-g0",
+  "series": "STM32G0",
+  "part_number": "STM32G0B1RET6",
+  "aliases": [
+    "STM32G0B1RE"
+  ],
+  "roadmap_phase": 0,
+  "core": {
+    "name": "Cortex-M0+",
+    "isa": "Armv6-M",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 64000000
+  },
+  "package": {
+    "name": "LQFP64",
+    "pin_count": 64
+  },
+  "memory": {
+    "flash_bytes": 524288,
+    "sram_bytes": 147456,
+    "notes": "512 KiB flash and 144 KiB SRAM; parity layout comes from the reference manual."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "DMAMUX",
+    "FDCAN",
+    "USB",
+    "ADC",
+    "DAC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32G0B1RE product/package page",
+      "url": "https://estore.st.com/en/products/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus/stm32-mainstream-mcus/stm32g0-series/stm32g0x1/stm32g0b1re.html"
+    },
+    {
+      "title": "ST STM32G0B1 datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32g0b1re.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 0 M0+ representative; exact peripheral and DMA routing are not encoded."
+}

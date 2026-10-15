@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "src/umid/ringbuf.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/uhal/atomic.h",
+    "include/umid/ringbuf.h"
+  ]
+}

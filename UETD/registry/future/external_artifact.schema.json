@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/external-artifact-1.0.schema.json",
+  "title": "UETD external hardware artifact provenance",
+  "type": "object",
+  "required": ["endpoint_id", "kind", "contract_id", "contract_version", "build_owner", "interface", "artifact"],
+  "properties": {
+    "endpoint_id": { "type": "string", "minLength": 1 },
+    "kind": { "enum": ["fpga", "plc", "external_peer"] },
+    "contract_id": { "type": "string", "minLength": 1 },
+    "contract_version": { "type": "string", "minLength": 1 },
+    "build_owner": { "enum": ["consumer", "uetd_adapter", "vendor"] },
+    "interface": {
+      "type": "object",
+      "required": ["schema_id", "schema_version", "transport_id", "role", "direction"],
+      "properties": {
+        "schema_id": { "type": "string", "minLength": 1 },
+        "schema_version": { "type": "string", "minLength": 1 },
+        "transport_id": { "type": "string", "minLength": 1 },
+        "role": { "enum": ["fpga_endpoint", "plc_endpoint", "sensor_peer", "actuator_peer", "custom_peer"] },
+        "direction": { "enum": ["inbound", "outbound", "bidirectional"] },
+        "maximum_rate_hz": { "type": "number", "exclusiveMinimum": 0 },
+        "maximum_latency_us": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "source_repository": { "type": "string" },
+    "source_revision": { "type": "string" },
+    "source_tree_sha256": { "$ref": "#/$defs/sha256" },
+    "part_id": { "type": "string" },
+    "toolchain_id": { "type": "string" },
+    "toolchain_version": { "type": "string" },
+    "constraints_sha256": { "$ref": "#/$defs/sha256" },
+    "clock_domains": { "type": "array", "items": { "type": "object", "required": ["id", "frequency_hz"], "properties": { "id": { "type": "string" }, "frequency_hz": { "type": "number", "exclusiveMinimum": 0 }, "source": { "type": "string" } }, "additionalProperties": false } },
+    "reset_sequence": { "type": "array", "items": { "type": "object", "required": ["step", "maximum_delay_us"], "properties": { "step": { "type": "string", "minLength": 1 }, "maximum_delay_us": { "type": "integer", "minimum": 0 }, "dependency": { "type": "string" } }, "additionalProperties": false } },
+    "electrical_interfaces": { "type": "array", "items": { "type": "object", "required": ["signal_group", "voltage_min_v", "voltage_max_v", "io_standard"], "properties": { "signal_group": { "type": "string", "minLength": 1 }, "voltage_min_v": { "type": "number" }, "voltage_max_v": { "type": "number" }, "io_standard": { "type": "string", "minLength": 1 }, "pin_constraints_sha256": { "$ref": "#/$defs/sha256" } }, "additionalProperties": false } },
+    "artifact": { "type": "object", "required": ["path", "sha256", "size_bytes"], "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha256" }, "size_bytes": { "type": "integer", "minimum": 1 }, "format": { "type": "string" } }, "additionalProperties": false },
+    "evidence_ids": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" } },
+  "additionalProperties": false
+}

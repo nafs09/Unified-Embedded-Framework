@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/umath/matrix/cholesky.c"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/umath/matrix/cholesky.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core",
+    "umath/matrix/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "src/upal/flash/flash.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/upal/flash.h"
+  ]
+}

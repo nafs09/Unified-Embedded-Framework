@@ -1,0 +1,12 @@
+{
+  "name": "FreeRTOS-Kernel",
+  "version": "11.3.1",
+  "repository": "https://github.com/FreeRTOS/FreeRTOS-Kernel.git",
+  "tag": "V11.3.1",
+  "revision": "3a22924e0a9ddbbc8b0758881c33b3422a5cc20d",
+  "license": "MIT",
+  "license_files": [
+    "LICENSE.md"
+  ],
+  "local_copy_verification": "The local manifest reports V11.3.1. The copied files have not been checksum-compared with the upstream tag."
+}

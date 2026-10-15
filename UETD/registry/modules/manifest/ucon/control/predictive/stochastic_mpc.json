@@ -1,0 +1,31 @@
+{
+  "sources": [
+    "src/ucon/control/predictive/stochastic_mpc.c"
+  ],
+  "headers": [
+    "include/ucon/control/predictive/stochastic_mpc.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "STOCHASTIC_MPC",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "Stochastic MPC is included for uncertainty-aware predictive-control studies.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_stochastic_mpc_validate_problem",
+    "ucon_stochastic_mpc_init",
+    "ucon_stochastic_mpc_reset",
+    "ucon_stochastic_mpc_prepare_problem",
+    "ucon_stochastic_mpc_solve_problem",
+    "ucon_stochastic_mpc_verify_solution",
+    "ucon_stochastic_mpc_step"
+  ],
+  "project_relevance": [
+    "qcwdrsstc"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

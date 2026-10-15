@@ -1,0 +1,38 @@
+{
+  "id": "stm32h755zit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-h7",
+  "series": "STM32H7",
+  "part_number": "STM32H755ZIT6",
+  "aliases": ["STM32H755ZI"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M7 + Cortex-M4",
+    "isa": "Armv7E-M",
+    "word_bits": 32,
+    "count": 2,
+    "fpu": "M7 double; M4 single",
+    "max_frequency_hz": 480000000,
+    "core_frequencies_hz": { "Cortex-M7": 480000000, "Cortex-M4": 240000000 }
+  },
+  "package": { "name": "LQFP144", "pin_count": 144 },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 1048576,
+    "notes": "2 MiB dual-bank flash and up to 1 MiB RAM; exact core/shared memory map is not encoded."
+  },
+  "peripheral_groups": ["BDMA", "DMA", "MDMA", "SDMMC", "FDCAN", "USB", "ETHERNET_MAC", "ADC", "DAC", "HRTIM", "QSPI", "FMC", "TIM", "USART", "SPI", "I2C"],
+  "source_references": [
+    {
+      "title": "ST STM32H755ZI product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h755zi.html"
+    },
+    {
+      "title": "ST STM32H755xI datasheet",
+      "url": "https://www.st.com/resource/en/datasheet/stm32h755zi.pdf"
+    }
+  ],
+  "source_verified_fields": ["identity", "core", "frequency", "package", "flash", "SRAM"],
+  "generation_available": false,
+  "record_note": "Dual-core H7 representative used on the active NUCLEO-H755ZI-Q. Define boot, shared-memory and interrupt ownership before target registration."
+}

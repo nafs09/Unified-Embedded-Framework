@@ -1,0 +1,55 @@
+name: Feature or design proposal
+description: Propose a behavior, API, tool, or workflow change.
+title: "[Proposal]: "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        For new public APIs, protocols, targets, serialized formats, or changes
+        crossing UETD and uef-gen, discuss the design before implementation.
+  - type: checkboxes
+    id: prior-search
+    attributes:
+      label: Existing proposal search
+      options:
+        - label: I searched existing issues and project documentation.
+          required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      options:
+        - UETD
+        - uef-gen
+        - UETD and uef-gen integration
+        - Documentation or examples
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the user or engineering problem, not only the proposed implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Include API, CLI, generated output, or runtime behavior as applicable.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Constraints and compatibility
+      description: Include memory, timing, concurrency, safety, schema/API compatibility, and target constraints.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and evidence
+      description: Link relevant references or explain alternatives considered.
+    validations:
+      required: false

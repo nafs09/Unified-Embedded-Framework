@@ -1,0 +1,11 @@
+{
+  "id": "arm-none-eabi",
+  "name": "Arm GNU bare-metal toolchain",
+  "purpose": "compiler",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["arm-none-eabi-gcc", "arm-none-eabi-g++", "arm-none-eabi-as", "arm-none-eabi-objcopy", "arm-none-eabi-size"],
+  "packages": [],
+  "dependencies": ["cmake", "ninja"],
+  "record_note": "TODO: select and verify exact bare-metal release assets per host, executable paths, archive layout, upstream hashes, and supported Cortex-M compiler profiles."
+}

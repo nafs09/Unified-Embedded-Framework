@@ -1,0 +1,396 @@
+{
+  "schema_version": "1.0",
+  "source_of_truth": "UETD project-language unit catalogue",
+  "base_dimensions": [
+    "length",
+    "mass",
+    "time",
+    "current",
+    "temperature",
+    "amount",
+    "luminous_intensity",
+    "angle",
+    "count",
+    "information",
+    "symbol"
+  ],
+  "unit_expression_rules": {
+    "product": "dimension exponents add and exact scales multiply",
+    "quotient": "dimension exponents subtract and exact scales divide",
+    "power": "integer exponents multiply dimension exponents and raise exact scales",
+    "affine": "affine units such as degC may appear only as standalone temperature values; absolute + absolute and affine products are invalid; subtracting absolute temperatures yields a temperature difference",
+    "conversion": "explicit convert_unit<TARGET_UNIT>(value) applies source/target scales and offsets, checks finite/range policy, and never changes the underlying scalar representation implicitly",
+    "runtime_conversion": "must be explicit; implicit conversions are errors",
+    "literal_conversion": "may be folded at compile time from exact decimal or rational-times-pi scales"
+  },
+  "units": {
+    "m": {
+      "symbol": "m",
+      "dimension": {
+        "length": 1
+      },
+      "scale_to_si": "1"
+    },
+    "mm": {
+      "symbol": "mm",
+      "dimension": {
+        "length": 1
+      },
+      "scale_to_si": "0.001"
+    },
+    "cm": {
+      "symbol": "cm",
+      "dimension": {
+        "length": 1
+      },
+      "scale_to_si": "0.01"
+    },
+    "km": {
+      "symbol": "km",
+      "dimension": {
+        "length": 1
+      },
+      "scale_to_si": "1000"
+    },
+    "kg": {
+      "symbol": "kg",
+      "dimension": {
+        "mass": 1
+      },
+      "scale_to_si": "1"
+    },
+    "g": {
+      "symbol": "g",
+      "dimension": {
+        "mass": 1
+      },
+      "scale_to_si": "0.001"
+    },
+    "s": {
+      "symbol": "s",
+      "dimension": {
+        "time": 1
+      },
+      "scale_to_si": "1"
+    },
+    "ms": {
+      "symbol": "ms",
+      "dimension": {
+        "time": 1
+      },
+      "scale_to_si": "0.001"
+    },
+    "us": {
+      "symbol": "us",
+      "dimension": {
+        "time": 1
+      },
+      "scale_to_si": "0.000001"
+    },
+    "ns": {
+      "symbol": "ns",
+      "dimension": {
+        "time": 1
+      },
+      "scale_to_si": "0.000000001"
+    },
+    "min": {
+      "symbol": "min",
+      "dimension": {
+        "time": 1
+      },
+      "scale_to_si": "60"
+    },
+    "h": {
+      "symbol": "h",
+      "dimension": {
+        "time": 1
+      },
+      "scale_to_si": "3600"
+    },
+    "A": {
+      "symbol": "A",
+      "dimension": {
+        "current": 1
+      },
+      "scale_to_si": "1"
+    },
+    "mA": {
+      "symbol": "mA",
+      "dimension": {
+        "current": 1
+      },
+      "scale_to_si": "0.001"
+    },
+    "K": {
+      "symbol": "K",
+      "dimension": {
+        "temperature": 1
+      },
+      "scale_to_si": "1"
+    },
+    "degC": {
+      "symbol": "degC",
+      "dimension": {
+        "temperature": 1
+      },
+      "scale_to_si": "1",
+      "kind": "affine",
+      "offset_to_si": "273.15"
+    },
+    "delta_degC": {
+      "symbol": "delta_degC",
+      "dimension": {
+        "temperature": 1
+      },
+      "scale_to_si": "1"
+    },
+    "mol": {
+      "symbol": "mol",
+      "dimension": {
+        "amount": 1
+      },
+      "scale_to_si": "1"
+    },
+    "cd": {
+      "symbol": "cd",
+      "dimension": {
+        "luminous_intensity": 1
+      },
+      "scale_to_si": "1"
+    },
+    "rad": {
+      "symbol": "rad",
+      "dimension": {
+        "angle": 1
+      },
+      "scale_to_si": "1"
+    },
+    "deg": {
+      "symbol": "deg",
+      "dimension": {
+        "angle": 1
+      },
+      "exact_scale": {
+        "numerator": "1",
+        "denominator": "180",
+        "pi_power": 1
+      }
+    },
+    "Hz": {
+      "symbol": "Hz",
+      "dimension": {
+        "time": -1
+      },
+      "scale_to_si": "1"
+    },
+    "kHz": {
+      "symbol": "kHz",
+      "dimension": {
+        "time": -1
+      },
+      "scale_to_si": "1000"
+    },
+    "MHz": {
+      "symbol": "MHz",
+      "dimension": {
+        "time": -1
+      },
+      "scale_to_si": "1000000"
+    },
+    "N": {
+      "symbol": "N",
+      "dimension": {
+        "length": 1,
+        "mass": 1,
+        "time": -2
+      },
+      "scale_to_si": "1"
+    },
+    "Pa": {
+      "symbol": "Pa",
+      "dimension": {
+        "length": -1,
+        "mass": 1,
+        "time": -2
+      },
+      "scale_to_si": "1"
+    },
+    "J": {
+      "symbol": "J",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -2
+      },
+      "scale_to_si": "1"
+    },
+    "W": {
+      "symbol": "W",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -3
+      },
+      "scale_to_si": "1"
+    },
+    "C": {
+      "symbol": "C",
+      "dimension": {
+        "time": 1,
+        "current": 1
+      },
+      "scale_to_si": "1"
+    },
+    "V": {
+      "symbol": "V",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -3,
+        "current": -1
+      },
+      "scale_to_si": "1"
+    },
+    "mV": {
+      "symbol": "mV",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -3,
+        "current": -1
+      },
+      "scale_to_si": "0.001"
+    },
+    "Ohm": {
+      "symbol": "Ohm",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -3,
+        "current": -2
+      },
+      "scale_to_si": "1"
+    },
+    "F": {
+      "symbol": "F",
+      "dimension": {
+        "length": -2,
+        "mass": -1,
+        "time": 4,
+        "current": 2
+      },
+      "scale_to_si": "1"
+    },
+    "Wb": {
+      "symbol": "Wb",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -2,
+        "current": -1
+      },
+      "scale_to_si": "1"
+    },
+    "T": {
+      "symbol": "T",
+      "dimension": {
+        "mass": 1,
+        "time": -2,
+        "current": -1
+      },
+      "scale_to_si": "1"
+    },
+    "uT": {
+      "symbol": "uT",
+      "dimension": {
+        "mass": 1,
+        "time": -2,
+        "current": -1
+      },
+      "scale_to_si": "0.000001"
+    },
+    "H": {
+      "symbol": "H",
+      "dimension": {
+        "length": 2,
+        "mass": 1,
+        "time": -2,
+        "current": -2
+      },
+      "scale_to_si": "1"
+    },
+    "mAh": {
+      "symbol": "mAh",
+      "dimension": {
+        "time": 1,
+        "current": 1
+      },
+      "scale_to_si": "3.6"
+    },
+    "rpm": {
+      "symbol": "rpm",
+      "dimension": {
+        "angle": 1,
+        "time": -1
+      },
+      "exact_scale": {
+        "numerator": "1",
+        "denominator": "30",
+        "pi_power": 1
+      }
+    },
+    "count": {
+      "symbol": "count",
+      "dimension": {
+        "count": 1
+      },
+      "scale_to_si": "1"
+    },
+    "words": {
+      "symbol": "words",
+      "dimension": {
+        "count": 1
+      },
+      "scale_to_si": "1"
+    },
+    "bit": {
+      "symbol": "bit",
+      "dimension": {
+        "information": 1
+      },
+      "scale_to_si": "1"
+    },
+    "B": {
+      "symbol": "B",
+      "dimension": {
+        "information": 1
+      },
+      "scale_to_si": "8"
+    },
+    "baud": {
+      "symbol": "baud",
+      "dimension": {
+        "symbol": 1,
+        "time": -1
+      },
+      "scale_to_si": "1"
+    },
+    "kbaud": {
+      "symbol": "kbaud",
+      "dimension": {
+        "symbol": 1,
+        "time": -1
+      },
+      "scale_to_si": "1000"
+    },
+    "Mbaud": {
+      "symbol": "Mbaud",
+      "dimension": {
+        "symbol": 1,
+        "time": -1
+      },
+      "scale_to_si": "1000000"
+    }
+  }
+}

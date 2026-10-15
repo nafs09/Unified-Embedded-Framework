@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/crash-record-1.0.schema.json",
+  "title": "UETD retained crash record",
+  "description": "Logical canonical record envelope. Target-specific architecture context is a separately length-bounded byte field; implementations must not persist native C struct layout.",
+  "type": "object",
+  "required": ["format", "schema_version", "sequence", "fault_code", "reset_cause", "capture_valid_mask", "artifact_sha256", "target", "integrity_crc32", "state"],
+  "properties": {
+    "format": { "const": "UETD-CRASH-1" },
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "fault_code": { "type": "integer", "minimum": 0 },
+    "fault_type": { "type": "integer", "minimum": 0 },
+    "reset_cause": { "type": "integer", "minimum": 0 },
+    "core_id": { "type": "integer", "minimum": 0 },
+    "task_or_irq_id": { "type": "integer", "minimum": 0 },
+    "registers": {
+      "type": "object",
+      "properties": {
+        "pc": { "type": "integer", "minimum": 0 },
+        "lr": { "type": "integer", "minimum": 0 },
+        "cfsr": { "type": "integer", "minimum": 0 },
+        "hfsr": { "type": "integer", "minimum": 0 },
+        "dfsr": { "type": "integer", "minimum": 0 },
+        "mmfar": { "type": "integer", "minimum": 0 },
+        "bfar": { "type": "integer", "minimum": 0 },
+        "afsr": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "capture_valid_mask": { "type": "integer", "minimum": 0 },
+    "time": {
+      "type": "object",
+      "properties": {
+        "clock_id": { "type": "string", "minLength": 1 },
+        "monotonic_us": { "type": "integer", "minimum": 0 },
+        "rtc_time": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "project_id": { "type": "string", "maxLength": 39 },
+        "firmware_version": { "type": "string", "maxLength": 23 }
+      },
+      "additionalProperties": false
+    },
+    "artifact_sha256": { "$ref": "#/$defs/sha256" },
+    "target": {
+      "type": "object",
+      "required": ["target_id", "board_id", "hardware_revision"],
+      "properties": {
+        "target_id": { "type": "string", "minLength": 1, "maxLength": 39 },
+        "board_id": { "type": "string", "minLength": 1, "maxLength": 39 },
+        "hardware_revision": { "type": "string", "minLength": 1, "maxLength": 15 }
+      },
+      "additionalProperties": false
+    },
+    "detail": { "type": "string", "maxLength": 48 },
+    "detail_truncated": { "type": "boolean" },
+    "architecture_context": {
+      "type": "object",
+      "required": ["schema_id", "bytes"],
+      "properties": {
+        "schema_id": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "string", "contentEncoding": "base64", "maxLength": 87384 }
+      },
+      "additionalProperties": false
+    },
+    "integrity_crc32": { "type": "string", "pattern": "^[A-Fa-f0-9]{8}$", "description": "Accidental-corruption check only, not authentication." },
+    "state": { "enum": ["unread", "exported", "acknowledged"] }
+  },
+  "$defs": { "sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" } },
+  "additionalProperties": false
+}

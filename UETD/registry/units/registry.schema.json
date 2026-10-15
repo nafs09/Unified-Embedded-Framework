@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/units/project-language-units-1.0.schema.json",
+  "title": "UETD project-language unit registry",
+  "type": "object",
+  "required": ["schema_version", "base_dimensions", "unit_expression_rules", "units"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "source_of_truth": { "type": "string" },
+    "base_dimensions": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string" } },
+    "unit_expression_rules": { "type": "object" },
+    "units": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["symbol", "dimension"],
+        "oneOf": [
+          { "required": ["scale_to_si"] },
+          { "required": ["exact_scale"] }
+        ],
+        "properties": {
+          "symbol": { "type": "string" },
+          "dimension": { "type": "object", "additionalProperties": { "type": "integer" } },
+          "scale_to_si": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$" },
+          "exact_scale": {
+            "type": "object",
+            "required": ["numerator", "denominator", "pi_power"],
+            "properties": {
+              "numerator": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+              "denominator": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+              "pi_power": { "type": "integer" }
+            },
+            "additionalProperties": false
+          },
+          "kind": { "enum": ["linear", "affine"] },
+          "offset_to_si": { "type": "string", "pattern": "^-?[0-9]+(\\.[0-9]+)?$" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "kind": { "const": "affine" } }, "required": ["kind"] },
+            "then": { "required": ["offset_to_si"] }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

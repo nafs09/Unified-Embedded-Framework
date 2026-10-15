@@ -1,0 +1,21 @@
+{
+  "sources": [
+    "src/uproto/crsf.c"
+  ],
+  "dependencies": [
+    "upal/uart",
+    "umid/ringbuf"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/umid/ringbuf.h",
+    "include/upal/dma.h",
+    "include/upal/uart.h",
+    "include/uproto/crsf.h"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "stm32h743zit6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-h7",
+  "series": "STM32H7",
+  "part_number": "STM32H743ZIT6",
+  "aliases": ["STM32H743ZI", "NUCLEO-H743ZI2 MCU"],
+  "roadmap_phase": 0,
+  "additional_phase_targets": [1],
+  "core": {
+    "name": "Cortex-M7",
+    "isa": "Armv7E-M",
+    "word_bits": 32,
+    "count": 1,
+    "fpu": "double",
+    "max_frequency_hz": 480000000
+  },
+  "package": { "name": "LQFP144", "pin_count": 144 },
+  "memory": {
+    "flash_bytes": 2097152,
+    "sram_bytes": 1048576,
+    "notes": "Vendor headline is up to 1 MiB RAM split across TCM and user SRAM domains; see device reference manual before assigning linker regions."
+  },
+  "peripheral_groups": [
+    "BDMA", "DMA", "MDMA", "SDMMC", "FDCAN", "USB", "ETHERNET_MAC", "ADC", "DAC", "HRTIM", "QSPI", "FMC", "TIM", "USART", "SPI", "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32H743/753 device documentation",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32h743-753/documentation.html"
+    },
+    {
+      "title": "ST NUCLEO-H743ZI2 data brief",
+      "url": "https://www.st.com/resource/en/data_brief/nucleo-h743zi.pdf"
+    }
+  ],
+  "source_verified_fields": ["identity", "core", "word_bits", "frequency", "package", "flash", "SRAM"],
+  "generation_available": false,
+  "record_note": "Exact MCU fitted to NUCLEO-H743ZI2. Headline memory is not a linker map; core, cache, clock, DMA, and peripheral resources remain unverified."
+}

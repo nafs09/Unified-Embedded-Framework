@@ -1,0 +1,20 @@
+{
+  "id": "nucleo-h743zi2",
+  "name": "ST NUCLEO-H743ZI2",
+  "aliases": ["MB1364"],
+  "chip_id": "stm32h743zit6",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "ST NUCLEO-H743ZI2 data brief",
+      "url": "https://www.st.com/resource/en/data_brief/nucleo-h743zi.pdf"
+    },
+    {
+      "title": "ST NUCLEO-H743ZI product page",
+      "url": "https://www.st.com/en/evaluation-tools/nucleo-h743zi.html"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "ST lists STM32H743ZIT6 as the target MCU and STLINK-V3E as the on-board programmer for the -ZI2 board. Board revision, clocks, pin reservations, build profile, and flash profile still need review."
+}

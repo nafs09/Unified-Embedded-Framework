@@ -1,0 +1,14 @@
+{
+  "sources": [
+    "src/umid/drivers/range.c"
+  ],
+  "dependencies": [
+    "upal/uart",
+    "upal/i2c"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/umid/drivers/range.h"
+  ]
+}

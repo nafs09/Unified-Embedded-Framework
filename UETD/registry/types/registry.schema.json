@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/types/project-language-types-1.0.schema.json",
+  "title": "UETD public C type index for project-language tooling",
+  "type": "object",
+  "required": ["schema_version", "source_of_truth", "generated_by", "types"],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "source_of_truth": { "type": "string" },
+    "generated_by": { "type": "string" },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["c_name", "kind", "header", "declaration", "language_visibility", "source_status"],
+        "properties": {
+          "c_name": { "type": "string", "minLength": 1 },
+          "dsl_name": { "type": "string", "minLength": 1 },
+          "kind": { "enum": ["alias", "struct", "union", "enum", "function_pointer", "unknown"] },
+          "header": { "type": "string" },
+          "declaration": { "type": "string" },
+          "enum_members": { "type": "array", "items": { "type": "string" } },
+          "language_visibility": { "type": "string" },
+          "language_contract": {
+            "enum": ["numeric", "enum", "opaque", "fixed_numeric_vector"],
+            "description": "UEF-PL representation contract for this exact public C declaration. Opaque types retain C identity but expose no fields or constructors; fixed_numeric_vector exposes a fixed-length vector of the configured UMATH scalar."
+          },
+          "vector_dimension": { "type": "integer", "minimum": 2, "maximum": 4 },
+          "source_status": { "enum": ["public_header", "future_header"] }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "language_contract": { "const": "fixed_numeric_vector" } },
+              "required": ["language_contract"]
+            },
+            "then": { "required": ["dsl_name", "vector_dimension"] }
+          },
+          {
+            "if": { "required": ["vector_dimension"] },
+            "then": { "properties": { "language_contract": { "const": "fixed_numeric_vector" } } }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

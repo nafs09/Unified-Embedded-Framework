@@ -1,0 +1,63 @@
+{
+  "id": "esp32-c6fh4",
+  "vendor": "Espressif",
+  "family_id": "esp32-c6",
+  "series": "ESP32-C6",
+  "part_number": "ESP32-C6FH4",
+  "aliases": [],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "RISC-V HP + RISC-V LP",
+    "isa": "RISC-V 32-bit; extension set is part-specific",
+    "count": 2,
+    "fpu": "none",
+    "max_frequency_hz": 160000000,
+    "core_frequencies_hz": {
+      "HP": 160000000,
+      "LP": 20000000
+    }
+  },
+  "package": {
+    "name": "QFN32",
+    "pin_count": 32
+  },
+  "memory": {
+    "flash_bytes": 4194304,
+    "sram_bytes": 524288,
+    "low_power_sram_bytes": 16384,
+    "notes": "4 MiB in-package flash, 512 KiB HP SRAM and 16 KiB LP SRAM."
+  },
+  "peripheral_groups": [
+    "GDMA",
+    "USB_SERIAL_JTAG",
+    "TWAI",
+    "SPI",
+    "I2C",
+    "I2S",
+    "UART",
+    "ADC",
+    "WIFI6",
+    "BLUETOOTH_LE",
+    "IEEE802154"
+  ],
+  "source_references": [
+    {
+      "title": "Espressif ESP32-C6 series datasheet",
+      "url": "https://documentation.espressif.com/esp32-c6_datasheet_en.html"
+    },
+    {
+      "title": "Espressif ESP32-C6 SoC page",
+      "url": "https://www.espressif.com/en/products/socs/esp32-c6"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "in_package_flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 4 representative. HP/LP core lifecycle and interrupt ownership need a distinct contract."
+}

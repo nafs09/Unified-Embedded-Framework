@@ -1,0 +1,103 @@
+// Basic single-core bare-metal project. The recurring control body is one
+// explicit loop, lowered to the application's main loop; it does not create
+// an RTOS task or use the Arduino runtime.
+project BareMetalMotorLoop {
+  target = "esp32-devkitc-v4";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+
+  record WheelSample { speed : f32<m/s>; valid : bool; }
+
+  peripheral wheel_capture : timer;
+  peripheral motor_pwm : timer;
+  sensor wheel : encoder;
+  algorithm speed_pid : pid;
+  actuator motor : h_bridge;
+  subsystem motor_speed_loop;
+
+  operatingsystem MotorLoop {
+    runtime = BareMetal;
+    component_failure_policy = disable_motor;
+    state_machine control_mode : ControlMode {
+      state disabled;
+      state active;
+
+      initial disabled;
+      owner = control_loop;
+      consumers = [];
+      transition disabled -> active when enable_command;
+      transition active -> disabled when not wheel.valid;
+    }
+    loop control_loop {
+      run = motor_speed_loop(target = target_speed, enabled = control_mode.state == ControlMode.active);
+      rate = 200 Hz;
+      deadline = 5 ms;
+      on_miss = disable_motor;
+    }
+  }
+
+  implementation {
+    signal enable_command : bool = true;
+    signal target_speed : f32<m/s> = 0.4 m/s;
+
+    peripheral wheel_capture {
+      role = quadrature_encoder;
+    } timer;
+    peripheral motor_pwm {
+      role = motor_pwm;
+      frequency = 20 kHz;
+    } timer;
+
+    sensor wheel {
+      peripheral = wheel_capture;
+      counts_per_revolution = 2048;
+      radius = 0.075 m;
+      output speed : f32<m/s>;
+      output valid : bool;
+    } encoder;
+    algorithm speed_pid {
+      derivative_filter_n = 100;
+      proportional_weight_b = 1.0;
+      derivative_weight_c = 0.0;
+      integral_min = -1.0;
+      integral_max = 1.0;
+      tracking_time = 0 s;
+      saturation_enabled = true;
+      sample_time = 5 ms;
+      kp = 0.8;
+      ki = 0.15;
+      kd = 0.0;
+      output_min = -1.0;
+      output_max = 1.0;
+      anti_windup = clamp;
+    } pid;
+    actuator motor {
+      peripheral = motor_pwm;
+      command_range = [-1.0, 1.0];
+      safe_state = 0;
+    } h_bridge;
+
+    subsystem motor_speed_loop {
+      input target : f32<m/s> { rate = 200 Hz; max_age = 100 ms; }
+      input enabled : bool { rate = 200 Hz; max_age = 5 ms; }
+      output effort : f32 { rate = 200 Hz; max_age = 5 ms; }
+      output valid : bool { rate = 200 Hz; max_age = 5 ms; }
+
+      use wheel as encoder;
+      use speed_pid as controller;
+      use motor as output_stage;
+
+      stage sample = encoder();
+      stage control = controller(reference = target, measurement = sample.speed);
+      let command : f32 = select(enabled and sample.valid, control.output, 0.0);
+      stage applied = output_stage(command = command);
+
+      output effort = command;
+      output valid = sample.valid;
+    }
+  }
+}

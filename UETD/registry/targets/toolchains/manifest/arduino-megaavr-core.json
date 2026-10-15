@@ -1,0 +1,11 @@
+{
+  "id": "arduino-megaavr-core",
+  "name": "Arduino megaAVR board core and recipes",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["arduino:megaavr", "Nano Every"],
+  "packages": [],
+  "dependencies": ["avr-gcc", "avrdude"],
+  "record_note": "TODO: pin the exact Arduino megaAVR Boards core release/source revision and its ATmega4809 compiler/upload tool versions, licenses, and package-manager metadata."
+}

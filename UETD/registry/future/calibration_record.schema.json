@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/future/calibration-record-1.0.schema.json",
+  "title": "UETD sensor-driver calibration envelope",
+  "type": "object",
+  "required": ["driver_id", "calibration_schema_version", "board_id", "sensor_identity", "units", "calibrated_at", "method_id", "method_revision", "payload_encoding", "payload_length", "payload_sha256", "payload", "commit_sequence"],
+  "properties": {
+    "driver_id": { "type": "string", "minLength": 1 },
+    "driver_version": { "type": "string", "minLength": 1 },
+    "calibration_schema_version": { "type": "integer", "minimum": 1 },
+    "board_id": { "type": "string", "minLength": 1 },
+    "board_revision": { "type": "string" },
+    "sensor_identity": { "type": "string", "minLength": 1 },
+    "units": { "type": "string", "minLength": 1 },
+    "calibrated_at": {
+      "type": "object",
+      "required": ["clock_id", "ticks"],
+      "properties": {
+        "clock_id": { "type": "string", "minLength": 1 },
+        "ticks": { "type": "integer", "minimum": 0 },
+        "utc": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "method_id": { "type": "string", "minLength": 1 },
+    "method_revision": { "type": ["string", "integer"] },
+    "payload_encoding": { "type": "string", "minLength": 1 },
+    "payload_length": { "type": "integer", "minimum": 0 },
+    "payload_sha256": { "type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$" },
+    "payload_crc32": { "type": "string", "pattern": "^[A-Fa-f0-9]{8}$", "description": "Optional corruption check; not authentication." },
+    "payload": { "type": "string", "contentEncoding": "base64" },
+    "commit_sequence": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false
+}

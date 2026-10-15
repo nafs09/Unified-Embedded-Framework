@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/modules/registry-1.0.schema.json",
+  "title": "UETD module registry index",
+  "description": "Canonical module IDs, linked UETD manifests, and the unique source-language identifier used by .uef files.",
+  "type": "object",
+  "required": ["schema_version", "uetd_version", "headers_root", "modules"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "uetd_version": { "type": "string", "minLength": 1 },
+    "headers_root": { "type": "string", "minLength": 1 },
+    "authoring_contract_schema": { "type": "string", "minLength": 1 },
+    "registry_schema": { "type": "string", "minLength": 1 },
+    "modules": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[A-Za-z0-9_/-]+$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["manifest", "DSL_descriptor"],
+        "properties": {
+          "manifest": { "type": "string", "minLength": 1 },
+          "DSL_descriptor": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+            "description": "Unique registered identifier for use after a role keyword (for example sensor imu : imu or algorithm rate : pid); authoring details and readiness come from the linked UETD manifest."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "selection_groups": { "type": "object" },
+    "external_dependencies": { "type": "object" },
+    "bundled_dependencies": { "type": "object" },
+    "peripheral_provides": { "type": "object" },
+    "protocol_provides": { "type": "object" }
+  },
+  "additionalProperties": true
+}

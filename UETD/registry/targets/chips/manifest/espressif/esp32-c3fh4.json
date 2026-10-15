@@ -1,0 +1,58 @@
+{
+  "id": "esp32-c3fh4",
+  "vendor": "Espressif",
+  "family_id": "esp32-c3",
+  "series": "ESP32-C3",
+  "part_number": "ESP32-C3FH4",
+  "aliases": [],
+  "roadmap_phase": 4,
+  "core": {
+    "name": "RISC-V",
+    "isa": "RISC-V 32-bit; extension set is part-specific",
+    "count": 1,
+    "fpu": "none",
+    "max_frequency_hz": 160000000
+  },
+  "package": {
+    "name": "QFN32",
+    "pin_count": 32
+  },
+  "memory": {
+    "flash_bytes": 4194304,
+    "sram_bytes": 409600,
+    "rtc_sram_bytes": 8192,
+    "notes": "4 MiB in-package flash, 400 KiB SRAM and 8 KiB RTC SRAM."
+  },
+  "peripheral_groups": [
+    "GDMA",
+    "USB_SERIAL_JTAG",
+    "TWAI",
+    "SPI",
+    "I2C",
+    "I2S",
+    "UART",
+    "ADC",
+    "WIFI",
+    "BLUETOOTH_LE"
+  ],
+  "source_references": [
+    {
+      "title": "Espressif ESP32-C3 series datasheet",
+      "url": "https://documentation.espressif.com/esp32-c3_datasheet_en.html"
+    },
+    {
+      "title": "Espressif ESP32-C3 SoC page",
+      "url": "https://www.espressif.com/en/products/socs/esp32-c3"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "in_package_flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 4 representative. Do not assume RV32F or treat radio as a generic peripheral."
+}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uetd/registry/targets/development_boards/record.schema.json",
+  "title": "UETD development-board record",
+  "type": "object",
+  "required": ["id", "name", "chip_id", "generation_available"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "aliases": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "chip_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "module": {
+      "type": "object",
+      "description": "Optional module details live with the board record; no separate module catalogue is needed.",
+      "properties": {
+        "name": { "type": "string" },
+        "variant": { "type": "string" },
+        "flash_bytes": { "type": "integer", "minimum": 0 },
+        "psram_bytes": { "type": "integer", "minimum": 0 },
+        "crystal_hz": { "type": "integer", "minimum": 0 },
+        "antenna": { "type": "string" },
+        "exposed_pins": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": true
+    },
+    "clock_sources": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 1 } },
+    "memory_regions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["origin", "length_bytes"],
+        "properties": {
+          "origin": { "type": "integer", "minimum": 0 },
+          "length_bytes": { "type": "integer", "minimum": 1 },
+          "kind": { "type": "string" },
+          "dma_accessible": { "type": "boolean" },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "reserved_pins": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "build": {
+      "type": "object",
+      "description": "Selected project-generation/build adapter and UETD tool-package ID.",
+      "properties": {
+        "backend": { "type": "string", "minLength": 1 },
+        "framework": { "type": "string" },
+        "toolchain": { "type": "string", "minLength": 1 },
+        "dependencies": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "settings": { "type": "object" }
+      },
+      "required": ["backend"],
+      "additionalProperties": true
+    },
+    "flash": {
+      "type": "object",
+      "description": "Selected host-side flash backend and UETD package ID, with board-specific transport settings.",
+      "properties": {
+        "backend": { "type": "string", "minLength": 1 },
+        "toolchain": { "type": "string", "minLength": 1 },
+        "interface": { "type": "string" },
+        "dependencies": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "settings": { "type": "object" }
+      },
+      "required": ["backend"],
+      "additionalProperties": true
+    },
+    "debug_console": {
+      "type": "object",
+      "description": "Optional wired V1 live-output endpoint. Port names are selected on the host at runtime; baud/framing belong to the board record.",
+      "required": ["transport", "baud_rate", "data_bits", "parity", "stop_bits", "encoding"],
+      "properties": {
+        "transport": { "enum": ["usb_cdc", "usb_uart"] },
+        "baud_rate": { "type": "integer", "minimum": 1 },
+        "data_bits": { "enum": [7, 8] },
+        "parity": { "enum": ["none", "even", "odd"] },
+        "stop_bits": { "enum": [1, 2] },
+        "encoding": { "type": "string", "minLength": 1 },
+        "line_ending": { "enum": ["lf", "crlf", "cr", "none"] },
+        "dtr": { "type": "boolean", "default": false },
+        "rts": { "type": "boolean", "default": false },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "source_references": { "type": "array", "items": { "type": "object", "required": ["title", "url"] } },
+    "generation_available": { "type": "boolean" },
+    "record_note": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "generation_available": { "const": true } }, "required": ["generation_available"] },
+      "then": {
+        "required": ["build", "flash"],
+        "properties": {
+          "build": { "required": ["backend", "toolchain"] },
+          "flash": { "required": ["backend", "toolchain"] }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

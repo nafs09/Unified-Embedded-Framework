@@ -1,0 +1,928 @@
+{
+  "registry_version": "1.3",
+  "language": {
+    "id": "uef-project",
+    "version": "13",
+    "file_extensions": [
+      ".uef"
+    ],
+    "entrypoint": "project"
+  },
+  "lexical": {
+    "line_comments": [
+      "#",
+      "//"
+    ],
+    "string_quotes": [
+      "\"",
+      "'"
+    ],
+    "case_sensitive_keywords": true,
+    "numeric_units_are_tokens": true,
+    "token_priority": [
+      "**",
+      "->",
+      "==",
+      "!=",
+      "<=",
+      ">=",
+      "..",
+      "0[xX][0-9A-Fa-f]+",
+      "FINITE_DECIMAL",
+      "IDENTIFIER",
+      "*",
+      "/",
+      "+",
+      "-",
+      "&",
+      "|",
+      "^"
+    ],
+    "range_operator": ".. is a dedicated token and is recognized before the decimal-point token; 0..N cannot be split into floating-point literals",
+    "identifier": "[A-Za-z_][A-Za-z0-9_]*",
+    "finite_decimal": "(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][+-]?[0-9]+)?",
+    "hex_integer": "0[xX][0-9A-Fa-f]+",
+    "integer_token": "(?:[0-9]+|0[xX][0-9A-Fa-f]+)",
+    "number_token": "FINITE_DECIMAL|0[xX][0-9A-Fa-f]+",
+    "token_names": {
+      "INTEGER_LITERAL": "integer_token",
+      "NUMBER": "number_token",
+      "IDENTIFIER": "identifier",
+      "BOOLEAN": "true|false",
+      "POWER": "**",
+      "CARET": "^",
+      "PIPE": "|",
+      "AMPERSAND": "&"
+    },
+    "signs_are_operators": true,
+    "string_escapes": [
+      "\\\\",
+      "\\\"",
+      "\\'",
+      "\\n",
+      "\\r",
+      "\\t"
+    ],
+    "forbidden_numeric_values": [
+      "NaN",
+      "Infinity",
+      "-Infinity"
+    ],
+    "numeric_locale": "decimal_point_dot_no_grouping_separator"
+  },
+  "grammar": {
+    "entrypoint": "project_file",
+    "statement_terminators": "C_like_project_sections_and_semicolon_terminated_declarations_with_brace_scoped_definitions",
+    "productions": {
+      "project_file": "project_decl EOF",
+      "project_decl": "'project' IDENTIFIER '{' target_decl contract_import? numeric_decl? { project_parameter_decl | type_declaration | constructor_signature | project_routine_signature } operatingsystem_decl implementation_block '}'",
+      "project_routine_signature": "'project' 'routine' reference '(' ')' ['returns' ('void' | 'status')] ['context' '=' ('task' | 'isr_signal_only')] ';'",
+      "project_parameter_decl": "'parameter' IDENTIFIER ':' type_spec ['=' expression] ';'",
+      "constructor_signature": "peripheral_signature | bus_signature | registered_module_signature | sensor_signature | actuator_signature | algorithm_signature | custom_algorithm_signature | hybrid_algorithm_signature | subsystem_signature | model_signature | protocol_signature | custom_protocol_signature",
+      "peripheral_signature": "'peripheral' IDENTIFIER ':' target_peripheral_ref ';'",
+      "bus_signature": "'bus' IDENTIFIER ':' descriptor_ref ';'",
+      "registered_module_signature": "descriptor_ref IDENTIFIER ';'",
+      "sensor_signature": "'sensor' IDENTIFIER ':' descriptor_ref ';'",
+      "actuator_signature": "'actuator' IDENTIFIER ':' descriptor_ref ';'",
+      "algorithm_signature": "'algorithm' IDENTIFIER ':' descriptor_ref ';'",
+      "custom_algorithm_signature": "'custom' 'algorithm' IDENTIFIER ';'",
+      "hybrid_algorithm_signature": "'hybrid' 'algorithm' IDENTIFIER ';'",
+      "subsystem_signature": "'subsystem' IDENTIFIER ';'",
+      "model_signature": "'model' IDENTIFIER ':' ('continuous' | 'discrete') ';'",
+      "protocol_signature": "'protocol' IDENTIFIER ':' descriptor_ref ';'",
+      "custom_protocol_signature": "'custom' 'protocol' IDENTIFIER ';'",
+      "declaration": "target_decl | numeric_decl | project_parameter_decl | record_signature | enum_decl | constructor_signature | operatingsystem_decl | implementation_block",
+      "implementation_block": "'implementation' '{' { implementation_definition | signal_decl } '}'",
+      "implementation_definition": "peripheral_definition | bus_definition | registered_module_definition | sensor_definition | actuator_definition | algorithm_definition | custom_algorithm_definition | hybrid_algorithm_definition | subsystem_definition | model_definition | protocol_definition | custom_protocol_definition",
+      "implementation_descriptor_suffix": "descriptor_ref ';'",
+      "target_decl": "'target' '=' STRING ';'",
+      "numeric_decl": "'numeric' property_block",
+      "signal_decl": "'signal' IDENTIFIER ':' type_spec ['=' expression] ';' | 'signal' IDENTIFIER '=' expression ';'",
+      "registered_module_definition": "descriptor_ref IDENTIFIER property_block implementation_descriptor_suffix",
+      "peripheral_definition": "'peripheral' IDENTIFIER property_block implementation_descriptor_suffix",
+      "bus_definition": "'bus' IDENTIFIER property_block implementation_descriptor_suffix",
+      "sensor_definition": "'sensor' IDENTIFIER property_block implementation_descriptor_suffix",
+      "actuator_definition": "'actuator' IDENTIFIER property_block implementation_descriptor_suffix",
+      "algorithm_definition": "'algorithm' IDENTIFIER property_block implementation_descriptor_suffix",
+      "protocol_definition": "'protocol' IDENTIFIER property_block implementation_descriptor_suffix",
+      "custom_algorithm_definition": "'custom' 'algorithm' IDENTIFIER custom_algorithm_body",
+      "custom_algorithm_body": "'{' [model_binding] [sample_time] { algorithm_binding | algorithm_stage } '}'",
+      "algorithm_binding": "('input' | 'output' | 'state' | 'parameter' | 'local') typed_binding",
+      "algorithm_stage": "('initialize' | 'predict' | 'update' | 'step') '(' [stage_parameter { ',' stage_parameter }] ')' equation_block",
+      "stage_parameter": "IDENTIFIER ':' type_spec",
+      "algorithm_statement": "equation | bounded_for | conditional_statement",
+      "bounded_for": "'for' IDENTIFIER 'in' expression '..' expression equation_block",
+      "conditional_statement": "'if' expression equation_block ['else' equation_block]",
+      "model_definition": "'model' IDENTIFIER model_body",
+      "model_body": "'{' { sample_time | discretization_decl | model_order_decl | typed_model_binding } (linear_block | equations_block) [jacobians_block] '}'",
+      "model_order_decl": "('state_order' | 'input_order' | 'output_order') '=' '[' reference { ',' reference } ']' ';'",
+      "discretization_decl": "'discretize' 'with' reference 'at' expression ';'",
+      "typed_model_binding": "('state' | 'input' | 'output' | 'parameter') IDENTIFIER ':' type_spec ['=' expression] ';'",
+      "linear_block": "'linear' '{' matrix_assignment { matrix_assignment } '}'",
+      "matrix_assignment": "IDENTIFIER '=' (matrix_literal | expression) ';'",
+      "equations_block": "'equations' '{' { model_equation } '}'",
+      "model_equation": "derivative_binding | next_state_binding | equation",
+      "derivative_binding": "'derivative' reference '=' expression ';'",
+      "next_state_binding": "'next' reference '=' expression ';'",
+      "jacobians_block": "'jacobians' '{' matrix_assignment { matrix_assignment } '}'",
+      "equation_block": "'{' { algorithm_statement } '}'",
+      "equation": "lvalue '=' expression ';'",
+      "hybrid_algorithm_definition": "'hybrid' 'algorithm' IDENTIFIER '{' { hybrid_port | hybrid_member | hybrid_stage | choose_output | composition_output | local_value | property_decl } '}'",
+      "hybrid_member": "'use' reference ['as' IDENTIFIER] ';'",
+      "subsystem_definition": "'subsystem' IDENTIFIER '{' { subsystem_port | subsystem_member | subsystem_stage | composition_output | local_value | property_decl } '}'",
+      "local_value": "'let' IDENTIFIER ':' type_spec '=' expression ';'",
+      "subsystem_member": "'use' reference ['as' IDENTIFIER] ';'",
+      "stage_call": "'stage' IDENTIFIER '=' reference '(' [named_argument { ',' named_argument }] ')'",
+      "subsystem_stage": "stage_call ['on_failure' '=' expression] ';'",
+      "state_machine_decl": "'state_machine' IDENTIFIER ':' IDENTIFIER '{' machine_state_decl+ { property_decl } initial_state_decl { transition_decl | state_action_decl | property_decl } '}'",
+      "machine_state_decl": "'state' IDENTIFIER ['=' INTEGER_LITERAL] ';'",
+      "initial_state_decl": "'initial' IDENTIFIER ';'",
+      "transition_decl": "'transition' ('any' | IDENTIFIER) '->' IDENTIFIER 'when' expression ';'",
+      "state_action_decl": "('on_enter' | 'on_exit') IDENTIFIER 'call' reference ';'",
+      "custom_protocol_definition": "'custom' 'protocol' IDENTIFIER custom_protocol_body",
+      "custom_protocol_body": "'{' { property_decl | framing_block | header_block | sequence_block | payload_block | protocol_message | checksum_block | protocol_state_machine | receiver_block | behavior_block } '}'",
+      "protocol_message": "'message' IDENTIFIER '{' { property_decl | protocol_field | protocol_flag | protocol_fragment } '}'",
+      "protocol_field": "'field' IDENTIFIER ':' type_spec property_block",
+      "protocol_flag": "'flag' IDENTIFIER '=' IDENTIFIER '.' 'bit' '[' INTEGER_LITERAL ']' ';'",
+      "protocol_fragment": "'fragment' INTEGER_LITERAL '{' { property_decl | protocol_field } '}'",
+      "header_block": "'header' property_block",
+      "sequence_block": "'sequence' property_block",
+      "payload_block": "'payload' property_block",
+      "receiver_block": "'receiver' property_block",
+      "checksum_block": "'checksum' property_block",
+      "protocol_state_machine": "'state_machine' '{' { state_decl | protocol_transition } '}'",
+      "state_decl": "'state' IDENTIFIER ';'",
+      "protocol_transition": "'on' IDENTIFIER 'from' IDENTIFIER '->' IDENTIFIER ';'",
+      "behavior_block": "'behavior' property_block",
+      "operatingsystem_decl": "'operatingsystem' IDENTIFIER '{' { property_decl | state_machine_decl | loop_decl | task_decl | interrupt_decl | channel_decl | resource_decl | constraint_decl | taskset_decl } '}'",
+      "loop_decl": "'loop' IDENTIFIER loop_block",
+      "loop_block": "'{' task_run_decl { property_decl } '}'",
+      "taskset_decl": "'taskset' IDENTIFIER '{' { taskset_member } '}'",
+      "taskset_member": "task_decl | interrupt_decl | channel_decl | resource_decl | constraint_decl | property_decl",
+      "task_decl": "'task' IDENTIFIER task_block",
+      "task_block": "'{' task_run_decl { property_decl } '}'",
+      "task_run_decl": "'run' '=' reference ['(' [named_argument { ',' named_argument }] ')'] ';'",
+      "interrupt_decl": "'interrupt' IDENTIFIER property_block",
+      "channel_decl": "'channel' IDENTIFIER property_block",
+      "resource_decl": "'resource' IDENTIFIER property_block",
+      "constraint_decl": "'constraint' IDENTIFIER property_block",
+      "typed_binding": "IDENTIFIER ':' type_spec ['=' expression] ';'",
+      "sample_time": "'sample_time' '=' expression ';'",
+      "model_binding": "'model' '=' reference ';'",
+      "property_decl": "property_path '=' expression ';'",
+      "property_path": "IDENTIFIER { '.' IDENTIFIER }",
+      "property_block": "'{' { property_decl | typed_binding | io_binding | output_binding | protocol_message | framing_block | checksum_block | behavior_block | protocol_state_machine | equation_block } '}'",
+      "io_binding": "('input' | 'output') typed_binding",
+      "output_binding": "'output' property_path [':' type_spec] '=' expression ';'",
+      "framing_block": "'framing' property_block",
+      "type_spec": "IDENTIFIER [ '<' type_spec { ',' type_spec } '>' ] [ '[' array_dimension { ',' array_dimension } ']' ] [ '<' unit '>' ]",
+      "received_type_spec": "'Received' '<' type_spec '>' ['[' array_dimension { ',' array_dimension } ']']",
+      "base_type_spec": "IDENTIFIER ['[' array_dimension { ',' array_dimension } ']'] ['<' unit '>']",
+      "array_dimension": "INTEGER_LITERAL | reference",
+      "registry_ref": "IDENTIFIER | STRING",
+      "descriptor_ref": "IDENTIFIER from UETD registry/modules/registry.json DSL_descriptor; strings and canonical module paths are not valid module type names in source",
+      "target_peripheral_ref": "IDENTIFIER from the selected UETD chip/development-board peripheral catalogue; peripheral resources are target-owned and need not be software modules",
+      "reference": "IDENTIFIER { '.' IDENTIFIER }",
+      "lvalue": "reference ['[' expression { ',' expression } ']']",
+      "array_subscript": "expression [':' expression]",
+      "subscript_list": "array_subscript { ',' array_subscript }",
+      "expression": "or_expression",
+      "boolean_expression": "or_expression",
+      "or_expression": "and_expression { 'or' and_expression }",
+      "and_expression": "bitwise_or_expression { 'and' bitwise_or_expression }",
+      "comparison_expression": "additive_expression [comparison_operator additive_expression]",
+      "additive_expression": "multiplicative_expression { ('+' | '-') multiplicative_expression }",
+      "multiplicative_expression": "unary_expression { ('*' | '/') unary_expression }",
+      "unary_expression": "('+' | '-' | 'not') unary_expression | power_expression",
+      "power_expression": "primary_expression ['**' unary_expression]",
+      "primary_expression": "NUMBER [unit] | STRING | BOOLEAN | reference ['[' subscript_list ']'] | map_expression | select_expression | cast_expression | unit_conversion_expression | registered_math_call | variant_constructor | none_constructor | match_expression | flags_operation | vector_literal | matrix_literal | '(' expression ')'",
+      "map_expression": "'map' '(' [named_argument { ',' named_argument }] ')'",
+      "select_expression": "'select' '(' expression ',' expression ',' expression ')'",
+      "cast_expression": "'cast' '<' type_spec '>' '(' expression ')'",
+      "unit_conversion_expression": "'convert_unit' '<' unit '>' '(' expression ')'",
+      "registered_math_call": "IDENTIFIER '(' [argument { ',' argument }] ')'; identifier resolves only through the UETD UMATH registry's dsl_name, never through its hidden C symbol",
+      "argument": "expression",
+      "named_argument": "IDENTIFIER '=' expression",
+      "vector_literal": "'[' [expression { ',' expression }] ']'",
+      "matrix_literal": "'[' vector_literal { ',' vector_literal } ']'",
+      "comparison_operator": "'==' | '!=' | '<' | '<=' | '>' | '>='",
+      "unit": "unit_atom { ('/' | '*') unit_atom }",
+      "unit_atom": "'1' | IDENTIFIER ['^' ['+' | '-'] INTEGER_LITERAL]",
+      "record_signature": "'record' IDENTIFIER '{' { IDENTIFIER ':' type_spec ';' } '}'",
+      "record_body": "'{' { IDENTIFIER ':' type_spec ';' } '}'",
+      "record_definition": "'record' IDENTIFIER record_body",
+      "enum_decl": "'enum' IDENTIFIER ':' integer_type '{' enum_variant { ',' enum_variant } [ ',' ] '}'",
+      "enum_variant": "IDENTIFIER [ '=' INTEGER_LITERAL ]",
+      "integer_type": "'u8' | 'u16' | 'u32' | 'u64' | 'i8' | 'i16' | 'i32' | 'i64'",
+      "hybrid_port": "('input' | 'output') IDENTIFIER ':' type_spec port_contract? ';'",
+      "hybrid_stage": "stage_call ['when' expression] ['on_failure' '=' expression] ';'",
+      "composition_output": "'output' property_path '=' expression ';'",
+      "choose_output": "'choose' IDENTIFIER '{' { 'when' expression ':' expression ';' } 'otherwise' ':' expression ';' '}'",
+      "subsystem_port": "('input' | 'output') IDENTIFIER ':' type_spec port_contract? ';'",
+      "port_contract": "'{' { property_decl } '}'",
+      "taskset_role": "Optional scheduling/resource group; task, interrupt, channel, resource, and constraint declarations may also appear directly under operatingsystem.",
+      "contract_import": "'contract' 'import' STRING ';'",
+      "type_declaration": "record_decl | enum_decl | variant_decl | flags_decl | fixed_type_decl | shared_record_decl | persistent_record_decl",
+      "record_decl": "'record' IDENTIFIER '{' { IDENTIFIER ':' type_spec ';' } '}'",
+      "variant_decl": "'variant' IDENTIFIER ':' integer_type '{' { 'case' IDENTIFIER [ '=' INTEGER_LITERAL ] [ '{' { IDENTIFIER ':' type_spec ';' } '}' ] [ ',' | ';' ] } '}'",
+      "flags_decl": "'flags' IDENTIFIER ':' integer_type '{' { IDENTIFIER '=' INTEGER_LITERAL ';' } '}'",
+      "fixed_type_decl": "'fixed' IDENTIFIER ':' signed_integer_type property_block",
+      "shared_record_decl": "'shared_record' IDENTIFIER '{' { boundary_property | IDENTIFIER ':' type_spec ';' } '}'",
+      "persistent_record_decl": "'persistent_record' IDENTIFIER '{' { boundary_property | IDENTIFIER ':' type_spec ';' } '}'",
+      "bitwise_or_expression": "bitwise_xor_expression { '|' bitwise_xor_expression }",
+      "bitwise_xor_expression": "bitwise_and_expression { '^' bitwise_and_expression }",
+      "bitwise_and_expression": "comparison_expression { '&' comparison_expression }",
+      "variant_constructor": "('Some' | 'Ok' | 'Err' | reference '.' IDENTIFIER) '(' [expression | named_argument { ',' named_argument }] ')'",
+      "none_constructor": "'None' | 'None' '(' ')'",
+      "match_expression": "'match' expression '{' { 'case' reference ['(' IDENTIFIER { ',' IDENTIFIER '=' IDENTIFIER } ')'] ':' expression ';' } [ ('otherwise' | 'default') ':' expression ';' ] '}'",
+      "flags_operation": "('has' | 'set' | 'clear') '(' expression ',' reference ')' | expression ('|' | '&' | '^') expression"
+    }
+  },
+  "core_types": {
+    "boolean": "bool",
+    "signed_integers": [
+      "i8",
+      "i16",
+      "i32",
+      "i64"
+    ],
+    "unsigned_integers": [
+      "u8",
+      "u16",
+      "u32",
+      "u64"
+    ],
+    "floating_point": [
+      "f32",
+      "f64"
+    ],
+    "fixed_point": [
+      "q15",
+      "q16",
+      "q31",
+      "q63"
+    ],
+    "project_types": [
+      "nominal enum",
+      "fixed record",
+      "tagged variant",
+      "nominal flags",
+      "fixed-point format",
+      "shared boundary record",
+      "persistent boundary record"
+    ],
+    "registered_uetd_types": "Discover every UETD C declaration from the type registry referenced by UETD/api.json. The 14 numeric aliases have explicit UETD-owned dsl_name spellings. Other C names are discoverable, but a project value type is legal only when its visibility and owning authoring contract permit it; UMATH value candidates require a compatible contract. future_header entries are indexed for discovery and are not implied to be ready.",
+    "fixed_shape": "A primitive or registry type may carry compile-time fixed dimensions using [N] or [N, M]; dimensions resolve to positive integer constants before lowering.",
+    "units": "Units are dimension expressions attached to numeric values; symbols, exact scales, affine offsets, and dimensions resolve from UETD's api.json-linked unit registry. Unit exponents are signed integers. convert_unit<TARGET_UNIT>(value) performs the only language-owned explicit unit conversion; affine units may appear only standalone.",
+    "compile_time_string": "string is permitted only in project/build configuration properties whose UETD contract declares a compile-time string; it is not a runtime value or wire field.",
+    "received": "Received<T> wraps a declared logical payload with receiver-local sequence, timestamp, freshness, and validity metadata supplied by the UETD protocol runtime; it is not a user-defined layout.",
+    "generic_types": {
+      "Received<T>": "Receiver metadata envelope; sequence and timestamp are not part of the wire payload.",
+      "Option<T>": "Closed, fixed-tag optional value with Some(T) and None cases.",
+      "Result<T,E>": "Closed, fixed-tag operation outcome with Ok(T) and Err(E) cases."
+    },
+    "bounded_buffers": "Bytes[N] and Utf8[N] use positive compile-time byte capacities and fixed storage; Utf8 literals are checked by encoded byte length."
+  },
+  "operators": [
+    {
+      "precedence": 11,
+      "operators": [
+        "member",
+        "index",
+        "slice"
+      ],
+      "associativity": "left",
+      "operand_contract": "Declared record/member access and fixed-shape arrays only; integer indices; half-open read-only slices; bounds must be statically proven."
+    },
+    {
+      "precedence": 10,
+      "operators": [
+        "**"
+      ],
+      "associativity": "right",
+      "operand_contract": "Scalar base and compile-time integer exponent in [-16,16]; units are raised by the exponent; affine absolutes and aggregates are rejected."
+    },
+    {
+      "precedence": 9,
+      "operators": [
+        "unary +",
+        "unary -",
+        "not"
+      ],
+      "associativity": "right",
+      "operand_contract": "Unary signs accept numeric operands; not accepts bool."
+    },
+    {
+      "precedence": 8,
+      "operators": [
+        "*",
+        "/"
+      ],
+      "associativity": "left",
+      "operand_contract": "Checked scalar arithmetic and shape-valid matrix products; output shape, units, intermediate width, divide-by-zero and overflow policy are explicit."
+    },
+    {
+      "precedence": 7,
+      "operators": [
+        "+",
+        "-"
+      ],
+      "associativity": "left",
+      "operand_contract": "Numeric operands require compatible nominal representation, unit dimensions and shape; no implicit conversion or broadcasting."
+    },
+    {
+      "precedence": 6,
+      "operators": [
+        "==",
+        "!=",
+        "<",
+        "<=",
+        ">",
+        ">="
+      ],
+      "associativity": "non_associative",
+      "operand_contract": "Exactly one comparison; exact nominal/unit compatibility; ordered comparison is numeric-only."
+    },
+    {
+      "precedence": 5,
+      "operators": [
+        "&"
+      ],
+      "associativity": "left",
+      "operand_contract": "Both operands must have the same nominal flags type; no integer coercion."
+    },
+    {
+      "precedence": 4,
+      "operators": [
+        "^"
+      ],
+      "associativity": "left",
+      "operand_contract": "Both operands must have the same nominal flags type; unit exponentiation uses ^ only inside a type or unit expression."
+    },
+    {
+      "precedence": 3,
+      "operators": [
+        "|"
+      ],
+      "associativity": "left",
+      "operand_contract": "Both operands must have the same nominal flags type; no integer coercion."
+    },
+    {
+      "precedence": 2,
+      "operators": [
+        "and"
+      ],
+      "associativity": "left",
+      "operand_contract": "bool operands; short-circuit left to right."
+    },
+    {
+      "precedence": 1,
+      "operators": [
+        "or"
+      ],
+      "associativity": "left",
+      "operand_contract": "bool operands; short-circuit left to right."
+    }
+  ],
+  "constructs": {
+    "project": {
+      "lowering_rule": "project_metadata",
+      "description": "Names a standalone UETD project and scopes its header, operating-system root, and implementation section.",
+      "syntax": "project Name { target; numeric?; typed parameters; records and constructor signatures; operatingsystem Name { ... } implementation { ... } }",
+      "parse_rule": "project",
+      "category": "root"
+    },
+    "target": {
+      "lowering_rule": "hardware_target",
+      "description": "Selects a chip or development board registered by UETD.",
+      "syntax": "target = \"UETD_TARGET_ID\";",
+      "parse_rule": "property",
+      "category": "hardware",
+      "contract_source": "UETD target registries"
+    },
+    "numeric": {
+      "lowering_rule": "numeric_profile",
+      "description": "Selects project-wide floating-point and failure semantics. Every target backend must honor the declared policy or reject generation.",
+      "syntax": "numeric { scalar = f32; accumulator = f64; rounding = nearest_even; overflow = reject; non_finite = reject; fused_multiply_add = disabled; matrix_layout = row_major; }",
+      "parse_rule": "property_block",
+      "category": "configuration"
+    },
+    "project_parameter": {
+      "lowering_rule": "required_project_input",
+      "description": "Names a typed project input with no hidden default; an unresolved required value blocks generation but remains visible during design-time checks.",
+      "syntax": "parameter NAME: TYPE [= DEFAULT];",
+      "parse_rule": "project_parameter_decl",
+      "category": "configuration"
+    },
+    "project_routine": {
+      "lowering_rule": "project_callback_contract",
+      "description": "Declares a project-owned, zero-argument, void callback contract. It may be global or attached to a declared component. The optional execution context defaults to task; isr_signal_only permits use as an interrupt callback only when the interrupt declares the same context. This is not a UETD operation and does not provide the routine body.",
+      "syntax": "project routine NAME() returns status; | project routine COMPONENT.NAME() returns status; | project routine COMPONENT.NAME() context = isr_signal_only;",
+      "parse_rule": "project_routine_signature",
+      "category": "callback",
+      "contract_source": "Explicit project-local callback declaration"
+    },
+    "peripheral": {
+      "lowering_rule": "peripheral_binding",
+      "description": "Declares a target peripheral constructor, then binds its pins, clocks, IRQs, DMA, and settings in implementation.",
+      "syntax": "peripheral NAME: TARGET_PERIPHERAL_ID; ... implementation { peripheral NAME { ... } TARGET_PERIPHERAL_ID; }",
+      "parse_rule": "named_registry_declaration",
+      "category": "hardware",
+      "contract_source": "UETD exact-chip and development-board peripheral catalogues"
+    },
+    "bus": {
+      "lowering_rule": "bus_binding",
+      "description": "Declares a bus constructor, then configures the bus instance consumed by sensors, actuators, or protocols.",
+      "syntax": "bus NAME: UETD_BUS_ID; ... implementation { bus NAME { ... } UETD_BUS_ID; }",
+      "parse_rule": "named_registry_declaration",
+      "category": "hardware",
+      "contract_source": "UETD hardware/runtime registries"
+    },
+    "signal": {
+      "lowering_rule": "signal_declaration",
+      "description": "Declares a typed or expression-inferred named application value without creating a graph node.",
+      "syntax": "signal NAME: TYPE[SHAPE]<UNIT> [= EXPRESSION]; | signal NAME = EXPRESSION;",
+      "parse_rule": "typed_binding",
+      "category": "application"
+    },
+    "sensor": {
+      "lowering_rule": "sensor_binding",
+      "description": "Declares then configures a sensor using its short UETD DSL_descriptor; binds bus, rate, calibration, and measurements while the handwritten driver remains a registered UETD source module.",
+      "syntax": "sensor NAME: DSL_DESCRIPTOR; ... implementation { sensor NAME { ... } DSL_DESCRIPTOR; }",
+      "parse_rule": "sensor_declaration",
+      "category": "hardware_component",
+      "contract_source": "UETD module and target registries"
+    },
+    "actuator": {
+      "lowering_rule": "actuator_binding",
+      "description": "Declares then configures a UETD-supported output device using its short DSL_descriptor, with safe limits, command source, and feedback from the UETD authoring contract.",
+      "syntax": "actuator NAME: DSL_DESCRIPTOR; ... implementation { actuator NAME { ... } DSL_DESCRIPTOR; }",
+      "parse_rule": "actuator_declaration",
+      "category": "hardware_component",
+      "contract_source": "UETD module and target registries"
+    },
+    "algorithm": {
+      "lowering_rule": "uetd_algorithm_instance",
+      "description": "Declares a UETD-native algorithm constructor by its short DSL_descriptor from the main UETD module index, then binds settings and ports in implementation.",
+      "syntax": "algorithm NAME: DSL_DESCRIPTOR; ... implementation { algorithm NAME { named properties; typed bindings; } DSL_DESCRIPTOR; }",
+      "parse_rule": "algorithm_instance",
+      "category": "component",
+      "contract_source": "UETD module registry and authoring contract"
+    },
+    "custom_algorithm": {
+      "lowering_rule": "standalone_custom_algorithm",
+      "description": "Declares and defines a project-local algorithm from an explicit typed interface, state, parameters, and bounded lifecycle equations. The interface is its contract; no UETD algorithm ID or arbitrary source body is implied.",
+      "syntax": "custom algorithm NAME; ... implementation { custom algorithm NAME { input x: TYPE; output y: TYPE; state x0: TYPE; parameter kp: TYPE; step(dt: TYPE) { ... } } }",
+      "parse_rule": "custom_algorithm_definition",
+      "category": "implementation",
+      "contract_source": "Explicit project-local interface and bounded equation stages"
+    },
+    "hybrid_algorithm": {
+      "lowering_rule": "hybrid_algorithm_instance",
+      "description": "A language-owned composition of declared algorithms. Explicit ports, aliased members, source-ordered stage calls, lazy first-match choices, same-type outputs, failure behavior, and an execution budget form its contract; no UETD hybrid-strategy module is required.",
+      "syntax": "hybrid algorithm NAME; ... implementation { hybrid algorithm NAME { input; output; use member as alias; stage result = alias(named_arguments) [when guard]; choose output { when condition: expression; otherwise: expression; } output output = expression; on_failure = ...; } }",
+      "parse_rule": "hybrid_algorithm_definition",
+      "category": "composition",
+      "contract_source": "UETD member algorithm contracts plus explicit project-local interface"
+    },
+    "choose_output": {
+      "lowering_rule": "ordered_lazy_output_selection",
+      "description": "Selects one typed hybrid output by the first true condition. Later branch expressions are not evaluated, so invalid skipped-stage results cannot leak into the selected value.",
+      "syntax": "choose OUTPUT { when CONDITION: EXPRESSION; ... otherwise: EXPRESSION; }",
+      "parse_rule": "choose_output",
+      "category": "composition"
+    },
+    "subsystem": {
+      "lowering_rule": "subsystem_wrapper",
+      "description": "Defines a reusable function-like wrapper over declared callable members. Typed public ports state update/freshness/clock contracts; each source-ordered stage invokes one member with named arguments; outputs are returned explicitly. Membership without a stage call has no execution meaning.",
+      "syntax": "subsystem NAME; ... implementation { subsystem NAME { input value : TYPE { rate = ...; max_age = ...; }; output result : TYPE; use member as alias; stage step = alias(named_arguments); output result = step.port; } }",
+      "parse_rule": "subsystem_definition",
+      "category": "composition",
+      "contract_source": "UETD/project member contracts and explicit typed subsystem interface"
+    },
+    "state_machine": {
+      "lowering_rule": "state_machine_component",
+      "description": "Inside operatingsystem, declares the finite state set, initial state, one scheduled owner, explicit state-snapshot consumers, guarded transitions, and optional entry/exit actions. The owner alone initializes and evaluates the FSM. Consumers receive independent read-only state snapshots.",
+      "syntax": "state_machine mode : Mode { state safe; state active; initial safe; owner = control_task; consumers = [logger]; transition safe -> active when safety.permitted; }",
+      "parse_rule": "state_machine_decl",
+      "category": "runtime_control"
+    },
+    "model": {
+      "lowering_rule": "standalone_model",
+      "description": "Declares and later defines continuous/discrete system dynamics using state-space matrices or explicit nonlinear equations.",
+      "syntax": "model NAME: continuous|discrete; ... implementation { model NAME { state/input/output; linear|equations; jacobians?; } }",
+      "parse_rule": "model_definition",
+      "category": "mathematical_model"
+    },
+    "protocol": {
+      "lowering_rule": "uetd_protocol_instance",
+      "description": "Declares and configures one UETD-native protocol implementation.",
+      "syntax": "protocol NAME: UETD_PROTOCOL_ID; ... implementation { protocol NAME { ... } UETD_PROTOCOL_ID; }",
+      "parse_rule": "protocol_instance",
+      "category": "component",
+      "contract_source": "UETD protocol manifests"
+    },
+    "custom_protocol": {
+      "lowering_rule": "standalone_custom_protocol",
+      "description": "Declares a project-local wire protocol and defines framing, typed message layouts, derived flags, checksum, parser states, freshness, sequence handling, malformed-frame behavior, and bounded queue policy.",
+      "syntax": "custom protocol NAME; ... implementation { custom protocol NAME { transport; framing; checksum; message; state_machine; behavior; } }",
+      "parse_rule": "custom_protocol_definition",
+      "category": "protocol_definition",
+      "contract_source": "UETD generic protocol-runtime contracts"
+    },
+    "implementation": {
+      "lowering_rule": "implementation_collection",
+      "description": "Contains one detailed body for each constructor signature after the operating-system declaration.",
+      "syntax": "implementation { sensor imu { ... } imu_descriptor; algorithm controller { ... } algorithm_descriptor; model plant { ... } }",
+      "parse_rule": "implementation_block",
+      "category": "project_section"
+    },
+    "operatingsystem": {
+      "lowering_rule": "operatingsystem_root",
+      "description": "Selects a registered runtime and owns modes, scheduled tasks, channels, resources, interrupts, timing constraints, and exactly one required component-failure policy. Tasks may be direct children; tasksets are optional shared scheduling/core/resource scopes.",
+      "syntax": "operatingsystem NAME { runtime = BareMetal; loop ...; } | operatingsystem NAME { runtime = FreeRTOS; component_failure_policy = assert_safe_state; state_machine ...; task ...; taskset core_scope { core = M7; scheduler = fixed_priority; task ...; } }",
+      "parse_rule": "operatingsystem",
+      "category": "root",
+      "contract_source": "UETD module/runtime and target registries"
+    },
+    "loop": {
+      "lowering_rule": "baremetal_main_loop",
+      "description": "One recurring, cooperative application invocation owned by a BareMetal operating system.",
+      "syntax": "loop NAME { run = callable(named_input = value); rate = RATE; deadline = DURATION; on_miss = registered_policy; }",
+      "parse_rule": "loop_block",
+      "category": "runtime"
+    },
+    "task_run": {
+      "lowering_rule": "scheduled_component_invocation",
+      "description": "Invokes one declared component or subsystem on each task activation. Channel-bound component inputs are supplied by their declared routes; explicit named arguments must supply every remaining required input exactly once. Results publish atomically after successful completion. A failure invokes the operating-system component_failure_policy unless a stage specifies an approved local response.",
+      "syntax": "task NAME { run = component(input = expression); rate = ...; priority = ...; }",
+      "parse_rule": "task_run_decl",
+      "category": "runtime",
+      "contract_source": "UETD component and project subsystem contracts"
+    },
+    "composition_stage": {
+      "lowering_rule": "ordered_component_call",
+      "description": "Invokes one locally aliased component exactly once at this position in a subsystem or hybrid activation. Its result is available to subsequent stages, not earlier ones. Only hybrid stages may have a guard.",
+      "syntax": "stage result = alias(input = expression) [when condition] [on_failure = expression];",
+      "parse_rule": "stage_call",
+      "category": "composition"
+    },
+    "map": {
+      "lowering_rule": "typed_record_construction",
+      "description": "Builds one fixed-shape declared record from named fields. Every field is supplied exactly once and each expression is checked against its declared type and unit.",
+      "syntax": "map(field = expression, ...)",
+      "parse_rule": "map_expression",
+      "category": "expression"
+    },
+    "convert_unit": {
+      "lowering_rule": "checked_unit_conversion",
+      "description": "Explicit checked conversion between compatible registered units using the exact scale and offset from UETD.",
+      "syntax": "convert_unit<TARGET_UNIT>(expression)",
+      "parse_rule": "unit_conversion_expression",
+      "category": "expression",
+      "contract_source": "UETD unit registry"
+    },
+    "select": {
+      "lowering_rule": "lazy_typed_conditional",
+      "description": "Evaluates its condition and only the selected value expression. Both branches must have the same type, unit, and shape.",
+      "syntax": "select(condition, if_true, if_false)",
+      "parse_rule": "select_expression",
+      "category": "expression"
+    },
+    "taskset": {
+      "lowering_rule": "runtime_schedule",
+      "description": "Optional group for work sharing a core, scheduler/tick policy, memory/channel policy, or resource/interrupt ownership. Use direct OS tasks when no shared grouping contract exists.",
+      "syntax": "taskset NAME { core = M7; scheduler = fixed_priority; task ...; channel ...; interrupt ...; }",
+      "parse_rule": "taskset_block",
+      "category": "runtime",
+      "contract_source": "UETD runtime and target registries"
+    },
+    "interrupt": {
+      "lowering_rule": "task_interrupt",
+      "description": "Binds a target interrupt source to a handler and fixed priority. A component.operation handler must be published as ISR-safe by its UETD contract; a project routine must declare context = isr_signal_only; a task or loop handler is a deferred target and requires interrupt context = isr_signal_only.",
+      "syntax": "interrupt NAME { source = ID; handler = COMPONENT.operation | PROJECT_ROUTINE | TASK; priority = N; context = isr_signal_only; }",
+      "parse_rule": "taskset_block",
+      "category": "runtime",
+      "contract_source": "UETD chip, peripheral, and runtime registries"
+    },
+    "channel": {
+      "lowering_rule": "task_channel",
+      "description": "Declares bounded storage, one producer, and explicit task subscribers for a typed value route. Every subscriber receives its own bounded mailbox copy; subscribers never compete for one shared queue item. A component input destination is bound only to the one subscribed task that runs that component and must not also appear in that task's run arguments. Other subscribers read their own immutable channel.value snapshot. A task-trigger destination declares a subscriber event; channel.not_empty may wake that task and its notification is acknowledged at activation start. BareMetal uses bounded cooperative delivery from its single loop; RTOS uses runtime-synchronized per-subscriber delivery.",
+      "syntax": "channel NAME { source = COMPONENT.port; destination = COMPONENT.input | TASK.trigger | ENDPOINT.send.MESSAGE; producer = TASK; consumers = [TASK, ...]; capacity = N; overflow = POLICY; maximum_age = DURATION; ownership = POLICY; memory_region = REGION; }",
+      "parse_rule": "taskset_block",
+      "category": "runtime",
+      "contract_source": "UETD target and runtime registries"
+    },
+    "equation": {
+      "lowering_rule": "custom_equation",
+      "description": "Declares one bounded mathematical assignment in a model or custom algorithm stage.",
+      "syntax": "target = expression;",
+      "parse_rule": "equation",
+      "category": "mathematics",
+      "contract_source": "UETD math-function and numeric capability registries"
+    },
+    "bounded_for": {
+      "lowering_rule": "bounded_loop",
+      "description": "Repeats algorithm statements over a compile-time finite integer range; generated work has a statically provable upper bound.",
+      "syntax": "for i in 0 .. N { ... }",
+      "parse_rule": "bounded_loop_statement",
+      "category": "control_flow"
+    },
+    "conditional": {
+      "lowering_rule": "conditional_branch",
+      "description": "Selects equation blocks using a boolean expression; branches are statically checked for compatible outputs and bounded work.",
+      "syntax": "if condition { ... } else { ... }",
+      "parse_rule": "conditional_statement",
+      "category": "control_flow"
+    },
+    "record": {
+      "lowering_rule": "signal_declaration",
+      "description": "Declares a fixed-shape typed application record used by subsystem, algorithm, task, and link contracts.",
+      "syntax": "record NAME { field : TYPE; ... }",
+      "parse_rule": "typed_binding",
+      "category": "application_type"
+    },
+    "received_envelope": {
+      "lowering_rule": "received_envelope_type",
+      "description": "UETD protocol endpoint receive values pair the logical payload with its frame sequence and receiver-local monotonic timestamp. The metadata is generated by the receiver, not encoded in the message payload.",
+      "syntax": "Received<LOGICAL_MESSAGE_RECORD>",
+      "parse_rule": "received_type_spec",
+      "category": "transport_type",
+      "contract_source": "UETD fpga endpoint contract and imported protocol message"
+    },
+    "registered_module": {
+      "lowering_rule": "uetd_component_instance",
+      "description": "Declares any directly authorable UETD module by its own DSL_descriptor identifier when no role-specific declaration applies; e.g. watchdog safety_timer; or fpga coil_link;.",
+      "syntax": "DSL_DESCRIPTOR NAME; ... implementation { DSL_DESCRIPTOR NAME { properties; } }",
+      "parse_rule": "registered_component",
+      "category": "uetd_module",
+      "contract_source": "UETD main module index and linked authoring contract"
+    },
+    "contract_import": {
+      "lowering_rule": "project_metadata",
+      "description": "Imports fixed project-owned types, wire contracts, and endpoint-specific link facts from a parent .uefs system file; it imports no UETD module catalogue and creates no remote calls.",
+      "syntax": "contract import SYSTEM_FILE;",
+      "parse_rule": "property",
+      "category": "project_boundary",
+      "contract_source": "Referenced system composition file"
+    },
+    "enum": {
+      "lowering_rule": "fixed_width_project_enum",
+      "description": "Defines a project-owned nominal finite type with a fixed integer representation. Enum values can be used in records, component ports, protocol fields, state machines, and typed expressions.",
+      "syntax": "enum PilotMode : u8 { manual = 0, assisted = 1 }",
+      "parse_rule": "enum_decl",
+      "category": "type",
+      "contract_source": "project source or imported .uefs contract"
+    },
+    "variant": {
+      "lowering_rule": "tagged_variant",
+      "description": "Declares a closed, fixed-width tagged sum with statically bounded payload fields.",
+      "syntax": "variant NAME : u8 { case none = 0; case value = 1 { sample : f32; } }",
+      "parse_rule": "variant_decl",
+      "category": "application_type"
+    },
+    "flags": {
+      "lowering_rule": "nominal_flags",
+      "description": "Declares a nominal flags type using unique bit positions in fixed-width storage.",
+      "syntax": "flags NAME : u16 { ready = 0; fault = 1; }",
+      "parse_rule": "flags_decl",
+      "category": "application_type"
+    },
+    "fixed_type": {
+      "lowering_rule": "fixed_point_format",
+      "description": "Declares a signed binary fixed-point type with explicit unit, scale, rounding, and overflow rules.",
+      "syntax": "fixed NAME : i32 { fractional_bits = 20; unit = V; rounding = nearest_even; overflow = reject; }",
+      "parse_rule": "fixed_type_decl",
+      "category": "application_type"
+    },
+    "shared_record": {
+      "lowering_rule": "shared_memory_record",
+      "description": "Declares a record intended for a shared-memory boundary; it does not define protocol wire layout.",
+      "syntax": "shared_record NAME { version = 1; field : TYPE; }",
+      "parse_rule": "boundary_record_decl",
+      "category": "application_type"
+    },
+    "persistent_record": {
+      "lowering_rule": "persistent_record",
+      "description": "Declares a versioned persistent record with explicit schema, integrity, and migration policy.",
+      "syntax": "persistent_record NAME { version = 1; schema_id = stable_id; integrity = crc32; migration_policy = reject; field : TYPE; }",
+      "parse_rule": "boundary_record_decl",
+      "category": "application_type"
+    },
+    "match_expression": {
+      "lowering_rule": "exhaustive_match",
+      "description": "Selects one typed result by matching every case of a declared variant, Option<T>, or Result<T,E>, unless an explicit default arm is present.",
+      "syntax": "match value { case Type.case(binding): expression; otherwise: expression; }",
+      "parse_rule": "match_expression",
+      "category": "expression"
+    },
+    "bounded_buffer_type": {
+      "lowering_rule": "bounded_byte_buffer",
+      "description": "Declares fixed-capacity byte or UTF-8 storage using a positive compile-time byte capacity.",
+      "syntax": "Bytes[N] | Utf8[N]",
+      "parse_rule": "bounded_buffer_type",
+      "category": "application_type"
+    }
+  },
+  "builtins": {
+    "map": {
+      "parse_rule": "dsl_map_expression",
+      "lowering_rule": "dsl_value_map",
+      "syntax": "signal NAME = map(field = expression, ...);",
+      "description": "Builds a statically typed named value from bounded expressions. The output fields are project-local values, not graph nodes or UETD modules.",
+      "field_policy": "unique_named_expressions",
+      "fields": []
+    },
+    "select": {
+      "parse_rule": "dsl_select_expression",
+      "lowering_rule": "dsl_conditional_value",
+      "syntax": "select(condition, if_true, if_false)",
+      "description": "Selects between two same-typed bounded values using a boolean condition. The condition and selected branch are evaluated lazily; the unselected branch is not evaluated.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "condition",
+          "value_kind": "boolean_expression",
+          "required": true
+        },
+        {
+          "name": "if_true",
+          "value_kind": "expression",
+          "required": true
+        },
+        {
+          "name": "if_false",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    },
+    "Some": {
+      "parse_rule": "variant_constructor",
+      "lowering_rule": "option_result",
+      "syntax": "Some(value)",
+      "description": "Constructs the present case of an expected Option<T> value.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "value",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    },
+    "None": {
+      "parse_rule": "variant_constructor",
+      "lowering_rule": "option_result",
+      "syntax": "None",
+      "description": "Constructs the absent case of an expected Option<T> value.",
+      "field_policy": "fixed",
+      "fields": []
+    },
+    "Ok": {
+      "parse_rule": "variant_constructor",
+      "lowering_rule": "option_result",
+      "syntax": "Ok(value)",
+      "description": "Constructs the successful case of an expected Result<T,E> value.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "value",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    },
+    "Err": {
+      "parse_rule": "variant_constructor",
+      "lowering_rule": "option_result",
+      "syntax": "Err(error)",
+      "description": "Constructs the error case of an expected Result<T,E> value.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "error",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    },
+    "has": {
+      "parse_rule": "flags_operation",
+      "lowering_rule": "nominal_flags",
+      "syntax": "has(value, Type.member)",
+      "description": "Tests whether a nominal flags value contains a declared flag.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "value",
+          "value_kind": "expression",
+          "required": true
+        },
+        {
+          "name": "member",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    },
+    "set": {
+      "parse_rule": "flags_operation",
+      "lowering_rule": "nominal_flags",
+      "syntax": "set(value, Type.member)",
+      "description": "Returns a flags value with one declared bit set.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "value",
+          "value_kind": "expression",
+          "required": true
+        },
+        {
+          "name": "member",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    },
+    "clear": {
+      "parse_rule": "flags_operation",
+      "lowering_rule": "nominal_flags",
+      "syntax": "clear(value, Type.member)",
+      "description": "Returns a flags value with one declared bit cleared.",
+      "field_policy": "fixed",
+      "fields": [
+        {
+          "name": "value",
+          "value_kind": "expression",
+          "required": true
+        },
+        {
+          "name": "member",
+          "value_kind": "expression",
+          "required": true
+        }
+      ]
+    }
+  },
+  "value_forms": [
+    "finite_number_with_optional_unit",
+    "string",
+    "boolean",
+    "registry_identifier",
+    "typed_component_reference",
+    "vector_literal",
+    "matrix_literal",
+    "bounded_math_expression",
+    "dsl_named_record_map",
+    "dsl_conditional_select",
+    "variant_constructor",
+    "match_expression",
+    "nominal_flags_operation",
+    "bounded_utf8_literal"
+  ],
+  "forbidden_forms": [
+    "embedded_c_or_cpp",
+    "embedded_python",
+    "arbitrary_function_body",
+    "unbounded_or_runtime_bounded_loop",
+    "recursion",
+    "dynamic_allocation",
+    "import_or_file_access",
+    "shell_command",
+    "dynamic_code_execution"
+  ],
+  "lowering_rules_are_dispatch_ids_only": true,
+  "semantics": {
+    "target_identifier": "target is an exact UETD chip or development-board ID string; it is never normalized or guessed",
+    "enum_values": "Every enum has fixed-width signed or unsigned integer storage. Explicit values are ABI-stable; omitted values take the previous value plus one in declaration order, starting at zero. Values must fit the storage type and be unique.",
+    "state_machine_type": "A state_machine declares its complete state set inline using state NAME; declarations precede initial and transition declarations. The identifier after ':' names a synthesized project enum type with u8 storage and source-order ordinal values. Exactly one initial state, one owner = TASK|LOOP, and one consumers = [TASK, ...] list are required. Consumers may be empty. The owner is the only context allowed to initialize, process, reset, or call callbacks on the UETD uapp_statemachine instance; each listed RTOS task receives a race-free latest-value state mailbox that replaces stale snapshots. Consumers are sampled at their own scheduler activation; listing a consumer does not wake or reprioritize it. BareMetal has one loop owner and no task consumers. After a successful owner invocation, guards read one immutable activation snapshot before any FSM commit in that activation; FSMs with the same owner share that snapshot and are evaluated in declaration order. The first matching transition in source order wins, including any-source transitions, and at most one transition commits per machine per owner activation. An any source is expanded to exact source-state rows, including its destination, to map to UETD's exact-source transition table. The shared UETD compile capacities must be at least the largest per-machine state and expanded transition-row requirements; the backend sets them consistently across every translation unit. UETD's u8 counts impose a maximum of 255 states and 255 transition rows per machine. A same-state transition is external and executes exit then entry again. Any-transition level guards can repeat entry actions, so exclude the destination or use an edge/one-shot condition when that is not intended. Owner tasks cannot be gated by when. A BareMetal loop ticks its machines once per iteration. Entry/exit hooks execute synchronously in owner context, must be bounded and non-blocking, and propagate UETD status; project routines used as hooks must be zero-argument and declared returns status. Generated UEF-PL hooks must not post arbitrary events to their owning UAPP instance; external input is delivered to the owner snapshot through its declared ingress routes. Callback failure latches the UETD machine fault, clears its pending work, and follows the required component_failure_policy; recovery must make outputs safe before reset. This frontend emits backend-neutral input only; it does not yet emit executable firmware.",
+    "implementation_descriptor_match": "Every implementation body whose constructor selects a UETD registry descriptor ends with that exact DSL_descriptor followed by a semicolon. The suffix is a visible confirmation of the constructor contract, not a second selection point; mismatches are errors. Project-local custom algorithms, custom protocols, models, hybrids, and subsystems have no UETD module suffix.",
+    "transition_order": "At each owner-task activation, receive/bind synchronized channel input before invoking the owner's component operation. If that invocation fails, follow component_failure_policy and do not evaluate guards or commit an FSM transition from incomplete outputs. On success, capture one coherent immutable snapshot of the task inputs and completed outputs, evaluate each owned machine in declaration order, and commit at most one transition per machine without cascading. A consumer task observes its own published latest-value state mailbox at its independently scheduled activation; subscription alone does not wake or reprioritize that task. Publication is race-free and replaces stale snapshots rather than queueing state-change history. For each UETD uapp_statemachine, the future adapter posts one private synthetic tick from the owner, expands any into exact-source rows in source order, and calls process_one once. External tasks and ISRs update the owner's inputs through declared synchronized ingress, never by direct calls to the UAPP instance. Generated UEF-PL callbacks must not post arbitrary events to their owning UAPP instance. Critical input overflow requires a reliable sticky cause/mailbox or independent hardware-safe action because ordinary queue overflow may reject it.",
+    "state_machine_backend_status": "The .uef frontend parses, validates, and lowers owner and consumer contracts into backend-neutral application data, including required_state_capacity and required_transition_capacity after any expansion. No firmware emitter currently consumes that data. The selected UETD mapping uses one uapp_statemachine instance per declaration, called only by its owner task/loop. The emitter must choose global UAPP_SM_MAX_STATES and UAPP_SM_MAX_TRANSITIONS at least as large as the maxima required by any one machine, bounded by 255, and publish the same definitions to UETD and generated consumers. RTOS ingress comes through synchronized UOS queues/notifications; BareMetal uses its sole cooperative loop and ISR-safe latches/signals, not unsupported RTOS queues or direct ISR calls. State subscribers use independent bounded latest-value mailboxes with coherent publication; channel subscribers use independent bounded FIFO mailboxes. A shared RTOS queue with several receivers is work-sharing and is not valid fan-out. The exact runtime must supply the required atomic publication, queue, and notification behavior before generation is enabled.",
+    "expression_types": "Values include finite literals; bool; the exact UETD numeric DSL aliases and contract-approved UETD by-value types; project and imported nominal records, enums, variants, flags, and fixed-point types; fixed-shape arrays/matrices; Received<T>, Option<T>, Result<T,E>, Bytes[N], and Utf8[N]. UETD aliases, units, and UMATH signatures resolve only through API-linked UETD registries. Discovery alone does not make a C declaration a legal value type. No implicit numeric, enum/integer, unit, shape, record, or boundary conversions are allowed.",
+    "expression_operators": "Member/index/slice, right-associative **, unary + - not, * /, + -, one non-associative comparison, nominal flags &, ^, |, boolean and, then boolean or. Flags operators require matching nominal flags types and use C-like bitwise precedence; ^ is a bitwise operator in expressions and a unit exponent only inside type/unit syntax. and/or short-circuit left-to-right.",
+    "index_safety": "An index is an integer and each array dimension is fixed. Check proves every index and half-open slice stays within bounds from compile-time constants and bounded-loop ranges; if it cannot prove safety, check rejects the access. Generated code never relies on C/C++ out-of-bounds behavior.",
+    "expression_builtins": "map(name = value, ...) constructs the fixed record required by its type context, with every declared field exactly once. select(condition, yes, no) evaluates only the selected branch and both branches have identical type, unit, and shape. cast<T>(value) changes numeric representation only, preserves unit, and checks range/overflow. convert_unit<TARGET_UNIT>(value) explicitly converts compatible units using exact registry scale/offset; it preserves shape and scalar representation, rejects affine products, and checks finite/range policy. Neither builtin converts enums or records. An identifier call resolves only through an exact UETD UMATH registry dsl_name; the corresponding C name is hidden. Registry function calls are legal only in custom algorithm and nonlinear model implementation bodies, use the DSL signature, and lower through the reviewed binding contract. C pointer outputs and status returns are handled by the backend; an incomplete binding, unknown function, non-ready implementation, or call elsewhere is an error. Arbitrary function invocation is forbidden. Some(value), None, Ok(value), and Err(error) construct only the expected Option<T>/Result<T,E> case; match is exhaustive unless it declares an explicit default, scopes payload bindings to one arm, and requires identical result types. has/set/clear operate only on a declared member of the same nominal flags type.",
+    "operator_binding_resolution": "A typed operator overload may lower through a UETD UMATH function only when that function's reviewed binding contract explicitly lists the operator spelling and a matching DSL signature. Resolve by operand type, unit, shape, and overload signature; zero matches or multiple matches are errors. The selected function uses the same custom-algorithm/nonlinear-model scope restriction, implementation readiness, fixed output/work storage, and failure propagation as its named dsl_name call. Scalar arithmetic follows the project numeric profile unless its owning UETD operator contract explicitly binds a checked UETD operation.",
+    "umath_call_scope": "Only UETD UMATH functions named by dsl_name in the UETD function registry may be called in custom algorithm implementation bodies and nonlinear model implementation/equation bodies. The C umath_* symbol, raw pointer arguments, and C status return are hidden. The registry binding maps a typed DSL signature/result to the exact C ABI, statically bounded scratch/output storage, and failure propagation. UMATH calls are prohibited in OS guards, module settings, subsystem/hybrid orchestration, ordinary component configuration, protocol declarations, and .uefs link configuration. Resolve signatures and binding metadata from UETD/api.json-linked registries; verify types, shapes/bounds, aliasing, units/numeric effects, status handling, target/runtime availability, and bounded work/scratch.",
+    "power_operator": "The ** operator accepts a scalar base and compile-time integer exponent from -16 through 16. The exponent is dimensionless; result dimensions and exact scales are raised to that integer power. Negative powers check division by zero. Arrays, matrices, and affine absolute quantities are rejected; use a registered UMATH DSL function for other math.",
+    "bounded_iteration": "Custom algorithm loops use a statically known half-open integer range [start:end). Bounds and nested operation counts must be provably finite at check time. No recursion, data-dependent loop, allocation, pointer arithmetic, I/O, or arbitrary function call is allowed.",
+    "composition_execution": "A task has one run invocation naming a callable operation declared by that component's UETD authoring contract. Channel-bound inputs are supplied by their declared routes; explicit named arguments must supply every remaining required input exactly once, and the combined bindings must match the complete typed signature. Each subsystem or hybrid stage calls one locally aliased component exactly once per parent activation in source order; only hybrid stages may be guarded. A result is readable only after its stage. Hybrid choose branches are first-match, type-compatible, and lazy; every output has exactly one selected value, including the required otherwise branch. Subsystem outputs commit as one snapshot after successful completion. Any component failure follows the required operating-system component_failure_policy unless an explicitly UETD-approved local policy handles it.",
+    "composition_locals": "A typed let local is immutable, evaluated once at its source position, and may reference only ports, project values, or earlier local/stage results. Locals cannot shadow ports, members, UETD identifiers, or other locals. A local cannot invoke a component; component invocation is reserved for stage calls.",
+    "algorithm_state_commit": "A custom algorithm activation evaluates into bounded temporary outputs and next-state values. It commits them atomically only if all statements complete without an arithmetic, bounds, or component error; otherwise it reports failure and preserves the prior committed state and outputs.",
+    "lvalue_rules": "Assignments target one declared scalar, record field, or single array element. Slices are read-only expression values and cannot be assignment targets, avoiding overlapping-copy and evaluation-order ambiguity.",
+    "boolean_order": "not binds before arithmetic and comparisons, then and, then or. Operators at one precedence level evaluate left to right; and/or short-circuit.",
+    "source_execution": "Only explicit custom-algorithm lifecycle stages, subsystem stages, hybrid stages/choices, protocol field/fragment order where the protocol contract says it matters, FSM transition order, and UETD runtime schedule policies define execution order. Other declaration or property order has no runtime meaning.",
+    "numeric_determinism": "Numeric operations use an explicit project numeric profile and typed UETD operation contracts. Integer division truncates toward zero; division by zero, invalid domains, overflow, non-finite results, and failed bounds checks produce a component error handled by the declared runtime/component-failure contract; no partial output or state is committed. Integer shifts and remainder are defined only by registered UETD integer functions; flags bit operations use the nominal flags rules. Rounding, matrix layout, and contraction/FMA behavior are never inferred by a backend; unsupported target semantics block generation. Unit conversions use convert_unit and the exact scale/offset contract in UETD's unit registry.",
+    "type_checking": "Every expression is checked for nominal type, signedness, width, unit identity/dimension/exact scale/offset, array rank/shape, record field set, and finite/range requirements. No implicit numeric promotion, unit conversion, array broadcasting, enum/integer conversion, or record structural coercion is allowed. A cast must name its destination type and the project overflow/rounding behavior; convert_unit must name a compatible target unit and applies its exact scale/offset; affine quantities cannot be multiplied, divided, or exponentiated. Absolute-temperature addition/subtraction follows the documented affine rules. Range loss is an error unless an explicit saturating UETD operation is used.",
+    "model_completeness": "A continuous model defines exactly one derivative equation for every state and one equation for every output; a discrete model defines exactly one next-state equation per state and every output. The derivative/next target is an explicit state path and is never inferred from a *_dot naming convention. Linear models declare dimension-compatible A/B/C/D matrices and explicit state/input/output order. Continuous discretization names a UETD-registered method and period. Jacobians name the differentiated equations, state/input order, and dimensions. Unassigned, duplicate, algebraically cyclic, dimensionally invalid, or non-finite equations block check.",
+    "protocol_layout": "Every wire message declares finite size, encoding, and logical_type or raw_payload = true. Each logical field maps exactly once unless marked protocol_internal; serialized field offsets are relative to that message payload after the declared header/sequence, while header and sequence offsets are absolute frame offsets. Fragment fields are relative to that fragment payload. Byte order, bit order (bit zero is least-significant unless explicitly stated), signed encoding, scale, rounding, overflow, reserved bits, version, sequence, checksum coverage/placement, and freshness behavior are explicit. Scale is decoded_value = wire_integer * scale + offset; encoding applies the inverse then the declared rounding and overflow policy. Layout validation rejects overlap, gaps unless reserved, out-of-bounds fields, duplicate IDs, lossy implicit conversions, and ambiguous checksum ranges. Received<T> payload and transport metadata are distinct typed values. The UETD generic protocol runtime contract provides the typed encode/decode/send/receive operations for a protocol declaration; their argument, result, and failure signatures are part of that runtime contract, not guessed by the DSL. Protocol coordination is expressed through registered protocol operations and OS channels.",
+    "numeric_literals": "Only finite decimal/scientific literals and hexadecimal integer literals are accepted. An integer literal uses its unique expected integer type or defaults to i32; it must fit before evaluation. NaN, infinity, locale separators, implicit unit suffixes, and overflowed literals are errors. Units are separate tokens and must resolve to UETD unit IDs.",
+    "runtime_model": "BareMetal requires exactly one direct loop child and forbids tasks/tasksets that imply an RTOS scheduler. That loop may own FSMs and evaluates each once per iteration; it uses cooperative bounded delivery and no RTOS mutex/queue assumption. FreeRTOS and other RTOS runtimes use tasks; each FSM names one non-conditional owner task with a declared rate/period or trigger, and state consumers remain independently scheduled. The owner does not own or serialize the scheduler: other tasks react to explicit mailbox commands/state copies, and safety-critical hardware inhibition remains independent of ordinary FSM queues. Tasksets remain optional shared-policy scopes.",
+    "runtime_determinism": "Every task binds a registered callable operation and has a defined trigger or period, priority, deadline, stack/memory contract where required by the runtime, and miss/failure policy. FSM owners are never conditional tasks; their rate/period or trigger defines the activation boundary. The owner runs its component invocation before snapshot evaluation. The runtime defines ready-queue tie-breaking, preemption, timer resolution, ISR rules, channel publication/consumption atomicity, per-consumer mailbox behavior, and resource arbitration. A channel with N subscribers creates N independent deliveries; one queue with N receivers is not broadcast. Missing runtime facts are validation errors; source order never acts as an undocumented scheduler priority.",
+    "memory_safety": "All arrays, records, queues, channel capacities, protocol buffers, stacks, and loop bounds are statically bounded. Aliases, pointers, heap allocation, recursion, user I/O, dynamic dispatch, and runtime-sized containers are not expressible. Cross-core or external data crosses only through declared channels or typed protocol endpoints with an ownership, age, and synchronization contract.",
+    "static_resolution": "Names are case-sensitive and resolve only to project declarations, imported system contracts, or exact UETD registry contracts. Every property and policy must resolve to a typed contract; unknown settings are errors, never silently accepted strings.",
+    "generation": "Compilation produces a source-located typed application specification; it does not execute the DSL. The generator consumes this finite data model plus UETD generation routes and emits code/build metadata."
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "sources": [
+    "src/umid/drivers/fpga.c"
+  ],
+  "dependencies": [],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/time.h",
+    "include/ucore/types.h",
+    "include/umid/drivers/fpga.h"
+  ],
+  "authoring": {
+    "contract_version": "1.0",
+    "status": "reviewed",
+    "kind": "module",
+    "display_name": "FPGA communications endpoint",
+    "description": "UETD-owned MCU-side endpoint state for a project-declared protocol. The protocol defines typed messages, framing, timing, and validity rules; UETD builds the MCU codec and this module tracks link qualification and valid received data. It defines no peer identity handshake, hardware driver, or FPGA RTL.",
+    "parameters": [],
+    "ports": [
+      {
+        "id": "connected",
+        "direction": "output",
+        "value_type": "bool",
+        "units": "1",
+        "dimension": 1,
+        "optional": false,
+        "description": "True while the selected MCU transport/protocol reports the external FPGA endpoint as link-qualified."
+      },
+      {
+        "id": "has_valid_data",
+        "direction": "output",
+        "value_type": "bool",
+        "units": "1",
+        "dimension": 1,
+        "optional": false,
+        "description": "True after at least one complete validated protocol update and until the protocol timeout, link loss, parser fault, or reset invalidates it."
+      },
+      {
+        "id": "last_valid_message_at_us",
+        "direction": "output",
+        "value_type": "u64",
+        "units": "us",
+        "dimension": 1,
+        "optional": false,
+        "description": "Receiver-local monotonic timestamp of the most recent complete validated update."
+      }
+    ],
+    "numerics": {
+      "constraints": [
+        "Freshness is evaluated only in the receiving MCU's monotonic clock domain.",
+        "The generated protocol parser reports an update only after its declared framing, sequence, message, transaction, and integrity checks pass.",
+        "A link drop or expired protocol validity invalidates cached data before the application can use it.",
+        "Message fields and their wire encoding are supplied by the project protocol; this module defines no identity, contract-ID, or contract-hash fields."
+      ]
+    },
+    "scheduling": {
+      "contexts": [
+        "task",
+        "main"
+      ]
+    },
+    "composition": {
+      "supports_multi_rate": false,
+      "supports_mode_switching": false,
+      "supports_blending": false,
+      "required_blocks": []
+    },
+    "operations": [
+      {
+        "id": "set_link_qualified",
+        "symbol": "umid_fpga_set_link_qualified",
+        "description": "Update local link qualification from the selected transport/protocol; qualification loss clears cached valid data.",
+        "result": "status",
+        "arguments": [
+          {
+            "id": "qualified",
+            "value_type": "bool",
+            "description": "Whether the transport/protocol currently considers the FPGA endpoint link-qualified."
+          }
+        ]
+      },
+      {
+        "id": "note_valid_message",
+        "symbol": "umid_fpga_note_valid_message",
+        "description": "Record the receiver-local time of a complete message or transaction after the generated parser validates it.",
+        "result": "status",
+        "arguments": [
+          {
+            "id": "received_at_us",
+            "value_type": "u64",
+            "unit": "us",
+            "description": "Monotonic timestamp from the receiving MCU."
+          }
+        ]
+      },
+      {
+        "id": "invalidate_data",
+        "symbol": "umid_fpga_invalidate_data",
+        "description": "Invalidate cached peer data after timeout, malformed input, reset, or protocol-defined session loss.",
+        "result": "void"
+      },
+      {
+        "id": "is_data_fresh",
+        "symbol": "umid_fpga_is_data_fresh",
+        "description": "Check the last validated update against an application or protocol age limit using the receiver-local clock.",
+        "result": "status",
+        "arguments": [
+          {
+            "id": "now_us",
+            "value_type": "u64",
+            "unit": "us",
+            "description": "Current time from the same receiving MCU monotonic clock."
+          },
+          {
+            "id": "maximum_age_us",
+            "value_type": "u64",
+            "unit": "us",
+            "description": "Maximum permitted age for the selected protocol data."
+          }
+        ]
+      }
+    ],
+    "generation": {
+      "status": "ready",
+      "route_id": "umid_fpga",
+      "template_paths": [],
+      "notes": [
+        "UETD derives typed send/receive message ports from the project's declared protocol and selected .uefs link role.",
+        "Every active wire field maps explicitly to a logical-record field; every active message is bound once by a component assignment or operating-system channel.",
+        "UETD generates the MCU-side encoder/parser, protocol conversions, and receiver-local message timing from those declarations.",
+        "The external FPGA design and its RTL/bitstream remain consumer-authored.",
+        "This module does not add a contract-ID/hash handshake or select an identity/hash encoding."
+      ]
+    },
+    "protocol_endpoint_binding": {
+      "protocol_source": "project_or_imported_contract",
+      "endpoint_role_source": "system_link_contract",
+      "logical_payload_type_source": "imported_protocol_message_contract",
+      "send_namespace": "send",
+      "receive_namespace": "receive",
+      "freshness_namespace": "fresh",
+      "receive_timestamp": "receiver_local_monotonic_clock",
+      "require_explicit_message_bindings": true,
+      "require_wire_field_application_mapping": true,
+      "binding_forms": ["component_assignment", "operating_system_channel"],
+      "unbound_message_policy": "error"
+    }
+  }
+}

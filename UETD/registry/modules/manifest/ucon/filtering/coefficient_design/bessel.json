@@ -1,0 +1,30 @@
+{
+  "sources": [
+    "src/ucon/filtering/coefficient_design/bessel.c"
+  ],
+  "headers": [
+    "include/ucon/filtering/coefficient_design/bessel.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "BESSEL",
+  "priority": "PLANNED",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "A standard low-pass response with low group-delay distortion is useful for sensor conditioning.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_bessel_validate_spec",
+    "ucon_bessel_estimate_order",
+    "ucon_bessel_compute_poles_zeros",
+    "ucon_bessel_pair_sections",
+    "ucon_bessel_normalize_coefficients",
+    "ucon_bessel_design"
+  ],
+  "project_relevance": [
+    "common"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

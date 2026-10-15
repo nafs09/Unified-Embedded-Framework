@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "catalogue_kind": "uetd_tool_packages",
+  "canonical_owner": "UETD",
+  "description": "UETD-owned pins for host build, target compiler, SDK, probe, and flash tools. Records stay scaffold-only until exact versions, per-host packages, SHA-256 hashes, and license handling are verified.",
+  "entries": [
+    { "id": "arm-none-eabi", "path": "registry/targets/toolchains/manifest/arm-none-eabi.json" },
+    { "id": "avr-gcc", "path": "registry/targets/toolchains/manifest/avr-gcc.json" },
+    { "id": "esp-idf-classic-esp32", "path": "registry/targets/toolchains/manifest/esp-idf-classic-esp32.json" },
+    { "id": "cmake", "path": "registry/targets/toolchains/manifest/cmake.json" },
+    { "id": "ninja", "path": "registry/targets/toolchains/manifest/ninja.json" },
+    { "id": "arduino-cli", "path": "registry/targets/toolchains/manifest/arduino-cli.json" },
+    { "id": "arduino-avr-core", "path": "registry/targets/toolchains/manifest/arduino-avr-core.json" },
+    { "id": "arduino-megaavr-core", "path": "registry/targets/toolchains/manifest/arduino-megaavr-core.json" },
+    { "id": "stm32cube-g4", "path": "registry/targets/toolchains/manifest/stm32cube-g4.json" },
+    { "id": "stm32cube-f7", "path": "registry/targets/toolchains/manifest/stm32cube-f7.json" },
+    { "id": "stm32cube-h7", "path": "registry/targets/toolchains/manifest/stm32cube-h7.json" },
+    { "id": "avrdude", "path": "registry/targets/toolchains/manifest/avrdude.json" },
+    { "id": "stm32cubeprogrammer", "path": "registry/targets/toolchains/manifest/stm32cubeprogrammer.json" },
+    { "id": "esptool", "path": "registry/targets/toolchains/manifest/esptool.json" },
+    { "id": "openocd", "path": "registry/targets/toolchains/manifest/openocd.json" },
+    { "id": "pyocd", "path": "registry/targets/toolchains/manifest/pyocd.json" },
+    { "id": "jlink", "path": "registry/targets/toolchains/manifest/jlink.json" },
+    { "id": "dfu-util", "path": "registry/targets/toolchains/manifest/dfu-util.json" },
+    { "id": "ti-uniflash", "path": "registry/targets/toolchains/manifest/ti-uniflash.json" },
+    { "id": "pyserial", "path": "registry/targets/toolchains/manifest/pyserial.json" },
+    { "id": "pyusb", "path": "registry/targets/toolchains/manifest/pyusb.json" }
+  ]
+}

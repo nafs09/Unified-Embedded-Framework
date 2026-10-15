@@ -1,0 +1,11 @@
+{
+  "id": "ti-uniflash",
+  "name": "Texas Instruments UniFlash CLI",
+  "purpose": "flasher",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "macos-x86_64"],
+  "tools": ["dslite"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: verify current vendor installer, supported device families, license and interactive acceptance requirements, executable location, and documented noninteractive CLI behavior."
+}

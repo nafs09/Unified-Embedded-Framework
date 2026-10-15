@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "src/ucon/filtering/runtime/median.c"
+  ],
+  "headers": [
+    "include/ucon/filtering/runtime/median.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "MEDIAN",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_median_validate_config",
+    "ucon_median_init",
+    "ucon_median_reset",
+    "ucon_median_update_state",
+    "ucon_median_process_sample"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

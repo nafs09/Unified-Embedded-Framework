@@ -1,0 +1,60 @@
+{
+  "id": "mimxrt1062cvl5b",
+  "vendor": "NXP",
+  "family_id": "imx-rt1060",
+  "series": "i.MX RT1060",
+  "part_number": "MIMXRT1062CVL5B",
+  "aliases": [
+    "MIMXRT1062"
+  ],
+  "roadmap_phase": 2,
+  "core": {
+    "name": "Cortex-M7",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single and double",
+    "max_frequency_hz": 528000000
+  },
+  "package": {
+    "name": "LFBGA196",
+    "pin_count": 196
+  },
+  "memory": {
+    "flash_bytes": 0,
+    "sram_bytes": 1048576,
+    "notes": "1 MiB on-chip SRAM. The selected RT1062 variant has no on-chip program flash."
+  },
+  "peripheral_groups": [
+    "eDMA",
+    "FlexSPI",
+    "SD/eMMC",
+    "Ethernet",
+    "USB",
+    "CAN",
+    "ADC",
+    "PWM",
+    "UART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "NXP MIMXRT1062CVL5B product page",
+      "url": "https://www.nxp.com/part/MIMXRT1062CVL5B"
+    },
+    {
+      "title": "NXP i.MX RT1060 product page",
+      "url": "https://www.nxp.com/products/i.MX-RT1060"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "on_chip_SRAM",
+    "no_on_chip_flash"
+  ],
+  "generation_available": false,
+  "record_note": "Flashless crossover MCU variant; external FlexSPI memory is required for normal firmware storage. No board memory configuration is included."
+}

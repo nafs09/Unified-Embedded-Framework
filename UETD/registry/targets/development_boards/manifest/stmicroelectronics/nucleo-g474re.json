@@ -1,0 +1,20 @@
+{
+  "id": "nucleo-g474re",
+  "name": "ST NUCLEO-G474RE",
+  "aliases": ["MB1367-G474RE"],
+  "chip_id": "stm32g474ret6",
+  "clock_sources": {},
+  "reserved_pins": [],
+  "source_references": [
+    {
+      "title": "ST NUCLEO-G474RE product page",
+      "url": "https://www.st.com/en/evaluation-tools/nucleo-g474re.html"
+    },
+    {
+      "title": "ST STM32G4 Nucleo-64 boards user manual",
+      "url": "https://www.st.com/resource/en/user_manual/um2505-stm32g4-nucleo64-boards-mb1367-stmicroelectronics.pdf"
+    }
+  ],
+  "generation_available": false,
+  "record_note": "The board manual identifies STM32G474RET6 on NUCLEO-G474RE. Exact board revision, clock tree, pin reservations, build profile, and flash profile still need review."
+}

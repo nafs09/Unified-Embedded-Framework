@@ -1,0 +1,851 @@
+// ECHO is a synchronized acoustic observatory. Each node captures an eight-
+// element hydrophone aperture, estimates a local bearing, exchanges timestamped
+// observations with peer nodes, and tracks a source only after geometric
+// consensus. The analog front end, array survey, sound-speed profile, and peer
+// positions are project inputs; this file describes the MCU-side design.
+project EchoAcousticObservatory {
+  target = "stm32h745xih6";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+
+  record UnitQuaternion { w : f32; x : f32; y : f32; z : f32; }
+  record HydrophoneBlock {
+    sequence : u32;
+    capture_time_us : i64<us>;
+    sample_period : f32<s>;
+    samples : f32[8, 256]<V>;
+    saturated : bool[8];
+  }
+  record BearingObservation {
+    event_id : u32;
+    node_id : u16;
+    capture_time_us : i64<us>;
+    time_uncertainty : f32<s>;
+    node_position : f32[3]<m>;
+    bearing_world : f32[3];
+    dominant_frequency : f32<Hz>;
+    confidence : f32;
+    valid : bool;
+  }
+  record LocalDetection {
+    event_id : u32;
+    capture_time_us : i64<us>;
+    bearing_body : f32[3];
+    dominant_frequency : f32<Hz>;
+    confidence : f32;
+    valid : bool;
+  }
+  record EventTrack {
+    event_id : u32;
+    position : f32[3]<m>;
+    velocity : f32[3]<m/s>;
+    confidence : f32;
+    valid : bool;
+  }
+  record ObservatoryHealth {
+    array_calibrated : bool;
+    clock_locked : bool;
+    temperature_valid : bool;
+    acquisition_healthy : bool;
+    peer_link_healthy : bool;
+  }
+  record ObservatoryLog {
+    mode : ObservatoryMode;
+    local_detection : LocalDetection;
+    event_track : EventTrack;
+    health : ObservatoryHealth;
+    dropped_blocks : u32;
+  }
+  record PeerTimeSync { master_time_us : i64<us>; uncertainty : f32<s>; }
+
+  parameter node_id : u16;
+  parameter surveyed_node_position : f32[3]<m>;
+  parameter hydrophone_geometry : f32[8, 3]<m>;
+  parameter sound_speed : f32<m/s>;
+  parameter minimum_geometry_determinant : f32<m^6>;
+  parameter minimum_detection_confidence : f32;
+  parameter minimum_block_rms : f32<V>;
+  parameter maximum_peer_age : i64<us>;
+  parameter maximum_clock_uncertainty : f32<s>;
+  parameter maximum_frontend_temperature : f32<degC>;
+  parameter maximum_frontend_current : f32<A>;
+  parameter machinery_line_frequency : f32<Hz>;
+  parameter hz_per_fft_bin : f32<Hz>;
+  parameter minimum_tonal_magnitude : f32<V>;
+  parameter minimum_spectral_magnitude : f32<V>;
+  parameter minimum_ray_determinant : f32;
+  parameter maximum_event_skew : i64<us>;
+  parameter maximum_frequency_skew : f32<Hz>;
+
+  sensor hydrophone_array : voltage;
+  sensor orientation : imu;
+  sensor frontend_temperature : temp;
+  sensor supply_voltage : voltage;
+  sensor supply_current : current;
+  algorithm block_fft : fft_radix2;
+  algorithm tonal_probe : goertzel;
+  algorithm event_tracker : ukf;
+  custom algorithm transient_gate;
+  custom algorithm tdoa_bearing;
+  custom algorithm world_bearing;
+  custom algorithm bounded_ray_localizer;
+  custom algorithm network_clock_discipline;
+  custom protocol constellation_link;
+  model source_motion : continuous;
+  subsystem acoustic_front_end;
+  subsystem network_fusion;
+  watchdog observatory_watchdog;
+  fault observatory_faults;
+  supervisor observatory_safety;
+  log event_archive;
+  peripheral hydrophone_adc : adc;
+  peripheral supervision_adc : adc;
+  peripheral orientation_spi : spi;
+  peripheral peer_uart : uart;
+  peripheral microsecond_timer : timer;
+  peripheral frontend_inhibit : gpio;
+  peripheral status_led : gpio;
+  bus orientation_bus : spi;
+
+  operatingsystem ECHO_Runtime {
+    runtime = FreeRTOS;
+    scheduler = fixed_priority;
+    tick = 1 kHz;
+    component_failure_policy = disable_frontend_and_preserve_local_archive;
+    deadline_miss_policy = drop_frame_mark_gap_and_degrade;
+
+    state_machine observatory_mode : ObservatoryMode {
+      state boot;
+      state calibrating;
+      state listening;
+      state localizing;
+      state reporting;
+      state degraded;
+      state safe;
+      state fault_latched;
+
+      initial boot;
+      owner = health_supervision;
+      consumers = [analyze_frame, fault_evaluation];
+      transition any -> fault_latched when observatory_safety.trip_latched or observatory_faults.critical;
+      transition any -> safe when observatory_safety.shutdown_requested;
+      transition any -> degraded when not observatory_health.acquisition_healthy or not observatory_health.temperature_valid;
+      transition boot -> calibrating when observatory_safety.startup_permitted;
+      transition calibrating -> listening when observatory_health.array_calibrated and observatory_health.clock_locked;
+      transition listening -> localizing when local_bearings.not_empty and local_bearings.value.valid;
+      transition localizing -> reporting when network_fusion.track.valid;
+      transition localizing -> listening when not peer_bearings.not_empty and local_bearings.value.valid;
+      transition reporting -> listening when constellation_link.transmit.bearing.complete or not network_fusion.track.valid;
+      transition listening -> degraded when not observatory_health.clock_locked;
+      transition degraded -> listening when observatory_safety.requalification_permitted and observatory_health.clock_locked and observatory_health.acquisition_healthy;
+      transition safe -> calibrating when observatory_safety.reset_authorized and observatory_safety.frontend_disabled;
+      transition fault_latched -> safe when observatory_safety.reset_authorized and observatory_safety.frontend_disabled;
+    }
+
+    interrupt adc_block_ready {
+      source = hydrophone_adc.dma_block_complete;
+      handler = hydrophone_array.signal_block_ready;
+      priority = 6;
+      context = isr_signal_only;
+    }
+    interrupt frontend_trip {
+      source = hydrophone_adc.analog_watchdog_trip;
+      handler = observatory_safety.signal_trip;
+      priority = 7;
+      context = isr_signal_only;
+    }
+    channel acoustic_frames {
+      source = hydrophone_array.block;
+      destination = acoustic_front_end.block;
+      producer = acquire_frame;
+      consumers = [analyze_frame];
+      capacity = 4;
+      overflow = drop_oldest_and_count;
+      maximum_age = 3 ms;
+      ownership = immutable_snapshot;
+      memory_region = shared_sram;
+      alignment = 32 B;
+    }
+    channel local_bearings {
+      source = acoustic_front_end.observation;
+      destination = network_fusion.local_observation;
+      producer = analyze_frame;
+      consumers = [triangulate_event, health_supervision];
+      capacity = 4;
+      overflow = drop_oldest_and_count;
+      maximum_age = 20 ms;
+      ownership = immutable_snapshot;
+    }
+    channel peer_bearings {
+      source = constellation_link.receive.bearing.value;
+      destination = network_fusion.peer_observation;
+      producer = constellation_service;
+      consumers = [triangulate_event, health_supervision];
+      capacity = 8;
+      overflow = drop_oldest_and_count;
+      maximum_age = maximum_peer_age;
+      ownership = immutable_snapshot;
+    }
+
+    taskset m4_capture {
+      core = 1;
+      scheduler = fixed_priority;
+      task acquire_frame {
+        run = hydrophone_array;
+        trigger = hydrophone_adc.dma_block_complete;
+        priority = 6;
+        deadline = 3 ms;
+        stack = 2048 B;
+        on_miss = drop_frame_mark_gap;
+      }
+      task orientation_sample {
+        run = orientation;
+        rate = 200 Hz;
+        priority = 3;
+        deadline = 5 ms;
+      }
+    }
+    taskset m7_analysis {
+      core = 0;
+      scheduler = fixed_priority;
+      task analyze_frame {
+        run = acoustic_front_end(
+          attitude = orientation.attitude,
+          orientation_valid = orientation.valid
+        );
+        trigger = acoustic_frames.not_empty;
+        priority = 5;
+        deadline = 3 ms;
+        stack = 8192 B;
+        when = observatory_mode.state == ObservatoryMode.listening or observatory_mode.state == ObservatoryMode.localizing or observatory_mode.state == ObservatoryMode.degraded;
+        on_miss = drop_frame_mark_gap;
+      }
+      task triangulate_event {
+        run = network_fusion;
+        rate = 50 Hz;
+        priority = 4;
+        deadline = 20 ms;
+        stack = 4096 B;
+        when = local_bearings.not_empty and local_bearings.value.valid and peer_bearings.not_empty;
+        on_miss = retain_local_bearing_only;
+      }
+      task constellation_service {
+        run = constellation_link(
+          local_bearing = acoustic_front_end.observation,
+          event_track = network_fusion.track
+        );
+        rate = 50 Hz;
+        priority = 3;
+        deadline = 20 ms;
+        on_miss = preserve_local_detection;
+      }
+      task clock_discipline {
+        run = network_clock_discipline(
+          sync = constellation_link.receive.sync,
+          local_time = microsecond_timer.count_us_signed
+        );
+        rate = 10 Hz;
+        priority = 4;
+        deadline = 100 ms;
+      }
+      task health_supervision {
+        run = observatory_safety(
+          acquisition_healthy = hydrophone_array.valid,
+          clock_locked = network_clock_discipline.locked,
+          temperature = frontend_temperature.value,
+          supply_voltage = supply_voltage.value,
+          supply_current = supply_current.value,
+          measurements_valid = frontend_temperature.valid and supply_voltage.valid and supply_current.valid,
+          critical_fault = observatory_faults.critical
+        );
+        rate = 1 kHz;
+        priority = 7;
+        deadline = 1 ms;
+        on_miss = assert_frontend_inhibit;
+      }
+      task fault_evaluation {
+        run = observatory_faults(
+          acquisition_healthy = hydrophone_array.valid,
+          temperature = frontend_temperature.value,
+          supply_voltage = supply_voltage.value,
+          supply_current = supply_current.value,
+          measurements_valid = frontend_temperature.valid and supply_voltage.valid and supply_current.valid,
+          startup_complete = observatory_mode.state != ObservatoryMode.boot and observatory_mode.state != ObservatoryMode.calibrating
+        );
+        rate = 1 kHz;
+        priority = 6;
+        deadline = 1 ms;
+      }
+      task archive_flush {
+        run = event_archive(snapshot = observatory_log_snapshot);
+        rate = 10 Hz;
+        priority = 1;
+        deadline = 100 ms;
+      }
+      task watchdog_service {
+        run = observatory_watchdog;
+        rate = 100 Hz;
+        priority = 7;
+        feed_only_when = observatory_safety.watchdog_feed_permitted and hydrophone_array.valid;
+      }
+    }
+    constraint acquisition_budget { maximum_utilization = 0.65; require_deadline_analysis = true; }
+    constraint analysis_budget { maximum_utilization = 0.75; require_deadline_analysis = true; }
+  }
+
+  implementation {
+    signal observatory_log_snapshot : ObservatoryLog = map(
+      mode = observatory_mode.state,
+      local_detection = acoustic_front_end.detection,
+      event_track = network_fusion.track,
+      health = observatory_health,
+      dropped_blocks = acoustic_frames.dropped_count
+    );
+    peripheral hydrophone_adc {
+      instance = "ADC1";
+      channels = 8;
+      sample_rate = 96 kHz;
+      block_samples_per_channel = 256;
+      trigger = timer_update;
+      dma_mode = circular_double_buffer;
+      analog_watchdog = enabled;
+    } adc;
+    peripheral supervision_adc { instance = "ADC3"; channels = 3; resolution = 16 bit; sample_rate = 1 kHz; } adc;
+    peripheral orientation_spi { instance = "SPI2"; mode = 0; frequency = 10 MHz; } spi;
+    peripheral peer_uart { instance = "USART3"; baud = 921600; dma = enabled; } uart;
+    peripheral microsecond_timer { instance = "TIM2"; counter_width = 32 bit; tick = 1 us; overflow_policy = extend_in_software; timestamp_domain = disciplined_network_time; } timer;
+    peripheral frontend_inhibit { direction = output; active_level = high; safe_state = asserted; } gpio;
+    peripheral status_led {
+      direction = output;
+      active_level = high;
+      active = observatory_mode.state == ObservatoryMode.degraded or observatory_mode.state == ObservatoryMode.fault_latched;
+      safe_state = low;
+    } gpio;
+    bus orientation_bus { peripheral = orientation_spi; chip_select = "board_profile.orientation_cs"; mode = 0; frequency = 10 MHz; } spi;
+    sensor hydrophone_array {
+      peripheral = hydrophone_adc;
+      preamplifier = external_eight_channel_low_noise_frontend;
+      sample_rate = 96 kHz;
+      block_size = 256;
+      timestamp_source = microsecond_timer;
+      timestamp_offset = network_clock_discipline.offset;
+      sequence_wrap = modulo_u32;
+      output block : HydrophoneBlock;
+      output valid : bool;
+      output array_calibrated : bool;
+    } voltage;
+    sensor orientation { bus = orientation_bus; sample_rate = 200 Hz; normalization = enforce_unit_norm; output attitude : UnitQuaternion; output valid : bool; } imu;
+    sensor frontend_temperature { peripheral = supervision_adc; channel = 0; output value : f32<degC>; output valid : bool; } temp;
+    sensor supply_voltage { peripheral = supervision_adc; channel = 1; output value : f32<V>; output valid : bool; } voltage;
+    sensor supply_current { peripheral = supervision_adc; channel = 2; output value : f32<A>; output valid : bool; } current;
+
+    signal observatory_health : ObservatoryHealth = map(
+      array_calibrated = acoustic_front_end.calibrated,
+      clock_locked = network_clock_discipline.locked,
+      temperature_valid = frontend_temperature.valid,
+      acquisition_healthy = hydrophone_array.valid,
+      peer_link_healthy = constellation_link.fresh.sync
+    );
+
+    watchdog observatory_watchdog {
+      timeout = 100 ms;
+      feed_source = observatory_safety.watchdog_feed_permitted;
+      expiry_action = assert_frontend_inhibit;
+      feed_context = task_only;
+    } watchdog;
+    fault observatory_faults {
+      input acquisition_healthy : bool;
+      input temperature : f32<degC>;
+      input supply_voltage : f32<V>;
+      input supply_current : f32<A>;
+      input measurements_valid : bool;
+      input startup_complete : bool;
+      output critical : bool;
+      latch_until_authorized_reset = true;
+      critical_when = startup_complete and (not acquisition_healthy or not measurements_valid or temperature > maximum_frontend_temperature or supply_voltage <= 0 V or supply_current > maximum_frontend_current);
+      reset_requires_frontend_disabled_and_sensor_self_test = true;
+    } fault;
+    supervisor observatory_safety {
+      input acquisition_healthy : bool;
+      input clock_locked : bool;
+      input temperature : f32<degC>;
+      input supply_voltage : f32<V>;
+      input supply_current : f32<A>;
+      input measurements_valid : bool;
+      input critical_fault : bool;
+      hard_inhibit = frontend_inhibit;
+      inhibit_on_overtemperature = maximum_frontend_temperature;
+      inhibit_on_overcurrent = maximum_frontend_current;
+      require_calibrated_array_before_listening = true;
+      allow_local_capture_when_peer_clock_unlocked = true;
+      require_peer_clock_lock_for_global_localization = true;
+      reset_requires_authorized_frontend_disabled_proof = true;
+      output startup_permitted : bool;
+      output trip_latched : bool;
+      output shutdown_requested : bool;
+      output requalification_permitted : bool;
+      output reset_authorized : bool;
+      output frontend_disabled : bool;
+      output watchdog_feed_permitted : bool;
+    } supervisor;
+    log event_archive {
+      input snapshot : ObservatoryLog;
+      transport = onboard_storage;
+      queue_capacity = 1024;
+      overflow = drop_oldest_and_count;
+      flush_period = 100 ms;
+      store_raw_blocks_on_candidate_only = true;
+      preserve_clock_and_drop_counters = true;
+    } log;
+
+    algorithm block_fft {
+      input samples : f32[8, 256]<V>;
+      output real : f32[8, 129]<V>;
+      output imaginary : f32[8, 129]<V>;
+      window = hann;
+      scaling = coherent_gain_corrected;
+    } fft_radix2;
+    algorithm tonal_probe {
+      input samples : f32[256]<V>;
+      input frequency : f32<Hz>;
+      output magnitude : f32<V>;
+      sample_rate = 96 kHz;
+    } goertzel;
+    algorithm event_tracker {
+      model = source_motion;
+      input observation : f32[3]<m>;
+      input observation_valid : bool;
+      input event_id : u32;
+      input confidence : f32;
+      output track : EventTrack;
+      output valid : bool;
+      measurement_gate = mahalanobis;
+      outlier_policy = reject_measurement_and_propagate_bounded_prediction;
+      maximum_prediction_age = 2 s;
+      reset_on_event_id_change = true;
+      state_constraint = maximum_source_speed;
+      process_noise = process_acceleration_sigma;
+    } ukf;
+    model source_motion {
+      sample_time = 20 ms;
+      discretize with integration.ode_rk4 at 20 ms;
+      state position : f32[3]<m>;
+      state velocity : f32[3]<m/s>;
+      output predicted_position : f32[3]<m>;
+      parameter maximum_source_speed : f32<m/s>;
+      parameter process_acceleration_sigma : f32<m/s^2>;
+      equations {
+        derivative position = velocity;
+        derivative velocity = [0.0 m/s^2, 0.0 m/s^2, 0.0 m/s^2];
+        predicted_position[0] = position[0];
+        predicted_position[1] = position[1];
+        predicted_position[2] = position[2];
+      }
+    }
+
+    custom algorithm transient_gate {
+      input block : HydrophoneBlock;
+      input real_spectrum : f32[8, 129]<V>;
+      input imaginary_spectrum : f32[8, 129]<V>;
+      input tonal_magnitude : f32<V>;
+      input bearing_body : f32[3];
+      input bearing_valid : bool;
+      output detection : LocalDetection;
+      local channel_mean_square : f32[8]<V^2>;
+      local channel_rms : f32[8]<V>;
+      local peak_rms : f32<V>;
+      local peak_channel : u8;
+      local total_rms : f32<V>;
+      local spectral_magnitude : f32<V>;
+      local dominant_magnitude : f32<V>;
+      local dominant_bin : u16;
+      state next_event_id : u32 = 1;
+      state active_event_id : u32 = 0;
+      state event_active : bool = false;
+      step() {
+        peak_rms = 0 V;
+        peak_channel = 0;
+        total_rms = 0 V;
+        dominant_magnitude = 0 V;
+        dominant_bin = 0;
+        for channel in 0..8 {
+          channel_mean_square[channel] = 0 V^2;
+          for sample in 0..256 {
+            channel_mean_square[channel] = channel_mean_square[channel] + block.samples[channel, sample] * block.samples[channel, sample];
+          }
+          channel_rms[channel] = sqrt(channel_mean_square[channel] / 256);
+          total_rms = total_rms + channel_rms[channel];
+          if channel_rms[channel] > peak_rms { peak_rms = channel_rms[channel]; peak_channel = cast<u8>(channel); }
+          for bin in 1..129 {
+            spectral_magnitude = sqrt(real_spectrum[channel, bin] * real_spectrum[channel, bin] + imaginary_spectrum[channel, bin] * imaginary_spectrum[channel, bin]);
+            if spectral_magnitude > dominant_magnitude { dominant_magnitude = spectral_magnitude; dominant_bin = cast<u16>(bin); }
+          }
+        }
+        detection.capture_time_us = block.capture_time_us;
+        detection.bearing_body = bearing_body;
+        detection.dominant_frequency = cast<f32>(dominant_bin) * hz_per_fft_bin;
+        detection.confidence = select(total_rms > 0 V, peak_rms / total_rms, 0);
+        detection.valid = bearing_valid and not block.saturated[0] and not block.saturated[peak_channel] and peak_rms >= minimum_block_rms and detection.confidence >= minimum_detection_confidence and dominant_magnitude >= minimum_spectral_magnitude and tonal_magnitude >= minimum_tonal_magnitude;
+        if detection.valid and not event_active {
+          active_event_id = next_event_id;
+          if next_event_id == 0xFFFFFFFF { next_event_id = 1; }
+          else { next_event_id = next_event_id + 1; }
+        }
+        event_active = detection.valid;
+        detection.event_id = active_event_id;
+      }
+    }
+    custom algorithm tdoa_bearing {
+      input block : HydrophoneBlock;
+      input geometry : f32[8, 3]<m>;
+      input propagation_speed : f32<m/s>;
+      output bearing_body : f32[3];
+      output confidence : f32;
+      output valid : bool;
+      local arrival_offset : f32[8]<s>;
+      local channel_energy : f32[8]<V^2>;
+      local best_correlation : f32<V^2>;
+      local correlation : f32<V^2>;
+      local best_lag : i32;
+      local lag : i32;
+      local quality_sum : f32;
+      local normal : f32[3, 3]<m^2>;
+      local rhs : f32[3]<m^2>;
+      local baseline_i : f32<m>;
+      local baseline_j : f32<m>;
+      local determinant : f32<m^6>;
+      local magnitude : f32;
+      local direction : f32[3];
+      step() {
+        valid = not block.saturated[0];
+        bearing_body[0] = 0.0;
+        bearing_body[1] = 0.0;
+        bearing_body[2] = 1.0;
+        quality_sum = 0;
+        for channel in 0..8 {
+          channel_energy[channel] = 0 V^2;
+          for sample in 0..256 {
+            channel_energy[channel] = channel_energy[channel] + block.samples[channel, sample] * block.samples[channel, sample];
+          }
+        }
+        arrival_offset[0] = 0 s;
+        for channel in 1..8 {
+          best_correlation = 0 V^2;
+          best_lag = 0;
+          for lag_index in 0..49 {
+            lag = cast<i32>(lag_index) - 24;
+            correlation = 0 V^2;
+            for sample in 24..232 {
+              correlation = correlation + block.samples[0, sample] * block.samples[channel, sample + lag];
+            }
+            if abs(correlation) > best_correlation {
+              best_correlation = abs(correlation);
+              best_lag = lag;
+            }
+          }
+          arrival_offset[channel] = cast<f32>(best_lag) * block.sample_period;
+          if channel_energy[0] <= 0 V^2 or channel_energy[channel] <= 0 V^2 or block.saturated[channel] {
+            valid = false;
+          } else {
+            quality_sum = quality_sum + best_correlation / sqrt(channel_energy[0] * channel_energy[channel]);
+          }
+        }
+        for axis_i in 0..3 {
+          rhs[axis_i] = 0 m^2;
+          for axis_j in 0..3 { normal[axis_i, axis_j] = 0 m^2; }
+        }
+        for channel in 1..8 {
+          for axis_i in 0..3 {
+            baseline_i = geometry[channel, axis_i] - geometry[0, axis_i];
+            rhs[axis_i] = rhs[axis_i] - baseline_i * propagation_speed * arrival_offset[channel];
+            for axis_j in 0..3 {
+              baseline_j = geometry[channel, axis_j] - geometry[0, axis_j];
+              normal[axis_i, axis_j] = normal[axis_i, axis_j] + baseline_i * baseline_j;
+            }
+          }
+        }
+        determinant = normal[0, 0] * (normal[1, 1] * normal[2, 2] - normal[1, 2] * normal[2, 1]) - normal[0, 1] * (normal[1, 0] * normal[2, 2] - normal[1, 2] * normal[2, 0]) + normal[0, 2] * (normal[1, 0] * normal[2, 1] - normal[1, 1] * normal[2, 0]);
+        if determinant <= minimum_geometry_determinant {
+          valid = false;
+          direction[0] = 0.0;
+          direction[1] = 0.0;
+          direction[2] = 1.0;
+        } else {
+          direction[0] = (rhs[0] * (normal[1, 1] * normal[2, 2] - normal[1, 2] * normal[2, 1]) - normal[0, 1] * (rhs[1] * normal[2, 2] - normal[1, 2] * rhs[2]) + normal[0, 2] * (rhs[1] * normal[2, 1] - normal[1, 1] * rhs[2])) / determinant;
+          direction[1] = (normal[0, 0] * (rhs[1] * normal[2, 2] - normal[1, 2] * rhs[2]) - rhs[0] * (normal[1, 0] * normal[2, 2] - normal[1, 2] * normal[2, 0]) + normal[0, 2] * (normal[1, 0] * rhs[2] - rhs[1] * normal[2, 0])) / determinant;
+          direction[2] = (normal[0, 0] * (normal[1, 1] * rhs[2] - rhs[1] * normal[2, 1]) - normal[0, 1] * (normal[1, 0] * rhs[2] - rhs[1] * normal[2, 0]) + rhs[0] * (normal[1, 0] * normal[2, 1] - normal[1, 1] * normal[2, 0])) / determinant;
+          magnitude = sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
+          if magnitude <= 0 {
+            valid = false;
+            bearing_body[0] = 0.0;
+            bearing_body[1] = 0.0;
+            bearing_body[2] = 1.0;
+          } else {
+            bearing_body[0] = direction[0] / magnitude;
+            bearing_body[1] = direction[1] / magnitude;
+            bearing_body[2] = direction[2] / magnitude;
+          }
+        }
+        confidence = select(valid, quality_sum / 7, 0);
+      }
+    }
+    custom algorithm world_bearing {
+      input bearing_body : f32[3];
+      input attitude : UnitQuaternion;
+      input orientation_valid : bool;
+      output bearing_world : f32[3];
+      output valid : bool;
+      local tx : f32;
+      local ty : f32;
+      local tz : f32;
+      step() {
+        valid = orientation_valid;
+        tx = 2 * (attitude.y * bearing_body[2] - attitude.z * bearing_body[1]);
+        ty = 2 * (attitude.z * bearing_body[0] - attitude.x * bearing_body[2]);
+        tz = 2 * (attitude.x * bearing_body[1] - attitude.y * bearing_body[0]);
+        bearing_world[0] = bearing_body[0] + attitude.w * tx + attitude.y * tz - attitude.z * ty;
+        bearing_world[1] = bearing_body[1] + attitude.w * ty + attitude.z * tx - attitude.x * tz;
+        bearing_world[2] = bearing_body[2] + attitude.w * tz + attitude.x * ty - attitude.y * tx;
+      }
+    }
+    custom algorithm bounded_ray_localizer {
+      input local_observation : BearingObservation;
+      input peer_observation : BearingObservation;
+      output position : f32[3]<m>;
+      output valid : bool;
+      state event_id : u32 = 0;
+      state observation_count : u8 = 0;
+      state anchor_time_us : i64<us> = 0 us;
+      state anchor_frequency : f32<Hz> = 0 Hz;
+      state observation_node_id : u16[8];
+      state observation_time_us : i64[8]<us>;
+      state observation_frequency : f32[8]<Hz>;
+      state observation_position : f32[8, 3]<m>;
+      state observation_bearing : f32[8, 3];
+      state observation_confidence : f32[8];
+      state observation_valid : bool[8];
+      local normal : f32[3, 3];
+      local rhs : f32[3]<m>;
+      local projector : f32[3, 3];
+      local determinant : f32;
+      local x : f32<m>; local y : f32<m>; local z : f32<m>;
+      local duplicate_node : bool;
+      local compact_count : u8;
+      step() {
+        valid = false;
+        position[0] = 0.0 m;
+        position[1] = 0.0 m;
+        position[2] = 0.0 m;
+        if local_observation.valid and (observation_count == 0 or local_observation.event_id != event_id) {
+          event_id = local_observation.event_id;
+          anchor_time_us = local_observation.capture_time_us;
+          anchor_frequency = local_observation.dominant_frequency;
+          observation_count = 1;
+          observation_node_id[0] = local_observation.node_id;
+          observation_time_us[0] = local_observation.capture_time_us;
+          observation_frequency[0] = local_observation.dominant_frequency;
+          observation_confidence[0] = local_observation.confidence;
+          observation_valid[0] = local_observation.valid;
+          for axis in 0..3 {
+            observation_position[0, axis] = local_observation.node_position[axis];
+            observation_bearing[0, axis] = local_observation.bearing_world[axis];
+          }
+        } else {
+          if local_observation.valid {
+            event_id = local_observation.event_id;
+            anchor_time_us = local_observation.capture_time_us;
+            anchor_frequency = local_observation.dominant_frequency;
+            observation_node_id[0] = local_observation.node_id;
+            observation_time_us[0] = local_observation.capture_time_us;
+            observation_frequency[0] = local_observation.dominant_frequency;
+            observation_confidence[0] = local_observation.confidence;
+            observation_valid[0] = local_observation.valid;
+            for axis in 0..3 {
+              observation_position[0, axis] = local_observation.node_position[axis];
+              observation_bearing[0, axis] = local_observation.bearing_world[axis];
+            }
+          }
+        }
+        compact_count = select(local_observation.valid, 1, 0);
+        for item in 1..8 {
+          if cast<u8>(item) < observation_count and observation_valid[item] and select(observation_time_us[item] >= anchor_time_us, observation_time_us[item] - anchor_time_us, anchor_time_us - observation_time_us[item]) <= maximum_event_skew and abs(observation_frequency[item] - anchor_frequency) <= maximum_frequency_skew {
+            if cast<u8>(item) != compact_count {
+              observation_node_id[compact_count] = observation_node_id[item];
+              observation_time_us[compact_count] = observation_time_us[item];
+              observation_frequency[compact_count] = observation_frequency[item];
+              observation_confidence[compact_count] = observation_confidence[item];
+              observation_valid[compact_count] = observation_valid[item];
+              for axis in 0..3 {
+                observation_position[compact_count, axis] = observation_position[item, axis];
+                observation_bearing[compact_count, axis] = observation_bearing[item, axis];
+              }
+            }
+            compact_count = compact_count + 1;
+          }
+        }
+        observation_count = compact_count;
+        duplicate_node = false;
+        for item in 0..8 {
+          if cast<u8>(item) < observation_count and observation_node_id[item] == peer_observation.node_id { duplicate_node = true; }
+        }
+        if local_observation.valid and peer_observation.valid and observation_count < 8 and not duplicate_node and select(peer_observation.capture_time_us >= anchor_time_us, peer_observation.capture_time_us - anchor_time_us, anchor_time_us - peer_observation.capture_time_us) <= maximum_peer_age and select(peer_observation.capture_time_us >= anchor_time_us, peer_observation.capture_time_us - anchor_time_us, anchor_time_us - peer_observation.capture_time_us) <= maximum_event_skew and abs(peer_observation.dominant_frequency - anchor_frequency) <= maximum_frequency_skew {
+          observation_node_id[observation_count] = peer_observation.node_id;
+          observation_time_us[observation_count] = peer_observation.capture_time_us;
+          observation_frequency[observation_count] = peer_observation.dominant_frequency;
+          observation_confidence[observation_count] = peer_observation.confidence;
+          observation_valid[observation_count] = peer_observation.valid;
+          for axis in 0..3 {
+            observation_position[observation_count, axis] = peer_observation.node_position[axis];
+            observation_bearing[observation_count, axis] = peer_observation.bearing_world[axis];
+          }
+          observation_count = observation_count + 1;
+        }
+        if observation_count >= 3 {
+          for row in 0..3 {
+            rhs[row] = 0 m;
+            for column in 0..3 { normal[row, column] = 0; }
+          }
+          for item in 0..8 {
+            if cast<u8>(item) < observation_count and observation_valid[item] {
+              for row in 0..3 {
+                for column in 0..3 {
+                  projector[row, column] = select(row == column, 1.0, 0.0) - observation_bearing[item, row] * observation_bearing[item, column];
+                  normal[row, column] = normal[row, column] + observation_confidence[item] * projector[row, column];
+                  rhs[row] = rhs[row] + observation_confidence[item] * projector[row, column] * observation_position[item, column];
+                }
+              }
+            }
+          }
+          determinant = normal[0, 0] * (normal[1, 1] * normal[2, 2] - normal[1, 2] * normal[2, 1]) - normal[0, 1] * (normal[1, 0] * normal[2, 2] - normal[1, 2] * normal[2, 0]) + normal[0, 2] * (normal[1, 0] * normal[2, 1] - normal[1, 1] * normal[2, 0]);
+          if determinant > minimum_ray_determinant {
+            x = (rhs[0] * (normal[1, 1] * normal[2, 2] - normal[1, 2] * normal[2, 1]) - normal[0, 1] * (rhs[1] * normal[2, 2] - normal[1, 2] * rhs[2]) + normal[0, 2] * (rhs[1] * normal[2, 1] - normal[1, 1] * rhs[2])) / determinant;
+            y = (normal[0, 0] * (rhs[1] * normal[2, 2] - normal[1, 2] * rhs[2]) - rhs[0] * (normal[1, 0] * normal[2, 2] - normal[1, 2] * normal[2, 0]) + normal[0, 2] * (normal[1, 0] * rhs[2] - rhs[1] * normal[2, 0])) / determinant;
+            z = (normal[0, 0] * (normal[1, 1] * rhs[2] - rhs[1] * normal[2, 1]) - normal[0, 1] * (normal[1, 0] * rhs[2] - rhs[1] * normal[2, 0]) + rhs[0] * (normal[1, 0] * normal[2, 1] - normal[1, 1] * normal[2, 0])) / determinant;
+            position[0] = x;
+            position[1] = y;
+            position[2] = z;
+            valid = true;
+          }
+        }
+      }
+    }
+    custom algorithm network_clock_discipline {
+      input sync : Received<PeerTimeSync>;
+      input local_time : i64<us>;
+      output offset : i64<us>;
+      output uncertainty : f32<s>;
+      output locked : bool;
+      state filtered_offset : i64<us> = 0 us;
+      state filtered_uncertainty : f32<s> = 1 s;
+      parameter maximum_step : i64<us> = 100 us;
+      local correction : i64<us>;
+      step() {
+        if sync.fresh and sync.value.uncertainty <= maximum_clock_uncertainty {
+          correction = sync.value.master_time_us - local_time - filtered_offset;
+          correction = select(correction < -maximum_step, -maximum_step, select(correction > maximum_step, maximum_step, correction));
+          filtered_offset = filtered_offset + correction;
+          filtered_uncertainty = sync.value.uncertainty;
+          offset = filtered_offset;
+          uncertainty = filtered_uncertainty;
+          locked = true;
+        } else {
+          offset = filtered_offset;
+          uncertainty = filtered_uncertainty;
+          locked = false;
+        }
+      }
+    }
+
+    custom protocol constellation_link {
+      transport = peer_uart;
+      framing { sync = [0xD3, 0x91]; version = 1; byte_order = little_endian; max_frame_bytes = 64 B; }
+      header { version_offset = 2 B; message_id_offset = 3 B; payload_offset = 6 B; }
+      sequence { offset = 4 B; width = 16 bit; scope = per_message; }
+      message sync {
+        id = 1;
+        logical_type = PeerTimeSync;
+        payload_bytes = 12 B;
+        field master_time_us : i64<us> { offset = 0 B; encoding = signed_i64_little_endian; application_field = PeerTimeSync.master_time_us; }
+        field uncertainty_us : u32 { offset = 8 B; encoding = unsigned_u32_little_endian; scale = 0.000001; application_field = PeerTimeSync.uncertainty; application_range = [0 s, 4294.967295 s]; rounding = nearest_even; overflow = reject; }
+      }
+      message bearing {
+        id = 2;
+        logical_type = BearingObservation;
+        payload_bytes = 41 B;
+        field event_id : u32 { offset = 0 B; encoding = unsigned_u32_little_endian; application_field = BearingObservation.event_id; }
+        field node_id : u16 { offset = 4 B; encoding = unsigned_u16_little_endian; application_field = BearingObservation.node_id; }
+        field capture_time_us : i64<us> { offset = 6 B; encoding = signed_i64_little_endian; application_field = BearingObservation.capture_time_us; }
+        field time_uncertainty : i16 { offset = 14 B; encoding = signed_i16_little_endian; scale = 0.000001; application_field = BearingObservation.time_uncertainty; application_range = [-0.032768 s, 0.032767 s]; rounding = nearest_even; overflow = reject; }
+        field node_position_mm : i32[3]<m> { offset = 16 B; encoding = signed_i32_little_endian; scale = 0.001; application_field = BearingObservation.node_position; rounding = nearest_even; overflow = reject; }
+        field bearing_q15 : i16[3] { offset = 28 B; encoding = signed_i16_little_endian; scale = 0.000030518; application_field = BearingObservation.bearing_world; rounding = nearest_even; overflow = reject; }
+        field dominant_frequency_hz : u32<Hz> { offset = 34 B; encoding = unsigned_u32_little_endian; application_field = BearingObservation.dominant_frequency; }
+        field confidence_u16_norm : u16 { offset = 38 B; encoding = unsigned_u16_little_endian; scale = 0.000015259; application_field = BearingObservation.confidence; application_range = [0, 1]; rounding = nearest_even; overflow = reject; }
+        field valid : bool { offset = 40 B; encoding = bool_u8_zero_one; application_field = BearingObservation.valid; }
+      }
+      checksum { position = trailer; width = 4 B; algorithm = crc32_iso_hdlc; coverage = sync_through_payload; }
+      behavior { peer_timeout = 500 ms; stale_policy = preserve_local_bearing_and_disable_triangulation; duplicate_sequence = reject; queue_capacity = 8; }
+    }
+
+    subsystem acoustic_front_end {
+      input block : HydrophoneBlock { rate = 375 Hz; max_age = 3 ms; };
+      input attitude : UnitQuaternion { rate = 200 Hz; max_age = 10 ms; };
+      input orientation_valid : bool { rate = 200 Hz; max_age = 10 ms; };
+      output detection : LocalDetection { rate = 375 Hz; max_age = 5 ms; };
+      output observation : BearingObservation { rate = 375 Hz; max_age = 5 ms; };
+      output calibrated : bool { rate = 10 Hz; max_age = 100 ms; };
+      use block_fft as spectrum;
+      use tonal_probe as narrowband;
+      use tdoa_bearing as direction;
+      use world_bearing as world_direction;
+      use transient_gate as event_gate;
+      stage spectrum_result = spectrum(samples = block.samples);
+      stage tonal_result = narrowband(samples = block.samples[0, 0:256], frequency = machinery_line_frequency);
+      stage bearing_result = direction(block = block, geometry = hydrophone_geometry, propagation_speed = sound_speed);
+      stage world_result = world_direction(
+        bearing_body = bearing_result.bearing_body,
+        attitude = attitude,
+        orientation_valid = orientation_valid
+      );
+      stage event_result = event_gate(
+        block = block,
+        real_spectrum = spectrum_result.real,
+        imaginary_spectrum = spectrum_result.imaginary,
+        tonal_magnitude = tonal_result.magnitude,
+        bearing_body = bearing_result.bearing_body,
+        bearing_valid = bearing_result.valid
+      );
+      output detection = event_result.detection;
+      output observation = map(
+        event_id = event_result.detection.event_id,
+        node_id = node_id,
+        capture_time_us = event_result.detection.capture_time_us,
+        time_uncertainty = network_clock_discipline.uncertainty,
+        node_position = surveyed_node_position,
+        bearing_world = world_result.bearing_world,
+        dominant_frequency = event_result.detection.dominant_frequency,
+        confidence = bearing_result.confidence,
+        valid = event_result.detection.valid and world_result.valid and network_clock_discipline.locked
+      );
+      output calibrated = hydrophone_array.array_calibrated;
+    }
+    subsystem network_fusion {
+      input local_observation : BearingObservation { rate = 50 Hz; max_age = 20 ms; };
+      input peer_observation : BearingObservation { rate = 50 Hz; max_age = maximum_peer_age; };
+      output track : EventTrack { rate = 50 Hz; max_age = 100 ms; };
+      use bounded_ray_localizer as localizer;
+      use event_tracker as tracker;
+      stage location = localizer(local_observation = local_observation, peer_observation = peer_observation);
+      stage filtered_track = tracker(
+        observation = location.position,
+        observation_valid = location.valid,
+        event_id = local_observation.event_id,
+        confidence = local_observation.confidence
+      );
+      output track = filtered_track.track;
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "uetd/registry/targets/toolchains/record.schema.json",
+  "title": "UETD host tool package record",
+  "type": "object",
+  "required": ["id", "name", "purpose", "status", "host_platforms", "tools", "packages"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "purpose": { "enum": ["compiler", "sdk", "flasher", "build-system", "debugger", "support"] },
+    "status": { "enum": ["scaffold_only", "ready"] },
+    "host_platforms": {
+      "type": "array",
+      "items": { "enum": ["windows-x86_64", "windows-arm64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64", "any"] },
+      "uniqueItems": true
+    },
+    "tools": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "version", "source_kind", "host_platforms", "url", "sha256"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "version": { "type": "string", "minLength": 1 },
+          "source_kind": { "enum": ["binary_archive", "installer", "source_archive", "git_revision", "python_wheel"] },
+          "host_platforms": { "type": "array", "items": { "type": "string" }, "minItems": 1, "uniqueItems": true },
+          "url": { "type": "string", "format": "uri" },
+          "sha256": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+          "archive_format": { "type": "string" },
+          "strip_components": { "type": "integer", "minimum": 0 },
+          "install_subdirectory": { "type": "string" },
+          "executables": { "type": "object", "additionalProperties": { "type": "string" } },
+          "license_id": { "type": "string" },
+          "interactive_acceptance": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "dependencies": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "record_note": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "ready" } }, "required": ["status"] },
+      "then": {
+        "properties": { "packages": { "minItems": 1 } },
+        "required": ["packages"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

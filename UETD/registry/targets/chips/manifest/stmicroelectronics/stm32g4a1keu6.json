@@ -1,0 +1,62 @@
+{
+  "id": "stm32g4a1keu6",
+  "vendor": "STMicroelectronics",
+  "family_id": "stm32-g4",
+  "series": "STM32G4",
+  "part_number": "STM32G4A1KEU6",
+  "aliases": ["STM32G4A1KE"],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M4",
+    "isa": "Armv7E-M",
+    "word_bits": 32,
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 170000000
+  },
+  "package": {
+    "name": "UFQFPN32",
+    "pin_count": 32
+  },
+  "memory": {
+    "flash_bytes": 524288,
+    "sram_bytes": 114688,
+    "notes": "112 KiB total SRAM includes 96 KiB main SRAM and 16 KiB CCM SRAM."
+  },
+  "peripheral_groups": [
+    "DMA",
+    "ADC",
+    "DAC",
+    "CORDIC",
+    "FMAC",
+    "FDCAN",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C",
+    "OPAMP",
+    "COMP",
+    "QUADSPI"
+  ],
+  "source_references": [
+    {
+      "title": "ST STM32G4A1KE product page",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32g4a1ke.html"
+    },
+    {
+      "title": "ST STM32G4A1xE datasheet DS13268",
+      "url": "https://www.st.com/resource/en/datasheet/stm32g4a1ce.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM",
+    "peripheral_groups"
+  ],
+  "generation_available": false,
+  "record_note": "Initial Tesla-node candidate. The selected G4A1 datasheet does not specify HRTIM; the current timer/output architecture and package-level peripheral/pin fit must be reviewed before assigning an execution timer."
+}

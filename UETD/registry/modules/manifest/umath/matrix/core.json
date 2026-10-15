@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/umath/matrix/core.c"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/umath/matrix/core.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

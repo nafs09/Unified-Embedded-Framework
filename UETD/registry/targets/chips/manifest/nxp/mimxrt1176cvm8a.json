@@ -1,0 +1,60 @@
+{
+  "id": "mimxrt1176cvm8a",
+  "vendor": "NXP",
+  "family_id": "imx-rt1170",
+  "series": "i.MX RT1170",
+  "part_number": "MIMXRT1176CVM8A",
+  "aliases": [
+    "MIMXRT1176"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Cortex-M7 + Cortex-M4",
+    "isa": "Armv7E-M",
+    "count": 2,
+    "fpu": "single and double on M7; single on M4",
+    "max_frequency_hz": 800000000
+  },
+  "package": {
+    "name": "MAPBGA289",
+    "pin_count": 289
+  },
+  "memory": {
+    "flash_bytes": 0,
+    "sram_bytes": 2097152,
+    "notes": "2 MiB on-chip SRAM. The selected RT1176 variant has no on-chip program flash."
+  },
+  "peripheral_groups": [
+    "eDMA",
+    "FlexSPI",
+    "SD/eMMC",
+    "Ethernet",
+    "USB",
+    "CAN-FD",
+    "ADC",
+    "PWM",
+    "UART",
+    "SPI",
+    "I2C"
+  ],
+  "source_references": [
+    {
+      "title": "NXP i.MX RT1170 product page",
+      "url": "https://www.nxp.com/products/i.MX-RT1170"
+    },
+    {
+      "title": "NXP i.MX RT1170 industrial data sheet",
+      "url": "https://www.nxp.com/docs/en/data-sheet/IMXRT1170IEC.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core_count",
+    "M7_frequency",
+    "package",
+    "on_chip_SRAM",
+    "no_on_chip_flash"
+  ],
+  "generation_available": false,
+  "record_note": "Flashless crossover MCU variant; firmware normally boots from external memory. The industrial data sheet ceiling is recorded; per-core boot and memory setup require a full target map."
+}

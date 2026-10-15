@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/ucon/status.c"
+  ],
+  "headers": [
+    "include/ucon/status.h",
+    "include/ucon/types.h",
+    "include/ucore/types.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h"
+  ],
+  "dependencies": [
+    "ucore",
+    "umath/core"
+  ]
+}

@@ -1,0 +1,9 @@
+/* Rename to gpio.c only after defining an ESP-IDF-compatible UETD pin identifier. */
+/* void uhal_gpio_init(uhal_gpio_pin_t pin, const uhal_gpio_cfg_t *configuration); */
+/* void uhal_gpio_write(uhal_gpio_pin_t pin, bool state); */
+/* bool uhal_gpio_read(uhal_gpio_pin_t pin); */
+/* void uhal_gpio_toggle(uhal_gpio_pin_t pin); */
+/* void uhal_gpio_set(uhal_gpio_pin_t pin); */
+/* void uhal_gpio_clear(uhal_gpio_pin_t pin); */
+/* TODO: Validate IDF GPIO capability and the selected board's strapping, flash, and input-only
+ * reservations; map UETD errors without applying STM32 alternate-function assumptions. */

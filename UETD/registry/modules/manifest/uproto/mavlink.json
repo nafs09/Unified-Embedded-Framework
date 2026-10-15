@@ -1,0 +1,12 @@
+{
+  "sources": [
+    "src/uproto/mavlink.c"
+  ],
+  "dependencies": [],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/uproto.h",
+    "include/uproto/mavlink.h"
+  ]
+}

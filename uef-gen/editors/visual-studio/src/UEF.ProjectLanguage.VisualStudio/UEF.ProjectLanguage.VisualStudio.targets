@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    The SDK-style project evaluates its body before Microsoft.Common.targets.
+    Importing the VSSDK targets directly from the project body leaves
+    IntermediateOutputPath and OutDir unset, which makes the VSIX manifest
+    tasks try to write paths such as \files.json. This hook runs after
+    Microsoft.Common has established the standard build directories.
+  -->
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets"
+          Condition="Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" />
+</Project>

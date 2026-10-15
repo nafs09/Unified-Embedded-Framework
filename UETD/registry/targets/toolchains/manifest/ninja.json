@@ -1,0 +1,11 @@
+{
+  "id": "ninja",
+  "name": "Ninja build executor",
+  "purpose": "build-system",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["ninja"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: decide whether Ninja is a required generated-project dependency or optional CMake generator, then pin exact per-host binaries and hashes."
+}

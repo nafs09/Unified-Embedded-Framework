@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "src/uapp/lifecycle.c"
+  ],
+  "dependencies": [
+    "ucore"
+  ],
+  "headers": [
+    "include/uapp/lifecycle.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ]
+}

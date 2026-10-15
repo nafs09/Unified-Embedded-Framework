@@ -1,0 +1,11 @@
+{
+  "id": "stm32cube-g4",
+  "name": "STM32CubeG4 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["CMSIS device headers", "startup sources", "STM32G4 HAL"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin an ST-published STM32CubeG4 release and archive hash; record license files and exact CMSIS device/header, startup, linker, and HAL paths used by the selected G4 part."
+}

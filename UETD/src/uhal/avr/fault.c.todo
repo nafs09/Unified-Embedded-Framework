@@ -1,0 +1,8 @@
+/* Rename to fault.c only after the public fault contract is no longer Cortex-specific. */
+/* void uhal_fault_hook(const uhal_fault_context_t *context, uetd_u32_t fault_type); */
+/* void HardFault_Handler(void); */
+/* void MemManage_Handler(void); */
+/* void BusFault_Handler(void); */
+/* void UsageFault_Handler(void); */
+/* TODO: Do not export nonexistent Cortex vectors on AVR. Map only documented AVR reset/fault
+ * sources to a bounded retained diagnostic and preserve reset-cause evidence. */

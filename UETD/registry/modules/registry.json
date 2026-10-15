@@ -1,0 +1,1390 @@
+{
+  "schema_version": "1.0",
+  "uetd_version": "1.1.0",
+  "headers_root": "include",
+  "authoring_contract_schema": "registry/modules/authoring_contract.schema.json",
+  "registry_schema": "registry/modules/registry.schema.json",
+  "modules": {
+    "uactuator/h_bridge": {
+      "manifest": "registry/modules/manifest/uactuator/h_bridge.json",
+      "DSL_descriptor": "h_bridge"
+    },
+    "uapp/fault": {
+      "manifest": "registry/modules/manifest/uapp/fault.json",
+      "DSL_descriptor": "fault"
+    },
+    "uapp/lifecycle": {
+      "manifest": "registry/modules/manifest/uapp/lifecycle.json",
+      "DSL_descriptor": "lifecycle"
+    },
+    "uapp/statemachine": {
+      "manifest": "registry/modules/manifest/uapp/statemachine.json",
+      "DSL_descriptor": "statemachine"
+    },
+    "uapp/supervisor": {
+      "manifest": "registry/modules/manifest/uapp/supervisor.json",
+      "DSL_descriptor": "supervisor"
+    },
+    "uapp/watchdog_gate": {
+      "manifest": "registry/modules/manifest/uapp/watchdog_gate.json",
+      "DSL_descriptor": "watchdog_gate"
+    },
+    "ucon/aerospace/attitude/bdot_detumble": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/attitude/bdot_detumble.json",
+      "DSL_descriptor": "bdot_detumble"
+    },
+    "ucon/aerospace/attitude/quaternion_pd": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/attitude/quaternion_pd.json",
+      "DSL_descriptor": "quaternion_pd"
+    },
+    "ucon/aerospace/attitude/so3_attitude": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/attitude/so3_attitude.json",
+      "DSL_descriptor": "so3_attitude"
+    },
+    "ucon/aerospace/guidance/path_following_guidance": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/guidance/path_following_guidance.json",
+      "DSL_descriptor": "path_following_guidance"
+    },
+    "ucon/aerospace/guidance/pn_guidance": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/guidance/pn_guidance.json",
+      "DSL_descriptor": "pn_guidance"
+    },
+    "ucon/aerospace/navigation/gnss_carrier_fll": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/navigation/gnss_carrier_fll.json",
+      "DSL_descriptor": "gnss_carrier_fll"
+    },
+    "ucon/aerospace/navigation/gnss_carrier_pll": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/navigation/gnss_carrier_pll.json",
+      "DSL_descriptor": "gnss_carrier_pll"
+    },
+    "ucon/aerospace/navigation/gnss_code_dll": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/navigation/gnss_code_dll.json",
+      "DSL_descriptor": "gnss_code_dll"
+    },
+    "ucon/aerospace/navigation/ins_gnss": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/navigation/ins_gnss.json",
+      "DSL_descriptor": "ins_gnss"
+    },
+    "ucon/aerospace/navigation/ins_gnss_tight": {
+      "manifest": "registry/modules/manifest/ucon/aerospace/navigation/ins_gnss_tight.json",
+      "DSL_descriptor": "ins_gnss_tight"
+    },
+    "ucon/control/adaptive/extremum_seek": {
+      "manifest": "registry/modules/manifest/ucon/control/adaptive/extremum_seek.json",
+      "DSL_descriptor": "extremum_seek"
+    },
+    "ucon/control/adaptive/self_tune_reg": {
+      "manifest": "registry/modules/manifest/ucon/control/adaptive/self_tune_reg.json",
+      "DSL_descriptor": "self_tune_reg"
+    },
+    "ucon/control/allocation/control_allocator": {
+      "manifest": "registry/modules/manifest/ucon/control/allocation/control_allocator.json",
+      "DSL_descriptor": "control_allocator"
+    },
+    "ucon/control/classical/imc": {
+      "manifest": "registry/modules/manifest/ucon/control/classical/imc.json",
+      "DSL_descriptor": "imc"
+    },
+    "ucon/control/classical/smith_predictor": {
+      "manifest": "registry/modules/manifest/ucon/control/classical/smith_predictor.json",
+      "DSL_descriptor": "smith_predictor"
+    },
+    "ucon/control/disturbance_rejection/adrc": {
+      "manifest": "registry/modules/manifest/ucon/control/disturbance_rejection/adrc.json",
+      "DSL_descriptor": "adrc"
+    },
+    "ucon/control/classical/lead_lag": {
+      "manifest": "registry/modules/manifest/ucon/control/classical/lead_lag.json",
+      "DSL_descriptor": "lead_lag"
+    },
+    "ucon/control/nonlinear/adaptive_bs": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/adaptive_bs.json",
+      "DSL_descriptor": "adaptive_bs"
+    },
+    "ucon/control/nonlinear/backstepping": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/backstepping.json",
+      "DSL_descriptor": "backstepping"
+    },
+    "ucon/control/nonlinear/cbf_qp": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/cbf_qp.json",
+      "DSL_descriptor": "cbf_qp"
+    },
+    "ucon/control/nonlinear/clf_cbf": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/clf_cbf.json",
+      "DSL_descriptor": "clf_cbf"
+    },
+    "ucon/control/nonlinear/clf_qp": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/clf_qp.json",
+      "DSL_descriptor": "clf_qp"
+    },
+    "ucon/control/nonlinear/computed_torque": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/computed_torque.json",
+      "DSL_descriptor": "computed_torque"
+    },
+    "ucon/control/nonlinear/feedback_lin": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/feedback_lin.json",
+      "DSL_descriptor": "feedback_lin"
+    },
+    "ucon/control/nonlinear/flatness": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/flatness.json",
+      "DSL_descriptor": "flatness"
+    },
+    "ucon/control/nonlinear/indi": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/indi.json",
+      "DSL_descriptor": "indi"
+    },
+    "ucon/control/nonlinear/indi2": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/indi2.json",
+      "DSL_descriptor": "indi2"
+    },
+    "ucon/control/nonlinear/ndi": {
+      "manifest": "registry/modules/manifest/ucon/control/nonlinear/ndi.json",
+      "DSL_descriptor": "ndi"
+    },
+    "ucon/control/classical/pid": {
+      "manifest": "registry/modules/manifest/ucon/control/classical/pid.json",
+      "DSL_descriptor": "pid"
+    },
+    "ucon/control/predictive/ddp": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/ddp.json",
+      "DSL_descriptor": "ddp"
+    },
+    "ucon/control/predictive/deadbeat_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/deadbeat_mpc.json",
+      "DSL_descriptor": "deadbeat_mpc"
+    },
+    "ucon/control/predictive/economic_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/economic_mpc.json",
+      "DSL_descriptor": "economic_mpc"
+    },
+    "ucon/control/predictive/enmpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/enmpc.json",
+      "DSL_descriptor": "enmpc"
+    },
+    "ucon/control/predictive/explicit_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/explicit_mpc.json",
+      "DSL_descriptor": "explicit_mpc"
+    },
+    "ucon/control/predictive/fs_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/fs_mpc.json",
+      "DSL_descriptor": "fs_mpc"
+    },
+    "ucon/control/predictive/ilqr": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/ilqr.json",
+      "DSL_descriptor": "ilqr"
+    },
+    "ucon/control/predictive/linear_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/linear_mpc.json",
+      "DSL_descriptor": "linear_mpc"
+    },
+    "ucon/control/predictive/nmpc_rti": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/nmpc_rti.json",
+      "DSL_descriptor": "nmpc_rti"
+    },
+    "ucon/control/predictive/robust_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/robust_mpc.json",
+      "DSL_descriptor": "robust_mpc"
+    },
+    "ucon/control/predictive/sparse_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/sparse_mpc.json",
+      "DSL_descriptor": "sparse_mpc"
+    },
+    "ucon/control/predictive/stochastic_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/stochastic_mpc.json",
+      "DSL_descriptor": "stochastic_mpc"
+    },
+    "ucon/control/predictive/tracking_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/tracking_mpc.json",
+      "DSL_descriptor": "tracking_mpc"
+    },
+    "ucon/control/predictive/zone_mpc": {
+      "manifest": "registry/modules/manifest/ucon/control/predictive/zone_mpc.json",
+      "DSL_descriptor": "zone_mpc"
+    },
+    "ucon/control/safety/reference_governor": {
+      "manifest": "registry/modules/manifest/ucon/control/safety/reference_governor.json",
+      "DSL_descriptor": "reference_governor"
+    },
+    "ucon/control/scheduled/gain_schedule": {
+      "manifest": "registry/modules/manifest/ucon/control/scheduled/gain_schedule.json",
+      "DSL_descriptor": "gain_schedule"
+    },
+    "ucon/control/state_space/decoupler": {
+      "manifest": "registry/modules/manifest/ucon/control/state_space/decoupler.json",
+      "DSL_descriptor": "decoupler"
+    },
+    "ucon/control/state_space/lqg": {
+      "manifest": "registry/modules/manifest/ucon/control/state_space/lqg.json",
+      "DSL_descriptor": "lqg"
+    },
+    "ucon/control/state_space/lqi": {
+      "manifest": "registry/modules/manifest/ucon/control/state_space/lqi.json",
+      "DSL_descriptor": "lqi"
+    },
+    "ucon/control/state_space/lqr": {
+      "manifest": "registry/modules/manifest/ucon/control/state_space/lqr.json",
+      "DSL_descriptor": "lqr"
+    },
+    "ucon/control/state_space/state_feedback": {
+      "manifest": "registry/modules/manifest/ucon/control/state_space/state_feedback.json",
+      "DSL_descriptor": "state_feedback"
+    },
+    "ucon/control/tuning/pid_autotune": {
+      "manifest": "registry/modules/manifest/ucon/control/tuning/pid_autotune.json",
+      "DSL_descriptor": "pid_autotune"
+    },
+    "ucon/core": {
+      "manifest": "registry/modules/manifest/ucon/core.json",
+      "DSL_descriptor": "ucon_core"
+    },
+    "ucon/electrical/grid/droop_control": {
+      "manifest": "registry/modules/manifest/ucon/electrical/grid/droop_control.json",
+      "DSL_descriptor": "droop_control"
+    },
+    "ucon/electrical/grid/resonant_pr": {
+      "manifest": "registry/modules/manifest/ucon/electrical/grid/resonant_pr.json",
+      "DSL_descriptor": "resonant_pr"
+    },
+    "ucon/electrical/grid/sogi_fll": {
+      "manifest": "registry/modules/manifest/ucon/electrical/grid/sogi_fll.json",
+      "DSL_descriptor": "sogi_fll"
+    },
+    "ucon/electrical/grid/sogi_pll": {
+      "manifest": "registry/modules/manifest/ucon/electrical/grid/sogi_pll.json",
+      "DSL_descriptor": "sogi_pll"
+    },
+    "ucon/electrical/grid/srf_pll": {
+      "manifest": "registry/modules/manifest/ucon/electrical/grid/srf_pll.json",
+      "DSL_descriptor": "srf_pll"
+    },
+    "ucon/electrical/motor_control/dtc_control": {
+      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/dtc_control.json",
+      "DSL_descriptor": "dtc_control"
+    },
+    "ucon/electrical/motor_control/dtc_flux_torque_estimator": {
+      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/dtc_flux_torque_estimator.json",
+      "DSL_descriptor": "dtc_flux_torque_estimator"
+    },
+    "ucon/electrical/motor_control/foc_current_control": {
+      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/foc_current_control.json",
+      "DSL_descriptor": "foc_current_control"
+    },
+    "ucon/electrical/motor_control/svpwm": {
+      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/svpwm.json",
+      "DSL_descriptor": "svpwm"
+    },
+    "ucon/electrical/transforms/clarke_park": {
+      "manifest": "registry/modules/manifest/ucon/electrical/transforms/clarke_park.json",
+      "DSL_descriptor": "clarke_park"
+    },
+    "ucon/estimators/attitude/complementary": {
+      "manifest": "registry/modules/manifest/ucon/estimators/attitude/complementary.json",
+      "DSL_descriptor": "complementary"
+    },
+    "ucon/estimators/attitude/madgwick": {
+      "manifest": "registry/modules/manifest/ucon/estimators/attitude/madgwick.json",
+      "DSL_descriptor": "madgwick"
+    },
+    "ucon/estimators/attitude/mahony": {
+      "manifest": "registry/modules/manifest/ucon/estimators/attitude/mahony.json",
+      "DSL_descriptor": "mahony"
+    },
+    "ucon/estimators/attitude/mekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/attitude/mekf.json",
+      "DSL_descriptor": "mekf"
+    },
+    "ucon/estimators/attitude/quest": {
+      "manifest": "registry/modules/manifest/ucon/estimators/attitude/quest.json",
+      "DSL_descriptor": "quest"
+    },
+    "ucon/estimators/attitude/triad": {
+      "manifest": "registry/modules/manifest/ucon/estimators/attitude/triad.json",
+      "DSL_descriptor": "triad"
+    },
+    "ucon/estimators/bayesian/particle": {
+      "manifest": "registry/modules/manifest/ucon/estimators/bayesian/particle.json",
+      "DSL_descriptor": "particle"
+    },
+    "ucon/estimators/frequency/fll": {
+      "manifest": "registry/modules/manifest/ucon/estimators/frequency/fll.json",
+      "DSL_descriptor": "fll"
+    },
+    "ucon/estimators/frequency/nco": {
+      "manifest": "registry/modules/manifest/ucon/estimators/frequency/nco.json",
+      "DSL_descriptor": "nco"
+    },
+    "ucon/estimators/frequency/pll": {
+      "manifest": "registry/modules/manifest/ucon/estimators/frequency/pll.json",
+      "DSL_descriptor": "pll"
+    },
+    "ucon/estimators/frequency/sliding_dft": {
+      "manifest": "registry/modules/manifest/ucon/estimators/frequency/sliding_dft.json",
+      "DSL_descriptor": "sliding_dft"
+    },
+    "ucon/estimators/frequency/sogi": {
+      "manifest": "registry/modules/manifest/ucon/estimators/frequency/sogi.json",
+      "DSL_descriptor": "sogi"
+    },
+    "ucon/estimators/frequency/zero_cross_freq": {
+      "manifest": "registry/modules/manifest/ucon/estimators/frequency/zero_cross_freq.json",
+      "DSL_descriptor": "zero_cross_freq"
+    },
+    "ucon/estimators/identification/rls": {
+      "manifest": "registry/modules/manifest/ucon/estimators/identification/rls.json",
+      "DSL_descriptor": "rls"
+    },
+    "ucon/estimators/kalman/ckf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/ckf.json",
+      "DSL_descriptor": "ckf"
+    },
+    "ucon/estimators/kalman/ekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/ekf.json",
+      "DSL_descriptor": "ekf"
+    },
+    "ucon/estimators/kalman/error_state_ekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/error_state_ekf.json",
+      "DSL_descriptor": "error_state_ekf"
+    },
+    "ucon/estimators/kalman/imm_ekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/imm_ekf.json",
+      "DSL_descriptor": "imm_ekf"
+    },
+    "ucon/estimators/kalman/invariant_ekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/invariant_ekf.json",
+      "DSL_descriptor": "invariant_ekf"
+    },
+    "ucon/estimators/kalman/iterated_ekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/iterated_ekf.json",
+      "DSL_descriptor": "iterated_ekf"
+    },
+    "ucon/estimators/kalman/linear_kf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/linear_kf.json",
+      "DSL_descriptor": "linear_kf"
+    },
+    "ucon/estimators/kalman/scalar_kf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/scalar_kf.json",
+      "DSL_descriptor": "scalar_kf"
+    },
+    "ucon/estimators/kalman/sqrt_ekf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/sqrt_ekf.json",
+      "DSL_descriptor": "sqrt_ekf"
+    },
+    "ucon/estimators/kalman/sqrt_ukf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/sqrt_ukf.json",
+      "DSL_descriptor": "sqrt_ukf"
+    },
+    "ucon/estimators/kalman/ukf": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/ukf.json",
+      "DSL_descriptor": "ukf"
+    },
+    "ucon/estimators/kalman/ukf_merwe": {
+      "manifest": "registry/modules/manifest/ucon/estimators/kalman/ukf_merwe.json",
+      "DSL_descriptor": "ukf_merwe"
+    },
+    "ucon/estimators/moving_horizon/mhe": {
+      "manifest": "registry/modules/manifest/ucon/estimators/moving_horizon/mhe.json",
+      "DSL_descriptor": "mhe"
+    },
+    "ucon/estimators/observers/dob": {
+      "manifest": "registry/modules/manifest/ucon/estimators/observers/dob.json",
+      "DSL_descriptor": "dob"
+    },
+    "ucon/estimators/observers/edob": {
+      "manifest": "registry/modules/manifest/ucon/estimators/observers/edob.json",
+      "DSL_descriptor": "edob"
+    },
+    "ucon/estimators/observers/eso": {
+      "manifest": "registry/modules/manifest/ucon/estimators/observers/eso.json",
+      "DSL_descriptor": "eso"
+    },
+    "ucon/estimators/observers/luenberger": {
+      "manifest": "registry/modules/manifest/ucon/estimators/observers/luenberger.json",
+      "DSL_descriptor": "luenberger"
+    },
+    "ucon/estimators/tracking/alpha_beta": {
+      "manifest": "registry/modules/manifest/ucon/estimators/tracking/alpha_beta.json",
+      "DSL_descriptor": "alpha_beta"
+    },
+    "ucon/estimators/tracking/alpha_beta_gamma": {
+      "manifest": "registry/modules/manifest/ucon/estimators/tracking/alpha_beta_gamma.json",
+      "DSL_descriptor": "alpha_beta_gamma"
+    },
+    "ucon/filtering/coefficient_design/bessel": {
+      "manifest": "registry/modules/manifest/ucon/filtering/coefficient_design/bessel.json",
+      "DSL_descriptor": "bessel"
+    },
+    "ucon/filtering/coefficient_design/butterworth": {
+      "manifest": "registry/modules/manifest/ucon/filtering/coefficient_design/butterworth.json",
+      "DSL_descriptor": "butterworth"
+    },
+    "ucon/filtering/coefficient_design/chebyshev1": {
+      "manifest": "registry/modules/manifest/ucon/filtering/coefficient_design/chebyshev1.json",
+      "DSL_descriptor": "chebyshev1"
+    },
+    "ucon/filtering/coefficient_design/chebyshev2": {
+      "manifest": "registry/modules/manifest/ucon/filtering/coefficient_design/chebyshev2.json",
+      "DSL_descriptor": "chebyshev2"
+    },
+    "ucon/filtering/coefficient_design/elliptic": {
+      "manifest": "registry/modules/manifest/ucon/filtering/coefficient_design/elliptic.json",
+      "DSL_descriptor": "elliptic"
+    },
+    "ucon/filtering/coefficient_design/fir_windowed": {
+      "manifest": "registry/modules/manifest/ucon/filtering/coefficient_design/fir_windowed.json",
+      "DSL_descriptor": "fir_windowed"
+    },
+    "ucon/filtering/runtime/biquad_cascade": {
+      "manifest": "registry/modules/manifest/ucon/filtering/runtime/biquad_cascade.json",
+      "DSL_descriptor": "biquad_cascade"
+    },
+    "ucon/filtering/runtime/ema": {
+      "manifest": "registry/modules/manifest/ucon/filtering/runtime/ema.json",
+      "DSL_descriptor": "ema"
+    },
+    "ucon/filtering/runtime/fir": {
+      "manifest": "registry/modules/manifest/ucon/filtering/runtime/fir.json",
+      "DSL_descriptor": "fir"
+    },
+    "ucon/filtering/runtime/median": {
+      "manifest": "registry/modules/manifest/ucon/filtering/runtime/median.json",
+      "DSL_descriptor": "median"
+    },
+    "ucon/filtering/runtime/moving_average": {
+      "manifest": "registry/modules/manifest/ucon/filtering/runtime/moving_average.json",
+      "DSL_descriptor": "moving_average"
+    },
+    "ucon/filtering/runtime/notch": {
+      "manifest": "registry/modules/manifest/ucon/filtering/runtime/notch.json",
+      "DSL_descriptor": "notch"
+    },
+    "ucon/future/aerospace/guidance/los_guidance": {
+      "manifest": "registry/modules/manifest/ucon/future/aerospace/guidance/los_guidance.json",
+      "DSL_descriptor": "los_guidance"
+    },
+    "ucon/future/aerospace/guidance/pure_pursuit_guidance": {
+      "manifest": "registry/modules/manifest/ucon/future/aerospace/guidance/pure_pursuit_guidance.json",
+      "DSL_descriptor": "pure_pursuit_guidance"
+    },
+    "ucon/future/control/adaptive/ilc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/adaptive/ilc.json",
+      "DSL_descriptor": "ilc"
+    },
+    "ucon/future/control/adaptive/l1_adaptive": {
+      "manifest": "registry/modules/manifest/ucon/future/control/adaptive/l1_adaptive.json",
+      "DSL_descriptor": "l1_adaptive"
+    },
+    "ucon/future/control/adaptive/mrac_composite": {
+      "manifest": "registry/modules/manifest/ucon/future/control/adaptive/mrac_composite.json",
+      "DSL_descriptor": "mrac_composite"
+    },
+    "ucon/future/control/adaptive/mrac_lyapunov": {
+      "manifest": "registry/modules/manifest/ucon/future/control/adaptive/mrac_lyapunov.json",
+      "DSL_descriptor": "mrac_lyapunov"
+    },
+    "ucon/future/control/adaptive/mrac_mit": {
+      "manifest": "registry/modules/manifest/ucon/future/control/adaptive/mrac_mit.json",
+      "DSL_descriptor": "mrac_mit"
+    },
+    "ucon/future/control/classical/dahlin": {
+      "manifest": "registry/modules/manifest/ucon/future/control/classical/dahlin.json",
+      "DSL_descriptor": "dahlin"
+    },
+    "ucon/future/control/classical/deadbeat": {
+      "manifest": "registry/modules/manifest/ucon/future/control/classical/deadbeat.json",
+      "DSL_descriptor": "deadbeat"
+    },
+    "ucon/future/control/classical/repetitive": {
+      "manifest": "registry/modules/manifest/ucon/future/control/classical/repetitive.json",
+      "DSL_descriptor": "repetitive"
+    },
+    "ucon/future/control/nonlinear/dynamic_surface_control": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/dynamic_surface_control.json",
+      "DSL_descriptor": "dynamic_surface_control"
+    },
+    "ucon/future/control/nonlinear/fractional_order_smc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/fractional_order_smc.json",
+      "DSL_descriptor": "fractional_order_smc"
+    },
+    "ucon/future/control/nonlinear/fuzzy_controller": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/fuzzy_controller.json",
+      "DSL_descriptor": "fuzzy_controller"
+    },
+    "ucon/future/control/nonlinear/ida_pbc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/ida_pbc.json",
+      "DSL_descriptor": "ida_pbc"
+    },
+    "ucon/future/control/nonlinear/integral_smc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/integral_smc.json",
+      "DSL_descriptor": "integral_smc"
+    },
+    "ucon/future/control/nonlinear/rise": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/rise.json",
+      "DSL_descriptor": "rise"
+    },
+    "ucon/future/control/nonlinear/smc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/smc.json",
+      "DSL_descriptor": "smc"
+    },
+    "ucon/future/control/nonlinear/super_twisting": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/super_twisting.json",
+      "DSL_descriptor": "super_twisting"
+    },
+    "ucon/future/control/nonlinear/terminal_smc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/nonlinear/terminal_smc.json",
+      "DSL_descriptor": "terminal_smc"
+    },
+    "ucon/future/control/predictive/adaptive_mpc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/predictive/adaptive_mpc.json",
+      "DSL_descriptor": "adaptive_mpc"
+    },
+    "ucon/future/control/predictive/gain_scheduled_mpc": {
+      "manifest": "registry/modules/manifest/ucon/future/control/predictive/gain_scheduled_mpc.json",
+      "DSL_descriptor": "gain_scheduled_mpc"
+    },
+    "ucon/future/control/state_space/h2_state_feedback": {
+      "manifest": "registry/modules/manifest/ucon/future/control/state_space/h2_state_feedback.json",
+      "DSL_descriptor": "h2_state_feedback"
+    },
+    "ucon/future/control/state_space/h_inf_of": {
+      "manifest": "registry/modules/manifest/ucon/future/control/state_space/h_inf_of.json",
+      "DSL_descriptor": "h_inf_of"
+    },
+    "ucon/future/control/state_space/h_inf_sf": {
+      "manifest": "registry/modules/manifest/ucon/future/control/state_space/h_inf_sf.json",
+      "DSL_descriptor": "h_inf_sf"
+    },
+    "ucon/future/control/synthesis/pole_place": {
+      "manifest": "registry/modules/manifest/ucon/future/control/synthesis/pole_place.json",
+      "DSL_descriptor": "pole_place"
+    },
+    "ucon/future/electrical/grid/ddsrf_pll": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/grid/ddsrf_pll.json",
+      "DSL_descriptor": "ddsrf_pll"
+    },
+    "ucon/future/electrical/grid/dsogi_pll": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/grid/dsogi_pll.json",
+      "DSL_descriptor": "dsogi_pll"
+    },
+    "ucon/future/electrical/grid/msogi_fll": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/grid/msogi_fll.json",
+      "DSL_descriptor": "msogi_fll"
+    },
+    "ucon/future/electrical/motor_control/flux_weakening_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/motor_control/flux_weakening_control.json",
+      "DSL_descriptor": "flux_weakening_control"
+    },
+    "ucon/future/electrical/motor_control/mtpa_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/motor_control/mtpa_control.json",
+      "DSL_descriptor": "mtpa_control"
+    },
+    "ucon/future/electrical/motor_control/sensorless_foc_observer": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/motor_control/sensorless_foc_observer.json",
+      "DSL_descriptor": "sensorless_foc_observer"
+    },
+    "ucon/future/electrical/power_conversion/average_current_mode_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/power_conversion/average_current_mode_control.json",
+      "DSL_descriptor": "average_current_mode_control"
+    },
+    "ucon/future/electrical/power_conversion/half_cycle_predictive_current_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/power_conversion/half_cycle_predictive_current_control.json",
+      "DSL_descriptor": "half_cycle_predictive_current_control"
+    },
+    "ucon/future/electrical/power_conversion/hysteretic_current_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/power_conversion/hysteretic_current_control.json",
+      "DSL_descriptor": "hysteretic_current_control"
+    },
+    "ucon/future/electrical/power_conversion/peak_current_mode_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/power_conversion/peak_current_mode_control.json",
+      "DSL_descriptor": "peak_current_mode_control"
+    },
+    "ucon/future/electrical/power_conversion/phase_shift_full_bridge_control": {
+      "manifest": "registry/modules/manifest/ucon/future/electrical/power_conversion/phase_shift_full_bridge_control.json",
+      "DSL_descriptor": "phase_shift_full_bridge_control"
+    },
+    "ucon/future/estimators/diagnostics/cusum_change_detector": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/diagnostics/cusum_change_detector.json",
+      "DSL_descriptor": "cusum_change_detector"
+    },
+    "ucon/future/estimators/diagnostics/innovation_monitor": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/diagnostics/innovation_monitor.json",
+      "DSL_descriptor": "innovation_monitor"
+    },
+    "ucon/future/estimators/identification/persistent_excitation_monitor": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/persistent_excitation_monitor.json",
+      "DSL_descriptor": "persistent_excitation_monitor"
+    },
+    "ucon/future/estimators/identification/recursive_ar": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_ar.json",
+      "DSL_descriptor": "recursive_ar"
+    },
+    "ucon/future/estimators/identification/recursive_arma": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_arma.json",
+      "DSL_descriptor": "recursive_arma"
+    },
+    "ucon/future/estimators/identification/recursive_armax": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_armax.json",
+      "DSL_descriptor": "recursive_armax"
+    },
+    "ucon/future/estimators/identification/recursive_arx": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_arx.json",
+      "DSL_descriptor": "recursive_arx"
+    },
+    "ucon/future/estimators/identification/recursive_bj": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_bj.json",
+      "DSL_descriptor": "recursive_bj"
+    },
+    "ucon/future/estimators/identification/recursive_iv": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_iv.json",
+      "DSL_descriptor": "recursive_iv"
+    },
+    "ucon/future/estimators/identification/recursive_oe": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/recursive_oe.json",
+      "DSL_descriptor": "recursive_oe"
+    },
+    "ucon/future/estimators/identification/rpem": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/identification/rpem.json",
+      "DSL_descriptor": "rpem"
+    },
+    "ucon/future/estimators/kalman/adaptive_kf": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/adaptive_kf.json",
+      "DSL_descriptor": "adaptive_kf"
+    },
+    "ucon/future/estimators/kalman/dual_kf": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/dual_kf.json",
+      "DSL_descriptor": "dual_kf"
+    },
+    "ucon/future/estimators/kalman/fading_memory_kf": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/fading_memory_kf.json",
+      "DSL_descriptor": "fading_memory_kf"
+    },
+    "ucon/future/estimators/kalman/gaussian_sum_filter": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/gaussian_sum_filter.json",
+      "DSL_descriptor": "gaussian_sum_filter"
+    },
+    "ucon/future/estimators/kalman/out_of_sequence_kf": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/out_of_sequence_kf.json",
+      "DSL_descriptor": "out_of_sequence_kf"
+    },
+    "ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.json",
+      "DSL_descriptor": "resonant_ekf_llc_src"
+    },
+    "ucon/future/estimators/kalman/robust_kf": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/robust_kf.json",
+      "DSL_descriptor": "robust_kf"
+    },
+    "ucon/future/estimators/kalman/ud_kf": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/ud_kf.json",
+      "DSL_descriptor": "ud_kf"
+    },
+    "ucon/future/estimators/observers/h_inf_obs": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/observers/h_inf_obs.json",
+      "DSL_descriptor": "h_inf_obs"
+    },
+    "ucon/future/estimators/observers/high_gain_observer": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/observers/high_gain_observer.json",
+      "DSL_descriptor": "high_gain_observer"
+    },
+    "ucon/future/estimators/observers/reduced_obs": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/observers/reduced_obs.json",
+      "DSL_descriptor": "reduced_obs"
+    },
+    "ucon/future/estimators/observers/sliding_mode_observer": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/observers/sliding_mode_observer.json",
+      "DSL_descriptor": "sliding_mode_observer"
+    },
+    "ucon/future/estimators/observers/uio": {
+      "manifest": "registry/modules/manifest/ucon/future/estimators/observers/uio.json",
+      "DSL_descriptor": "uio"
+    },
+    "ucon/future/filtering/adaptive/lms": {
+      "manifest": "registry/modules/manifest/ucon/future/filtering/adaptive/lms.json",
+      "DSL_descriptor": "lms"
+    },
+    "ucon/future/filtering/adaptive/nlms": {
+      "manifest": "registry/modules/manifest/ucon/future/filtering/adaptive/nlms.json",
+      "DSL_descriptor": "nlms"
+    },
+    "ucon/future/filtering/runtime/savgol_filter": {
+      "manifest": "registry/modules/manifest/ucon/future/filtering/runtime/savgol_filter.json",
+      "DSL_descriptor": "savgol_filter"
+    },
+    "ucon/future/infrastructure/blocks/aw_observer": {
+      "manifest": "registry/modules/manifest/ucon/future/infrastructure/blocks/aw_observer.json",
+      "DSL_descriptor": "aw_observer"
+    },
+    "ucon/future/optimization/qp/qp_active_set": {
+      "manifest": "registry/modules/manifest/ucon/future/optimization/qp/qp_active_set.json",
+      "DSL_descriptor": "qp_active_set"
+    },
+    "ucon/future/optimization/qp/qp_admm": {
+      "manifest": "registry/modules/manifest/ucon/future/optimization/qp/qp_admm.json",
+      "DSL_descriptor": "qp_admm"
+    },
+    "ucon/future/optimization/qp/qp_projected_gradient": {
+      "manifest": "registry/modules/manifest/ucon/future/optimization/qp/qp_projected_gradient.json",
+      "DSL_descriptor": "qp_projected_gradient"
+    },
+    "ucon/future/signal_processing/analysis/spectral_peak_interpolation": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/analysis/spectral_peak_interpolation.json",
+      "DSL_descriptor": "spectral_peak_interpolation"
+    },
+    "ucon/future/signal_processing/demodulation/synchronous_demod": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/demodulation/synchronous_demod.json",
+      "DSL_descriptor": "synchronous_demod"
+    },
+    "ucon/future/signal_processing/resampling/cic_decimator": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/resampling/cic_decimator.json",
+      "DSL_descriptor": "cic_decimator"
+    },
+    "ucon/future/signal_processing/resampling/polyphase_resampler": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/resampling/polyphase_resampler.json",
+      "DSL_descriptor": "polyphase_resampler"
+    },
+    "ucon/future/signal_processing/statistics/peak_tracker": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/statistics/peak_tracker.json",
+      "DSL_descriptor": "peak_tracker"
+    },
+    "ucon/future/signal_processing/statistics/rms_window": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/statistics/rms_window.json",
+      "DSL_descriptor": "rms_window"
+    },
+    "ucon/future/signal_processing/transforms/fft_radix2": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/transforms/fft_radix2.json",
+      "DSL_descriptor": "fft_radix2"
+    },
+    "ucon/future/signal_processing/transforms/goertzel": {
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/transforms/goertzel.json",
+      "DSL_descriptor": "goertzel"
+    },
+    "ucon/future/trajectory/optimization/minimum_snap_traj": {
+      "manifest": "registry/modules/manifest/ucon/future/trajectory/optimization/minimum_snap_traj.json",
+      "DSL_descriptor": "minimum_snap_traj"
+    },
+    "ucon/future/trajectory/profiles/time_optimal_profile": {
+      "manifest": "registry/modules/manifest/ucon/future/trajectory/profiles/time_optimal_profile.json",
+      "DSL_descriptor": "time_optimal_profile"
+    },
+    "ucon/infrastructure/blocks/anti_windup_backcalc": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_backcalc.json",
+      "DSL_descriptor": "anti_windup_backcalc"
+    },
+    "ucon/infrastructure/blocks/anti_windup_clamp": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_clamp.json",
+      "DSL_descriptor": "anti_windup_clamp"
+    },
+    "ucon/infrastructure/blocks/anti_windup_cond": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_cond.json",
+      "DSL_descriptor": "anti_windup_cond"
+    },
+    "ucon/infrastructure/blocks/bumpless_transfer": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/bumpless_transfer.json",
+      "DSL_descriptor": "bumpless_transfer"
+    },
+    "ucon/infrastructure/blocks/deadband": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/deadband.json",
+      "DSL_descriptor": "deadband"
+    },
+    "ucon/infrastructure/blocks/gain_block": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/gain_block.json",
+      "DSL_descriptor": "gain_block"
+    },
+    "ucon/infrastructure/blocks/hysteresis": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/hysteresis.json",
+      "DSL_descriptor": "hysteresis"
+    },
+    "ucon/infrastructure/blocks/integrator": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/integrator.json",
+      "DSL_descriptor": "integrator"
+    },
+    "ucon/infrastructure/blocks/mode_select": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/mode_select.json",
+      "DSL_descriptor": "mode_select"
+    },
+    "ucon/infrastructure/blocks/multirate_bridge": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/multirate_bridge.json",
+      "DSL_descriptor": "multirate_bridge"
+    },
+    "ucon/infrastructure/blocks/rate_limiter": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/rate_limiter.json",
+      "DSL_descriptor": "rate_limiter"
+    },
+    "ucon/infrastructure/blocks/saturator": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/saturator.json",
+      "DSL_descriptor": "saturator"
+    },
+    "ucon/infrastructure/blocks/sensor_voter": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/sensor_voter.json",
+      "DSL_descriptor": "sensor_voter"
+    },
+    "ucon/infrastructure/blocks/signal_validity": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/signal_validity.json",
+      "DSL_descriptor": "signal_validity"
+    },
+    "ucon/infrastructure/blocks/sum_junction": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/sum_junction.json",
+      "DSL_descriptor": "sum_junction"
+    },
+    "ucon/infrastructure/blocks/unit_delay": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/unit_delay.json",
+      "DSL_descriptor": "unit_delay"
+    },
+    "ucon/infrastructure/fault_detection/sensor_fdi": {
+      "manifest": "registry/modules/manifest/ucon/infrastructure/fault_detection/sensor_fdi.json",
+      "DSL_descriptor": "sensor_fdi"
+    },
+    "ucon/medical/profiles/glucose_control_profile": {
+      "manifest": "registry/modules/manifest/ucon/medical/profiles/glucose_control_profile.json",
+      "DSL_descriptor": "glucose_control_profile"
+    },
+    "ucon/medical/profiles/pkpd_target_control": {
+      "manifest": "registry/modules/manifest/ucon/medical/profiles/pkpd_target_control.json",
+      "DSL_descriptor": "pkpd_target_control"
+    },
+    "ucon/medical/profiles/ventilator_control_profile": {
+      "manifest": "registry/modules/manifest/ucon/medical/profiles/ventilator_control_profile.json",
+      "DSL_descriptor": "ventilator_control_profile"
+    },
+    "ucon/trajectory/profiles/bezier_traj": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/bezier_traj.json",
+      "DSL_descriptor": "bezier_traj"
+    },
+    "ucon/trajectory/profiles/bspline_traj": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/bspline_traj.json",
+      "DSL_descriptor": "bspline_traj"
+    },
+    "ucon/trajectory/profiles/jerk_profile": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/jerk_profile.json",
+      "DSL_descriptor": "jerk_profile"
+    },
+    "ucon/trajectory/profiles/poly_traj_3": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/poly_traj_3.json",
+      "DSL_descriptor": "poly_traj_3"
+    },
+    "ucon/trajectory/profiles/poly_traj_5": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/poly_traj_5.json",
+      "DSL_descriptor": "poly_traj_5"
+    },
+    "ucon/trajectory/profiles/ref_model_1": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/ref_model_1.json",
+      "DSL_descriptor": "ref_model_1"
+    },
+    "ucon/trajectory/profiles/ref_model_2": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/ref_model_2.json",
+      "DSL_descriptor": "ref_model_2"
+    },
+    "ucon/trajectory/profiles/s_curve": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/s_curve.json",
+      "DSL_descriptor": "s_curve"
+    },
+    "ucon/trajectory/profiles/trapezoid_profile": {
+      "manifest": "registry/modules/manifest/ucon/trajectory/profiles/trapezoid_profile.json",
+      "DSL_descriptor": "trapezoid_profile"
+    },
+    "ucore": {
+      "manifest": "registry/modules/manifest/ucore.json",
+      "DSL_descriptor": "ucore"
+    },
+    "uhal": {
+      "manifest": "registry/modules/manifest/uhal.json",
+      "DSL_descriptor": "uhal"
+    },
+    "uhal/arm_cm": {
+      "manifest": "registry/modules/manifest/uhal/arm_cm.json",
+      "DSL_descriptor": "arm_cm"
+    },
+    "uhal/target_profiles": {
+      "manifest": "registry/modules/manifest/uhal/target_profiles.json",
+      "DSL_descriptor": "target_profiles"
+    },
+    "uhal/x86": {
+      "manifest": "registry/modules/manifest/uhal/x86.json",
+      "DSL_descriptor": "x86"
+    },
+    "umath/derivatives/dual": {
+      "manifest": "registry/modules/manifest/umath/derivatives/dual.json",
+      "DSL_descriptor": "dual"
+    },
+    "umath/complex": {
+      "manifest": "registry/modules/manifest/umath/complex.json",
+      "DSL_descriptor": "complex"
+    },
+    "umath/core": {
+      "manifest": "registry/modules/manifest/umath/core.json",
+      "DSL_descriptor": "umath_core"
+    },
+    "umath/derivatives/jacobian": {
+      "manifest": "registry/modules/manifest/umath/derivatives/jacobian.json",
+      "DSL_descriptor": "jacobian"
+    },
+    "umath/fixed": {
+      "manifest": "registry/modules/manifest/umath/fixed.json",
+      "DSL_descriptor": "fixed"
+    },
+    "umath/future/matrix/sparse_csr": {
+      "manifest": "registry/modules/manifest/umath/future/matrix/sparse_csr.json",
+      "DSL_descriptor": "sparse_csr"
+    },
+    "umath/geometry/transform3": {
+      "manifest": "registry/modules/manifest/umath/geometry/transform3.json",
+      "DSL_descriptor": "transform3"
+    },
+    "umath/interpolation/splines": {
+      "manifest": "registry/modules/manifest/umath/interpolation/splines.json",
+      "DSL_descriptor": "splines"
+    },
+    "umath/lie/se2": {
+      "manifest": "registry/modules/manifest/umath/lie/se2.json",
+      "DSL_descriptor": "se2"
+    },
+    "umath/lie/se3": {
+      "manifest": "registry/modules/manifest/umath/lie/se3.json",
+      "DSL_descriptor": "se3"
+    },
+    "umath/lie/so2": {
+      "manifest": "registry/modules/manifest/umath/lie/so2.json",
+      "DSL_descriptor": "so2"
+    },
+    "umath/lie/so3": {
+      "manifest": "registry/modules/manifest/umath/lie/so3.json",
+      "DSL_descriptor": "so3"
+    },
+    "umath/matrix/cholesky": {
+      "manifest": "registry/modules/manifest/umath/matrix/cholesky.json",
+      "DSL_descriptor": "cholesky"
+    },
+    "umath/matrix/core": {
+      "manifest": "registry/modules/manifest/umath/matrix/core.json",
+      "DSL_descriptor": "matrix_core"
+    },
+    "umath/matrix/ldlt": {
+      "manifest": "registry/modules/manifest/umath/matrix/ldlt.json",
+      "DSL_descriptor": "ldlt"
+    },
+    "umath/matrix/lu": {
+      "manifest": "registry/modules/manifest/umath/matrix/lu.json",
+      "DSL_descriptor": "lu"
+    },
+    "umath/matrix/qr": {
+      "manifest": "registry/modules/manifest/umath/matrix/qr.json",
+      "DSL_descriptor": "qr"
+    },
+    "umath/matrix/svd": {
+      "manifest": "registry/modules/manifest/umath/matrix/svd.json",
+      "DSL_descriptor": "svd"
+    },
+    "umath/matrix/symmetric_eigen": {
+      "manifest": "registry/modules/manifest/umath/matrix/symmetric_eigen.json",
+      "DSL_descriptor": "symmetric_eigen"
+    },
+    "umath/numerical/integration": {
+      "manifest": "registry/modules/manifest/umath/numerical/integration.json",
+      "DSL_descriptor": "integration"
+    },
+    "umath/optimization/least_squares": {
+      "manifest": "registry/modules/manifest/umath/optimization/least_squares.json",
+      "DSL_descriptor": "least_squares"
+    },
+    "umath/polynomial/core": {
+      "manifest": "registry/modules/manifest/umath/polynomial/core.json",
+      "DSL_descriptor": "polynomial_core"
+    },
+    "umath/polynomial/roots": {
+      "manifest": "registry/modules/manifest/umath/polynomial/roots.json",
+      "DSL_descriptor": "roots"
+    },
+    "umath/probability/distributions": {
+      "manifest": "registry/modules/manifest/umath/probability/distributions.json",
+      "DSL_descriptor": "distributions"
+    },
+    "umath/probability/multivariate_normal": {
+      "manifest": "registry/modules/manifest/umath/probability/multivariate_normal.json",
+      "DSL_descriptor": "multivariate_normal"
+    },
+    "umath/geometry/quaternion": {
+      "manifest": "registry/modules/manifest/umath/geometry/quaternion.json",
+      "DSL_descriptor": "quaternion"
+    },
+    "umath/random/prng": {
+      "manifest": "registry/modules/manifest/umath/random/prng.json",
+      "DSL_descriptor": "prng"
+    },
+    "umath/signal/fft": {
+      "manifest": "registry/modules/manifest/umath/signal/fft.json",
+      "DSL_descriptor": "fft"
+    },
+    "umath/signal/windows": {
+      "manifest": "registry/modules/manifest/umath/signal/windows.json",
+      "DSL_descriptor": "windows"
+    },
+    "umath/special/functions": {
+      "manifest": "registry/modules/manifest/umath/special/functions.json",
+      "DSL_descriptor": "functions"
+    },
+    "umath/statistics/streaming": {
+      "manifest": "registry/modules/manifest/umath/statistics/streaming.json",
+      "DSL_descriptor": "streaming"
+    },
+    "umath/vector/vector2": {
+      "manifest": "registry/modules/manifest/umath/vector/vector2.json",
+      "DSL_descriptor": "vector2"
+    },
+    "umath/vector/vector3": {
+      "manifest": "registry/modules/manifest/umath/vector/vector3.json",
+      "DSL_descriptor": "vector3"
+    },
+    "umath/vector/vector4": {
+      "manifest": "registry/modules/manifest/umath/vector/vector4.json",
+      "DSL_descriptor": "vector4"
+    },
+    "umid/current": {
+      "manifest": "registry/modules/manifest/umid/current.json",
+      "DSL_descriptor": "current"
+    },
+    "umid/encoder": {
+      "manifest": "registry/modules/manifest/umid/encoder.json",
+      "DSL_descriptor": "encoder"
+    },
+    "umid/fatfs": {
+      "manifest": "registry/modules/manifest/umid/fatfs.json",
+      "DSL_descriptor": "fatfs"
+    },
+    "umid/fpga": {
+      "manifest": "registry/modules/manifest/umid/fpga.json",
+      "DSL_descriptor": "fpga"
+    },
+    "umid/gnss": {
+      "manifest": "registry/modules/manifest/umid/gnss.json",
+      "DSL_descriptor": "gnss"
+    },
+    "umid/health": {
+      "manifest": "registry/modules/manifest/umid/health.json",
+      "DSL_descriptor": "health"
+    },
+    "umid/imu": {
+      "manifest": "registry/modules/manifest/umid/imu.json",
+      "DSL_descriptor": "imu"
+    },
+    "umid/log": {
+      "manifest": "registry/modules/manifest/umid/log.json",
+      "DSL_descriptor": "log"
+    },
+    "umid/mag": {
+      "manifest": "registry/modules/manifest/umid/mag.json",
+      "DSL_descriptor": "magnetometer"
+    },
+    "umid/pressure": {
+      "manifest": "registry/modules/manifest/umid/pressure.json",
+      "DSL_descriptor": "pressure"
+    },
+    "umid/range": {
+      "manifest": "registry/modules/manifest/umid/range.json",
+      "DSL_descriptor": "range"
+    },
+    "umid/ringbuf": {
+      "manifest": "registry/modules/manifest/umid/ringbuf.json",
+      "DSL_descriptor": "ringbuf"
+    },
+    "umid/temp": {
+      "manifest": "registry/modules/manifest/umid/temp.json",
+      "DSL_descriptor": "temp"
+    },
+    "umid/voltage": {
+      "manifest": "registry/modules/manifest/umid/voltage.json",
+      "DSL_descriptor": "voltage"
+    },
+    "uos": {
+      "manifest": "registry/modules/manifest/uos.json",
+      "DSL_descriptor": "uos"
+    },
+    "uos/baremetal": {
+      "manifest": "registry/modules/manifest/uos/baremetal.json",
+      "DSL_descriptor": "BareMetal"
+    },
+    "uos/freertos": {
+      "manifest": "registry/modules/manifest/uos/freertos.json",
+      "DSL_descriptor": "FreeRTOS"
+    },
+    "uos/safertos": {
+      "manifest": "registry/modules/manifest/uos/safertos.json",
+      "DSL_descriptor": "SafeRTOS"
+    },
+    "upal/adc": {
+      "manifest": "registry/modules/manifest/upal/adc.json",
+      "DSL_descriptor": "adc"
+    },
+    "upal/can": {
+      "manifest": "registry/modules/manifest/upal/can.json",
+      "DSL_descriptor": "can"
+    },
+    "upal/comp": {
+      "manifest": "registry/modules/manifest/upal/comp.json",
+      "DSL_descriptor": "comp"
+    },
+    "upal/cordic": {
+      "manifest": "registry/modules/manifest/upal/cordic.json",
+      "DSL_descriptor": "cordic"
+    },
+    "upal/dac": {
+      "manifest": "registry/modules/manifest/upal/dac.json",
+      "DSL_descriptor": "dac"
+    },
+    "upal/dma": {
+      "manifest": "registry/modules/manifest/upal/dma.json",
+      "DSL_descriptor": "dma"
+    },
+    "upal/fdcan_fd": {
+      "manifest": "registry/modules/manifest/upal/fdcan_fd.json",
+      "DSL_descriptor": "fdcan_fd"
+    },
+    "upal/flash": {
+      "manifest": "registry/modules/manifest/upal/flash.json",
+      "DSL_descriptor": "flash"
+    },
+    "upal/fmac": {
+      "manifest": "registry/modules/manifest/upal/fmac.json",
+      "DSL_descriptor": "fmac"
+    },
+    "upal/hrtim": {
+      "manifest": "registry/modules/manifest/upal/hrtim.json",
+      "DSL_descriptor": "hrtim"
+    },
+    "upal/i2c": {
+      "manifest": "registry/modules/manifest/upal/i2c.json",
+      "DSL_descriptor": "i2c"
+    },
+    "upal/iwdg": {
+      "manifest": "registry/modules/manifest/upal/iwdg.json",
+      "DSL_descriptor": "watchdog"
+    },
+    "upal/opamp": {
+      "manifest": "registry/modules/manifest/upal/opamp.json",
+      "DSL_descriptor": "opamp"
+    },
+    "upal/qspi": {
+      "manifest": "registry/modules/manifest/upal/qspi.json",
+      "DSL_descriptor": "qspi"
+    },
+    "upal/rtc": {
+      "manifest": "registry/modules/manifest/upal/rtc.json",
+      "DSL_descriptor": "rtc"
+    },
+    "upal/sdmmc": {
+      "manifest": "registry/modules/manifest/upal/sdmmc.json",
+      "DSL_descriptor": "sdmmc"
+    },
+    "upal/spi": {
+      "manifest": "registry/modules/manifest/upal/spi.json",
+      "DSL_descriptor": "spi"
+    },
+    "upal/timer": {
+      "manifest": "registry/modules/manifest/upal/timer.json",
+      "DSL_descriptor": "timer"
+    },
+    "upal/uart": {
+      "manifest": "registry/modules/manifest/upal/uart.json",
+      "DSL_descriptor": "uart"
+    },
+    "upal/usb": {
+      "manifest": "registry/modules/manifest/upal/usb.json",
+      "DSL_descriptor": "usb"
+    },
+    "upal/wwdg": {
+      "manifest": "registry/modules/manifest/upal/wwdg.json",
+      "DSL_descriptor": "window_watchdog"
+    },
+    "uproto/crsf": {
+      "manifest": "registry/modules/manifest/uproto/crsf.json",
+      "DSL_descriptor": "crsf"
+    },
+    "uproto/dshot": {
+      "manifest": "registry/modules/manifest/uproto/dshot.json",
+      "DSL_descriptor": "dshot"
+    },
+    "uproto/future/elrs": {
+      "manifest": "registry/modules/manifest/uproto/future/elrs.json",
+      "DSL_descriptor": "elrs"
+    },
+    "uproto/future/iec60870": {
+      "manifest": "registry/modules/manifest/uproto/future/iec60870.json",
+      "DSL_descriptor": "iec60870"
+    },
+    "uproto/future/j1939": {
+      "manifest": "registry/modules/manifest/uproto/future/j1939.json",
+      "DSL_descriptor": "j1939"
+    },
+    "uproto/future/lin": {
+      "manifest": "registry/modules/manifest/uproto/future/lin.json",
+      "DSL_descriptor": "lin"
+    },
+    "uproto/future/msp": {
+      "manifest": "registry/modules/manifest/uproto/future/msp.json",
+      "DSL_descriptor": "msp"
+    },
+    "uproto/future/uavcan_v1": {
+      "manifest": "registry/modules/manifest/uproto/future/uavcan_v1.json",
+      "DSL_descriptor": "uavcan_v1"
+    },
+    "uproto/mavlink": {
+      "manifest": "registry/modules/manifest/uproto/mavlink.json",
+      "DSL_descriptor": "mavlink"
+    },
+    "uproto/ppm": {
+      "manifest": "registry/modules/manifest/uproto/ppm.json",
+      "DSL_descriptor": "ppm"
+    },
+    "uproto/sbus": {
+      "manifest": "registry/modules/manifest/uproto/sbus.json",
+      "DSL_descriptor": "sbus"
+    },
+    "uproto/uavcan": {
+      "manifest": "registry/modules/manifest/uproto/uavcan.json",
+      "DSL_descriptor": "uavcan"
+    },
+    "umath/vector/vector": {
+      "manifest": "registry/modules/manifest/umath/vector/vector.json",
+      "DSL_descriptor": "vector"
+    },
+    "uphysics/future/constants": {
+      "manifest": "registry/modules/manifest/uphysics/future/constants.json",
+      "DSL_descriptor": "physics_constants"
+    }
+  },
+  "selection_groups": {
+    "uhal": {
+      "selection": "exactly_one",
+      "selector": "target",
+      "options": {
+        "HOST": "uhal/x86",
+        "CORTEX_M": "uhal/arm_cm"
+      }
+    },
+    "uos": {
+      "selection": "exactly_one",
+      "selector": "uos_backend",
+      "options": {
+        "BAREMETAL": "uos/baremetal",
+        "FREERTOS": "uos/freertos"
+      }
+    }
+  },
+  "external_dependencies": {
+    "fatfs": {
+      "provider": "consumer",
+      "optional": true,
+      "required_by": [
+        "umid/fatfs"
+      ],
+      "headers": [
+        "ff.h",
+        "diskio.h"
+      ],
+      "cmake_option": "UETD_ENABLE_FATFS",
+      "include_directory_variable": "UETD_FATFS_INCLUDE_DIR",
+      "notes": "UETD provides the SDMMC diskio adapter; the FatFS implementation and configuration remain consumer supplied."
+    }
+  },
+  "bundled_dependencies": {
+    "freertos-kernel": {
+      "root": "third_party/FreeRTOS-Kernel-11.3.1",
+      "lock_file": "third_party/FreeRTOS-Kernel-11.3.1/freertos-kernel.lock.json",
+      "integration_manifest": "third_party/FreeRTOS-Kernel-11.3.1/uetd-integration.json",
+      "selection": "target architecture and compiler profile"
+    }
+  },
+  "peripheral_provides": {
+    "UART": [
+      "upal/uart"
+    ],
+    "LPUART": [
+      "upal/uart"
+    ],
+    "SPI": [
+      "upal/spi"
+    ],
+    "I2C": [
+      "upal/i2c"
+    ],
+    "ADC": [
+      "upal/adc"
+    ],
+    "DAC": [
+      "upal/dac"
+    ],
+    "TIMER": [
+      "upal/timer"
+    ],
+    "HRTIM": [
+      "upal/hrtim"
+    ],
+    "CAN": [
+      "upal/can"
+    ],
+    "FDCAN": [
+      "upal/can",
+      "upal/fdcan_fd"
+    ],
+    "FDCAN-FD": [
+      "upal/fdcan_fd"
+    ],
+    "USB": [
+      "upal/usb"
+    ],
+    "QSPI": [
+      "upal/qspi"
+    ],
+    "SDMMC": [
+      "upal/sdmmc"
+    ],
+    "IWDG": [
+      "upal/iwdg"
+    ],
+    "WWDG": [
+      "upal/wwdg"
+    ],
+    "RTC": [
+      "upal/rtc"
+    ],
+    "FLASH": [
+      "upal/flash"
+    ],
+    "COMP": [
+      "upal/comp"
+    ],
+    "OPAMP": [
+      "upal/opamp"
+    ],
+    "CORDIC": [
+      "upal/cordic"
+    ],
+    "FMAC": [
+      "upal/fmac"
+    ]
+  },
+  "protocol_provides": {
+    "DSHOT": [
+      "uproto/dshot"
+    ],
+    "DSHOT_UART": [
+      "uproto/dshot"
+    ],
+    "CRSF": [
+      "uproto/crsf"
+    ],
+    "SBUS": [
+      "uproto/sbus"
+    ],
+    "MAVLINK": [
+      "uproto/mavlink"
+    ],
+    "UAVCAN": [
+      "uproto/uavcan"
+    ],
+    "DRONECAN": [
+      "uproto/uavcan"
+    ],
+    "PPM": [
+      "uproto/ppm"
+    ]
+  }
+}

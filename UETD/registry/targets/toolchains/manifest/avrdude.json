@@ -1,0 +1,11 @@
+{
+  "id": "avrdude",
+  "name": "AVRDUDE AVR programmer",
+  "purpose": "flasher",
+  "status": "scaffold_only",
+  "host_platforms": ["windows-x86_64", "linux-x86_64", "linux-aarch64", "macos-x86_64", "macos-arm64"],
+  "tools": ["avrdude"],
+  "packages": [],
+  "dependencies": ["avr-gcc"],
+  "record_note": "TODO: pin official host binaries and include required configuration data; document bootloader versus ISP programmer profiles and serial/USB driver requirements."
+}

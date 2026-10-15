@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/umath/polynomial/core.c"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/umath/polynomial/core.h",
+    "include/umath/scalar.h",
+    "include/umath/status.h"
+  ],
+  "dependencies": [
+    "umath/core"
+  ],
+  "domain": "umath",
+  "contract_status": "implemented"
+}

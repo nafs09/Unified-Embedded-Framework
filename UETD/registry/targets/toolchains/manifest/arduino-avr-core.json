@@ -1,0 +1,11 @@
+{
+  "id": "arduino-avr-core",
+  "name": "Arduino AVR board core and recipes",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["arduino:avr", "Uno", "Mega", "Leonardo", "Nano Classic"],
+  "packages": [],
+  "dependencies": ["avr-gcc", "avrdude"],
+  "record_note": "TODO: pin the exact Arduino AVR Boards core release/source revision, board recipes, bundled tool versions, licenses, and package-manager metadata."
+}

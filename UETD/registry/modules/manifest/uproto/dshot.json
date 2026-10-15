@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/uproto/dshot.c"
+  ],
+  "dependencies": [
+    "upal/timer",
+    "upal/uart",
+    "upal/dma"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/upal/dma.h",
+    "include/upal/timer.h",
+    "include/upal/uart.h",
+    "include/uproto/dshot.h"
+  ]
+}

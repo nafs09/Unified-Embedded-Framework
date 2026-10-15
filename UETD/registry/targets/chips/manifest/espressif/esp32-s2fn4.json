@@ -1,0 +1,55 @@
+{
+  "id": "esp32-s2fn4",
+  "vendor": "Espressif",
+  "family_id": "esp32-s2",
+  "series": "ESP32-S2",
+  "part_number": "ESP32-S2FN4",
+  "aliases": [
+    "ESP32-S2"
+  ],
+  "roadmap_phase": null,
+  "core": {
+    "name": "Xtensa LX7",
+    "isa": "Xtensa",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 240000000
+  },
+  "package": {
+    "name": "QFN56",
+    "pin_count": 56
+  },
+  "memory": {
+    "flash_bytes": 4194304,
+    "sram_bytes": 327680
+  },
+  "peripheral_groups": [
+    "GDMA",
+    "GPIO",
+    "SPI",
+    "I2C",
+    "I2S",
+    "UART",
+    "USB",
+    "TWAI",
+    "ADC",
+    "DAC",
+    "Wi-Fi"
+  ],
+  "source_references": [
+    {
+      "title": "Espressif ESP32-S2 datasheet",
+      "url": "https://documentation.espressif.com/esp32-s2_datasheet_en.html"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "in_package_flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "S2FN4 includes 4 MiB in-package flash; this is the chip variant, not a module or board."
+}

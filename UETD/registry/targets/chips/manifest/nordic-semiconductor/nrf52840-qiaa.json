@@ -1,0 +1,63 @@
+{
+  "id": "nrf52840-qiaa",
+  "vendor": "Nordic Semiconductor",
+  "family_id": "nrf52840",
+  "series": "nRF52840",
+  "part_number": "nRF52840-QIAA",
+  "aliases": [
+    "nRF52840",
+    "QIAA"
+  ],
+  "roadmap_phase": 0,
+  "core": {
+    "name": "Cortex-M4F",
+    "isa": "Armv7E-M",
+    "count": 1,
+    "fpu": "single",
+    "max_frequency_hz": 64000000
+  },
+  "package": {
+    "name": "aQFN73",
+    "pin_count": 73
+  },
+  "memory": {
+    "flash_bytes": 1048576,
+    "sram_bytes": 262144,
+    "notes": "1 MiB flash and 256 KiB RAM."
+  },
+  "peripheral_groups": [
+    "GPIOTE",
+    "PPI",
+    "RADIO",
+    "USB",
+    "QSPI",
+    "SPI",
+    "TWI",
+    "UART",
+    "PWM",
+    "PDM",
+    "I2S",
+    "ADC",
+    "NFC"
+  ],
+  "source_references": [
+    {
+      "title": "Nordic nRF52840 product and package data",
+      "url": "https://www.nordicsemi.com/Products/nRF52840"
+    },
+    {
+      "title": "Nordic nRF52840 product specification",
+      "url": "https://docs-be.nordicsemi.com/bundle/nRF52840_PS_v1.9/raw/resource/enus/nRF52840_PS_v1.9.pdf"
+    }
+  ],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM"
+  ],
+  "generation_available": false,
+  "record_note": "Phase 0 representative; Nordic event/PPI routing requires a dedicated resource model."
+}

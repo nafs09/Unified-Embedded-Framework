@@ -1,0 +1,268 @@
+// Multi-target QCW DRSSTC design: H745 controller, G474 executor, and two
+// externally implemented FPGA endpoints. Plant and board values are project inputs.
+system QcwDrsstc {
+  node controller { project = "tesla_coil_h745_controller.uef"; role = h745_estimation_and_mpc_controller; }
+  node executor { project = "tesla_coil_g474_executor.uef"; role = g474_local_executor_and_protection; }
+  external fpga_controller { implementation = external_rtl; role = controller_side_protocol_endpoint; attached_to = controller.controls_endpoint; }
+  external fpga_coil { implementation = external_rtl; role = coil_side_protocol_endpoint; attached_to = executor.coil_endpoint; }
+
+  enum PlannerSource : u8 {
+    none = 0, explicit_enmpc = 1, online_nmpc_sqp = 2
+  }
+  enum ControlFailure : u8 {
+    none = 0, estimate_invalid = 1, planner_invalid = 2,
+    no_feasible_switching_state = 3, deadline_missed = 4
+  }
+  enum NodeId : u8 {
+    M7 = 0, M4 = 1, G4 = 2,
+    ControlsFpga = 3, CoilFpga = 4
+  }
+  enum NodeMode : u8 {
+    Boot = 0, Qualifying = 1, Normal = 2,
+    Degraded = 3, Shutdown = 4
+  }
+  enum FaultCode : u8 {
+    None = 0, LinkInvalid = 1, CommandStale = 2,
+    LocalInterlock = 3, SensorInvalid = 4, ThermalLimit = 5,
+    Desaturation = 6, OperatingEnvelope = 7, EstimatorInvalid = 8,
+    OptimizerInvalid = 9, HeartbeatLost = 10, DeadlineMiss = 11,
+    ProcessorFailure = 12, ProtocolViolation = 13, ClockFailure = 14,
+    PeripheralFailure = 15, MeasurementStale = 16, CurrentLimit = 17,
+    VoltageLimit = 18
+  }
+  record CoilSetpoint {
+    generation : u16;
+    valid_for_us : u16<us>;
+    source_timestamp_us : u64<us>;
+    duty : f32<1>;
+    audio_modulation : f32<1>;
+    frequency_shift_hz : f32<Hz>;
+    audio_interrupt_hz : u16<Hz>;
+    switching_gate_pattern : u32;
+    enable : bool;
+  }
+  record ControlMessage {
+    enable_requested : bool;
+    software_inhibit : bool;
+    shutdown_requested : bool;
+    operating_mode : u8;
+    audio_interrupt_hz : u16<Hz>;
+  }
+  record CoilStatus {
+    node_id : NodeId;
+    node_mode : NodeMode;
+    fault_code : FaultCode;
+    health_flags : u8;
+  }
+  record CaptureSample {
+    capture_ticks : u32;
+    secondary_channel : bool;
+    rising_edge : bool;
+    capture_overrun : bool;
+  }
+  record CaptureClockProfile {
+    timer_clock_hz : f32<Hz>;
+    counter_bits : u8;
+  }
+  record FaultMessage {
+    fault_code : FaultCode;
+    source_node : NodeId;
+    severity : u8;
+    detail_code : u8;
+  }
+
+  link qcw_fibre_command {
+    from = fpga_controller;
+    to = fpga_coil;
+    protocol = qcw_fibre;
+    transport = fibre;
+    messages = [setpoint, control];
+    delivery = ordered_frames;
+    freshness = receiver_local_commit_time_plus_valid_for_us;
+    recovery = discard_partial_command_and_require_new_complete_generation;
+  }
+  link qcw_fibre_telemetry {
+    from = fpga_coil;
+    to = fpga_controller;
+    protocol = qcw_fibre;
+    transport = fibre;
+    messages = [measurement, status, fault];
+    capture_clock_profile = executor.board.capture_clock;
+    delivery = fifo;
+    recovery = clear_partial_frames_and_requalify_link;
+  }
+
+  custom protocol qcw_fibre {
+    framing {
+      frame_bytes = 10 B;
+      byte_order = little_endian;
+      version = 0;
+      accepted_versions = [0];
+      physical_characters_per_slot = 12;
+      physical_beats_per_slot = 3;
+      characters_per_beat = 4;
+      line_coding = eight_b_ten_b;
+      slot_symbols = [K28_1, H, Q, D0, D1, D2, D3, C0, C1, C2, C3, K28_5];
+      idle_symbols = [K28_5, 0x00, 0x00, 0x00];
+      lane_zero_is_least_significant_byte = true;
+    }
+    header {
+      offset = 0 B;
+      version_lsb = 6; version_width = 2;
+      message_type_lsb = 3; message_type_width = 3;
+      flags_lsb = 0; flags_width = 3;
+    }
+    sequence { offset = 1 B; width = 8 bit; scope = per_message_type; }
+    payload { offset = 2 B; width = 4 B; byte_order = little_endian; }
+    checksum {
+      offset = 6 B; width = 4 B;
+      algorithm = crc32_iso_hdlc;
+      coverage = bytes_0_through_5;
+      encoding = little_endian;
+      check_value_ascii_123456789 = 0xCBF43926;
+    }
+
+    message control {
+      id = 0;
+      logical_type = ControlMessage;
+      field enable : bool { offset = 0 B; bit = 0; application_field = ControlMessage.enable_requested; }
+      field software_inhibit : bool { offset = 0 B; bit = 1; application_field = ControlMessage.software_inhibit; }
+      field shutdown : bool { offset = 0 B; bit = 2; application_field = ControlMessage.shutdown_requested; }
+      field operating_mode : u8 { offset = 1 B; application_field = ControlMessage.operating_mode; }
+      field audio_interrupt_hz : u16<Hz> { offset = 2 B; encoding = little_endian; application_field = ControlMessage.audio_interrupt_hz; }
+      flags_must_be_zero = true;
+    }
+    message setpoint {
+      id = 1;
+      logical_type = CoilSetpoint;
+      fragment_count = 8;
+      fragment_index_lsb = 0; fragment_index_width = 3;
+      fragment 0 {
+        field generation : u16 { offset = 0 B; encoding = little_endian; application_field = CoilSetpoint.generation; }
+        field valid_for_us : u16<us> { offset = 2 B; encoding = little_endian; application_field = CoilSetpoint.valid_for_us; }
+      }
+      fragment 1 { field source_timestamp_low : u32 { offset = 0 B; encoding = little_endian; application_field = CoilSetpoint.source_timestamp_us; bit_range = [0, 31]; } }
+      fragment 2 { field source_timestamp_high : u32 { offset = 0 B; encoding = little_endian; application_field = CoilSetpoint.source_timestamp_us; bit_range = [32, 63]; } }
+      fragment 3 {
+        field duty_q0_16 : u16 {
+          offset = 0 B;
+          encoding = little_endian;
+          format = normalized_u16_full_scale_65535;
+          application_field = CoilSetpoint.duty;
+          application_range = [0, 1];
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+        field audio_q1_15 : i16 {
+          offset = 2 B;
+          encoding = little_endian;
+          format = signed_Q1_15_asymmetric;
+          application_field = CoilSetpoint.audio_modulation;
+          application_range = [-1, 1];
+          negative_scale = 32768;
+          positive_scale = 32767;
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+      }
+      fragment 4 {
+        field frequency_shift_hz : i32<Hz> {
+          offset = 0 B;
+          encoding = little_endian;
+          application_field = CoilSetpoint.frequency_shift_hz;
+          rounding = half_away_from_zero;
+          overflow = reject;
+        }
+      }
+      fragment 5 {
+        field enable_request : bool { offset = 0 B; bit = 0; application_field = CoilSetpoint.enable; }
+        field audio_interrupt_hz : u16<Hz> { offset = 1 B; encoding = little_endian; application_field = CoilSetpoint.audio_interrupt_hz; }
+        reserved_zero_offset = 3 B;
+        reserved_zero_width = 1 B;
+      }
+      fragment 6 {
+        field switching_gate_pattern : u32 {
+          offset = 0 B;
+          encoding = little_endian;
+          semantic = opaque_board_approved_gate_pattern_id;
+          application_field = CoilSetpoint.switching_gate_pattern;
+        }
+      }
+      fragment 7 { field transaction_crc : u32 { offset = 0 B; encoding = little_endian; algorithm = crc32_iso_hdlc; coverage = payloads_0_through_6; protocol_internal = true; } }
+    }
+    message status {
+      id = 2;
+      logical_type = CoilStatus;
+      field node_id : NodeId { offset = 0 B; wire_encoding = u8; application_field = CoilStatus.node_id; }
+      field node_mode : NodeMode { offset = 1 B; wire_encoding = u8; application_field = CoilStatus.node_mode; }
+      field fault_code : FaultCode { offset = 2 B; wire_encoding = u8; application_field = CoilStatus.fault_code; }
+      field health_flags : u8 { offset = 3 B; application_field = CoilStatus.health_flags; }
+      flags_must_be_zero = true;
+    }
+    message measurement {
+      id = 3;
+      logical_type = CaptureSample;
+      field capture_ticks : u32 { offset = 0 B; encoding = little_endian; application_field = CaptureSample.capture_ticks; }
+      field secondary_channel : bool { location = header.flags; bit = 0; application_field = CaptureSample.secondary_channel; }
+      field rising_edge : bool { location = header.flags; bit = 1; application_field = CaptureSample.rising_edge; }
+      field capture_overrun : bool { location = header.flags; bit = 2; application_field = CaptureSample.capture_overrun; }
+      receive_timestamp = receiver_local_clock;
+    }
+    message configuration {
+      id = 4;
+      raw_payload = true;
+      field field_id : u16 { offset = 0 B; encoding = little_endian; }
+      field raw_value : i16 { offset = 2 B; encoding = little_endian; }
+      flags_must_be_zero = true;
+      raw_value_scale_is_defined_by_field_id = true;
+    }
+    message fault {
+      id = 5;
+      logical_type = FaultMessage;
+      field fault_code : FaultCode { offset = 0 B; wire_encoding = u8; application_field = FaultMessage.fault_code; }
+      field source_node : NodeId { offset = 1 B; wire_encoding = u8; application_field = FaultMessage.source_node; }
+      field severity : u8 { offset = 2 B; application_field = FaultMessage.severity; }
+      field detail_code : u8 { offset = 3 B; application_field = FaultMessage.detail_code; }
+      flags_must_be_zero = true;
+      receive_timestamp = receiver_local_clock;
+    }
+    message diagnostic {
+      id = 6;
+      raw_payload = true;
+      field diagnostic_id : u16 { offset = 0 B; encoding = little_endian; }
+      field raw_value : i16 { offset = 2 B; encoding = little_endian; }
+      flags_must_be_zero = true;
+      raw_value_scale_is_defined_by_diagnostic_id = true;
+    }
+    receiver {
+      reject_duplicate_backward_or_ambiguous_sequence = true;
+      count_forward_sequence_gaps = true;
+      reset_sequence_on_requalify = true;
+      assembly_sequence_is_consecutive_modulo_256 = true;
+      new_fragment_zero_replaces_incomplete_transaction = true;
+      commit_setpoint_only_after_all_fragments_and_both_crc_checks = true;
+      assembly_timeout_clock = receiver_local_clock;
+      setpoint_validity_starts_at = receiver_local_commit_time;
+      setpoint_output = committed_command;
+      setpoint_freshness_output = command_fresh;
+      setpoint_freshness_uses = valid_for_us;
+      invalid_or_expired_setpoint_clears_command = true;
+      source_timestamp_is_diagnostic_only = true;
+      fault_and_measurement_delivery = fifo;
+      latest_value_replacement_is_allowed_for = [setpoint, control, configuration];
+      no_struct_layout_wire_abi = true;
+    }
+  }
+
+  hybrid system qcw_controller_executor {
+    controller = controller.coil_controller;
+    executor = executor.command_executor;
+    command_link = qcw_fibre_command;
+    telemetry_link = qcw_fibre_telemetry;
+    command_generation_is_atomic = true;
+    output_authority = executor.local_safety;
+    stale_or_invalid_command = assert_hardware_inhibit;
+  }
+
+  delivery_policy safety_events { semantics = fifo; overrun = report_and_inhibit; }
+}

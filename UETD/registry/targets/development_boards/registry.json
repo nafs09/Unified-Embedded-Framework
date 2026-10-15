@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "catalogue_kind": "uetd_development_boards",
+  "canonical_owner": "UETD",
+  "description": "Board bindings for exact chips, inline module details, and build/programming profiles. Incomplete records remain visible but fail closed for generation.",
+  "entries": [
+    {
+      "id": "arduino-uno-r3",
+      "path": "registry/targets/development_boards/manifest/arduino/uno-r3.json"
+    },
+    {
+      "id": "arduino-mega-2560-r3",
+      "path": "registry/targets/development_boards/manifest/arduino/mega-2560-r3.json"
+    },
+    {
+      "id": "arduino-leonardo",
+      "path": "registry/targets/development_boards/manifest/arduino/leonardo.json"
+    },
+    {
+      "id": "arduino-nano-classic",
+      "path": "registry/targets/development_boards/manifest/arduino/nano-classic.json"
+    },
+    {
+      "id": "arduino-nano-every",
+      "path": "registry/targets/development_boards/manifest/arduino/nano-every.json"
+    },
+    {
+      "id": "esp32-devkitc-v4",
+      "path": "registry/targets/development_boards/manifest/espressif/esp32-devkitc-v4.json"
+    },
+    {
+      "id": "nrf9160-dk",
+      "path": "registry/targets/development_boards/manifest/nordic-semiconductor/nrf9160-dk.json"
+    },
+    {
+      "id": "nucleo-g474re",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/nucleo-g474re.json"
+    },
+    {
+      "id": "nucleo-f746zg",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/nucleo-f746zg.json"
+    },
+    {
+      "id": "nucleo-h743zi2",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/nucleo-h743zi2.json"
+    },
+    {
+      "id": "nucleo-h745zi-q",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/nucleo-h745zi-q.json"
+    },
+    {
+      "id": "stm32h745i-disco",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/stm32h745i-disco.json"
+    },
+    {
+      "id": "nucleo-h755zi-q",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/nucleo-h755zi-q.json"
+    },
+    {
+      "id": "stm32f722ret6-board-pending",
+      "path": "registry/targets/development_boards/manifest/stmicroelectronics/stm32f722ret6-board-pending.json"
+    },
+    {
+      "id": "raspberry-pi-pico",
+      "path": "registry/targets/development_boards/manifest/raspberry-pi/pico.json"
+    },
+    {
+      "id": "raspberry-pi-pico-2",
+      "path": "registry/targets/development_boards/manifest/raspberry-pi/pico-2.json"
+    }
+  ]
+}

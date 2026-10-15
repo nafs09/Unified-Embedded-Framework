@@ -1,0 +1,11 @@
+{
+  "id": "pyserial",
+  "name": "pySerial wired console and bootloader transport library",
+  "purpose": "support",
+  "status": "scaffold_only",
+  "host_platforms": ["any"],
+  "tools": ["python-module:serial"],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "TODO: pin the exact wheel and hashes for supported Python versions; define the optional-dependency error shown when users invoke wired monitor or UART bootloader commands."
+}

@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/umid/drivers/imu.c"
+  ],
+  "dependencies": [
+    "upal/spi",
+    "upal/i2c",
+    "umid/ringbuf"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/umid/drivers/imu.h",
+    "include/upal/dma.h",
+    "include/upal/i2c.h",
+    "include/upal/spi.h"
+  ]
+}

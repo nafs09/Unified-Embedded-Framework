@@ -1,0 +1,29 @@
+{
+  "sources": [
+    "src/ucon/future/electrical/motor_control/sensorless_foc_observer.c"
+  ],
+  "headers": [
+    "include/ucon/future/electrical/motor_control/sensorless_foc_observer.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "SENSORLESS_FOC_OBSERVER",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "roadmap_proposal",
+  "outlined_functions": [
+    "ucon_sensorless_foc_observer_validate_config",
+    "ucon_sensorless_foc_observer_init",
+    "ucon_sensorless_foc_observer_reset",
+    "ucon_sensorless_foc_observer_estimate_motor_state",
+    "ucon_sensorless_foc_observer_compute_current_command",
+    "ucon_sensorless_foc_observer_modulate",
+    "ucon_sensorless_foc_observer_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

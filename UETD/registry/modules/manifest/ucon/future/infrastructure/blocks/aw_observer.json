@@ -1,0 +1,27 @@
+{
+  "sources": [
+    "src/ucon/future/infrastructure/blocks/aw_observer.c"
+  ],
+  "headers": [
+    "include/ucon/future/infrastructure/blocks/aw_observer.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "AW_OBSERVER",
+  "priority": "PLANNED",
+  "scaffold_stage": "future",
+  "scaffold_reason": "The catalog marks this algorithm PLANNED but it is outside the current project/common set.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_aw_observer_validate_config",
+    "ucon_aw_observer_init",
+    "ucon_aw_observer_reset",
+    "ucon_aw_observer_compute_output",
+    "ucon_aw_observer_step"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}

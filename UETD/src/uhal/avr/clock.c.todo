@@ -1,0 +1,9 @@
+/* Rename to clock.c only after exact device-header and clock-domain IDs are selected. */
+/* uetd_u32_t uhal_clk_freq_hz(uhal_clk_t clock); */
+/* void uhal_clk_periph_enable(uhal_periph_clk_t peripheral); */
+/* void uhal_clk_periph_disable(uhal_periph_clk_t peripheral); */
+/* void uhal_reset_periph_assert(uhal_periph_clk_t peripheral); */
+/* void uhal_reset_periph_release(uhal_periph_clk_t peripheral); */
+/* uetd_u32_t uhal_reset_cause(void); */
+/* TODO: Map clock gates/reset flags from the exact AVR datasheet; preserve unrelated control
+ * bits and define how prescaler changes affect the monotonic time source. */

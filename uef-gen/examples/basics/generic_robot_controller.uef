@@ -1,0 +1,111 @@
+// Small standalone example: a differential-drive service robot.
+// Encoder scales and motor limits are illustrative; the board driver supplies
+// the actual timer/pin bindings for the selected carrier.
+project GenericRobotController {
+  target = "esp32-devkitc-v4";
+  numeric {
+    scalar = f32; accumulator = f64;
+    rounding = nearest_even; overflow = reject;
+    non_finite = reject; fused_multiply_add = disabled;
+    matrix_layout = row_major;
+  }
+
+  record TwistCommand { forward_mps : f32<m/s>; yaw_rate_rps : f32<rad/s>; }
+  record WheelEffort { left : f32; right : f32; }
+  record WheelVelocityTarget { left : f32<m/s>; right : f32<m/s>; }
+
+  peripheral left_encoder_timer : timer;
+  peripheral right_encoder_timer : timer;
+  peripheral left_motor_pwm : timer;
+  peripheral right_motor_pwm : timer;
+  sensor left_wheel : encoder;
+  sensor right_wheel : encoder;
+  algorithm left_speed : pid;
+  algorithm right_speed : pid;
+  actuator left_motor : h_bridge;
+  actuator right_motor : h_bridge;
+  watchdog control_watchdog;
+  subsystem differential_drive;
+
+  operatingsystem RobotRuntime {
+    runtime = FreeRTOS;
+    component_failure_policy = set_motors_safe;
+    task wheel_control { run = differential_drive(command = fixed_drive_command); rate = 200 Hz; priority = 4; deadline = 5 ms; on_miss = set_motors_safe; }
+    task watchdog_service { run = control_watchdog; rate = 100 Hz; priority = 5; feed_only_when = differential_drive.outputs_valid; }
+  }
+
+  implementation {
+    signal fixed_drive_command : TwistCommand = map(forward_mps = 0.25 m/s, yaw_rate_rps = 0 rad/s);
+    signal axle_track : f32<m> = 0.31 m;
+
+    peripheral left_encoder_timer { role = quadrature_encoder; } timer;
+    peripheral right_encoder_timer { role = quadrature_encoder; } timer;
+    peripheral left_motor_pwm { role = motor_pwm; frequency = 20 kHz; } timer;
+    peripheral right_motor_pwm { role = motor_pwm; frequency = 20 kHz; } timer;
+
+    sensor left_wheel { peripheral = left_encoder_timer; counts_per_revolution = 2048; radius = 0.075 m; output speed : f32<m/s>; } encoder;
+    sensor right_wheel { peripheral = right_encoder_timer; counts_per_revolution = 2048; radius = 0.075 m; output speed : f32<m/s>; } encoder;
+
+    algorithm left_speed {
+      derivative_filter_n = 100;
+      proportional_weight_b = 1.0;
+      derivative_weight_c = 0.0;
+      integral_min = -1.0;
+      integral_max = 1.0;
+      tracking_time = 0 s;
+      saturation_enabled = true;
+      kp = 0.8;
+      ki = 0.15;
+      kd = 0.0;
+      sample_time = 5 ms;
+      output_min = -1.0;
+      output_max = 1.0;
+      anti_windup = clamp;
+    } pid;
+    algorithm right_speed {
+      derivative_filter_n = 100;
+      proportional_weight_b = 1.0;
+      derivative_weight_c = 0.0;
+      integral_min = -1.0;
+      integral_max = 1.0;
+      tracking_time = 0 s;
+      saturation_enabled = true;
+      kp = 0.8;
+      ki = 0.15;
+      kd = 0.0;
+      sample_time = 5 ms;
+      output_min = -1.0;
+      output_max = 1.0;
+      anti_windup = clamp;
+    } pid;
+
+    actuator left_motor { peripheral = left_motor_pwm; command_range = [-1.0, 1.0]; safe_state = 0; } h_bridge;
+    actuator right_motor { peripheral = right_motor_pwm; command_range = [-1.0, 1.0]; safe_state = 0; } h_bridge;
+
+    subsystem differential_drive {
+      input command : TwistCommand { rate = 50 Hz; max_age = 100 ms; };
+      output effort : WheelEffort { rate = 200 Hz; max_age = 5 ms; };
+      output outputs_valid : bool { rate = 200 Hz; max_age = 5 ms; };
+      use left_wheel as left_encoder;
+      use right_wheel as right_encoder;
+      use left_speed as left_loop;
+      use right_speed as right_loop;
+      use left_motor as left_output;
+      use right_motor as right_output;
+
+      let target : WheelVelocityTarget = map(
+        left = command.forward_mps - command.yaw_rate_rps / 1 rad * axle_track / 2,
+        right = command.forward_mps + command.yaw_rate_rps / 1 rad * axle_track / 2
+      );
+      stage left_sample = left_encoder();
+      stage right_sample = right_encoder();
+      stage left_control = left_loop(reference = target.left, measurement = left_sample.speed);
+      stage right_control = right_loop(reference = target.right, measurement = right_sample.speed);
+      stage left_applied = left_output(command = left_control.output);
+      stage right_applied = right_output(command = right_control.output);
+
+      output effort = map(left = left_control.output, right = right_control.output);
+      output outputs_valid = left_sample.valid and right_sample.valid;
+    }
+  }
+}

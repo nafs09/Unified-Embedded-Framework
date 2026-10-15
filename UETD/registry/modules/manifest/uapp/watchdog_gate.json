@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/uapp/watchdog_gate.c"
+  ],
+  "dependencies": [
+    "uhal",
+    "umid/health"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/time.h",
+    "include/ucore/types.h",
+    "include/uhal/irq.h",
+    "include/umid/health.h",
+    "include/uapp/watchdog_gate.h"
+  ],
+  "notes": [
+    "The application must route every refresh for a given hardware watchdog through this gate. The library cannot intercept direct UPAL refresh calls.",
+    "The event callback and refresh adapter execute in the caller's task/main context; do not call tick from an ISR.",
+    "Use separate gate instances for independent watchdog peripherals or reset domains."
+  ]
+}

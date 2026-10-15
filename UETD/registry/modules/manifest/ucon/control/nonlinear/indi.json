@@ -1,0 +1,30 @@
+{
+  "sources": [
+    "src/ucon/control/nonlinear/indi.c"
+  ],
+  "headers": [
+    "include/ucon/control/nonlinear/indi.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "INDI",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "initial",
+  "scaffold_reason": "FIRST_PASS catalog priority; included in the initial scaffold wave.",
+  "contract_status": "catalogue_only",
+  "outlined_functions": [
+    "ucon_indi_validate_model",
+    "ucon_indi_init",
+    "ucon_indi_reset",
+    "ucon_indi_compute_surface",
+    "ucon_indi_compute_control",
+    "ucon_indi_step"
+  ],
+  "project_relevance": [
+    "first_pass"
+  ],
+  "generated_by": "tools/generate_ucon_scaffolds.py"
+}
