@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M0+",
     "isa": "Armv6-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 48000000
@@ -48,7 +50,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Common SAM D21G18 assembly variant; package pins are package pins, not a claim about usable GPIO count."

@@ -4,7 +4,9 @@
   "family_id": "rp2350",
   "series": "RP2350",
   "part_number": "RP2350A",
-  "aliases": ["Pico 2 MCU"],
+  "aliases": [
+    "Pico 2 MCU"
+  ],
   "roadmap_phase": null,
   "core": {
     "name": "Dual Cortex-M33 or dual Hazard3 RISC-V",
@@ -14,13 +16,29 @@
     "fpu": "Cortex-M33: single-precision; Hazard3: none",
     "max_frequency_hz": 150000000
   },
-  "package": { "name": "QFN60 7x7 mm", "pin_count": 60 },
+  "package": {
+    "name": "QFN60 7x7 mm",
+    "pin_count": 60
+  },
   "memory": {
     "flash_bytes": 0,
     "sram_bytes": 532480,
     "notes": "520 kB multi-bank on-chip SRAM; RP2350A has no embedded program flash."
   },
-  "peripheral_groups": ["DMA", "PIO", "HSTX", "USB", "UART", "SPI", "I2C", "PWM", "ADC", "GPIO", "TRNG", "SHA-256"],
+  "peripheral_groups": [
+    "DMA",
+    "PIO",
+    "HSTX",
+    "USB",
+    "UART",
+    "SPI",
+    "I2C",
+    "PWM",
+    "ADC",
+    "GPIO",
+    "TRNG",
+    "SHA-256"
+  ],
   "source_references": [
     {
       "title": "Raspberry Pi RP2350 product page",
@@ -31,7 +49,16 @@
       "url": "https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf"
     }
   ],
-  "source_verified_fields": ["identity", "architecture_options", "frequency", "package", "SRAM", "flash", "peripheral_groups"],
+  "source_verified_fields": [
+    "identity",
+    "architecture_options",
+    "frequency",
+    "package",
+    "SRAM",
+    "flash",
+    "peripheral_groups",
+    "word_bits"
+  ],
   "generation_available": false,
   "record_note": "RP2350A is the 60-pin, 30-GPIO package used by Pico 2. It can boot either the dual Cortex-M33 or dual Hazard3 RISC-V architecture; the selected architecture, boot/security mode, and matching toolchain must be explicit in a future target profile."
 }

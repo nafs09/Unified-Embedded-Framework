@@ -10,9 +10,10 @@ only `{ "id", "path" }`; the facts live in one JSON file beside the index's
 Create `chips/manifest/<vendor>/<part-id>.json` and add its path to
 `chips/registry.json`. Use the manufacturer's exact ordering code as
 `part_number`; `id` is its lowercase registry key. Point `family_id` to an
-existing family record. Keep the first record small: identity, core, package,
-headline memory, source links, fields checked against those sources, and
-`generation_available: false` are enough to catalog the part.
+existing family record. Keep the first record small: identity, core ISA and
+word width, package, headline memory, source links, fields checked against
+those sources, and `generation_available: false` are enough to catalog the
+part.
 
 The STM32F722RET6 chip record already exists at
 `chips/manifest/stmicroelectronics/stm32f722ret6.json`. Its current pin and
@@ -28,9 +29,10 @@ for the widely used STM32F1 line; STM32H743ZIT6, STM32H745ZIT6, and STM32H755ZIT
 for H7 boards; RP2350A for the newer Pico 2; and nRF9160-SICA-B1A-R for the
 Phase 3 nRF9160 target. The family catalogue includes the corresponding
 `megaavr-8bit` family and a catalogue-only `rp2350` family with no assigned
-roadmap phase. These records carry sourced identity, core, package, headline
-memory, and peripheral-group facts; none includes a complete generation-ready
-resource map. No generic Blue Pill
+roadmap phase. Exact chip records now include an explicit ISA and word width in
+addition to sourced identity, core, package, headline memory, and peripheral
+groups. These are catalogue facts, not full target resource maps: none is
+generation-ready. No generic Blue Pill
 board is registered because third-party revisions do not identify one uniform
 pin, clock, or programming configuration.
 
@@ -39,6 +41,14 @@ part: architecture word width/capabilities, peripheral types and instances, pack
 and alternate-function maps, clock/reset domains, DMA requests, interrupts,
 memory regions, startup/linker data, and errata review. The schema requires
 these sections before a physical chip can be marked generation-ready.
+The 18 exact parts currently assigned to Phase 0, 1, or 2 now carry sourced
+architecture capability snapshots and reference manuals. Their
+`resources.memory_regions` are intentionally partial: only established bases
+and extents are recorded, with bank aliases, boot reservations, TrustZone
+attribution, cache/DMA policy, external memories, or configurable FlexRAM
+omitted where they need a board/profile decision. They are discovery data, not
+linker inputs. In particular, the RT1062's empty region map records that its
+RAM partition and external boot memory have not been resolved.
 
 ## 2. Register the development board
 
@@ -55,10 +65,15 @@ When a SoC record declares no in-package flash, the resolver uses an inline
 module `flash_bytes` value as the assembled target's flash capacity. The chip
 record remains an accurate description of the silicon.
 
-The registry includes an ESP32-DevKitC V4 binding with ESP-WROOM-32 module
-facts and an STM32F722RET6 carrier placeholder. Both are not-ready records;
-verify the actual model/revision you own, then fill sourced board facts as you
-verify them. A custom WROOM carrier can use this minimal shape:
+The registry includes board-level facts where the manufacturer's documents
+identify them. For example, the ESP32-DevKitC V4 record captures the selected
+ESP-WROOM-32 flash, crystal, USB-UART connection, and flash-reserved GPIOs; the
+Pico records include external-flash XIP windows and board-reserved GPIOs; and
+the Nucleo records list documented clock sources and on-board debug devices.
+These records remain unavailable for generation until the exact board revision,
+active solder-bridge configuration, remaining pin constraints, and build/flash
+settings are reviewed. The STM32F722RET6 carrier remains a selection placeholder.
+A custom WROOM carrier can use this minimal shape:
 
 ```json
 {
@@ -95,10 +110,16 @@ describe the actual assembled carrier you plan to generate and flash.
 Other seeded board bindings include Arduino UNO R3, Mega 2560 Rev3, Leonardo,
 Nano Classic, and Nano Every; Raspberry Pi Pico and Pico 2 (non-W); ST NUCLEO-G474RE,
 NUCLEO-F746ZG, NUCLEO-H743ZI2, NUCLEO-H745ZI-Q, and NUCLEO-H755ZI-Q; and the
-Nordic nRF9160 DK. They document chip links and sourced board identity, but
-remain fail-closed until exact revisions, clock sources, reserved pins, build
-settings, and flash interfaces are reviewed. ST currently lists the H745 Nucleo
-as out of production; the H755 Nucleo is the active dual-core counterpart.
+Nordic nRF9160 DK. Board records use `source_verified_fields` to identify which
+facts were checked against the cited documents and `onboard_devices` to record
+secondary controllers such as USB bridges and debug probes. `clock_sources`
+can list both defaults and documented alternatives; it does not select the
+active solder-bridge or firmware configuration. `reserved_pins` is for pins
+that the selected board profile makes unavailable to application GPIO; shared
+or switchable functions need their exact board revision and bridge state before
+they can be resolved. Remaining revision-specific routing, build settings, and
+flash interfaces are still generation blockers. ST currently lists the H745
+Nucleo as out of production; the H755 Nucleo is its active dual-core counterpart.
 
 Start each board with `generation_available: false`. Add `build` and `flash`
 objects from the board's build and programming toolchain documentation. Each

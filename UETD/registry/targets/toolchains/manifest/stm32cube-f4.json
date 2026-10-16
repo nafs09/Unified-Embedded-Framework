@@ -1,0 +1,21 @@
+{
+  "id": "stm32cube-f4",
+  "name": "STM32CubeF4 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "CMSIS device headers",
+    "startup sources",
+    "STM32F4 HAL and LL"
+  ],
+  "packages": [],
+  "dependencies": [
+    "arm-none-eabi",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://github.com/STMicroelectronics/STM32CubeF4. Pin one release and capture device/header/startup/linker paths for STM32F407VGT6."
+}

@@ -1,0 +1,21 @@
+{
+  "id": "stm32cube-g0",
+  "name": "STM32CubeG0 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "CMSIS device headers",
+    "startup sources",
+    "STM32G0 HAL and LL"
+  ],
+  "packages": [],
+  "dependencies": [
+    "arm-none-eabi",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://github.com/STMicroelectronics/STM32CubeG0. Pin one release and capture device/header/startup/linker paths for STM32G0B1RET6."
+}

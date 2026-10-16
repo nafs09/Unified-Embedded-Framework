@@ -1,0 +1,27 @@
+find_program(AVRDUDE_EXECUTABLE NAMES "{{ avrdude_name }}" REQUIRED)
+find_program(AVR_OBJCOPY_EXECUTABLE NAMES "{{ objcopy_name }}" REQUIRED)
+
+set(_avr_hex_image "${CMAKE_CURRENT_BINARY_DIR}/{{ target }}.hex")
+add_custom_command(
+    OUTPUT "${_avr_hex_image}"
+    COMMAND "${AVR_OBJCOPY_EXECUTABLE}"
+        -O ihex
+        -R .eeprom
+        "$<TARGET_FILE:{{ target }}>"
+        "${_avr_hex_image}"
+    DEPENDS {{ target }}
+    VERBATIM
+)
+add_custom_target({{ target }}_hex DEPENDS "${_avr_hex_image}")
+
+add_custom_target(flash
+    COMMAND "${AVRDUDE_EXECUTABLE}"
+        -D
+        -p "{{ mcu }}"
+        -c "{{ programmer }}"
+{% if port %}        -P "{{ port }}"
+{% endif %}{% if baud %}        -b "{{ baud }}"
+{% endif %}        -U "flash:w:${_avr_hex_image}:i"
+    DEPENDS {{ target }}_hex
+    VERBATIM
+)

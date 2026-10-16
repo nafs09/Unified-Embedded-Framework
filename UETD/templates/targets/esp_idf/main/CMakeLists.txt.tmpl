@@ -1,0 +1,8 @@
+idf_component_register(
+    SRCS "main.c"
+{% for source in sources %}        "{{ source }}"
+{% endfor %}    INCLUDE_DIRS "."
+{% for include_dir in include_dirs %}        "{{ include_dir }}"
+{% endfor %}{% if requirements %}    REQUIRES
+{% for requirement in requirements %}        {{ requirement }}
+{% endfor %}{% endif %})

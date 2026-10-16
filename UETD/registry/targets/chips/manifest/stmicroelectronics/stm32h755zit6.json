@@ -4,7 +4,9 @@
   "family_id": "stm32-h7",
   "series": "STM32H7",
   "part_number": "STM32H755ZIT6",
-  "aliases": ["STM32H755ZI"],
+  "aliases": [
+    "STM32H755ZI"
+  ],
   "roadmap_phase": null,
   "core": {
     "name": "Cortex-M7 + Cortex-M4",
@@ -13,15 +15,38 @@
     "count": 2,
     "fpu": "M7 double; M4 single",
     "max_frequency_hz": 480000000,
-    "core_frequencies_hz": { "Cortex-M7": 480000000, "Cortex-M4": 240000000 }
+    "core_frequencies_hz": {
+      "Cortex-M7": 480000000,
+      "Cortex-M4": 240000000
+    }
   },
-  "package": { "name": "LQFP144", "pin_count": 144 },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
   "memory": {
     "flash_bytes": 2097152,
     "sram_bytes": 1048576,
     "notes": "2 MiB dual-bank flash and up to 1 MiB RAM; exact core/shared memory map is not encoded."
   },
-  "peripheral_groups": ["BDMA", "DMA", "MDMA", "SDMMC", "FDCAN", "USB", "ETHERNET_MAC", "ADC", "DAC", "HRTIM", "QSPI", "FMC", "TIM", "USART", "SPI", "I2C"],
+  "peripheral_groups": [
+    "BDMA",
+    "DMA",
+    "MDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ETHERNET_MAC",
+    "ADC",
+    "DAC",
+    "HRTIM",
+    "QSPI",
+    "FMC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
+  ],
   "source_references": [
     {
       "title": "ST STM32H755ZI product page",
@@ -30,9 +55,55 @@
     {
       "title": "ST STM32H755xI datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32h755zi.pdf"
+    },
+    {
+      "title": "ST RM0399 STM32H745/H755 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0399-stm32h745755-and-stm32h747757-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
-  "source_verified_fields": ["identity", "core", "frequency", "package", "flash", "SRAM"],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
+  ],
   "generation_available": false,
-  "record_note": "Dual-core H7 representative used on the active NUCLEO-H755ZI-Q. Define boot, shared-memory and interrupt ownership before target registration."
+  "record_note": "Dual-core H7 representative used on the active NUCLEO-H755ZI-Q. Define boot, shared-memory and interrupt ownership before target registration.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": true,
+      "icache": true,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dual-core",
+        "cortex-m7",
+        "cortex-m4",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit",
+        "instruction-cache-on-m7",
+        "data-cache-on-m7"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 2097152,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      }
+    }
+  }
 }

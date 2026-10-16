@@ -1,7 +1,10 @@
 {
   "id": "raspberry-pi-pico-2",
   "name": "Raspberry Pi Pico 2 (non-W)",
-  "aliases": ["Pico 2", "RP2350 Pico 2"],
+  "aliases": [
+    "Pico 2",
+    "RP2350 Pico 2"
+  ],
   "chip_id": "rp2350a",
   "module": {
     "name": "Raspberry Pi Pico 2 board",
@@ -9,8 +12,15 @@
     "flash_bytes": 4194304,
     "crystal_hz": 12000000
   },
-  "clock_sources": {},
-  "reserved_pins": [],
+  "clock_sources": {
+    "xosc_crystal": 12000000
+  },
+  "reserved_pins": [
+    "GPIO23",
+    "GPIO24",
+    "GPIO25",
+    "GPIO29"
+  ],
   "source_references": [
     {
       "title": "Raspberry Pi Pico 2 datasheet",
@@ -19,8 +29,28 @@
     {
       "title": "Raspberry Pi Pico 2 product page",
       "url": "https://www.raspberrypi.com/products/raspberry-pi-pico-2/"
+    },
+    {
+      "title": "Raspberry Pi RP2350 datasheet",
+      "url": "https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf"
     }
   ],
   "generation_available": false,
-  "record_note": "Pico 2 uses RP2350A with 4 MiB external flash and a 12 MHz crystal. This binding is for the non-wireless board. Architecture selection, security boot mode, GPIO reservations, build profile, and USB/SWD flash settings still require verification."
+  "record_note": "The non-wireless Pico 2 has 4 MiB QSPI flash mapped through RP2350 XIP at 0x10000000 and a 12 MHz crystal. GPIO23, GPIO24, GPIO25, and GPIO29 are used by the on-board SMPS, USB sensing, user LED, and VSYS measurement. Architecture selection, boot security, linker layout, board revision, and USB/SWD flash profiles remain open.",
+  "memory_regions": {
+    "qspi_xip_flash": {
+      "origin": 268435456,
+      "length_bytes": 4194304,
+      "kind": "external_program_flash",
+      "notes": "RP2350 XIP window begins at 0x10000000. Board flash capacity is 4 MiB; reserve boot metadata and SDK/application partitions in the eventual linker profile."
+    }
+  },
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "external_flash",
+    "xosc_crystal",
+    "xip_flash_region",
+    "reserved_pins"
+  ]
 }

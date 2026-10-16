@@ -1,9 +1,14 @@
 {
   "id": "nucleo-g474re",
   "name": "ST NUCLEO-G474RE",
-  "aliases": ["MB1367-G474RE"],
+  "aliases": [
+    "MB1367-G474RE"
+  ],
   "chip_id": "stm32g474ret6",
-  "clock_sources": {},
+  "clock_sources": {
+    "hse_x3_default": 24000000,
+    "stlink_mco_hse_option": 8000000
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -16,5 +21,17 @@
     }
   ],
   "generation_available": false,
-  "record_note": "The board manual identifies STM32G474RET6 on NUCLEO-G474RE. Exact board revision, clock tree, pin reservations, build profile, and flash profile still need review."
+  "record_note": "For the MB1367 NUCLEO-G474RE, UM2505 documents the 24 MHz X3 HSE crystal as the default source and an 8 MHz ST-LINK MCO as an alternative. Solder-bridge configuration must be recorded for a physical board before generation. Pin reservations and build/flash profiles remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "clock_sources",
+    "onboard_debugger"
+  ],
+  "onboard_devices": [
+    {
+      "name": "STLINK-V3E",
+      "function": "On-board SWD debugger/programmer and USB bridge"
+    }
+  ]
 }

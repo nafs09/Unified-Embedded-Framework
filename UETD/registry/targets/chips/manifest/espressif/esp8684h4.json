@@ -11,6 +11,8 @@
   "core": {
     "name": "RISC-V",
     "isa": "RISC-V",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 120000000
@@ -49,7 +51,8 @@
     "frequency",
     "package",
     "in_package_flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "ESP8684H4 is a C2-family 4-MiB in-package-flash chip variant; the family also has different flash/package variants."

@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 3.20)
+project({{ project_name }} LANGUAGES C ASM)
+
+add_executable({{ target_name }}
+{% for source in sources %}    "{{ source }}"
+{% endfor %})
+{% if include_dirs %}target_include_directories({{ target_name }} PRIVATE
+{% for include_dir in include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+{% endif %}{% if compile_definitions %}target_compile_definitions({{ target_name }} PRIVATE
+{% for define in compile_definitions %}    {{ define }}
+{% endfor %})
+{% endif %}{% if compile_options %}target_compile_options({{ target_name }} PRIVATE
+{% for option in compile_options %}    "{{ option }}"
+{% endfor %})
+{% endif %}
+target_link_options({{ target_name }} PRIVATE
+    "-T${CMAKE_CURRENT_SOURCE_DIR}/{{ linker_script }}"
+    "-Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/{{ target_name }}.map"
+{% for option in link_options %}    "{{ option }}"
+{% endfor %})
+{% if libraries %}target_link_libraries({{ target_name }} PRIVATE
+{% for library in libraries %}    {{ library }}
+{% endfor %})
+{% endif %}
+
+set_target_properties({{ target_name }} PROPERTIES SUFFIX ".elf")
+{% if emit_ihex %}add_custom_command(TARGET {{ target_name }} POST_BUILD
+    COMMAND "${CMAKE_OBJCOPY}" -O ihex
+            "$<TARGET_FILE:{{ target_name }}>"
+            "${CMAKE_CURRENT_BINARY_DIR}/{{ target_name }}.hex"
+    BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/{{ target_name }}.hex"
+    VERBATIM)
+{% endif %}{% if emit_binary %}add_custom_command(TARGET {{ target_name }} POST_BUILD
+    COMMAND "${CMAKE_OBJCOPY}" -O binary
+            "$<TARGET_FILE:{{ target_name }}>"
+            "${CMAKE_CURRENT_BINARY_DIR}/{{ target_name }}.bin"
+    BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/{{ target_name }}.bin"
+    VERBATIM)
+{% endif %}

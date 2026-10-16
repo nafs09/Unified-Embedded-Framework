@@ -1,20 +1,36 @@
 {
   "id": "nrf9160-dk",
   "name": "Nordic nRF9160 DK",
-  "aliases": ["nRF9160 Development Kit", "PCA10090"],
+  "aliases": [
+    "nRF9160 Development Kit",
+    "PCA10090"
+  ],
   "chip_id": "nrf9160-sica-b1a-r",
   "clock_sources": {},
   "reserved_pins": [],
   "source_references": [
     {
-      "title": "Nordic nRF9160 DK user guide",
-      "url": "https://docs-be.nordicsemi.com/bundle/nRF9160_DK/raw/resource/enus/nRF9160_DK_User_Guide_v0.9.pdf"
-    },
-    {
-      "title": "Nordic nRF9160 development kit overview",
-      "url": "https://www.nordicsemi.com/Products/nRF9160/GetStarted?lang=en"
+      "title": "Nordic nRF9160 DK external memory documentation",
+      "url": "https://docs.nordicsemi.com/r/bundle/ug_nrf9160_dk/page/ug/nrf91_dk/hw_description/external_memory.html"
     }
   ],
   "generation_available": false,
-  "record_note": "Board identity and primary SiP binding only. Confirm DK hardware revision, fitted SiP order code, auxiliary nRF52840/debug path, clock configuration, build profile, and flash profile before generation."
+  "record_note": "The board contains an on-board J-Link interface and an nRF52840 board controller. DK v0.14.0 and later adds 8 MiB external SPI flash, which is revision- and routing-dependent and is not the nRF9160 application flash. Clock configuration, exact fitted SiP revision, build profile, and flash profile remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "onboard_debugger",
+    "external_flash_revision_dependency"
+  ],
+  "onboard_devices": [
+    {
+      "name": "SEGGER J-Link OB",
+      "function": "On-board debugger/programmer and virtual COM interface"
+    },
+    {
+      "name": "nRF52840 board controller",
+      "function": "Board-control MCU; controls routing of optional external flash to the nRF9160 SiP",
+      "notes": "DK version 0.14.0 and later includes 8 MiB external flash. The board revision and routing configuration must be selected before using it."
+    }
+  ]
 }

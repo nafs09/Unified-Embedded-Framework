@@ -9,6 +9,8 @@
   "core": {
     "name": "Xtensa LX7",
     "isa": "Xtensa",
+
+    "word_bits": 32,
     "count": 2,
     "fpu": "single",
     "max_frequency_hz": 240000000
@@ -54,7 +56,8 @@
     "frequency",
     "package",
     "in_package_flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "ESP-IDF target, not Cortex-M. Radio and ESP-IDF build/startup need a dedicated backend."

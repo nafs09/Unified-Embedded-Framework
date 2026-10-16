@@ -11,6 +11,8 @@
   "core": {
     "name": "Bumblebee RISC-V",
     "isa": "RV32IMAC",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 108000000
@@ -46,7 +48,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "GD32VF103CBT6 high-density 128-KiB Flash package; confirm silicon revision and package pin map before target enablement."

@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M0+",
     "isa": "Armv6-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 48000000
@@ -49,7 +51,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Catalogue-only compact STM32 representative; no implementation phase is assigned."

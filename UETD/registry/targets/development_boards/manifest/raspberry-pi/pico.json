@@ -1,7 +1,10 @@
 {
   "id": "raspberry-pi-pico",
   "name": "Raspberry Pi Pico (original, non-W)",
-  "aliases": ["Pico", "RP2040 Pico"],
+  "aliases": [
+    "Pico",
+    "RP2040 Pico"
+  ],
   "chip_id": "rp2040",
   "module": {
     "name": "Raspberry Pi Pico board",
@@ -9,8 +12,15 @@
     "flash_bytes": 2097152,
     "crystal_hz": 12000000
   },
-  "clock_sources": {},
-  "reserved_pins": [],
+  "clock_sources": {
+    "xosc_crystal": 12000000
+  },
+  "reserved_pins": [
+    "GPIO23",
+    "GPIO24",
+    "GPIO25",
+    "GPIO29"
+  ],
   "source_references": [
     {
       "title": "Raspberry Pi Pico datasheet",
@@ -19,8 +29,28 @@
     {
       "title": "Raspberry Pi Pico series documentation",
       "url": "https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html"
+    },
+    {
+      "title": "Raspberry Pi RP2040 datasheet",
+      "url": "https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf"
     }
   ],
   "generation_available": false,
-  "record_note": "The original Pico board provides 2 MiB external flash and a 12 MHz crystal for the RP2040. This is not the Pico W; confirm board revision and complete GPIO reservations, build profile, and SWD/USB flash settings before use."
+  "record_note": "The original non-W Pico provides 2 MiB QSPI flash at the RP2040 XIP base 0x10000000 and a 12 MHz crystal. GPIO23, GPIO24, GPIO25, and GPIO29 are used by on-board SMPS, USB sensing, LED, and VSYS measurement. The XIP linker layout, board revision, build profile, and SWD/USB flash profile remain open.",
+  "memory_regions": {
+    "qspi_xip_flash": {
+      "origin": 268435456,
+      "length_bytes": 2097152,
+      "kind": "external_program_flash",
+      "notes": "RP2040 XIP window begins at 0x10000000. Board flash capacity is 2 MiB; reserve boot2 and SDK/application partitions in the eventual linker profile."
+    }
+  },
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "external_flash",
+    "xosc_crystal",
+    "xip_flash_region",
+    "reserved_pins"
+  ]
 }

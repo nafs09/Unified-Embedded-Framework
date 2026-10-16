@@ -11,6 +11,8 @@
   "core": {
     "name": "C28x",
     "isa": "TI C28x",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 90000000
@@ -50,7 +52,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "F28069 C2000 variant with CLA and single-precision FPU; code and memory are not Cortex-M compatible."

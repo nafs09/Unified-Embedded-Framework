@@ -11,6 +11,8 @@
   "core": {
     "name": "QingKe V2A",
     "isa": "RV32EC",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 48000000
@@ -47,7 +49,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Small low-cost RISC-V part; boot/debug conventions and peripheral mappings need a vendor-specific target implementation."

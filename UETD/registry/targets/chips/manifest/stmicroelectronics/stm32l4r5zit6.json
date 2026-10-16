@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 120000000
@@ -47,6 +48,10 @@
     {
       "title": "ST STM32L4R5/S5 datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32l4r5zi.pdf"
+    },
+    {
+      "title": "ST STM32L4+ documentation index (RM0432)",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32l4r5-s5/documentation.html"
     }
   ],
   "source_verified_fields": [
@@ -55,8 +60,38 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 1 representative for the registered L4+ SDMMC family scaffold."
+  "record_note": "Phase 1 representative for the registered L4+ SDMMC family scaffold.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": false,
+      "icache": false,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 2097152,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      }
+    }
+  }
 }

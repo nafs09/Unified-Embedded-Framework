@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M33F",
     "isa": "Armv8-M Mainline",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 160000000
@@ -46,6 +47,10 @@
     {
       "title": "ST STM32U575 datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32u575zi.pdf"
+    },
+    {
+      "title": "ST RM0456 STM32U5 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0456-stm32u5-series-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -54,8 +59,41 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 2 representative; secure/non-secure memory boundaries need explicit project policy."
+  "record_note": "Phase 2 representative; secure/non-secure memory boundaries need explicit project policy.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": true,
+      "icache": true,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv8-m-mainline",
+        "thumb-2",
+        "trustzone-m",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit",
+        "instruction-cache",
+        "data-cache"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 2097152,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      }
+    }
+  }
 }

@@ -1,20 +1,38 @@
 {
   "id": "nucleo-f746zg",
   "name": "ST NUCLEO-F746ZG",
-  "aliases": ["MB1137"],
+  "aliases": [
+    "MB1137"
+  ],
   "chip_id": "stm32f746zgt6",
-  "clock_sources": {},
+  "clock_sources": {
+    "stlink_mco_hse_default": 8000000,
+    "hse_x3_option": 8000000,
+    "lse_x2_default": 32768
+  },
   "reserved_pins": [],
   "source_references": [
     {
-      "title": "ST NUCLEO-F746ZG product page",
-      "url": "https://www.st.com/en/evaluation-tools/nucleo-f746zg.html"
+      "title": "ST STM32 Nucleo-144 boards data brief",
+      "url": "https://www.st.com/resource/en/data_brief/nucleo-h743zi.pdf"
     },
     {
-      "title": "ST Nucleo-144 board data brief",
-      "url": "https://www.st.com/resource/en/data_brief/nucleo-l496zg-p.pdf"
+      "title": "ST STM32 Nucleo-144 boards (MB1137) user manual",
+      "url": "https://www.st.com/resource/en/user_manual/dm00244518-stm32-nucleo144-boardsstmicroelectronics.pdf"
     }
   ],
   "generation_available": false,
-  "record_note": "ST lists STM32F746ZGT6 as the target MCU. Board revision, clock tree, pin reservations, build profile, and flash profile still need review."
+  "record_note": "For MB1137 NUCLEO-F746ZG, the default HSE is the fixed 8 MHz ST-LINK MCO; the 8 MHz X3 crystal is not provided. The 32.768 kHz X2 LSE is the documented default. ST lists the board as out of production. Exact board revision, solder-bridge state, pin reservations, and build/flash profiles remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "clock_sources",
+    "onboard_debugger"
+  ],
+  "onboard_devices": [
+    {
+      "name": "ST-LINK/V2-1",
+      "function": "On-board SWD debugger/programmer, mass-storage interface, and virtual COM port"
+    }
+  ]
 }

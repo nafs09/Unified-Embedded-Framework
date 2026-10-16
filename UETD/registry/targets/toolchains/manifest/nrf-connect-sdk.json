@@ -1,0 +1,21 @@
+{
+  "id": "nrf-connect-sdk",
+  "name": "Nordic nRF Connect SDK package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "west",
+    "Zephyr build support",
+    "Nordic SoC modules"
+  ],
+  "packages": [],
+  "dependencies": [
+    "zephyr-sdk",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-SDK. Pin the NCS release, west manifest revision, Zephyr SDK, Kconfig/Devicetree closure, license set, and host installation steps."
+}

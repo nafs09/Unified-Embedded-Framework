@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M7",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single and double",
     "max_frequency_hz": 528000000
@@ -43,8 +44,16 @@
       "url": "https://www.nxp.com/part/MIMXRT1062CVL5B"
     },
     {
+      "title": "NXP i.MX RT1060 industrial data sheet",
+      "url": "https://www.nxp.com/docs/en/data-sheet/IMXRT1060IEC.pdf"
+    },
+    {
       "title": "NXP i.MX RT1060 product page",
       "url": "https://www.nxp.com/products/i.MX-RT1060"
+    },
+    {
+      "title": "NXP i.MX RT1060 documentation index",
+      "url": "https://www.nxp.com/products/i.MX-RT1060?tab=Documentation_Tab"
     }
   ],
   "source_verified_fields": [
@@ -53,8 +62,32 @@
     "frequency",
     "package",
     "on_chip_SRAM",
-    "no_on_chip_flash"
+    "no_on_chip_flash",
+    "word_bits",
+    "architecture_capabilities"
   ],
   "generation_available": false,
-  "record_note": "Flashless crossover MCU variant; external FlexSPI memory is required for normal firmware storage. No board memory configuration is included."
+  "record_note": "Flashless crossover MCU variant; external FlexSPI memory is required for normal firmware storage. No board memory configuration is included.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": true,
+      "icache": true,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit",
+        "instruction-cache",
+        "data-cache"
+      ]
+    },
+    "memory_regions": {}
+  }
 }

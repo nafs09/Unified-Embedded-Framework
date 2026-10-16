@@ -11,6 +11,8 @@
   "core": {
     "name": "Xtensa LX7",
     "isa": "Xtensa",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 240000000
@@ -48,7 +50,8 @@
     "frequency",
     "package",
     "in_package_flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "S2FN4 includes 4 MiB in-package flash; this is the chip variant, not a module or board."

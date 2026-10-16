@@ -3,7 +3,11 @@
   "name": "ST NUCLEO-H755ZI-Q",
   "aliases": [],
   "chip_id": "stm32h755zit6",
-  "clock_sources": {},
+  "clock_sources": {
+    "stlink_mco_hse_default": 8000000,
+    "hse_x2_crystal": 25000000,
+    "lse_x3_default": 32768
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -20,5 +24,17 @@
     }
   ],
   "generation_available": false,
-  "record_note": "ST lists this active MB1363 board with STM32H755ZIT6 and an integrated STLINK-V3E debugger/programmer. Board revision, clock sources, pin reservations, dual-core startup, build profile, and flash profile still require verification."
+  "record_note": "The MB1363 H755 board uses 8 MHz ST-LINK MCO as default HSE; UM2408 also documents a 25 MHz X2 HSE crystal path and a default 32.768 kHz X3 LSE crystal. HSE can be changed by solder-bridge configuration and ST-LINK firmware. Board revision, dual-core startup, pin reservations, build, and flash profiles remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "clock_sources",
+    "onboard_debugger"
+  ],
+  "onboard_devices": [
+    {
+      "name": "STLINK-V3E",
+      "function": "On-board SWD debugger/programmer, mass-storage interface, and virtual COM port"
+    }
+  ]
 }

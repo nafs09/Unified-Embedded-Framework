@@ -6,5 +6,6 @@
   "clock_sources": {},
   "reserved_pins": [],
   "generation_available": false,
-  "record_note": "Selection placeholder only. No specific STM32F722RET6 carrier or board revision was provided; replace this record with the actual model before using it as a target."
+  "record_note": "Selection placeholder only. No physical STM32F722RET6 carrier model, revision, schematic, clock sources, or programming interface has been supplied. Replace this record with the actual board before treating it as a target.",
+  "source_references": []
 }

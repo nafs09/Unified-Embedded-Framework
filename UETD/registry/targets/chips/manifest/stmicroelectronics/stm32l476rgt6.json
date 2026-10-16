@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 80000000
@@ -52,7 +54,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Catalogue-only common L4 example; it is not the Phase 1 L4+ SDMMC profile."

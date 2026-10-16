@@ -11,6 +11,8 @@
   "core": {
     "name": "C28x",
     "isa": "TI C28x",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 60000000
@@ -48,7 +50,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Entry C2000 target exemplar; its C28x core/toolchain model differs from Arm and RISC-V families."

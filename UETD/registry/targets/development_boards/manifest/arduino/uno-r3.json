@@ -1,9 +1,14 @@
 {
   "id": "arduino-uno-r3",
   "name": "Arduino UNO R3",
-  "aliases": ["UNO Rev3", "Arduino Uno Rev3"],
+  "aliases": [
+    "UNO Rev3",
+    "Arduino Uno Rev3"
+  ],
   "chip_id": "atmega328p-pu",
-  "clock_sources": {},
+  "clock_sources": {
+    "atmega328p_main_clock": 16000000
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -16,5 +21,22 @@
     }
   ],
   "generation_available": false,
-  "record_note": "Identity and MCU binding only. Verify the board revision and fitted MCU package before using this record; board pin reservations and build/flash profiles are not yet specified."
+  "record_note": "The UNO R3 uses a 16 MHz ceramic resonator for the ATmega328P and an ATmega16U2 USB-to-serial bridge. UART0 remains shared with the D0/D1 headers. Board pin constraints, build/flash profiles, and physical-revision confirmation remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "main_clock",
+    "usb_serial_bridge"
+  ],
+  "onboard_devices": [
+    {
+      "name": "ATmega16U2",
+      "function": "USB-to-serial bridge for the ATmega328P target",
+      "target_pins": [
+        "PD0/RXD",
+        "PD1/TXD"
+      ],
+      "notes": "The bridge shares the target UART0 pins brought out as D0/RX and D1/TX."
+    }
+  ]
 }

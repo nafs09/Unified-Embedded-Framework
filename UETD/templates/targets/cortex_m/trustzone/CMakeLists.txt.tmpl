@@ -1,0 +1,49 @@
+cmake_minimum_required(VERSION 3.20)
+project({{ project_name }} LANGUAGES C ASM)
+
+add_executable({{ secure_target }}
+{% for source in secure_sources %}    "{{ source }}"
+{% endfor %})
+add_executable({{ nonsecure_target }}
+{% for source in nonsecure_sources %}    "{{ source }}"
+{% endfor %})
+
+{% if include_dirs %}target_include_directories({{ secure_target }} PRIVATE
+{% for include_dir in include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+target_include_directories({{ nonsecure_target }} PRIVATE
+{% for include_dir in include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+{% endif %}
+target_compile_options({{ secure_target }} PRIVATE "-mcmse"
+{% for option in secure_compile_options %}    "{{ option }}"
+{% endfor %})
+{% if nonsecure_compile_options %}target_compile_options({{ nonsecure_target }} PRIVATE
+{% for option in nonsecure_compile_options %}    "{{ option }}"
+{% endfor %})
+{% endif %}
+
+target_link_options({{ secure_target }} PRIVATE
+    "-mcmse"
+    "-T${CMAKE_CURRENT_SOURCE_DIR}/{{ secure_linker_script }}"
+    "-Wl,--cmse-implib,--out-implib=${CMAKE_CURRENT_BINARY_DIR}/{{ cmse_import_library }}"
+    "-Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/{{ secure_target }}.map"
+{% for option in secure_link_options %}    "{{ option }}"
+{% endfor %})
+target_link_options({{ nonsecure_target }} PRIVATE
+    "-T${CMAKE_CURRENT_SOURCE_DIR}/{{ nonsecure_linker_script }}"
+    "-Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/{{ nonsecure_target }}.map"
+{% for option in nonsecure_link_options %}    "{{ option }}"
+{% endfor %})
+{% if common_libraries %}target_link_libraries({{ secure_target }} PRIVATE
+{% for library in common_libraries %}    {{ library }}
+{% endfor %})
+target_link_libraries({{ nonsecure_target }} PRIVATE
+{% for library in common_libraries %}    {{ library }}
+{% endfor %})
+{% endif %}
+target_link_libraries({{ nonsecure_target }} PRIVATE
+    "${CMAKE_CURRENT_BINARY_DIR}/{{ cmse_import_library }}")
+add_dependencies({{ nonsecure_target }} {{ secure_target }})
+
+set_target_properties({{ secure_target }} {{ nonsecure_target }} PROPERTIES SUFFIX ".elf")

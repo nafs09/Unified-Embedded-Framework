@@ -1,0 +1,21 @@
+{
+  "id": "stm32cube-h5",
+  "name": "STM32CubeH5 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "CMSIS device headers",
+    "startup sources",
+    "STM32H5 HAL and TrustZone examples"
+  ],
+  "packages": [],
+  "dependencies": [
+    "arm-none-eabi",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://github.com/STMicroelectronics/STM32CubeH5. Pin one release and record secure/non-secure device startup and link support for STM32H563ZIT6."
+}

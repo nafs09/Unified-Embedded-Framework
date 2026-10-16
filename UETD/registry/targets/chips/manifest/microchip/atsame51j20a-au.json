@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 120000000
@@ -49,7 +51,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "SAM E51 J20A variant; the family includes neighboring parts with different memory sizes."

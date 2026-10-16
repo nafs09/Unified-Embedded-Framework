@@ -1,9 +1,14 @@
 {
   "id": "arduino-nano-classic",
   "name": "Arduino Nano (Classic, A000005)",
-  "aliases": ["Arduino Nano", "Nano Classic"],
+  "aliases": [
+    "Arduino Nano",
+    "Nano Classic"
+  ],
   "chip_id": "atmega328p-32mur",
-  "clock_sources": {},
+  "clock_sources": {
+    "atmega328p_main_clock": 16000000
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -16,5 +21,22 @@
     }
   ],
   "generation_available": false,
-  "record_note": "The A000005 datasheet names ATMEGA328P-32MUR and a 16 MHz board clock. Confirm the physical board revision and USB-serial interface before completing pins, build settings, and flash settings."
+  "record_note": "The A000005 Nano uses the ATmega328P-32MUR at 16 MHz and an FT232RL USB-to-UART bridge. Keep the profile scoped to this exact SKU; board pin constraints, build/flash settings, and physical-revision confirmation remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "main_clock",
+    "usb_serial_bridge"
+  ],
+  "onboard_devices": [
+    {
+      "name": "FT232RL",
+      "function": "USB-to-UART bridge for the ATmega328P target",
+      "target_pins": [
+        "PD0/RXD",
+        "PD1/TXD"
+      ],
+      "notes": "The A000005 datasheet identifies the FT232RL bridge; UART0 is shared with the board headers."
+    }
+  ]
 }

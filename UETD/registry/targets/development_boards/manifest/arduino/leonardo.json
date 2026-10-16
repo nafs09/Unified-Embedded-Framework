@@ -1,9 +1,13 @@
 {
   "id": "arduino-leonardo",
   "name": "Arduino Leonardo",
-  "aliases": ["Leonardo"],
+  "aliases": [
+    "Leonardo"
+  ],
   "chip_id": "atmega32u4-au",
-  "clock_sources": {},
+  "clock_sources": {
+    "atmega32u4_main_clock": 16000000
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -16,5 +20,12 @@
     }
   ],
   "generation_available": false,
-  "record_note": "Identity and MCU binding only. Board clock, pin reservations, Arduino build settings, and upload protocol have not been encoded."
+  "record_note": "The Leonardo uses a 16 MHz crystal and the ATmega32U4 native USB controller; it has no secondary USB bridge MCU. USB and UART pin-use constraints, build/flash profiles, and physical-revision confirmation remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "main_clock",
+    "native_usb"
+  ],
+  "onboard_devices": []
 }

@@ -1,9 +1,15 @@
 {
   "id": "nucleo-h743zi2",
   "name": "ST NUCLEO-H743ZI2",
-  "aliases": ["MB1364"],
+  "aliases": [
+    "MB1364"
+  ],
   "chip_id": "stm32h743zit6",
-  "clock_sources": {},
+  "clock_sources": {
+    "stlink_mco_hse_default": 8000000,
+    "hse_x3_option": 25000000,
+    "lse_x2_default": 32768
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -11,10 +17,26 @@
       "url": "https://www.st.com/resource/en/data_brief/nucleo-h743zi.pdf"
     },
     {
+      "title": "ST STM32H7 Nucleo-144 boards (MB1364) user manual",
+      "url": "https://www.st.com/resource/en/user_manual/um2407-stm32h7-nucleo144-boards-mb1364-stmicroelectronics.pdf"
+    },
+    {
       "title": "ST NUCLEO-H743ZI product page",
       "url": "https://www.st.com/en/evaluation-tools/nucleo-h743zi.html"
     }
   ],
   "generation_available": false,
-  "record_note": "ST lists STM32H743ZIT6 as the target MCU and STLINK-V3E as the on-board programmer for the -ZI2 board. Board revision, clocks, pin reservations, build profile, and flash profile still need review."
+  "record_note": "NUCLEO-H743ZI2 is the MB1364 variant with STLINK-V3E. UM2407 gives an 8 MHz ST-LINK MCO as default HSE, a 25 MHz X3 crystal option (crystal not provided), and a 32.768 kHz X2 LSE default. ST-LINK firmware can change the MCO frequency. Board revision, solder bridges, pin reservations, and build/flash profiles remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "clock_sources",
+    "onboard_debugger"
+  ],
+  "onboard_devices": [
+    {
+      "name": "STLINK-V3E",
+      "function": "On-board SWD debugger/programmer, mass-storage interface, and virtual COM port"
+    }
+  ]
 }

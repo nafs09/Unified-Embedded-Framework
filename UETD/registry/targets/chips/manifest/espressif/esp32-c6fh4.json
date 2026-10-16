@@ -9,6 +9,8 @@
   "core": {
     "name": "RISC-V HP + RISC-V LP",
     "isa": "RISC-V 32-bit; extension set is part-specific",
+
+    "word_bits": 32,
     "count": 2,
     "fpu": "none",
     "max_frequency_hz": 160000000,
@@ -56,7 +58,8 @@
     "frequency",
     "package",
     "in_package_flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Phase 4 representative. HP/LP core lifecycle and interrupt ownership need a distinct contract."

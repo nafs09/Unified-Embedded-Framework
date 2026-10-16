@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 170000000
@@ -48,6 +49,14 @@
     {
       "title": "ST STM32G474RE product/package page",
       "url": "https://estore.st.com/en/products/microcontrollers-microprocessors/stm32-32-bit-arm-174-cortex-174-mcus/stm32-mainstream-mcus/stm32g4-series/stm32g4x4/stm32g474re.html"
+    },
+    {
+      "title": "ST STM32G474xB/xC/xE datasheet DS12288",
+      "url": "https://www.st.com/resource/en/datasheet/stm32g474re.pdf"
+    },
+    {
+      "title": "ST RM0440 STM32G4 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0440-stm32g4-series-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -56,8 +65,64 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Strong Phase 0 reference for mixed-signal and motor-control work; no pin, DMA or clock map is asserted."
+  "record_note": "Strong Phase 0 reference for mixed-signal and motor-control work; no pin, DMA or clock map is asserted.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": false,
+      "icache": false,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 524288,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      },
+      "sram1": {
+        "origin": 536870912,
+        "length_bytes": 81920,
+        "kind": "sram",
+        "notes": "80 KiB SRAM1 at 0x20000000; first 32 KiB has hardware parity."
+      },
+      "sram2": {
+        "origin": 536952832,
+        "length_bytes": 16384,
+        "kind": "sram",
+        "notes": "16 KiB SRAM2 at 0x20014000; can be retained in standby."
+      },
+      "ccm_sram": {
+        "origin": 268435456,
+        "length_bytes": 32768,
+        "kind": "ccm_sram",
+        "dma_accessible": false,
+        "notes": "32 KiB CPU I-Code/D-Code CCM at 0x10000000; parity checked. A separate DMA-accessible alias exists at 0x20018000."
+      },
+      "ccm_sram_dma_alias": {
+        "origin": 536969216,
+        "length_bytes": 32768,
+        "kind": "sram_alias",
+        "dma_accessible": true,
+        "notes": "Alias of ccm_sram at 0x20018000 accessible by CPU, DMA1, and DMA2 through the system bus; do not count as additional physical SRAM."
+      }
+    }
+  }
 }

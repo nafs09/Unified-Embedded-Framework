@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M33 application + network cores",
     "isa": "Armv8-M",
+
+    "word_bits": 32,
     "count": 2,
     "fpu": "single-precision on application core",
     "max_frequency_hz": 128000000
@@ -53,7 +55,8 @@
     "application_core_frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Dual-core radio SoC. Memory totals are the sum of separate application and network core memories; keep per-core ownership explicit in a future full ChipSpec."

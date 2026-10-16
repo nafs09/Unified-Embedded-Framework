@@ -32,11 +32,18 @@ not keep another target-tool version catalogue in Python or project YAML.
 The seeded records are intentionally non-installable examples for the target
 compiler/SDKs and the host tools already named by uef-gen's build, flash,
 discovery, and monitor backends: Arm GNU, AVR-GCC, Arduino CLI plus AVR/megaAVR
-cores, STM32Cube G4/F7/H7 packages, ESP-IDF, CMake, Ninja, avrdude,
+cores, STM32Cube F4/F7/G0/G4/H7/H5/L4+/U5 packages, Nordic nRF Connect SDK
+and Zephyr SDK, CMSIS-DSP, Pico SDK, MCUXpresso SDK for RT1060, ESP-IDF, CMake, Ninja, avrdude,
 STM32CubeProgrammer/ST-LINK, esptool, OpenOCD, pyOCD, J-Link, dfu-util,
 TI UniFlash, pySerial, and PyUSB. Fill in vendor-published versions
 and hashes as packages are selected; do not turn guessed URLs or unverified
 checksums into pins.
+
+The Phase 0–2 templates refer to the corresponding scaffold package IDs, but
+all remain `scaffold_only` with empty package payloads. These records establish
+the SDK dependency boundary; they do not make a board buildable until release
+assets, hashes, license handling, executable maps, and the exact board profile
+are qualified.
 
 The corresponding consumer-side source seams are
 `uef-gen/src/uef_gen/toolchains/catalog.py` (registry load/validation),

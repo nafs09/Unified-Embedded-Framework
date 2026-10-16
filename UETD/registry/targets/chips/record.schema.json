@@ -53,7 +53,9 @@
         "name",
         "count",
         "fpu",
-        "max_frequency_hz"
+        "max_frequency_hz",
+        "isa",
+        "word_bits"
       ],
       "properties": {
         "word_bits": { "type": "integer", "enum": [8, 16, 32, 64] },

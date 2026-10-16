@@ -1,0 +1,35 @@
+cmake_minimum_required(VERSION 3.13)
+
+if(NOT DEFINED PICO_SDK_PATH AND DEFINED ENV{PICO_SDK_PATH})
+    set(PICO_SDK_PATH "$ENV{PICO_SDK_PATH}")
+endif()
+if(NOT DEFINED PICO_SDK_PATH OR PICO_SDK_PATH STREQUAL "")
+    message(FATAL_ERROR "PICO_SDK_PATH must resolve to the pinned Pico SDK package")
+endif()
+if(NOT DEFINED PICO_BOARD OR PICO_BOARD STREQUAL "")
+    message(FATAL_ERROR "PICO_BOARD must be selected from the resolved board profile")
+endif()
+
+include("${PICO_SDK_PATH}/external/pico_sdk_import.cmake")
+project({{ project_name }} LANGUAGES C CXX ASM)
+pico_sdk_init()
+
+add_executable({{ target_name }}
+{% for source in sources %}    "{{ source }}"
+{% endfor %})
+{% if include_dirs %}target_include_directories({{ target_name }} PRIVATE
+{% for include_dir in include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+{% endif %}{% if compile_definitions %}target_compile_definitions({{ target_name }} PRIVATE
+{% for define in compile_definitions %}    {{ define }}
+{% endfor %})
+{% endif %}{% if compile_options %}target_compile_options({{ target_name }} PRIVATE
+{% for option in compile_options %}    "{{ option }}"
+{% endfor %})
+{% endif %}
+target_link_libraries({{ target_name }} PRIVATE pico_stdlib
+{% for library in libraries %}    {{ library }}
+{% endfor %})
+pico_enable_stdio_usb({{ target_name }} {{ 1 if stdio_usb else 0 }})
+pico_enable_stdio_uart({{ target_name }} {{ 1 if stdio_uart else 0 }})
+pico_add_extra_outputs({{ target_name }})

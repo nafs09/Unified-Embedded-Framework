@@ -1,29 +1,15 @@
-# ESP-IDF / classic ESP32 target integration template scaffold
+# ESP-IDF templates
 
-ESP-IDF owns the classic ESP32 reset/startup flow, bootloader, linker
-fragments, partition table, compiler flags, image conversion, and normal
-`esptool` programming path. uef-gen should generate an IDF component/project
-adapter and feed UETD sources into IDF's component model; it should not invent
-a second standalone linker/startup pipeline.
+`CMakeLists.txt.tmpl` creates an ESP-IDF project and requires a valid
+`project_name`.
 
-## Generated files to design
+`main/CMakeLists.txt.tmpl` registers `main.c` and additional `sources`, with
+`include_dirs` and component `requirements`.
+`main/main.c.tmpl` exposes the supplied `project_entrypoint` as `app_main()`.
 
-- Root `CMakeLists.txt`: call the pinned ESP-IDF project setup and declare the
-  application; do not mix with generic cross-CMake setup.
-- `main/CMakeLists.txt`: register selected UETD/generated sources and include
-  directories with `idf_component_register`, target requirements, and compile
-  definitions.
-- `sdkconfig.defaults`: only values proven by the board profile; retain an
-  explicit review marker for flash mode, flash frequency, partition table,
-  console UART, bootloader, and CPU frequency.
-- `partitions.csv`: derive offset/size from the ESP-WROOM-32 module flash and
-  user-selected OTA/data policy; never assume 4 MiB for every WROOM variant.
-- `manifest/target_build.json`: ESP-IDF release, target (classic ESP32 Xtensa),
-  component closure, IDF Python environment, image formats, partition hash,
-  and exact flash profile.
+`components/uetd/CMakeLists.txt.tmpl` registers the selected UETD `sources`,
+`include_dirs`, and component `requirements`. Paths are relative to the
+component directory and must be present in the generated project.
 
-TODO(esp-idf-template): coordinate `idf.py build`, artifact discovery, image
-hash/address extraction, `esptool` identity/program/verify/reset, and serial
-console selection through UETD-pinned package records. Keep monitor attach
-read-only: no reset-line toggle when monitoring unless the board profile and
-user explicitly request that behavior.
+ESP-IDF owns reset, startup, linker fragments, partitions, and image creation;
+these templates leave those responsibilities with the framework.

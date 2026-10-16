@@ -9,6 +9,7 @@
   "core": {
     "name": "Cortex-M0+",
     "isa": "Armv6-M",
+    "word_bits": 32,
     "count": 2,
     "fpu": "none",
     "max_frequency_hz": 133000000
@@ -48,8 +49,45 @@
     "core",
     "frequency",
     "package",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 2 roadmap part; no embedded flash, dual-core startup, inter-core FIFO and PIO allocation need a dedicated backend."
+  "record_note": "Phase 2 roadmap part; no embedded flash, dual-core startup, inter-core FIFO and PIO allocation need a dedicated backend.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": false,
+      "dcache": false,
+      "icache": false,
+      "mpu": false,
+      "dwt": false,
+      "hw_divide": false,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv6-m",
+        "thumb",
+        "dual-core",
+        "sio-divider-per-core",
+        "pio"
+      ]
+    },
+    "memory_regions": {
+      "boot_rom": {
+        "origin": 0,
+        "length_bytes": 16384,
+        "kind": "boot_rom",
+        "notes": "16 KiB boot ROM at 0x00000000; not application flash."
+      },
+      "sram": {
+        "origin": 536870912,
+        "length_bytes": 270336,
+        "kind": "sram",
+        "dma_accessible": true,
+        "notes": "264 KiB logically contiguous SRAM at 0x20000000, physically split into six banks."
+      }
+    }
+  }
 }

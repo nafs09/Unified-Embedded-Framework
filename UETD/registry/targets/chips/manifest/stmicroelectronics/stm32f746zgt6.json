@@ -14,6 +14,7 @@
   "core": {
     "name": "Cortex-M7",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 216000000
@@ -51,6 +52,14 @@
     {
       "title": "ST STM32F746xx datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32f746zg.pdf"
+    },
+    {
+      "title": "ST STM32F7 documentation index (RM0385 for F746)",
+      "url": "https://www.st.com/en/microcontrollers-microprocessors/stm32f7-series/documentation.html"
+    },
+    {
+      "title": "ST AN4667 STM32F7 system architecture and performance",
+      "url": "https://www.st.com/resource/en/application_note/an4667-protecting-the-code-and-data-stored-in-the-internal-flash-and-sram-of-stm32f4-series-arm-based-microcontrollers-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -59,8 +68,71 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "backup_SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 0 representative and Phase 1 SDMMC candidate; D-cache and peripheral routing are not encoded."
+  "record_note": "Phase 0 representative and Phase 1 SDMMC candidate; D-cache and peripheral routing are not encoded.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": true,
+      "icache": true,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit",
+        "instruction-cache",
+        "data-cache"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 1048576,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      },
+      "dtcm_ram": {
+        "origin": 536870912,
+        "length_bytes": 65536,
+        "kind": "dtcm_sram",
+        "notes": "64 KiB DTCM at 0x20000000; review DMA visibility and cache policy before buffer placement."
+      },
+      "sram1": {
+        "origin": 536936448,
+        "length_bytes": 245760,
+        "kind": "sram",
+        "notes": "240 KiB SRAM1 at 0x20010000. Cacheability and peripheral DMA coherency are not encoded here."
+      },
+      "sram2": {
+        "origin": 537182208,
+        "length_bytes": 16384,
+        "kind": "sram",
+        "notes": "16 KiB SRAM2 at 0x2004C000."
+      },
+      "itcm_ram": {
+        "origin": 0,
+        "length_bytes": 16384,
+        "kind": "itcm_sram",
+        "notes": "16 KiB instruction TCM; address 0 is boot-mapped and must not be treated as ordinary SRAM without validating boot remap."
+      },
+      "backup_sram": {
+        "origin": 1073889280,
+        "length_bytes": 4096,
+        "kind": "backup_sram",
+        "notes": "4 KiB backup SRAM at 0x40024000; retained region with separate ownership."
+      }
+    }
+  }
 }

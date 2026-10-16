@@ -12,6 +12,7 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 64000000
@@ -48,6 +49,14 @@
     {
       "title": "Nordic nRF52840 product specification",
       "url": "https://docs-be.nordicsemi.com/bundle/nRF52840_PS_v1.9/raw/resource/enus/nRF52840_PS_v1.9.pdf"
+    },
+    {
+      "title": "Nordic nRF52840 Product Specification",
+      "url": "https://docs.nordicsemi.com/r/bundle/ps_nrf52840/page/keyfeatures_html5.html"
+    },
+    {
+      "title": "Nordic nRF52840 revision-specific documentation and errata index",
+      "url": "https://docs.nordicsemi.com/r/bundle/comp_matrix_nrf52840/page/comp/nrf52840/nrf52840_doc_ref_design_files_overview.html"
     }
   ],
   "source_verified_fields": [
@@ -56,8 +65,44 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 0 representative; Nordic event/PPI routing requires a dedicated resource model."
+  "record_note": "Phase 0 representative; Nordic event/PPI routing requires a dedicated resource model.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": false,
+      "icache": false,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 0,
+        "length_bytes": 1048576,
+        "kind": "embedded_flash",
+        "notes": "1 MiB code flash at 0x00000000; bootloader/settings/UICR reservations are not applied."
+      },
+      "sram": {
+        "origin": 536870912,
+        "length_bytes": 262144,
+        "kind": "sram",
+        "notes": "256 KiB application RAM at 0x20000000."
+      }
+    }
+  }
 }

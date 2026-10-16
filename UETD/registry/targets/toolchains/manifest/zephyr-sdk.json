@@ -1,0 +1,16 @@
+{
+  "id": "zephyr-sdk",
+  "name": "Zephyr SDK compiler and host-tool package",
+  "purpose": "compiler",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "arm-zephyr-eabi-gcc",
+    "Zephyr host tools"
+  ],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "Upstream: https://github.com/zephyrproject-rtos/sdk-ng. Select a release compatible with the pinned Nordic nRF Connect SDK/Zephyr version; per-host installers and hashes are not recorded."
+}

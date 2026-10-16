@@ -1,0 +1,16 @@
+{
+  "id": "cmsis-dsp",
+  "name": "Arm CMSIS-DSP library",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "CMSIS-DSP C library",
+    "Cortex-M optimized kernels"
+  ],
+  "packages": [],
+  "dependencies": [],
+  "record_note": "Upstream: https://github.com/ARM-software/CMSIS-DSP. Pin a release/source archive, compiler-specific build rules, hash, license, and exact library/header paths before enabling the target capability in a generation-ready build."
+}

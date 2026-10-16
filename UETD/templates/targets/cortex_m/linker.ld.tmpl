@@ -1,0 +1,99 @@
+ENTRY({{ entry_symbol }})
+
+MEMORY
+{
+{% for region in memory_regions %}    {{ region.name }} ({{ region.attributes }}) : ORIGIN = {{ region.origin }}, LENGTH = {{ region.length }}
+{% endfor %}}
+
+_estack = ORIGIN({{ stack_region }}) + LENGTH({{ stack_region }});
+_Min_Heap_Size = {{ heap_bytes }};
+_Min_Stack_Size = {{ stack_bytes }};
+
+SECTIONS
+{
+    .isr_vector :
+    {
+        . = ALIGN({{ vector_alignment_bytes }});
+        KEEP(*(.isr_vector))
+        . = ALIGN({{ vector_alignment_bytes }});
+    } > {{ flash_region }}
+
+    .text :
+    {
+        . = ALIGN(4);
+        *(.text)
+        *(.text*)
+        *(.rodata)
+        *(.rodata*)
+        KEEP(*(.init))
+        KEEP(*(.fini))
+        . = ALIGN(4);
+        _etext = .;
+    } > {{ flash_region }}
+
+    .ARM.extab : { *(.ARM.extab* .gnu.linkonce.armextab.*) } > {{ flash_region }}
+    .ARM.exidx :
+    {
+        __exidx_start = .;
+        *(.ARM.exidx*)
+        __exidx_end = .;
+    } > {{ flash_region }}
+
+    .preinit_array :
+    {
+        PROVIDE_HIDDEN(__preinit_array_start = .);
+        KEEP(*(.preinit_array*))
+        PROVIDE_HIDDEN(__preinit_array_end = .);
+    } > {{ flash_region }}
+
+    .init_array :
+    {
+        PROVIDE_HIDDEN(__init_array_start = .);
+        KEEP(*(SORT(.init_array.*)))
+        KEEP(*(.init_array*))
+        PROVIDE_HIDDEN(__init_array_end = .);
+    } > {{ flash_region }}
+
+    .fini_array :
+    {
+        PROVIDE_HIDDEN(__fini_array_start = .);
+        KEEP(*(SORT(.fini_array.*)))
+        KEEP(*(.fini_array*))
+        PROVIDE_HIDDEN(__fini_array_end = .);
+    } > {{ flash_region }}
+
+    _sidata = LOADADDR(.data);
+    .data :
+    {
+        . = ALIGN(4);
+        _sdata = .;
+        *(.data)
+        *(.data*)
+        . = ALIGN(4);
+        _edata = .;
+    } > {{ ram_region }} AT > {{ flash_region }}
+
+    .bss (NOLOAD) :
+    {
+        . = ALIGN(4);
+        _sbss = .;
+        *(.bss)
+        *(.bss*)
+        *(COMMON)
+        . = ALIGN(4);
+        _ebss = .;
+    } > {{ ram_region }}
+
+    .noinit (NOLOAD) :
+    {
+        . = ALIGN(4);
+        *(.noinit)
+        *(.noinit*)
+        . = ALIGN(4);
+    } > {{ ram_region }}
+
+    _end = .;
+    _heap_start = _end;
+    _heap_end = ORIGIN({{ ram_region }}) + LENGTH({{ ram_region }}) - _Min_Stack_Size;
+    ASSERT(_heap_start + _Min_Heap_Size <= _heap_end, "RAM region cannot contain data, heap, and stack")
+}

@@ -1,0 +1,21 @@
+{
+  "id": "mcuxpresso-sdk-rt1060",
+  "name": "NXP MCUXpresso SDK for i.MX RT1060",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "MCUXpresso CMake extension",
+    "RT1060 device and board support",
+    "startup sources and drivers"
+  ],
+  "packages": [],
+  "dependencies": [
+    "arm-none-eabi",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://www.nxp.com/products/i.MX-RT1060?tab=Documentation_Tab. Select the SDK release and exact board package; capture CMake, device, startup, linker, license, and package integrity data."
+}

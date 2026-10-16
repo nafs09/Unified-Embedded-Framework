@@ -11,6 +11,8 @@
   "core": {
     "name": "Dual C28x + Cortex-M4",
     "isa": "TI C28x + Armv7E-M",
+
+    "word_bits": 32,
     "count": 3,
     "fpu": "single",
     "max_frequency_hz": 200000000
@@ -52,7 +54,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Heterogeneous control SoC: two C28x cores and one Cortex-M4 subsystem. A full target map must describe independent images, boot and shared-memory ownership."

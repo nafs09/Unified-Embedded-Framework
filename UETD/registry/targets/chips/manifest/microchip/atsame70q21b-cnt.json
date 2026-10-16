@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M7",
     "isa": "Armv7E-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single and double",
     "max_frequency_hz": 300000000
@@ -52,7 +54,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "B-revision Q21 variant in 144-ball LFBGA; package and memory facts are device-specific."

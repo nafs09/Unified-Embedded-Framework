@@ -1,0 +1,51 @@
+cmake_minimum_required(VERSION 3.20)
+project({{ project_name }} LANGUAGES C ASM)
+
+# Build each core as an independent image. Boot order and programming policy
+# belong to the resolved chip and board profile, not this generic scaffold.
+add_executable({{ cm7_target }}
+{% for source in cm7_sources %}    "{{ source }}"
+{% endfor %})
+add_executable({{ cm4_target }}
+{% for source in cm4_sources %}    "{{ source }}"
+{% endfor %})
+
+{% if cm7_include_dirs %}target_include_directories({{ cm7_target }} PRIVATE
+{% for include_dir in cm7_include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+{% endif %}{% if cm4_include_dirs %}target_include_directories({{ cm4_target }} PRIVATE
+{% for include_dir in cm4_include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+{% endif %}{% if cm7_compile_definitions %}target_compile_definitions({{ cm7_target }} PRIVATE
+{% for define in cm7_compile_definitions %}    {{ define }}
+{% endfor %})
+{% endif %}{% if cm4_compile_definitions %}target_compile_definitions({{ cm4_target }} PRIVATE
+{% for define in cm4_compile_definitions %}    {{ define }}
+{% endfor %})
+{% endif %}{% if cm7_compile_options %}target_compile_options({{ cm7_target }} PRIVATE
+{% for option in cm7_compile_options %}    "{{ option }}"
+{% endfor %})
+{% endif %}{% if cm4_compile_options %}target_compile_options({{ cm4_target }} PRIVATE
+{% for option in cm4_compile_options %}    "{{ option }}"
+{% endfor %})
+{% endif %}
+
+target_link_options({{ cm7_target }} PRIVATE
+    "-T${CMAKE_CURRENT_SOURCE_DIR}/{{ cm7_linker_script }}"
+    "-Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/{{ cm7_target }}.map"
+{% for option in cm7_link_options %}    "{{ option }}"
+{% endfor %})
+target_link_options({{ cm4_target }} PRIVATE
+    "-T${CMAKE_CURRENT_SOURCE_DIR}/{{ cm4_linker_script }}"
+    "-Wl,-Map,${CMAKE_CURRENT_BINARY_DIR}/{{ cm4_target }}.map"
+{% for option in cm4_link_options %}    "{{ option }}"
+{% endfor %})
+{% if cm7_libraries %}target_link_libraries({{ cm7_target }} PRIVATE
+{% for library in cm7_libraries %}    {{ library }}
+{% endfor %})
+{% endif %}{% if cm4_libraries %}target_link_libraries({{ cm4_target }} PRIVATE
+{% for library in cm4_libraries %}    {{ library }}
+{% endfor %})
+{% endif %}
+
+set_target_properties({{ cm7_target }} {{ cm4_target }} PROPERTIES SUFFIX ".elf")

@@ -4,7 +4,9 @@
   "family_id": "stm32-g4",
   "series": "STM32G4",
   "part_number": "STM32G4A1KEU6",
-  "aliases": ["STM32G4A1KE"],
+  "aliases": [
+    "STM32G4A1KE"
+  ],
   "roadmap_phase": null,
   "core": {
     "name": "Cortex-M4",
@@ -46,6 +48,10 @@
     {
       "title": "ST STM32G4A1xE datasheet DS13268",
       "url": "https://www.st.com/resource/en/datasheet/stm32g4a1ce.pdf"
+    },
+    {
+      "title": "ST RM0440 STM32G4 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0440-stm32g4-series-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -55,8 +61,38 @@
     "package",
     "flash",
     "SRAM",
-    "peripheral_groups"
+    "peripheral_groups",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Initial Tesla-node candidate. The selected G4A1 datasheet does not specify HRTIM; the current timer/output architecture and package-level peripheral/pin fit must be reviewed before assigning an execution timer."
+  "record_note": "Initial Tesla-node candidate. The selected G4A1 datasheet does not specify HRTIM; the current timer/output architecture and package-level peripheral/pin fit must be reviewed before assigning an execution timer.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": false,
+      "icache": false,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 524288,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      }
+    }
+  }
 }

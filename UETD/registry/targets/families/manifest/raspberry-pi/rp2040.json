@@ -8,7 +8,7 @@
   "architectures": [
     "Dual Cortex-M0+"
   ],
-  "core_notes": "Phase 2; no backend yet.",
+  "core_notes": "Cortex-M0+ instruction set has no UDIV/SDIV; RP2040 adds one SIO integer divider per core. Phase 2; no backend yet.",
   "roadmap_phase": 2,
   "catalogue_status": "future_roadmap",
   "vendor_status": "established_series",
@@ -19,7 +19,7 @@
   "implementation_focus": [
     "PIO",
     "dual-core",
-    "no hardware divide"
+    "Cortex-M0+ ISA without divide instructions; RP2040 per-core SIO divider"
   ],
   "source_references": [
     "rpi"

@@ -11,6 +11,8 @@
   "core": {
     "name": "QingKe V4F",
     "isa": "RV32IMAF",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 144000000
@@ -52,7 +54,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "RISC-V V4F variant with single-precision floating point; USB/Ethernet host and PHY details remain target-specific."

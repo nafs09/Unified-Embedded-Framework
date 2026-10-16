@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 168000000
@@ -47,6 +48,10 @@
     {
       "title": "ST STM32F407VG datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32f407vg.pdf"
+    },
+    {
+      "title": "ST RM0090 STM32F4 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0090-stm32f4xx-reference-manual-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -55,8 +60,65 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 0 representative with fixed DMA routing and bxCAN; resource routing remains to be entered."
+  "record_note": "Phase 0 representative with fixed DMA routing and bxCAN; resource routing remains to be entered.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": false,
+      "icache": false,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 1048576,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      },
+      "sram1": {
+        "origin": 536870912,
+        "length_bytes": 114688,
+        "kind": "sram",
+        "dma_accessible": true,
+        "notes": "112 KiB SRAM1 at 0x20000000, accessible to AHB masters."
+      },
+      "sram2": {
+        "origin": 536985600,
+        "length_bytes": 16384,
+        "kind": "sram",
+        "dma_accessible": true,
+        "notes": "16 KiB SRAM2 immediately follows SRAM1."
+      },
+      "ccm_data_ram": {
+        "origin": 268435456,
+        "length_bytes": 65536,
+        "kind": "ccm_sram",
+        "dma_accessible": false,
+        "notes": "64 KiB core-coupled data RAM at 0x10000000; CPU D-bus only, so not a DMA buffer region."
+      },
+      "backup_sram": {
+        "origin": 1073889280,
+        "length_bytes": 4096,
+        "kind": "backup_sram",
+        "notes": "4 KiB backup SRAM at 0x40024000; separate from headline SRAM."
+      }
+    }
+  }
 }

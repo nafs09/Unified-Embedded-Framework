@@ -1,9 +1,13 @@
 {
   "id": "arduino-mega-2560-r3",
   "name": "Arduino Mega 2560 Rev3",
-  "aliases": ["Mega 2560 Rev3"],
+  "aliases": [
+    "Mega 2560 Rev3"
+  ],
   "chip_id": "atmega2560-16au",
-  "clock_sources": {},
+  "clock_sources": {
+    "atmega2560_main_clock": 16000000
+  },
   "reserved_pins": [],
   "source_references": [
     {
@@ -16,5 +20,22 @@
     }
   ],
   "generation_available": false,
-  "record_note": "Identity and MCU binding only. Board clock, pin reservations, Arduino build settings, and upload protocol have not been encoded."
+  "record_note": "The Mega 2560 Rev3 runs the ATmega2560 at 16 MHz and uses an ATmega16U2 USB-to-serial bridge on Serial0. Board pin constraints, build/flash profiles, and physical-revision confirmation remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "main_clock",
+    "usb_serial_bridge"
+  ],
+  "onboard_devices": [
+    {
+      "name": "ATmega16U2",
+      "function": "USB-to-serial bridge for the ATmega2560 target",
+      "target_pins": [
+        "PE0/RXD0",
+        "PE1/TXD0"
+      ],
+      "notes": "The bridge uses Serial0, which is also exposed on RX0/TX0."
+    }
+  ]
 }

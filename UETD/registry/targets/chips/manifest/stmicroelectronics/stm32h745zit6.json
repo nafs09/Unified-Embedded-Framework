@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M7 + Cortex-M4",
     "isa": "Armv7E-M",
+    "word_bits": 32,
     "count": 2,
     "fpu": "M7 double; M4 single",
     "max_frequency_hz": 480000000,
@@ -54,6 +55,10 @@
     {
       "title": "ST STM32H745xI datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32h745zi.pdf"
+    },
+    {
+      "title": "ST RM0399 STM32H745/H755 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0399-stm32h745755-and-stm32h747757-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -62,8 +67,43 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Dual-core example; it does not fit the existing Phase 0 single-core H7 profile. Define boot, shared-memory and interrupt ownership before target registration."
+  "record_note": "Dual-core example; it does not fit the existing Phase 0 single-core H7 profile. Define boot, shared-memory and interrupt ownership before target registration.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": true,
+      "icache": true,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dual-core",
+        "cortex-m7",
+        "cortex-m4",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit",
+        "instruction-cache-on-m7",
+        "data-cache-on-m7"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 2097152,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      }
+    }
+  }
 }

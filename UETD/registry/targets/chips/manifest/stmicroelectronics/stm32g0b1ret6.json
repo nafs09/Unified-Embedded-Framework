@@ -11,6 +11,7 @@
   "core": {
     "name": "Cortex-M0+",
     "isa": "Armv6-M",
+    "word_bits": 32,
     "count": 1,
     "fpu": "none",
     "max_frequency_hz": 64000000
@@ -44,6 +45,10 @@
     {
       "title": "ST STM32G0B1 datasheet",
       "url": "https://www.st.com/resource/en/datasheet/stm32g0b1re.pdf"
+    },
+    {
+      "title": "ST RM0444 STM32G0x1 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0444-stm32g0x1-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
   "source_verified_fields": [
@@ -52,8 +57,42 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits",
+    "architecture_capabilities",
+    "memory_regions"
   ],
   "generation_available": false,
-  "record_note": "Phase 0 M0+ representative; exact peripheral and DMA routing are not encoded."
+  "record_note": "Phase 0 M0+ representative; exact peripheral and DMA routing are not encoded.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": false,
+      "dcache": false,
+      "icache": false,
+      "mpu": true,
+      "dwt": false,
+      "hw_divide": false,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv6-m",
+        "thumb",
+        "memory-protection-unit"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 524288,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      },
+      "sram": {
+        "origin": 536870912,
+        "length_bytes": 147456,
+        "kind": "sram",
+        "notes": "144 KiB SRAM at 0x20000000."
+      }
+    }
+  }
 }

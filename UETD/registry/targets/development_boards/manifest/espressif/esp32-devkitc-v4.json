@@ -1,7 +1,10 @@
 {
   "id": "esp32-devkitc-v4",
   "name": "Espressif ESP32-DevKitC V4 with ESP-WROOM-32",
-  "aliases": ["ESP32-DevKitC V4", "ESP-WROOM-32 DevKitC"],
+  "aliases": [
+    "ESP32-DevKitC V4",
+    "ESP-WROOM-32 DevKitC"
+  ],
   "chip_id": "esp32-d0wdq6-v3",
   "module": {
     "name": "ESP-WROOM-32",
@@ -9,8 +12,17 @@
     "crystal_hz": 40000000,
     "antenna": "On-board PCB antenna"
   },
-  "clock_sources": {},
-  "reserved_pins": [],
+  "clock_sources": {
+    "esp_wroom_32_crystal": 40000000
+  },
+  "reserved_pins": [
+    "GPIO6",
+    "GPIO7",
+    "GPIO8",
+    "GPIO9",
+    "GPIO10",
+    "GPIO11"
+  ],
   "source_references": [
     {
       "title": "Espressif ESP32-DevKitC V4 user guide",
@@ -22,5 +34,25 @@
     }
   ],
   "generation_available": false,
-  "record_note": "Module facts are for ESP-WROOM-32. DevKitC V4 also ships with different module variants; confirm the fitted module/SoC stepping and board revision before selecting this binding. Board pin reservations and build/flash profiles remain incomplete."
+  "record_note": "This profile is specifically for ESP-WROOM-32 with 4 MiB module flash and a 40 MHz module crystal. DevKitC V4 supports multiple module variants and USB-UART bridge revisions; confirm the fitted parts. GPIO6–GPIO11 are dedicated to module SPI flash. Other pin, build, and flash details remain open.",
+  "source_verified_fields": [
+    "board_identity",
+    "chip_binding",
+    "module_variant",
+    "module_flash",
+    "module_crystal",
+    "usb_uart",
+    "reserved_pins"
+  ],
+  "onboard_devices": [
+    {
+      "name": "USB-to-UART bridge (part depends on board revision)",
+      "function": "Serial programming and host communication with the ESP32 module",
+      "target_pins": [
+        "GPIO1/U0TXD",
+        "GPIO3/U0RXD"
+      ],
+      "notes": "Record the fitted bridge part from the actual board schematic before selecting a revision-specific profile."
+    }
+  ]
 }

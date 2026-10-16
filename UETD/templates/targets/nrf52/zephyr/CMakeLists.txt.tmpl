@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.20.0)
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project({{ project_name }})
+
+target_sources(app PRIVATE
+{% for source in sources %}    "{{ source }}"
+{% endfor %})
+{% if include_dirs %}target_include_directories(app PRIVATE
+{% for include_dir in include_dirs %}    "{{ include_dir }}"
+{% endfor %})
+{% endif %}{% if compile_definitions %}target_compile_definitions(app PRIVATE
+{% for define in compile_definitions %}    {{ define }}
+{% endfor %})
+{% endif %}

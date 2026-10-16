@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M33",
     "isa": "Armv8-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 200000000
@@ -48,7 +50,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Specific 144-lead RA6M4 order code; peripheral groups summarize presence only, not channel assignment."

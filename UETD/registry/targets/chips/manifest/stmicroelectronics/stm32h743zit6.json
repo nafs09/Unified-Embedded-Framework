@@ -4,9 +4,14 @@
   "family_id": "stm32-h7",
   "series": "STM32H7",
   "part_number": "STM32H743ZIT6",
-  "aliases": ["STM32H743ZI", "NUCLEO-H743ZI2 MCU"],
+  "aliases": [
+    "STM32H743ZI",
+    "NUCLEO-H743ZI2 MCU"
+  ],
   "roadmap_phase": 0,
-  "additional_phase_targets": [1],
+  "additional_phase_targets": [
+    1
+  ],
   "core": {
     "name": "Cortex-M7",
     "isa": "Armv7E-M",
@@ -15,14 +20,32 @@
     "fpu": "double",
     "max_frequency_hz": 480000000
   },
-  "package": { "name": "LQFP144", "pin_count": 144 },
+  "package": {
+    "name": "LQFP144",
+    "pin_count": 144
+  },
   "memory": {
     "flash_bytes": 2097152,
     "sram_bytes": 1048576,
     "notes": "Vendor headline is up to 1 MiB RAM split across TCM and user SRAM domains; see device reference manual before assigning linker regions."
   },
   "peripheral_groups": [
-    "BDMA", "DMA", "MDMA", "SDMMC", "FDCAN", "USB", "ETHERNET_MAC", "ADC", "DAC", "HRTIM", "QSPI", "FMC", "TIM", "USART", "SPI", "I2C"
+    "BDMA",
+    "DMA",
+    "MDMA",
+    "SDMMC",
+    "FDCAN",
+    "USB",
+    "ETHERNET_MAC",
+    "ADC",
+    "DAC",
+    "HRTIM",
+    "QSPI",
+    "FMC",
+    "TIM",
+    "USART",
+    "SPI",
+    "I2C"
   ],
   "source_references": [
     {
@@ -32,9 +55,52 @@
     {
       "title": "ST NUCLEO-H743ZI2 data brief",
       "url": "https://www.st.com/resource/en/data_brief/nucleo-h743zi.pdf"
+    },
+    {
+      "title": "ST RM0433 STM32H743 reference manual",
+      "url": "https://www.st.com/resource/en/reference_manual/rm0433-stm32h742-stm32h743-753-and-stm32h750-value-line-advanced-armbased-32bit-mcus-stmicroelectronics.pdf"
     }
   ],
-  "source_verified_fields": ["identity", "core", "word_bits", "frequency", "package", "flash", "SRAM"],
+  "source_verified_fields": [
+    "identity",
+    "core",
+    "word_bits",
+    "frequency",
+    "package",
+    "flash",
+    "SRAM",
+    "architecture_capabilities",
+    "memory_regions"
+  ],
   "generation_available": false,
-  "record_note": "Exact MCU fitted to NUCLEO-H743ZI2. Headline memory is not a linker map; core, cache, clock, DMA, and peripheral resources remain unverified."
+  "record_note": "Exact MCU fitted to NUCLEO-H743ZI2. Headline memory is not a linker map; core, cache, clock, DMA, and peripheral resources remain unverified.",
+  "resources": {
+    "architecture": {
+      "word_bits": 32,
+      "dsp_simd": true,
+      "dcache": true,
+      "icache": true,
+      "mpu": true,
+      "dwt": true,
+      "hw_divide": true,
+      "cmsis_dsp": true,
+      "capabilities": [
+        "armv7e-m",
+        "thumb-2",
+        "dsp",
+        "hardware-divide",
+        "memory-protection-unit",
+        "instruction-cache",
+        "data-cache"
+      ]
+    },
+    "memory_regions": {
+      "program_flash": {
+        "origin": 134217728,
+        "length_bytes": 2097152,
+        "kind": "embedded_flash",
+        "notes": "Main flash base is 0x08000000. Bank, sector, bootloader, and secure/non-secure alias layout are not represented here; do not use this partial entry as a linker or flash plan."
+      }
+    }
+  }
 }

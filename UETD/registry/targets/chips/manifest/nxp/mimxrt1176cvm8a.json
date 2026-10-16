@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M7 + Cortex-M4",
     "isa": "Armv7E-M",
+
+    "word_bits": 32,
     "count": 2,
     "fpu": "single and double on M7; single on M4",
     "max_frequency_hz": 800000000
@@ -53,7 +55,8 @@
     "M7_frequency",
     "package",
     "on_chip_SRAM",
-    "no_on_chip_flash"
+    "no_on_chip_flash",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Flashless crossover MCU variant; firmware normally boots from external memory. The industrial data sheet ceiling is recorded; per-core boot and memory setup require a full target map."

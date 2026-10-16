@@ -1,0 +1,22 @@
+{
+  "id": "pico-sdk",
+  "name": "Raspberry Pi Pico SDK package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "pico_sdk_import.cmake",
+    "Pico C SDK",
+    "PIO assembler",
+    "UF2 output support"
+  ],
+  "packages": [],
+  "dependencies": [
+    "arm-none-eabi",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://github.com/raspberrypi/pico-sdk. Pin SDK release and its submodule closure; record board-specific flash and boot integration separately."
+}

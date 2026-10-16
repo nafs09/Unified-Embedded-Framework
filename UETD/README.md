@@ -309,5 +309,6 @@ need to understand or change a registry record.
 - [UEF-PL technical guide](../docs/guides/UEF_PROJECT_LANGUAGE_GUIDE.md) and [generated catalogue](../docs/reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md) document the source rules and registered names.
 - [Maintainer architecture notes](docs/ARCHITECTURE.md) map APIs, source ownership, and scaffold status.
 - [Implementation inventory](docs/TODO.md) is the maintainer worklist; the repository-level [implementation plan](../docs/roadmap/IMPLEMENTATION_PLAN.md) gives the ordered cross-project checklist.
-- [`templates/modules/README.md`](templates/modules/README.md) indexes the non-renderable standalone template-scope checklist for every catalog module; [`templates/modules/catalog.md`](templates/modules/catalog.md) lists them by module ID.
+- [`templates/modules/README.md`](templates/modules/README.md) documents the renderable CMake build route for every catalog module; [`templates/modules/catalog.md`](templates/modules/catalog.md) lists them by module ID.
+- [`templates/targets/README.md`](templates/targets/README.md) indexes the parameterized Cortex-M, AVR, Arduino, ESP-IDF, Nordic/Zephyr, RP2040, and i.MX RT templates and their input contracts.
 - [`third_party/README.md`](third_party/README.md) describes the UETD-managed FreeRTOS dependency policy.

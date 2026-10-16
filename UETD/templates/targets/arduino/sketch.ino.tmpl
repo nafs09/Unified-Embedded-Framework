@@ -1,0 +1,14 @@
+extern "C" {
+void {{ initialize_symbol }}(void);
+void {{ loop_symbol }}(void);
+}
+
+void setup()
+{
+    {{ initialize_symbol }}();
+}
+
+void loop()
+{
+    {{ loop_symbol }}();
+}

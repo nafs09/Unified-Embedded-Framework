@@ -85,6 +85,22 @@
       "additionalProperties": false
     },
     "source_references": { "type": "array", "items": { "type": "object", "required": ["title", "url"] } },
+    "source_verified_fields": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true, "description": "Board fields checked against the cited manufacturer board documentation." },
+    "onboard_devices": {
+      "type": "array",
+      "description": "On-board chips other than the selected target MCU that affect programming, communication, clocks, or pin availability.",
+      "items": {
+        "type": "object",
+        "required": ["name", "function"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "function": { "type": "string", "minLength": 1 },
+          "target_pins": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
     "generation_available": { "type": "boolean" },
     "record_note": { "type": "string" }
   },

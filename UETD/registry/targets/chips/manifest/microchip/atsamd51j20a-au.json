@@ -11,6 +11,8 @@
   "core": {
     "name": "Cortex-M4F",
     "isa": "Armv7E-M",
+
+    "word_bits": 32,
     "count": 1,
     "fpu": "single",
     "max_frequency_hz": 120000000
@@ -49,7 +51,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "64-pin SAM D51 J20A variant; detailed package pin map remains a separate target resource."

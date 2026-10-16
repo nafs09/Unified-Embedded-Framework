@@ -11,6 +11,8 @@
   "core": {
     "name": "Dual Cortex-M33",
     "isa": "Armv8-M",
+
+    "word_bits": 32,
     "count": 2,
     "fpu": "single precision",
     "max_frequency_hz": 150000000
@@ -49,7 +51,8 @@
     "frequency",
     "package",
     "flash",
-    "SRAM"
+    "SRAM",
+    "word_bits"
   ],
   "generation_available": false,
   "record_note": "Dual-core LPC55S69. Maximum clock and memory are family/device headline values; core-specific startup and ownership are not described here."

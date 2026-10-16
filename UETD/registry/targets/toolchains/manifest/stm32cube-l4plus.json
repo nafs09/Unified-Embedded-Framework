@@ -1,0 +1,21 @@
+{
+  "id": "stm32cube-l4plus",
+  "name": "STM32CubeL4 device package",
+  "purpose": "sdk",
+  "status": "scaffold_only",
+  "host_platforms": [
+    "any"
+  ],
+  "tools": [
+    "CMSIS device headers",
+    "startup sources",
+    "STM32L4 HAL and LL"
+  ],
+  "packages": [],
+  "dependencies": [
+    "arm-none-eabi",
+    "cmake",
+    "ninja"
+  ],
+  "record_note": "Upstream: https://github.com/STMicroelectronics/STM32CubeL4. Pin one release and capture L4+ device/header/startup/linker paths for STM32L4R5ZIT6."
+}
