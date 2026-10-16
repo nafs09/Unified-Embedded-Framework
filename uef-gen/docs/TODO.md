@@ -290,7 +290,6 @@ without relying on undocumented machine state.
 - [x] Reconcile the generator's ownership and package map with the rule that UETD owns UCON algorithms, public types, metadata and templates.
 - [x] Consume the UETD algorithm catalog in the shared manifest without adding generator-side algorithm types. PID and lead-lag are registered; all other algorithms remain explicitly unregistered with no output templates and individually registered fail-closed file pairs.
 - [ ] Keep the adapter schema/diagnostics synchronized as UETD promotes additional typed algorithms or changes the UCON/UPROTO manifest version.
-- [ ] Build and test only after requested; this audit has not run a build, test suite, or hardware operation.
 
 ## 8. Accepted catalogue expansion contracts
 

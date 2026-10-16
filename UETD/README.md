@@ -32,6 +32,23 @@ Dependencies retain their own license terms.
 | UAPP | Component lifecycle, state machines, supervision, faults | `include/uapp`, `src/uapp` |
 | UCON | Reusable control and estimation APIs and algorithms | `include/ucon`, `src/ucon` |
 
+The diagram shows the main runtime and generation paths. It is a conceptual
+view; module-specific dependencies are declared in the public headers and
+registry records.
+
+```mermaid
+flowchart TB
+    App["Firmware application"] --> UAPP["UAPP lifecycle and supervision"]
+    UAPP --> Domain["UCON · UPROTO · UMID"]
+    Domain --> Peripheral["UPAL peripheral APIs"]
+    Domain --> Shared["UCORE · UMATH"]
+    Peripheral --> UHAL["UHAL target boundary"]
+    UHAL --> Hardware["MCU and board"]
+    Shared --> UHAL
+    Registry["UETD registries and templates"] --> Generator["uef-gen"]
+    Generator --> Project["Selected sources and project scaffold"]
+```
+
 ### File naming
 
 The directory and include path carry the module identity, so module-owned files
@@ -160,7 +177,13 @@ FDCAN-FD, are linkable outlines and do not yet drive hardware. The optional
 FatFS adapter cannot work until a target SDMMC implementation and a selected
 FatFS package are supplied.
 
-UOS contains a FreeRTOS adapter and a bare-metal backend. FreeRTOS Kernel
+UOS contains a FreeRTOS adapter and a bare-metal backend. The current public
+API uses `bool`, `void`, and zero-valued outputs for several synchronization
+operations, so timeout, empty/full, invalid input, and unsupported backend
+results are not consistently distinguishable. The [UOS API contract](docs/design/UOS_CONTRACTS.md)
+records the current behavior, required result/context semantics, separate FSM
+ingress model, time/deadline contract, storage assertions, and target
+qualification boundary. FreeRTOS Kernel
 11.3.1 is staged under `third_party/FreeRTOS-Kernel-11.3.1/`; its lock
 records upstream tag `V11.3.1`, commit
 `3a22924e0a9ddbbc8b0758881c33b3422a5cc20d`, and `LICENSE.md`. The copied
@@ -205,6 +228,7 @@ For Cortex-M, set `UETD_TARGET=CORTEX_M` and supply `UETD_CMSIS_INCLUDE_DIR` and
 |---|---|
 | `UETD_TARGET` | `HOST` or `CORTEX_M`; selects exactly one UHAL implementation |
 | `UETD_UOS_BACKEND` | `BAREMETAL` or `FREERTOS` |
+| `UETD_BUILD_TESTS` | Build the UETD scaffold contract suite (default `OFF`) |
 | `UETD_FREERTOS_PROFILE` | Exact key from `third_party/FreeRTOS-Kernel-11.3.1/uetd-integration.json` (currently `arm_cm4f_gcc`) |
 | `UETD_FREERTOS_CONFIG_INCLUDE_DIR` | Generated firmware directory containing `FreeRTOSConfig.h` |
 | `UETD_BUILD_EXAMPLE` | Build the minimal component-lifecycle example |
@@ -212,6 +236,16 @@ For Cortex-M, set `UETD_TARGET=CORTEX_M` and supply `UETD_CMSIS_INCLUDE_DIR` and
 | `UETD_BUILD_FUTURE_UPROTO_SCAFFOLDS` | Opt in to compile non-selectable planned protocol outlines |
 | `UETD_ENABLE_FATFS` | Include the optional FatFS diskio adapter |
 | `UETD_FATFS_INCLUDE_DIR` | Directory containing consumer-supplied `ff.h` and `diskio.h` |
+
+Enable and run the scaffold contract suite with CTest:
+
+```powershell
+cmake -S . -B build -DUETD_TARGET=HOST -DUETD_UOS_BACKEND=BAREMETAL -DUETD_BUILD_TESTS=ON
+cmake --build build --target uetd_scaffold_contracts --parallel
+ctest --test-dir build --output-on-failure
+```
+
+The suite covers generic UCON operations; UPAL peripheral source outlines; UMID sensor-driver outlines; legacy and future UPROTO outlines; the unselected SafeRTOS backend; every UMATH operation returning `UMATH_NOT_IMPLEMENTED`; and all registered incomplete UHAL target profiles. Function-level checks are generated from the scaffold sources, verify fail-closed return values or neutral results, and check that caller-owned storage remains unchanged. UPAL's FDCAN-FD checks also cover argument validation and preserve-on-failure rules. The UCON and future UPROTO tests check their call-structure validation rules.
 
 ## Minimal API example
 
@@ -278,14 +312,17 @@ if (uapp_sm_init(&machine, &config) == UETD_OK &&
 }
 ```
 
-One owner task calls the FSM API and executes transitions. Other tasks and ISRs
-send events through a platform-safe ingress queue or notification for that owner
-to drain; the embedded queue is not synchronized or ISR-safe. Always check
-`uapp_sm_post`: overflow rejects the newest event, so critical events need an
-application-owned latch/mailbox or independent safety path. Callbacks run
-synchronously in the owner task. They may post copied events, but must be
-bounded, non-blocking, and must not call `uapp_sm_process_one`. A transition
-callback error fault-latches the machine and clears pending events;
+One owner task calls the FSM API and executes transitions. Under FreeRTOS,
+external tasks and qualified ISRs use a dedicated UOS ingress queue that the
+owner drains; the UAPP embedded queue remains private to the FSM and is not
+synchronized for external callers. The current bare-metal UOS backend has no
+queue or ISR ingress, so a target-qualified latch or ring is required before
+external interrupt input is supported. Always check `uapp_sm_post`: overflow
+rejects the newest event, so critical events need an application-owned
+latch/mailbox or independent safety path. Callbacks run synchronously in the
+owner task. They may post copied events, but must be bounded, non-blocking, and
+must not call `uapp_sm_process_one`. A transition callback error fault-latches
+the machine and clears pending events;
 `uapp_sm_is_active` and `uapp_sm_is_faulted` distinguish completed state entry
 from fault. See [the UAPP state-machine contract](docs/design/UAPP_STATE_MACHINE_DESIGN.md)
 for memory, timing, callback-failure, and reset policy.
@@ -304,6 +341,7 @@ need to understand or change a registry record.
 
 ## Read next
 
+- [UETD example catalogue](examples/README.md) indexes the portable lifecycle example and target-specific source scaffolds.
 - [UEF-PL user handbook](../docs/guides/UEF_PROJECT_LANGUAGE_HANDBOOK.md) explains how a standalone language project is intended to work.
 - [UETD registries and discovery](../docs/guides/UEF_PL_REGISTRIES.md) explains the JSON indexes, manifests, schemas, and lookup flow.
 - [UEF-PL technical guide](../docs/guides/UEF_PROJECT_LANGUAGE_GUIDE.md) and [generated catalogue](../docs/reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md) document the source rules and registered names.

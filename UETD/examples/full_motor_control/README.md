@@ -1,13 +1,9 @@
-# full_motor_control
+# Full motor-control scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines a system that composes sensing, estimation,
+control, actuation, communications, health monitoring, and fault handling.
 
-## Implementation notes
-
-Compose the selected sensing, control, actuator, communication, health, and fault components. Confirm timing budget and safe output state before enabling the actuator path.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+The constituent providers, timing/workspace budgets, sensor-validity checks,
+arming policy, safe output state, and degraded-mode behavior are not
+implemented. The example is not built by default and is not ready to run on
+hardware.

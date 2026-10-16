@@ -28,6 +28,7 @@ if(UAPP_SM_EVENT_PAYLOAD_CAPACITY LESS 1 OR UAPP_SM_EVENT_PAYLOAD_CAPACITY GREAT
 endif()
 
 option(UETD_BUILD_EXAMPLE "Build the portable component-lifecycle example" OFF)
+option(UETD_BUILD_TESTS "Build UETD's scaffold contract tests" OFF)
 # The scalar choice affects UMATH/UCON ABI; the accumulator choice controls
 # numerical precision and cost. Publish both on UETD::Core for consistent use.
 set(UETD_UMATH_SCALAR_TYPE "uetd_f32_t" CACHE STRING
@@ -391,6 +392,11 @@ endif()
 if(UETD_BUILD_EXAMPLE)
   add_executable(uetd_example examples/minimal/main.c)
   target_link_libraries(uetd_example PRIVATE UETD::Core)
+endif()
+
+if(UETD_BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(tests)
 endif()
 
 include(GNUInstallDirs)

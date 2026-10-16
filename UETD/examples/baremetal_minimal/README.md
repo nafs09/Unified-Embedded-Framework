@@ -1,13 +1,8 @@
-# baremetal_minimal
+# Bare-metal GPIO scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines a minimal board bring-up path: initialize the
+board clock, configure one GPIO, and toggle it from the application loop.
 
-## Implementation notes
-
-Set up the board clock, initialize one verified GPIO, then blink it from the application main loop. Use the pin mapping from the selected board, not a family-wide assumption.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+`main.c` does not yet configure hardware. A selected board profile must supply
+the clock and pin mapping, bounded delay behavior, and a safe startup-error
+path. The example is not built by default and is not ready to run on hardware.

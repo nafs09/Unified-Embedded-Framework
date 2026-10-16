@@ -11,8 +11,20 @@
 `uef-gen` reads registry paths and metadata from the live UETD checkout. It does
 not bundle a UETD source snapshot or maintain a duplicate target database. The
 generator resolves selected module dependencies and records the inputs and
-manual actions associated with the project scaffold. It does not infer missing
-hardware data or make scaffold code production-ready.
+manual actions associated with the project scaffold. Missing hardware data is
+reported; it is not inferred.
+
+```mermaid
+flowchart TB
+    Hardware["Hardware configuration"] --> Resolver["Target and resource resolution"]
+    Project[".uef / .uefs source"] --> Frontend["Parse · resolve · validate"]
+    UETD["Live UETD api.json and registries"] --> Resolver
+    UETD --> Frontend
+    Resolver --> Selector["Module selection and project assembly"]
+    Frontend --> Lowered["Backend-neutral project model"]
+    Selector --> Output["Project scaffold and provenance"]
+    Lowered --> Output
+```
 
 ## License
 
@@ -27,15 +39,13 @@ this project and uses the same GPL-3.0-only license.
 - PyYAML and jsonschema (installed as package dependencies)
 - Jinja2 for the optional UETD template-rendering helpers; install the `templates` extra
 
-Install from this repository:
+From the UEF repository root, install the generator and optional template helpers:
 
 ```powershell
-python -m pip install -e .\uef-gen
-Set-Location .\uef-gen
+Push-Location .\uef-gen
 python -m pip install -e ".[templates]"
+Pop-Location
 ```
-
-The second command is only needed when using the optional UETD template-rendering helpers. It can also be installed in one operation from the `uef-gen/` directory with `python -m pip install -e ".[templates]"`.
 
 ## Locating UETD
 
@@ -67,7 +77,7 @@ uetd:
 
 ## Project language
 
-The planned standalone authoring path is described in
+The standalone authoring path is described in
 [project language design](../docs/design/PROJECT_LANGUAGE_DESIGN.md). It describes
 hardware, sensors, actuators, protocols, dynamic-system models, UETD-native and
 custom mathematical algorithms, language-owned hybrid compositions, typed
@@ -76,10 +86,10 @@ optional tasksets. A `.uefs` source composes multiple target projects and their
 typed links. The `.uef` and `.uefs` lexer, parser, registry resolution,
 semantic checks, editor analysis, and backend-neutral lowering are
 implemented. Eight of the ten current `.uef` examples pass frontend
-validation. The ESP32 sorter still uses an unregistered `stepper` descriptor;
-the H745 Tesla-coil design leaves its plant dimensions/equations and two
-controller inputs for its author to finish, so its `.uef` and importing
-`.uefs` report expected design errors. Warnings for incomplete UETD
+validation. The ESP32 sorter uses an unregistered `stepper` descriptor. The
+H745 Tesla-coil design has unresolved plant dimensions/equations and two
+controller inputs, so its `.uef` and importing `.uefs` report expected design
+errors. Warnings for incomplete UETD
 authoring/generation contracts remain visible. No firmware emitter consumes
 the lowered application or system plans yet. `check` runs the frontend; `.uef
 generate --dry-run` can validate and resolve a project, while publishing

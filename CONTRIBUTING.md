@@ -79,11 +79,9 @@ python -m pip install -e ".[templates]"
 uef-gen --help
 ```
 
-At the time this guide was drafted, I did not find a maintained automated test
-suite in either subproject. Recheck for the current harness, run the relevant
-checks, and include a reproducible validation procedure identifying what could
-not be checked. Add focused regression coverage when an appropriate test
-harness exists; do not invent or claim a test result.
+These commands exercise the host-side build and CLI entry points. They do not
+qualify physical hardware or establish the behavior of unavailable toolchains,
+targets, or deployment paths.
 
 ## Pull requests
 

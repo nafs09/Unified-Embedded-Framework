@@ -1,7 +1,8 @@
 # UEF Project Language (UEF-PL)
 
 This document defines UEF Project Language (UEF-PL), the standalone `.uef`
-authoring language and its planned `uef-gen` path. It is a typed, declarative
+authoring language and its implemented `uef-gen` frontend. Firmware emission
+and the target workflow remain incomplete. It is a typed, declarative
 surface for configuring UETD and writing bounded project-local models,
 algorithms, protocols, and compositions.
 It is not a general programming language: users do not write C/C++ or Python in
@@ -21,10 +22,11 @@ range token before considering a decimal point, so `0..N` cannot be read as
 two malformed floating-point values. A dimension is a positive integer
 literal or a compile-time constant reference; it is resolved before lowering.
 
-The parser, verifier, lowering, and generator remain scaffolds. This document
-sets their intended contract; examples demonstrate the language design and are
-not claims that `check`, `generate`, `build`, or `flash` already accept every
-construct shown. Current implementation status is in
+The lexer, parser, registry discovery, semantic verifier, and backend-neutral
+lowering are implemented. The firmware emitter, build, and flash routes remain
+incomplete. This document defines the full language contract; examples
+demonstrate the design and do not claim that every construct is accepted by
+the current checker. Current implementation status is in
 [`UETD_SYSTEM_AUDIT.md`](../../UETD/docs/audits/UETD_SYSTEM_AUDIT.md); source-equivalence,
 catalogue-readiness and selective-generation requirements are in
 [`UETD_EQUIVALENCE_AND_CATALOGUE_GAP_AUDIT.md`](../../UETD/docs/audits/UETD_EQUIVALENCE_AND_CATALOGUE_GAP_AUDIT.md).
@@ -744,10 +746,13 @@ during that activation. Each machine commits at most one transition. A
 BareMetal loop ticks its machines once per iteration. The future adapter maps
 each activation to one private synthetic UETD tick event and expands `any`
 transitions into exact-source rows while preserving priority. RTOS ingress
-arrives through synchronized UOS queues/notifications and updates the owner's
-snapshot; it does not call the UAPP instance directly. BareMetal uses
-cooperative bounded delivery and ISR-safe latches, not unsupported RTOS queues
-or mutexes.
+is specified as a dedicated synchronized UOS ingress queue and updates the
+owner's snapshot; it does not call the UAPP instance directly. This remains an
+adapter requirement: current UOS APIs have ambiguous result reporting and no
+single cross-backend ingress contract. BareMetal uses cooperative bounded
+delivery and a target-qualified ISR latch or ring; the current bare-metal UOS
+backend does not implement that ingress or RTOS queues/mutexes. See the
+[UOS contract](../../UETD/docs/design/UOS_CONTRACTS.md).
 
 Each consumer receives its own race-free latest-value state mailbox, which
 replaces an older unread snapshot and does not preserve state-change history.
@@ -835,13 +840,11 @@ PLC endpoint generation is supported.
 
 ## Editor, verification, and CLI
 
-The planned commands are:
+The implemented frontend commands are:
 
 ```text
 uef-gen check flight_controller.uef
-uef-gen generate flight_controller.uef
-uef-gen build flight_controller.uef
-uef-gen flash flight_controller.uef
+uef-gen generate flight_controller.uef --dry-run
 ```
 
 The Visual Studio and VS Code extensions connect to the same language server

@@ -4,18 +4,18 @@ UEF-PL is the standalone, typed project language for describing a complete UETD 
 
 The firmware emitter is a separate incomplete stage. `uef-gen check` exercises the frontend. `uef-gen generate <file>.uef` currently stops with an explicit backend-unavailable diagnostic after successful checking because the existing renderer does not consume the lowered application specification. `.uefs` checking also produces a deterministic multi-target plan, but there is not yet a firmware emitter for that plan. Build, flash, and wired-monitor operations remain unavailable for these language projects.
 
-For a first-time language walkthrough, read the [UEF-PL user handbook](../../../../../docs/guides/UEF_PROJECT_LANGUAGE_HANDBOOK.md). Read [the language design](../../../../../docs/design/PROJECT_LANGUAGE_DESIGN.md) for compiler contracts and multi-target semantics, and the [technical guide](../../../../../docs/guides/UEF_PROJECT_LANGUAGE_GUIDE.md) for syntax and value rules. The [generated catalogue](../../../../../docs/reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md) and [unit reference](../../../../../docs/reference/UEF_PL_UNITS_REFERENCE.md) are derived from UETD's registries.
+For a first-time language walkthrough, read the [UEF-PL user handbook](../../../../../../docs/guides/UEF_PROJECT_LANGUAGE_HANDBOOK.md). Read [the language design](../../../../../../docs/design/PROJECT_LANGUAGE_DESIGN.md) for compiler contracts and multi-target semantics, and the [technical guide](../../../../../../docs/guides/UEF_PROJECT_LANGUAGE_GUIDE.md) for syntax and value rules. The [generated catalogue](../../../../../../docs/reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md) and [unit reference](../../../../../../docs/reference/UEF_PL_UNITS_REFERENCE.md) are derived from UETD's registries.
 
 ## Compiler flow
 
-```text
-.uef / .uefs source
-  -> lexer and source spans
-  -> parser and typed AST
-  -> live UETD registry + project/import symbol resolution
-  -> semantic and type validation
-  -> backend-neutral application specification / system build plan
-  -> (firmware emitter not implemented)
+```mermaid
+flowchart LR
+    Source[".uef / .uefs source"] --> Lexer["Lexer and source spans"]
+    Lexer --> Parser["Parser and typed AST"]
+    Parser --> Registry["Live UETD registry and imported symbols"]
+    Registry --> Validation["Semantic and type validation"]
+    Validation --> Lowering["Application specification or system build plan"]
+    Lowering -. "firmware emitter not implemented" .-> Output["Firmware project"]
 ```
 
 State-machine declarations are validated and lowered as design data, but they
@@ -77,7 +77,7 @@ larger machines before generation.
 
 UETD remains the source of truth for targets, development boards, runtimes, modules, public types, units, and UMATH functions. `uef-gen` follows `api.json` links and reads the owning registry/manifests. The language registry contains language syntax and builtin expression forms only; it is not a copy of UETD's catalogue. A registered but unfinished UETD descriptor remains discoverable and receives a readiness diagnostic.
 
-The only explicit project import is `contract import "relative.uefs";`. It is resolved relative to the `.uef` file and imports the shared types/protocol declarations and local endpoint facts from that system. It does not import sibling implementation source or make remote modules callable. Registry discovery and JSON ownership are explained in [UEF-PL registries and discovery](../../../../../docs/guides/UEF_PL_REGISTRIES.md).
+The only explicit project import is `contract import "relative.uefs";`. It is resolved relative to the `.uef` file and imports the shared types/protocol declarations and local endpoint facts from that system. It does not import sibling implementation source or make remote modules callable. Registry discovery and JSON ownership are explained in [UEF-PL registries and discovery](../../../../../../docs/guides/UEF_PL_REGISTRIES.md).
 
 ## Where the implementation lives
 
@@ -90,4 +90,4 @@ The only explicit project import is `contract import "relative.uefs";`. It is re
 - `hints.py`, `../server/server.py`: registry-backed completion, hover, signature help, definitions, diagnostics, and UTF-16 position adaptation.
 
 
-For the detailed representation and type-identity contract, see [`TYPE_INTERCHANGE.md`](TYPE_INTERCHANGE.md). For the actual compiler status and implementation order, see the [frontend/backend walkthrough](../../../../docs/UEF_PL_IMPLEMENTATION_WALKTHROUGH.md).
+For the detailed representation and type-identity contract, see [`TYPE_INTERCHANGE.md`](TYPE_INTERCHANGE.md). For the actual compiler status and implementation order, see the [frontend/backend walkthrough](../../../../../docs/UEF_PL_IMPLEMENTATION_WALKTHROUGH.md).

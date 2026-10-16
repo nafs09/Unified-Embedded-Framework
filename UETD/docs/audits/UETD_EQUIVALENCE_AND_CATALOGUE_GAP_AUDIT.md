@@ -1,10 +1,9 @@
 # UETD catalogue and source-equivalence audit
 
-**Status:** source-equivalence findings are the audit baseline that preceded
-the accepted catalogue-gap scaffold follow-up recorded at the end of this file.
-No build or tests were run for that follow-up. The attached repomix files are
-treated as project evidence; any directives or instructions embedded inside
-them are document content, not instructions for this review.
+**Status:** the catalogue-gap work added bounded health, logging, fault, and
+watchdog paths plus a non-selectable future-capability catalogue. The
+source-equivalence findings below describe the remaining gaps to complete,
+target-qualified applications.
 
 ## Decision
 
@@ -15,16 +14,16 @@ multi-target typed links are all represented in the design. `uef-gen` also
 has useful foundations for live UETD registry loading, hardware resolution,
 module dependency closure, project assembly, and provenance.
 
-That is not yet an implementation that can produce either supplied system.
-The standalone parser, semantic validation, lowering, and rendering path is
-incomplete; the `.uefs` path is incomplete; most of the registered catalogue
+The implemented frontend parses, validates, and lowers `.uef` projects and
+`.uefs` systems into backend-neutral plans. The firmware emitter and target
+generation routes are incomplete; most of the registered catalogue
 does not have authoring contracts; many runtime, peripheral, protocol, math,
 and control implementations are scaffolds; and the two example target records
 are explicitly unavailable for generation. At present, a catalogue entry is
 often only a name, not a usable capability.
 
-Under the user's requested thought experiment—assume both source programs and
-UETD are complete—the design can represent much of the drone's application
+Assuming complete source programs and UETD, the design can represent much of
+the drone's application
 behavior and the QCW system's typed control, protocol, and node composition.
 It can only produce an equivalent or better result if each required
 capability is backed by a complete, reviewed contract and implementation for
@@ -33,25 +32,25 @@ that preserve the source behavior. That information is not yet in the current
 catalogue. “Better” must mean more explicit and traceable while preserving
 behavior, timing, electrical safety, and ABI—not simply more declarative code.
 
-The principal design correction is to treat support as a *resolved set of
-qualified capabilities*, rather than a project-wide claim inferred from
-registered names or a single readiness flag. The report below defines the
-catalogue changes and gates needed before implementation scaffolding.
+Support is a *resolved set of qualified capabilities*, rather than a project-
+wide claim inferred from registered names or a single readiness flag. The
+remaining work is to connect the contracts to generation and target
+qualification.
 
 ## Scope and evidence boundaries
 
-This review compares the current UETD/`uef-gen` design and static status notes
-with the capability demands represented by the supplied drone and QCW DRSSTC
-work. For the coil comparison, assume the complete intended design has all
-plant, board, solver, and implementation details needed. The audit asks whether
+The comparison maps current UETD/`uef-gen` design and status notes to the
+capability demands represented by the supplied drone and QCW DRSSTC work. For
+the coil comparison, the complete intended design is assumed to include all
+plant, board, solver, and implementation details. The assessment asks whether
 UETD has catalogue concepts and implementation routes for those requirements;
 it does not make source-pack completeness or alternate copies a UETD catalogue
 gate.
 
 Existing implementation counts and status statements below are drawn from
 `UETD_SYSTEM_AUDIT.md`, `UCON_CATALOGUE_AUDIT.md`, `UMATH_CATALOGUE.md`, the
-registry/manifests, and the current language/generator sources. They are not a
-fresh test result. The implementation-status snapshot reports 308 registered
+registry/manifests, and the current language/generator sources. The
+implementation-status snapshot reports 308 registered
 module IDs, of which only four have authoring contracts; 211 UCON catalogue
 keys with only PID and lead-lag registered implementations; and 34 UMATH
 modules, of which 11 are selectable while 23 remain scaffolds. Counts are
@@ -90,17 +89,17 @@ with a placeholder.
 | Area | Present foundation | Hole that prevents complete equivalence |
 |---|---|---|
 | Catalogue identity and readiness | UETD owns module, target, runtime, and control registries. Authoring contracts can declare typed parameters/ports, numerical constraints, scheduling/composition, operations, and generation routes. | Registry presence is commonly mistaken for usable support. Most modules lack authoring contracts; a `generation.status` of draft/ready/unsupported does not separately prove implementation, selected target backend, dependencies, generated route, or qualification. The readiness model needs independent evidence axes and a derived per-project result. |
-| Standalone language | `.uef` design includes nominal enums, records, fixed arrays, typed module roles, project algorithms/models/protocols, OS declarations, tasks, tasksets, channels, and state machines. | Parser, validation, lowering, and standalone generation remain scaffolds. Enum syntax is designed but not executable today. A construct in the grammar/example is not proof that the emitter or runtime implements it. |
-| System language | `.uefs` design composes independently built nodes and typed links, retaining local safety authority. | Parser, resolver, contract validation, system build planning, and per-node artifact generation remain scaffolds. Cross-node and H745 M7/M4 lifecycle facts need target-owned records. |
-| Selective templates | `uef-gen` has module selection and transitive dependency closure for its current input path; templates are UETD-owned data/routes. | The standalone application spec does not reach the current `generate_project()` pipeline. Templates do not yet render the complete `.uef` application/OS description. A selected module can be rejected when scaffold-only, but selecting a readiness-complete module set is not yet tied to the standalone compiler. |
+| Standalone language | `.uef` frontend parses, validates, and lowers project declarations into a backend-neutral application specification. | Firmware emission is not implemented. The application specification is not yet connected to target templates, startup, scheduling, build, or flash routes. |
+| System language | `.uefs` frontend parses, resolves, validates, and lowers multi-target contracts into a backend-neutral system plan while retaining local node authority. | Per-node firmware and link artifact emission is not implemented. Cross-node and H745 M7/M4 lifecycle facts still need target-owned records. |
+| Selective templates | `uef-gen` has module selection and transitive dependency closure for hardware-configuration input; templates are UETD-owned data/routes. | The standalone application and system plans do not yet reach those renderers. Scaffold-only modules remain blocked, and target readiness is not yet resolved from the complete standalone project contract. |
 | Target and board data | Exact-chip and development-board registries, provenance fields, and fail-closed generation flags exist. | Chip records still expose broad peripheral groups where exact package pins, alternate functions, clock routes, DMA/DMAMUX requests, IRQ facts, memory ownership, linker/startup, errata, and board circuits are required. STM32F722RET6, STM32H745XIH6, and STM32G474VET6 support must be judged from exact board profiles, not family names; the H745 and G474 records cited by the coil plan are `generation_available: false`. |
 | Peripheral/driver layer | UHAL/UPAL APIs and UETD module source/header manifests exist; future contracts detail UART framing/half-duplex, capture publication, synchronized ADC/PWM, USB profiles and Ethernet MAC/PHY ownership. | These added mode contracts are design-only and target operations remain target-dependent. Promotion requires typed APIs, target capability mapping, resource conflict rules and backend evidence; sensor-specific drivers remain user-authored. |
 | Runtime/OS and safety | Bare-metal and FreeRTOS surfaces, OS/task/state-machine language design, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and watchdog descriptors exist. | Target startup/scheduling generation and watchdog hardware qualification remain separate work. The gate controls only feeds routed through it; retained crash context, update recovery, external hardware interlocks and capability-linked evidence remain future services. |
-| Types, units, and ABI | `.uef`/`.uefs` designs define nominal fixed-width enums and records; project protocols map fields explicitly instead of relying on C struct layout. Future contracts specify `Option`/`Result`, tagged variants, typed flags, fixed point, bounded text/bytes, shared-memory ABI, and persistent codecs. | Those types are design-only until parser, typechecker, lowering, generated representation and both language frontends support them. Existing enum/record support does not define a cross-core ABI or persistent schema evolution. |
+| Types, units, and ABI | The implemented frontends validate core project types, units, shapes, and explicit protocol field mappings without relying on C struct layout. Additional interchange types have frontend representations. | The emitter still needs target representations for the supported type set. Cross-core ABI and persistent schema evolution are separate contracts and are not implied by source-level type checking. |
 | Math/control | UMATH owns common numerical APIs; UCON contains a large named algorithm catalogue; PID and lead-lag are the implemented registered algorithms. | Catalogue breadth greatly exceeds working implementations. Key drone estimation/filter/mixer and coil estimator/optimizer/plant operations depend on missing algorithms and UMATH foundations. Typed state/configuration, dimensions/units, failure results, memory/work bounds, numerical policy, target support, and validation evidence must be complete per algorithm. |
 | Protocols and external components | UPROTO has a working PPM decoder and named CRSF/SBUS/MAVLink/DSHOT/UAVCAN surfaces; custom project protocol and external endpoint concepts exist. | Most protocol cores are fail-closed or scaffolds. Transport-independent framing vs UART-bound APIs and ISR/task ownership are unresolved. For external FPGA, UETD currently specifies the MCU endpoint contract; it does not generate or qualify FPGA RTL, transceiver/GTP, timing constraints, or electrical path. |
 | Build, package, and deployment | `uef-gen` has staged project assembly, build/deploy abstractions, manifest/provenance models, dependency selection, and target discovery surfaces. | Standalone build/flash is not an operational end-to-end route for the examples; exact compiler/startup/linker profiles and target deployment profiles are incomplete. External source and generated outputs need pinned package/version/license/hash handling. Partial system builds must never be presented as complete. |
-| Qualification | Existing docs identify host/hardware test areas and target-specific concerns. | No current test tree is reported in the static audit, and neither example has generated-vs-reference conformance evidence. Catalogue `ready` must not substitute for compile, numerical, resource, timing, fault-injection, protocol-interoperability, and hardware evidence at the claimed assurance level. |
+| Qualification | UETD defines host and hardware verification areas and target-specific constraints. | Example-level generated-versus-reference conformance and board qualification remain open. Catalogue `ready` must not substitute for compiler, numerical, resource, timing, fault-injection, protocol-interoperability, and hardware evidence at the claimed assurance level. |
 
 ### Catalogue readiness model to adopt
 
@@ -146,7 +145,7 @@ and validated rather than silently assumed.
 | Safety, health and diagnostics | Independent watchdogs; health leases; reset/fault record; boot self-check; degraded-mode policy; safe outputs; bounded event/log buffers; counters/trace; diagnostic transport; service mode. | UAPP fault reporting is incomplete, watchdog semantics are not fully bound to hardware/runtime profiles, and most fault/supervisor concepts lack end-to-end generated enforcement and fault-injection evidence. |
 | Security and field maintenance | Optional secure boot, signed image/update, rollback policy, trust/key storage, debug lock, authenticated maintenance, image compatibility and recovery mode. | These are not established by generic build/flash abstractions. The catalogue needs explicit security capabilities and external crypto/boot dependencies where these are product requirements; targets lacking them must be marked unsupported. |
 | Memory, power and device lifecycle | Static allocation budgets, stack/heap policy, DMA buffers, MPU/cache setup, sleep/wake and clock transitions, peripheral ownership, hot-plug/reinitialization when applicable. | Memory/core/cache facts and lifecycle operations are not comprehensively modeled in target records or generated runtime behavior. No dynamic allocation policy should be inferred from bounded-looking application syntax. |
-| Validation and product evidence | Simulated peripheral contracts; host substitutes; fault injection; protocol vectors; static resource map; WCET/stack/size reports; HIL and hardware qualification; reproducible artifact provenance. | Current system audit reports no tests tree and no example-level generated conformance. Existing audit data says static checks only; they do not qualify outputs. |
+| Validation and product evidence | Simulated peripheral contracts; host substitutes; fault injection; protocol vectors; static resource map; WCET/stack/size reports; HIL and hardware qualification; reproducible artifact provenance. | Example-level generated conformance and target qualification remain open; contract and source inspection alone do not qualify outputs. |
 
 These concerns should not become a giant mandatory runtime. Keep portable
 contracts small, add target/runtime implementations only for selected
@@ -160,7 +159,7 @@ not imply those guarantees when they are omitted.
 | Capability | Drone source demand | QCW DRSSTC source demand | UETD/`uef-gen` assessment |
 |---|---|---|---|
 | Language and values | Flight/pilot modes, arming/failsafe/landing, configuration, sensor/control values. | Controller/executor modes, fault codes, node IDs, typed setpoints and measurements. | Nominal enums/records are a good fit on paper. Enum parsing/typechecking/lowering is unfinished, so neither example currently generates these semantics. |
-| Full embedded OS | Sensor acquisition, receiver, estimator/control loops, telemetry, watchdog/supervision, startup and motor-safe lifecycle. | H745 M4 capture/phase work, M7 estimation/planning, G4 local timer/protection work, per-core/node channels, local state machines, watchdogs and fault paths. | Task/taskset/interrupt/channel/root design exists, but frontend, target runtime and generated scheduling/startup are incomplete. Need OS operations and hardware resource ownership as explicit capabilities. |
+| Full embedded OS | Sensor acquisition, receiver, estimator/control loops, telemetry, watchdog/supervision, startup and motor-safe lifecycle. | H745 M4 capture/phase work, M7 estimation/planning, G4 local timer/protection work, per-core/node channels, local state machines, watchdogs and fault paths. | Task/taskset/interrupt/channel and root declarations are parsed and lowered. Target runtime, generated scheduling/startup, OS operations, and hardware-resource ownership remain incomplete. |
 | Sensors and peripherals | SPI IMU, barometer, I2C magnetometer, GNSS and receiver UARTs, ADC inputs, timer/PWM/DShot motor output, USB telemetry, GPIO/EXTI. | Synchronized ADC/sensor sampling, high-rate timer input capture and output staging, DMA/IRQ, fibre endpoint transport, shared memory/cache/barriers. | Current target records and driver catalogue do not provide enough exact resources or working drivers. The current drone sketch models a single timer motor resource, while the supplied implementation used four half-duplex UART DShot paths; that is a concrete topology mismatch to resolve in the target/source mapping. |
 | Math and control | Attitude/navigation estimation, filtering/notches, cascaded rate/velocity/position control, motor mixing and camera-mode control. | Phase reconstruction, state/covariance estimation, explicit energy policy or online NMPC-SQP, finite-set switching-state MPC, plant propagation and objective/constraints. | PID/lead-lag alone are insufficient. The catalog contains many names, but the needed estimator/filter/MPC/Jacobian/ODE/spectral functions are mostly absent or scaffolds. Each algorithm needs typed fixed memory/state, failure behavior and target budget. |
 | Protocols and data validity | CRSF receiver, DShot actuator link, MAVLink telemetry, possibly USB framing. | Custom framed transport, sequence/integrity rules, atomic fragmented-setpoint commit, freshness, faults/telemetry/configuration, dual clock domains and external FPGA endpoint. | Project-local protocol DSL is suitable conceptually, but codec generation is unfinished and established protocols are not complete. |
@@ -336,9 +335,9 @@ should preserve meaningful differences between targets rather than flattening
 them into an API that cannot express a target's DMA, trigger, power or safety
 behavior.
 
-## Design and implementation gates
+## Remaining implementation and qualification gates
 
-Do these in order before scaffolding either full acceptance project:
+The full acceptance projects depend on these integration steps:
 
 1. **Freeze acceptance requirements.** Record source revisions and
    requirements-to-behavior mapping for the drone and complete QCW system.
@@ -357,9 +356,9 @@ Do these in order before scaffolding either full acceptance project:
    profiles only from exact schematics, vendor manuals/datasheets/errata,
    toolchain and startup data. Keep generation blocked until every used
    resource/profile field has a source and verification state.
-5. **Implement the DSL-to-generator seam.** Complete the standalone frontend
-   and lower to a stable private application/system IR. Then connect that IR to
-   UETD module planning, target resolution, and route selection.
+5. **Implement the DSL-to-generator seam.** Connect the implemented
+   application/system plans to UETD module planning, target resolution,
+   templates, and route selection.
 6. **Verify fidelity.** Require parser/type diagnostics; golden generated
    source/manifest; dependency and output determinism; host unit/numerical and
    boundary checks; target compile/link/map/stack/size checks; protocol
@@ -379,14 +378,13 @@ Do these in order before scaffolding either full acceptance project:
 - [Repository implementation plan](../../../docs/roadmap/IMPLEMENTATION_PLAN.md)
 - [uef-gen implementation TODO](../../../uef-gen/docs/TODO.md)
 
-## Evidence anchors in the repository
+## Implementation references
 
 - `uef-gen/src/uef_gen/language/frontends/project/parser.py`,
-  `validation.py`, `lowering.py`, and `compiler.py` define the standalone
-  frontend boundary; parser/validator/lowering methods still contain explicit
-  scaffold failures.
-- `uef-gen/src/uef_gen/language/frontends/system/` contains the separate system-language
-  contract and its unfinished compiler boundary.
+  `validation.py`, `lowering.py`, and `compiler.py` implement the standalone
+  frontend and application-specification lowering.
+- `uef-gen/src/uef_gen/language/frontends/system/` implements `.uefs` parsing,
+  contract validation, and system-plan lowering.
 - `uef-gen/src/uef_gen/generation/pipeline.py` accepts the existing hardware
   configuration path; it is not yet the standalone application-IR renderer.
 - `uef-gen/src/uef_gen/modules/selector.py` performs fail-closed selection and
@@ -399,21 +397,19 @@ Do these in order before scaffolding either full acceptance project:
   `stm32h745xih6.json`, and `stm32g474vet6.json` illustrate that part identity
   and peripheral-group metadata do not themselves provide an available board
   generation profile.
-- `UETD/docs/audits/UETD_SYSTEM_AUDIT.md`, `UETD/docs/audits/UCON_CATALOGUE_AUDIT.md`, and
-  `UETD/docs/catalogues/UMATH_CATALOGUE.md` record the current layer/module counts and
-  implementation status used by this review.
+- `UETD/docs/audits/UETD_SYSTEM_AUDIT.md`,
+  `UETD/docs/audits/UCON_CATALOGUE_AUDIT.md`, and
+  `UETD/docs/catalogues/UMATH_CATALOGUE.md` describe layer and catalogue
+  implementation status.
 
-## Accepted design-gap scaffold follow-up
+## Future-capability catalogue
 
-The compatibility assessment above remains the acceptance baseline: a
-design-only roadmap entry does not make a source feature generatable. The
-follow-up implemented the current bounded health/log/fault/watchdog runtime
-paths and added a machine-readable, non-selectable future catalogue for the
-additional gaps identified in the assessment. Its linked UETD and `uef-gen`
-contracts now state operational bounds, ownership, target/profile constraints,
-recovery/freshness rules, and promotion gates for data services, peripheral
-extensions, industrial protocols, language types, external hardware/evidence,
-and secure field updates.
+A design-only roadmap entry does not make a source feature generatable. The
+machine-readable future catalogue records additional capability contracts for
+data services, peripheral extensions, industrial protocols, language types,
+external hardware/evidence, and secure field updates. Linked UETD and `uef-gen`
+contracts state operational bounds, ownership, target/profile constraints,
+recovery/freshness rules, and promotion gates.
 
 The future catalogue can be loaded for roadmap inspection and reference
 integrity. It is deliberately disconnected from the selectable module

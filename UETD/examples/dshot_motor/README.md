@@ -1,13 +1,9 @@
-# dshot_motor
+# DSHOT motor scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines a DSHOT command path over timer/DMA or UART
+transport. It is intended to keep the ESC disarmed during setup and leave
+arming and failsafe decisions with the application.
 
-## Implementation notes
-
-Select a DSHOT rate and timer or UART transport, then hand DMA-owned symbol buffers to the chosen board driver. Keep motor arming and failsafe policy in the application.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+The DSHOT rate, timer and pin timing, DMA buffer ownership, board transport,
+and safe output behavior are not implemented. The example is not built by
+default and is not ready to run on hardware.

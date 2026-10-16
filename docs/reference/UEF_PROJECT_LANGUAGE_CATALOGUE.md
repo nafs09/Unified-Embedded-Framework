@@ -542,7 +542,7 @@ Source: [registry/modules/manifest/umid/fpga.json](../../UETD/registry/modules/m
     "supports_multi_rate": false
   },
   "contract_version": "1.0",
-  "description": "Target-independent identity for a bidirectional power-stage actuator. The user's handwritten UETD target driver owns the electrical topology, pin mapping, timer behavior, and independent inhibit path.",
+  "description": "Target-independent identity for a bidirectional power-stage actuator. The project target driver owns the electrical topology, pin mapping, timer behavior, and independent inhibit path.",
   "display_name": "H-bridge actuator",
   "generation": {
     "notes": [

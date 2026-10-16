@@ -277,8 +277,13 @@ input snapshot from synchronized RTOS ingress, and publishes an independent
 latest-value state copy per consumer. Those state copies are race-free
 per-consumer mailboxes that replace stale snapshots; they are not FIFO event
 queues. The UETD FSM's internal event queue remains owner-only and is not a
-multi-task ingress channel. BareMetal uses its single cooperative loop and
-bounded local delivery; it does not assume RTOS queues or mutexes. The OS must
+multi-task ingress channel. Under FreeRTOS, the intended input route is a
+dedicated UOS ingress queue, separate from both the FSM queue and the state
+mailboxes. The current UOS result/context contract and exact target
+qualification are incomplete; see the [UOS contract](../../UETD/docs/design/UOS_CONTRACTS.md).
+BareMetal uses its single cooperative loop and requires a target-qualified
+ISR latch or ring before accepting interrupt input; the current UOS backend
+does not provide that mechanism or RTOS queues/mutexes. The OS must
 declare exactly one `component_failure_policy` for task, loop, and FSM callback
 failures. An FSM owner coordinates application work through explicit routes but does not
 control the RTOS scheduler or stop other tasks synchronously. Tasks that can
@@ -350,20 +355,19 @@ overview](../../uef-gen/editors/README.md) for build and troubleshooting steps.
 
 ## CLI status
 
-The intended standalone workflow is:
+The currently implemented frontend commands are:
 
 ```powershell
 uef-gen check project.uef
-uef-gen generate project.uef
-uef-gen build project.uef
-uef-gen flash project.uef
+uef-gen generate project.uef --dry-run
 ```
 
 `uef-gen check` runs the implemented lexer, parser, UETD registry discovery,
-semantic validation, and lowering checks. The firmware emitter is not
-implemented, so `generate`, `build`, and `flash` do not yet provide the complete
-standalone pipeline. Check the [implementation status](../../uef-gen/README.md#project-language-frontend-scaffold)
-before relying on a target or generation route.
+semantic validation, and lowering. `generate --dry-run` validates and resolves
+the project without writing firmware files. The firmware emitter is not
+implemented, so normal generation, build, and flash remain unavailable for
+UEF-PL projects. See the [implementation status](../../uef-gen/README.md#project-language-frontend-scaffold)
+for the current generation boundary.
 
 ## Example projects
 

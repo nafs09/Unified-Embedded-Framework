@@ -1,13 +1,9 @@
-# can_dronecan
+# CAN DroneCAN/UAVCAN scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines a bounded CAN node integration with configured
+filters, node identity, transfer-ID policy, health reporting, and bus-off
+recovery.
 
-## Implementation notes
-
-Configure CAN filters and the selected DroneCAN/UAVCAN library binding. Record node identity, transfer-ID policy, memory limits, and bus-off recovery.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+The CAN controller profile, timing, external DroneCAN/UAVCAN stack binding,
+fixed memory limits, and degraded-state policy are not implemented. The
+example is not built by default and is not ready to run on hardware.

@@ -34,10 +34,11 @@ configuration.
 
 You can build the portable UETD C library as described in the
 [UETD README](../../UETD/README.md). To install the current Python tool and use
-its implemented generator commands, follow the
+its implemented commands, follow the
 [uef-gen installation instructions](../../uef-gen/README.md#requirements-and-installation).
-The standalone `.uef` commands remain a planned workflow until the front end
-and generation backend are implemented.
+The `.uef` frontend is implemented for validation and backend-neutral
+lowering. Firmware generation, build, and flash remain unavailable until the
+emitter and target workflow are complete.
 
 ## First look at a `.uef` project
 
@@ -145,24 +146,32 @@ must declare `context = isr_signal_only`, and the interrupt must declare the
 same context. An interrupt can also name a task or loop as deferred work using
 `context = isr_signal_only`.
 
-## How a standalone project is intended to flow
+## How a standalone project flows
 
-When implemented, the command-line flow is:
+The current frontend validates source and prepares a backend-neutral plan:
+
+```mermaid
+flowchart LR
+    Source[".uef project or .uefs system"] --> LexParse["Lexer and parser"]
+    LexParse --> Resolve["UETD registry resolution"]
+    Resolve --> Check["Semantic and contract checks"]
+    Check --> Lower["Backend-neutral application or system plan"]
+    Lower -. "emitter not implemented" .-> Firmware["Firmware project"]
+    Firmware -. "build and flash unavailable" .-> Target["Physical target"]
+```
+
+The implemented CLI commands are:
 
 ```powershell
 uef-gen check .\project.uef
-uef-gen generate .\project.uef
-uef-gen build .\project.uef
-uef-gen flash .\project.uef
+uef-gen generate .\project.uef --dry-run
 ```
 
-`check` should report syntax, type, unit, target, resource, timing, and
-component-contract problems before any source is generated. `generate` should
-resolve UETD manifests and templates into a buildable target project. `build`
-should use the selected target's registered toolchain. `flash` should select
-the board's registered deployment route and show the command/output. These
-standalone operations are intended to be usable without NEXUS; their current
-implementation status is documented in the
+`check` reports frontend diagnostics. `generate --dry-run` validates and
+resolves the source without writing firmware files. The future emitter will
+resolve UETD manifests and templates into a target project; build and flash
+will require registered toolchain and deployment routes. The standalone path
+is designed to work without NEXUS. Current implementation status is documented in the
 [uef-gen README](../../uef-gen/README.md#project-language-frontend-scaffold).
 
 ## Examples to explore
@@ -193,22 +202,17 @@ Browse the [example index](../../uef-gen/examples/README.md) for the full list.
 UETD uses JSON for machine-readable catalogues and contracts. They are not
 project configuration files that most `.uef` authors need to write.
 
-```text
-UETD/api.json
-  └── catalogue index paths
-      ├── registry/modules/registry.json
-      │     └── module ID -> DSL_descriptor + manifest path
-      │                                  └── authoring and generation contract
-      ├── registry/types/registry.json
-      ├── registry/units/registry.json
-      ├── registry/umath/registry.json
-      └── registry/targets/**/registry.json
-
-uef-gen/language_registry/registry.json
-  └── .uef grammar and language-owned syntax
-
-uef-gen/system_language/registry.json
-  └── .uefs grammar and system-only syntax
+```mermaid
+flowchart TD
+    API["UETD/api.json"] --> Catalogues["Catalogue index paths"]
+    Catalogues --> Modules["Module IDs, DSL descriptors, and manifests"]
+    Modules --> Contracts["Authoring and generation contracts"]
+    Catalogues --> Types["Types"]
+    Catalogues --> Units["Units"]
+    Catalogues --> Math["UMATH functions"]
+    Catalogues --> Targets["Targets and boards"]
+    Language["uef-gen language registry"] --> UEF[".uef grammar and syntax"]
+    System["uef-gen system registry"] --> UEFS[".uefs grammar and syntax"]
 ```
 
 - **`UETD/api.json`** is the public map of catalogue locations. It tells tools

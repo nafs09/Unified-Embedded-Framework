@@ -1,13 +1,9 @@
-# crsf_receiver
+# CRSF receiver scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines serial reception and CRSF frame decoding. Only
+CRC-valid receiver snapshots are intended for publication; stale-link and
+failsafe state must be derived from sample freshness.
 
-## Implementation notes
-
-Configure the serial transport, validate CRSF framing/CRC, then publish RC state with age/failsafe metadata. Do not update channels from partial frames.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+UART settings, DMA/ring-buffer bounds, decoder scheduling, CRC handling, and
+the application failsafe policy are not implemented. The example is not built
+by default and is not ready to run on hardware.

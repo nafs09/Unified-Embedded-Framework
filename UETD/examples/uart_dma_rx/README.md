@@ -1,13 +1,9 @@
-# uart_dma_rx
+# UART DMA receive scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines a UART receive path using DMA and an IDLE event.
+The intended flow keeps byte consumption outside the hard interrupt and
+detects ring-buffer overrun and framing errors.
 
-## Implementation notes
-
-Configure a UART receive buffer and DMA/IDLE handling. Document buffer ownership, overflow reporting, IRQ priority, and how bytes are handed to a task or parser.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+Target-specific UART settings, DMA/cache coherency, IRQ priority, buffer
+ownership, and task handoff are not implemented. The example is not built by
+default and is not ready to run on hardware.

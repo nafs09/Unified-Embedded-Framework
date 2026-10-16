@@ -9,7 +9,7 @@ constraints, and implementation guidance.
 
 ## 2. Stabilize shared contracts and portability
 
-- [ ] Resolve public API, numeric, time, overflow, timeout, synchronization, storage, and C/C++ portability contracts before selecting boards. See [UETD TODO: UOS contracts](../../UETD/docs/TODO.md#uos-timing-deadline-blocking-and-storage-contracts) and [UMATH configuration](../../UETD/docs/TODO.md#umath-type-configuration-and-geometry-boundaries).
+- [ ] Resolve public API, numeric, time, overflow, timeout, synchronization, storage, and C/C++ portability contracts before selecting boards. See the [UOS API contract](../../UETD/docs/design/UOS_CONTRACTS.md), [UETD TODO: UOS implementation](../../UETD/docs/TODO.md#uos-timing-deadline-blocking-and-storage-contracts), and [UMATH configuration](../../UETD/docs/TODO.md#umath-type-configuration-and-geometry-boundaries).
 
 ## 3. Implement and host-check first-pass-relevant portable functionality
 

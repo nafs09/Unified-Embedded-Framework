@@ -119,7 +119,9 @@ visible and produces readiness warnings/errors. Adding modules never requires
 adding an ID to this grammar registry or a Python parser switch. `map` and
 `select` remain language-only bounded value forms.
 
-Multi-target `.uefs` composition has its own scaffold and is described in
+Multi-target `.uefs` composition is parsed, validated, and lowered by the
+system frontend. Its firmware emitter remains unavailable. The design is
+described in
 `../../../../../docs/roadmap/MULTI_TARGET_AND_MULTICORE_PLAN.md`; it references local `.uef` projects and
 shared link contracts, not NEXUS graph nodes.
 

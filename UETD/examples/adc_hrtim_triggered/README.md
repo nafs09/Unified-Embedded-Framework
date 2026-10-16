@@ -1,13 +1,10 @@
-# adc_hrtim_triggered
+# HRTIM-triggered ADC scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines an HRTIM-triggered ADC/DMA sampling chain. The
+intended path records trigger phase, channel order, sample time, timer rate,
+buffer ownership, and shutdown behavior.
 
-## Implementation notes
-
-Configure an HRTIM-triggered ADC/DMA sample path. Record trigger phase, channel order, sample time, timer frequency, cache rules, and shutdown-on-fault behavior.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+No target-specific trigger, channel, or DMA configuration is implemented.
+Outputs must remain disabled during setup, and transfer or initialization
+failures require a defined safe stop. The example is not built by default and
+is not ready to run on hardware.

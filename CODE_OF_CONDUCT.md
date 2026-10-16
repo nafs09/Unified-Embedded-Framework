@@ -1,6 +1,6 @@
 # Code of Conduct
 
-## Our standard
+## Community standard
 
 People contributing to UETD and uef-gen should make participation welcoming and
 constructive for people with different backgrounds, experience levels, and

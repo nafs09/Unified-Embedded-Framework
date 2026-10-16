@@ -34,7 +34,7 @@ The coverage pass added 124 public function declarations with matching C definit
 The cutoff was calculated from each source's registered public C functions
 before implementation: `scalar.c` 28/48, `fixed.c` 18/30, generic `vector.c`
 8/11, `derivatives/dual.c` 24/44, `geometry/transform3.c` 4/7, and
-`matrix/cholesky.c` 2/4. The later expansion followed the user's instruction to finish the pre-existing, substantially implemented complex, vector, quaternion, matrix-core, and polynomial files as well.
+`matrix/cholesky.c` 2/4. Later work completed the pre-existing, substantially implemented complex, vector, quaternion, matrix-core, and polynomial files as well.
 
 | Header/module | Newly declared families | Current state |
 |---|---|

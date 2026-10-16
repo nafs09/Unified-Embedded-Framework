@@ -61,4 +61,4 @@ The live console attaches to a running target through a wired board interface, s
 
 ## Verification status
 
-The generated target startup/linker files are placeholders without a verified board profile. Chip data, drivers, deployment backends, CLI diagnostics, and the wired runtime console still need implementation and target-specific review. Static source/schema inspection is not equivalent to a build, test run, or hardware validation. See [`README.md`](../README.md) for installation/CLI guidance and [`TODO.md`](TODO.md) for the implementation sequence.
+The generated target startup/linker files are placeholders without a verified board profile. Chip data, drivers, deployment backends, CLI diagnostics, and the wired runtime console still need implementation and target-specific review. See [`README.md`](../README.md) for installation/CLI guidance and [`TODO.md`](TODO.md) for the implementation sequence.

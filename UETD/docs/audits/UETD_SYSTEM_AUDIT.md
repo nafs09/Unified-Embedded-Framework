@@ -1,208 +1,113 @@
-# UETD system-wide audit
+# UETD system-wide implementation status
 
-Audit scope: the UETD source tree, public headers, CMake source selection,
-module and target registries with their detail manifests, `api.json`, examples,
-and the current `UETD_Specification.md` (V1.2). This is a static source and
-contract review. No build or tests were run.
+UETD is the portable C11 library for embedded applications. Its public APIs
+cover core utilities, hardware abstraction, peripheral access, operating
+systems, math, middleware, protocols, and application services. UETD owns the
+registries, manifests, templates, and target contracts consumed by uef-gen.
 
-This file is the implementation-status snapshot. The broader capability and
-source-equivalence review, including selective generation and requirements
-beyond the supplied systems, is tracked in
-[`UETD_EQUIVALENCE_AND_CATALOGUE_GAP_AUDIT.md`](UETD_EQUIVALENCE_AND_CATALOGUE_GAP_AUDIT.md).
+## Repository map
 
-## Structural checks
+- Public module APIs are grouped under UETD/include; implementations are
+  selected through UETD/src and the CMake module graph.
+- api.json locates the module, type, unit, math, runtime, chip, and board
+  catalogues. Registry indexes point to the owning manifests and schemas.
+- UETD/templates contains target and module scaffolds. A template or registry
+  entry does not by itself establish a usable or qualified capability.
+- UETD/examples shows application shapes and integration patterns. Example
+  source is not evidence of physical-board support.
+- UETD/docs/TODO.md and the repository implementation plan track unfinished
+  contracts, implementations, integrations, and target qualification.
 
-- The public C header scan found **1,589** API-like declarations after adding
-  the health snapshot API and future protocol operation outlines; each has a
-  source definition. Header-only inline functions and target-conditional
-  declarations are also present.
-- All **25** `c_function` symbols recorded in `api.json` resolve to a
-  declaration/definition in the tree. The module manifest's referenced source
-  paths resolve. The API registry remains intentionally focused on the
-  generator-facing UCON/UPAL/UMID/UHAL operations described in Part XIII.
-- Part XIV lists host and hardware test trees, but there is currently no
-  `tests/` directory. Examples exist, though hardware examples are not evidence
-  of target support. No tests were added or run for this audit.
+## UEF-PL and firmware generation
 
-## Standalone DSL and generator readiness
+UEF Project Language (UEF-PL) has an implemented frontend in uef-gen. Its
+lexer, parser, registry resolution, semantic checks, editor analysis, and
+backend-neutral lowering accept .uef projects and .uefs system contracts. The
+standalone firmware emitter is a separate incomplete stage; build and flash
+routes for language projects therefore remain unavailable. See the
+[UEF-PL implementation status](../../../uef-gen/docs/audits/LANGUAGE_AUDIT.md)
+for the frontend and generation boundary.
 
-The standalone language is not yet an executable generation pipeline. The
-language design and examples are useful implementation targets, but they are
-not acceptance evidence for generated firmware.
+The hardware-configuration route is separate. It resolves UETD data and can
+assemble a project scaffold, but a scaffold is not a verified build or
+flash-ready image. Exact part, board, toolchain, startup, linker, and deployment
+facts remain required for target qualification.
 
-- `uef-gen/src/uef_gen/language/frontends/project/lexer.py`, `parser.py`,
-  `validation.py`, and `lowering.py` still raise `NotImplementedError` for the
-  frontend phases. `compile_project_file` and `compile_project_text` return
-  `project_language_frontend_incomplete` without producing hardware
-  configuration or a `StandaloneApplicationSpec`.
-- `system_language` has the same blocker: `.uefs` compilation and validation
-  return `system_language_frontend_incomplete`.
-- The existing `generate_project` API accepts a hardware configuration, not
-  the standalone application specification. UETD does not yet render that
-  specification into modules, settings, schedules, models, protocols, or
-  project source.
-- Build and flash adapters remain scaffolded. The standalone `.uef` route
-  cannot reach a compiled image, and target-specific flash profiles are not
-  complete. Thus `check`, `generate`, `build`, and `flash` are not operational
-  for the examples yet.
-- The extension supplies TextMate highlighting, registry-derived semantic
-  tokens, and basic line-level warnings for registered modules whose authoring
-  or generation contracts are incomplete. It does not yet parse the language,
-  type-check settings, resolve member ports, or provide context-aware
-  completion and hover. Semantic tokens currently cover software-module
-  descriptors only; target-resource names are not resolved there yet.
-- A static scan of the UETD module index found **308** registered module IDs and
-  `DSL_descriptor` values, with **no descriptor collisions**. Only **4** of
-  those manifests currently contain an `authoring` contract: `h_bridge`,
-  `pid`, `enmpc`, and `fpga`. `h_bridge`, `pid`, and `enmpc` are draft and have
-  draft generation status; `fpga` is reviewed and generation-ready, with an
-  explicit contract for endpoint message types, field mappings, receiver-local
-  timestamps, and required application bindings. The
-  remaining **304** identifiers are discoverable by spelling, but do not yet
-  have enough UETD-owned parameter/port/readiness metadata for semantic
-  validation or standalone generation.
-- There is not yet a UETD-owned callable math-function/overload registry for the
-  language. Module descriptors alone cannot validate formula calls, units,
-  dimensional operations, or numerical overloads.
-- The example scan found `gpio` and `exti` used as peripheral types but absent
-  from the software-module index. These are target resources, not missing
-  software modules, so the grammar now treats peripheral type names as
-  `target_peripheral_ref` values. UETD target manifests still expose only broad
-  peripheral-group strings and lack a complete canonical resource/pin/IRQ/DMA
-  catalogue; the target-side resolver and validation contract remain to be
-  implemented.
-- The Tesla executor example now targets the user's selected **STM32G474VET6**
-  part. Its chip record is present, but it is unavailable for generation
-  pending board, pin, clock, timer, startup/linker, build, and flash profiles.
-  The example now follows the revised architecture in the supplied source:
-  G474 captures timer edges and sends raw counts over Fibre; H745 M4 extends
-  timestamps and reconstructs phase; H745 M7 builds the sensor snapshot and
-  runs estimation/control. The H745 board and multicore profile remain
-  unqualified.
+## Capability boundary
 
-These are release blockers for the user's stated acceptance criteria. Do not
-describe the examples as compilable or the standalone pipeline as complete
-until parser, validation, lowering, UETD rendering, build, and flash paths work
-end to end and are exercised against at least the drone and coil sketches.
-This pass did verify JSON syntax for 731 registry/config files, Python syntax
-for 85 `uef-gen` source files, and the VS Code extension's JavaScript syntax.
-It also cross-checked all 308 module descriptors, 52 chip entries, 16 board
-entries, family-to-chip part lists, and example target IDs; no reference or
-syntax errors were found in those checks. These checks do not replace schema
-validation, C/C++ compilation, or end-to-end generation tests.
+- Registry discovery means a name and its metadata can be inspected; it does
+  not mean the module has an implemented source path or generation route.
+- Scaffold-only modules and incomplete contracts remain blocked from selection
+  or generation.
+- Family and chip records do not substitute for a complete board profile.
+- Portable library builds, target builds, and physical hardware qualification
+  are separate capability levels.
+- Safety, timing, and fault-handling claims require evidence for the selected
+  implementation and target.
 
 ## Layer-by-layer state
 
-| Layer | Current state | Main work before release |
+| Layer | Current state | Remaining capability gaps |
 |---|---|---|
-| UCORE | Shared storage types, status conversion, time API, assertions, and limits are present. Target-selected UHAL supplies the time implementation. | Review integer overflow, time-source, and assertion policy against each supported compiler/target. |
-| UMATH | Shared scalar/fixed-point, vector, complex, matrix/Cholesky, quaternion, rigid-transform, and polynomial APIs are implemented. The catalogue now classifies 19 Phase 0 priority scaffolds, 3 Phase 1 scaffolds, and one later sparse-CSR scaffold; all remain fail-closed and unavailable to generation. | Implement and numerically qualify the Phase 0 math foundation needed by nonlinear estimators, spectral PLL work, and predictive control; keep every scaffold blocked from generation until reviewed. |
-| UHAL | Host simulation exists. Cortex-M APIs have declarations and target sources; most target functions remain no-op or neutral scaffolds. Target-family records describe six families but are not exact-part board profiles. | Implement and verify clocks, GPIO, IRQ/NVIC, cache/MPU, memory, timing, fault capture, and atomic semantics for a selected board. |
-| UPAL | Per-peripheral APIs and source files exist, including SDMMC and separate FDCAN-FD. Most operations return `UETD_NOT_SUPPORTED` or are no-op scaffolds. | Implement target-backed DMA, serial, timer, conversion, CAN, storage, watchdog, and other drivers; Phase 1 SDMMC/FDCAN are not hardware-ready. |
-| UOS | Bare-metal and FreeRTOS source surfaces exist. FreeRTOS Kernel 11.3.1 is staged with an upstream lock and one generic ARM Cortex-M4F GCC profile; the copied tree has not been hash-verified and no board is qualified. A SafeRTOS API-operation outline exists, but is not selectable. | Verify the local FreeRTOS copy against upstream, add only profiles for selected targets, then validate configuration, timeout, ISR, storage, scheduler, startup, and linker behavior. Add SafeRTOS only with a consumer-provided package and verified port contract. |
-| UMID | Ring buffer, bounded health registry, coherent snapshots, freshness query, and bounded UART text logger are implemented. Device-specific drivers remain consumer-authored scaffolds; persistent storage, calibration records, and binary blackbox are design-only future services. | Implement device/board drivers by hand with units/calibration, synchronization, timestamps, stale-data behavior, propagated UPAL errors, and SDMMC/FatFS error mapping. Promote the future storage contracts when atomic commit, recovery and backend semantics are agreed. No exhaustive per-device registry is planned. |
-| UPROTO | PPM is a fixed-memory interval decoder. DSHOT, CRSF, SBUS, MAVLink, and UAVCAN/DroneCAN APIs remain fail-closed. Six Part XV.3 future modules now have operation-level outlines but no stable typed contract, output template, or dispatch entry. | Implement/validate current protocol cores, resolve the transport and deferred-processing boundary, then promote future modules one by one. |
-| UAPP | Transitional component lifecycle, bounded run-to-completion event/state machine, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and task-context fault dispatch exist. The FSM is single-owner, flat, non-ISR-safe, and requires static configuration-table lifetimes. Its queue rejects newest events with `UETD_OVERFLOW`; critical-event recovery is application-owned. Fatal backup metadata still has zero PC/LR placeholders; durable crash history and secure update remain design-only future services. | Preserve one transition owner; route cross-task/ISR ingress through target-safe queues, require callers to handle overflow, and establish safe-state cleanup before reset after callback failure. Define richer hierarchy/orthogonal behavior only against a concrete consumer. Qualify the target watchdog adapters and ensure every feed for a watchdog is routed through one gate. Implement architecture-captured crash context and retained-record commit/acknowledgement under the future fault-history contract. |
-| UCON | Detailed catalogue and function-level scaffolds are covered by `UCON_CATALOGUE_AUDIT.md`. PID and lead-lag are the only registered implementations. | Resolve the CKF wording and deadbeat priority conflicts, and specify typed contracts before promoting stubs. |
+| UCORE | Shared storage types, status conversion, time API, assertions, and limits are present. Target-selected UHAL supplies the time implementation. | Integer-overflow, time-source, and assertion policies are not fully qualified across supported compilers and targets. |
+| UMATH | Shared scalar/fixed-point, vector, complex, matrix/Cholesky, quaternion, rigid-transform, and polynomial APIs are implemented. The catalogue classifies 19 Phase 0 priority scaffolds, 3 Phase 1 scaffolds, and one later sparse-CSR scaffold; all remain fail-closed and unavailable to generation. | The Phase 0 math foundation for nonlinear estimators, spectral PLL work, and predictive control is not yet implemented and numerically qualified. Scaffold operations remain unavailable to generation. |
+| UHAL | Host simulation exists. Cortex-M APIs have declarations and target sources; most target functions remain no-op or neutral scaffolds. Target-family records describe six families but are not exact-part board profiles. | Clock, GPIO, IRQ/NVIC, cache/MPU, memory, timing, fault-capture, and atomic behavior is not qualified for a selected board. |
+| UPAL | Per-peripheral APIs and source files exist, including SDMMC and separate FDCAN-FD. Most operations return `UETD_NOT_SUPPORTED` or are no-op scaffolds. | Target-backed DMA, serial, timer, conversion, CAN, storage, watchdog, and other drivers remain incomplete. Phase 1 SDMMC/FDCAN are not hardware-ready. |
+| UOS | Bare-metal and FreeRTOS source surfaces exist. Bare-metal synchronization calls are unsupported stubs. FreeRTOS Kernel 11.3.1 is staged with an upstream lock and one generic ARM Cortex-M4F GCC source profile; the copied tree has not been checksum-compared with upstream, and no board is qualified. The API still uses ambiguous result forms, backend time epochs differ, and deadline updates are unchecked. A SafeRTOS operation outline exists but is not selectable. | Define status-returning poll/timeout semantics, common monotonic time, transactional deadlines, ISR context, object lifetime/concurrency, and complete target ABI storage checks. The generic profile still requires a matching toolchain and `FreeRTOSConfig.h`; exact startup, clock, linker, interrupt priorities, and hardware evidence are target-specific. See the [UOS API contract](../design/UOS_CONTRACTS.md). |
+| UMID | Ring buffer, bounded health registry, coherent snapshots, freshness query, and bounded UART text logger are implemented. Device-specific drivers remain consumer-authored scaffolds; persistent storage, calibration records, and binary blackbox are design-only future services. | Device/board drivers, calibration, synchronization, timestamps, stale-data behavior, UPAL error mapping, and SDMMC/FatFS integration remain incomplete. Future storage contracts need atomic commit, recovery, and backend semantics. |
+| UPROTO | PPM is a fixed-memory interval decoder. DSHOT, CRSF, SBUS, MAVLink, and UAVCAN/DroneCAN APIs remain fail-closed. Six Part XV.3 future modules have operation-level outlines but no stable typed contract, output template, or dispatch entry. | Implementations and contracts for current protocol cores, transport boundaries, and deferred-processing contexts remain incomplete; future modules remain non-selectable. |
+| UAPP | Transitional component lifecycle, bounded run-to-completion event/state machine, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and task-context fault dispatch exist. The FSM is single-owner, flat, non-ISR-safe, and requires static configuration-table lifetimes. Its queue rejects newest events with `UETD_OVERFLOW`; critical-event recovery is application-owned. Fatal backup metadata still has zero PC/LR placeholders; durable crash history and secure update remain design-only future services. | Safe-state cleanup after callback failure, richer hierarchy, target watchdog qualification, and architecture-captured crash context with retained-record handling remain incomplete. |
+| UCON | Detailed catalogue and function-level scaffolds are covered by `UCON_CATALOGUE_AUDIT.md`. PID and lead-lag are the only registered implementations. | CKF wording, DEADBEAT_MPC priority conflicts, and typed contracts for additional algorithms remain unresolved. |
 
-## Findings fixed in this pass
+## Current implementation contracts
 
-1. **Ring-buffer synchronization:** the old implementation used `volatile`
-   counters with `atomic_thread_fence`; fences do not make non-atomic index
-   accesses a sound concurrent contract. The implementation now uses UHAL's
-   32-bit atomic operations, documents one producer/one consumer, bounds
-   occupancy before copying, and requires callers to quiesce both sides before
-   init/flush. The Cortex-M UHAL atomic backend now uses a short nesting-safe
-   PRIMASK critical section. This is single-core and not NMI-safe; multicore
-   sharing remains outside the contract.
-2. **Health registry snapshots:** `uapp_supervisor_tick` previously read a
-   borrowed registry pointer after the registry lock had ended. It now copies
-   one entry with `umid_health_entry_copy` while holding the critical section.
-   The older pointer API remains for serialized callers and is documented as a
-   borrowed view.
-3. **Module dependency precision:** removed unused UART/ring-buffer dependencies
-   from the generic MAVLink stream adapter, removed the unused timer dependency
-   from PPM's elapsed-interval decoder, and removed the unused ring-buffer
-   dependency from SBUS. Added the direct UHAL dependency used by the ring
-   buffer, health registry, and UAPP fault path.
-4. **Protocol execution context:** CRSF/SBUS header comments now direct parsing
-   to a bounded task or deferred interrupt path, matching Part XVII's
-   integration guidance. Their frame publication still needs a concurrency
-   contract.
-5. **Missing planned outlines:** added non-selectable, fail-closed source and
-   header outlines for MSP, ExpressLRS, UAVCAN v1, LIN, J1939, and IEC 60870-5,
-   plus all 23 operations in the existing UOS API for the named SafeRTOS
-   backend. These are excluded from normal CMake builds and are not advertised
-   as implemented protocol capabilities.
-6. **Spec revision comments:** updated 89 public-header/source comments from
-   the stale V1.1 reference to the current V1.2 specification.
-7. **Fault reporting honesty:** the nonfatal fault stub now states why it does
-   not claim that the event was recorded and lists the sink, lifetime, and
-   interrupt-context requirements for implementation.
-8. **UCORE/UHAL ownership:** moved `uetd_time_now_us` and delay implementations
-   into the selected UHAL backend and removed the UHAL include from UCORE's
-   assertion source. The module graph no longer needs an impossible
-   `ucore`↔`uhal` dependency for the portable time source.
-9. **Ignored build artifacts:** 47 tracked paths under UETD `.vs/` and `out/`
-   were removed from the Git index because the existing `.gitignore` already
-   excludes them. Their local IDE/build files remain on disk.
+- The ring buffer uses UHAL 32-bit atomics under a single-producer/single-
+  consumer contract. Initialization and flush require both sides to be
+  quiescent; the Cortex-M critical section is single-core and not NMI-safe.
+- Health snapshots copy entries while holding the critical section. The legacy
+  pointer API is a borrowed view for serialized callers.
+- The ring buffer, health registry, and application fault path declare their
+  direct UHAL dependencies. Protocol parsing and publication remain constrained
+  to bounded task or deferred-interrupt contexts.
+- Recoverable faults enter a bounded RAM queue with copied detail, monotonic
+  timestamps, a dropped counter, and task-context dispatch. Fatal reset metadata
+  still uses placeholder PC/LR values; retained crash history remains a
+  separate future service.
+- Future protocol outlines and target profiles remain fail-closed and outside
+  normal selectable capabilities.
 
-## Specification and release gaps
+## Target and release gaps
 
-1. **Target support claims:** Part III calls several architecture tiers
-   “Complete UHAL + UPAL support,” including TI C2000. The current CMake target
-   choices are only `HOST` and generic `CORTEX_M`; the repository has no TI
-   C2000 or RISC-V UHAL backend, and the Cortex-M source is not board-qualified.
-   Either qualify the promised target matrix or relabel these entries as
-   planned coverage before presenting the spec as current support.
-2. **SafeRTOS:** Parts II and the target statement name a SafeRTOS adapter, but
-   there is no selectable backend or external package contract. The new source
-   is only a work outline. The licensed dependency, exact API release, port,
-   storage, and ISR rules must be supplied before implementation.
-3. **Phase 1 peripherals:** SDMMC, FatFS diskio, and FDCAN-FD files and metadata
-   exist, but this only proves source/API scaffolding. SDMMC and FDCAN-FD
-   operations are not target implementations; the FatFS adapter cannot
-   complete I/O until SDMMC does.
-4. **UPROTO transport policy:** Part X says the same protocol frame generator
-   must be transport-independent, while CRSF and SBUS public APIs currently
-   take `upal_uart_t*`. Part X also says to process from UART IDLE ISR; Part
-   XVII assigns work to a bounded task/deferred interrupt path. Reconcile these
-   statements and decide whether the public API is byte-stream based or
-   UART-bound before implementing those parsers.
-5. **Fault API:** Recoverable reports now enter a bounded RAM queue, include a
-   copied/truncated detail and monotonic timestamp, expose a dropped counter,
-   and can be dispatched to a recovery handler from task context. This queue
-   does not survive reset. Fatal reports still store zero PC/LR placeholders
-   and request a software reset; the future retained crash-history contract
-   specifies architecture context, atomic persistence and acknowledgement.
-6. **Concurrency:** the new ring buffer has an explicit SPSC contract. The text
-   logger serializes task/main producers on one core, uses one drain consumer,
-   and is not an ISR formatter or cross-core queue. Health reports and coherent
-   snapshots use the UHAL critical section; supervisor staleness is configurable.
-   `flush` and initialization require both sides stopped, and multi-producer/multi-
-   consumer access is unsupported. `umid_health_entry_copy` is the safe
-   snapshot path. CRSF/SBUS frame freshness and publication, UPROTO parser
-   context, and host multi-threaded critical-section behavior still need
-   contracts. Cortex-M UHAL atomics briefly mask all maskable interrupts and
-   are not suitable for NMI or multicore use.
-7. **FreeRTOS packaging:** `third_party/FreeRTOS-Kernel-11.3.1/` now contains the
-   kernel source, MIT license, upstream tag/commit lock, and UETD integration
-   manifest. The local copy has not been checksum-compared with the upstream
-   commit. The generic ARM Cortex-M4F GCC profile still requires a generated
-   `FreeRTOSConfig.h` and a matching cross-toolchain; it is not board support.
-   uef-gen target generation remains unavailable until an exact target record
-   is completed and qualified.
-8. **Tests and installed package:** the spec's Part XIV test tree is absent.
-   CMake installs the library and headers but does not yet install a package
-   config plus UETD metadata/templates for downstream `uef-gen` use. Decide
-   whether the supported distribution is a source checkout or an installed
-   SDK, then add that packaging contract.
-9. **V1.2 catalogue conflicts:** the separate UCON audit still records the CKF
-   third-degree spherical-radial versus stale Gauss-Hermite wording and the
-   DEADBEAT_MPC priority inconsistency. These are specification edits, not
-   algorithm implementations.
+1. **Target coverage:** the specification names broader target tiers than the
+   current HOST and generic CORTEX_M backends support. Cortex-M sources are not
+   board-qualified, and TI C2000 and RISC-V backends are absent.
+2. **SafeRTOS:** no selectable backend or external package contract is present.
+   The source outline does not establish an implemented or licensed port.
+3. **SDMMC and FDCAN-FD:** source files and metadata exist, but their operations
+   are not target implementations. FatFS cannot complete I/O without a working
+   SDMMC route.
+4. **Protocol context:** the specification mixes transport-independent framing
+   with UART-bound CRSF/SBUS APIs and ISR parsing with deferred task processing.
+   The public transport and execution-context contract remains unresolved.
+5. **Fault API:** recoverable faults are queued in RAM; fatal reports still use
+   placeholder PC/LR values. Retained crash context and reset-safe persistence
+   are separate future contracts.
+6. **Concurrency:** ring-buffer, logger, health-snapshot, and critical-section
+   ownership is bounded to documented single-core patterns. CRSF/SBUS frame
+   freshness, parser context, and host multi-threaded behavior need explicit
+   contracts.
+7. **FreeRTOS packaging:** the repository contains the 11.3.1 source, license,
+   upstream identity metadata, and a generic ARM Cortex-M4F GCC profile. That
+   profile still needs a generated FreeRTOSConfig.h and matching toolchain; it
+   does not qualify a board.
+8. **Distribution:** CMake installs the library and headers, while a package
+   configuration plus UETD metadata/templates for downstream uef-gen use is
+   not yet defined.
+9. **UCON catalogue:** the separate catalogue review records unresolved CKF
+   wording and DEADBEAT_MPC priority conflicts. These are specification issues,
+   separate from algorithm implementation.
 
-## Added UPROTO operation outline groups
+## UPROTO future operation outlines
 
 The future protocol modules use `uproto_future_call_t` only as a development
 work envelope. Each operation has a named declaration, definition, and
@@ -226,7 +131,7 @@ fixed-size typed API; define protocol version/profile, frame and payload limits,
 transport dependencies, ISR/task ownership, error/freshness policy, external
 library/license inputs, bounded memory/work, and UETD-owned wrapper templates.
 
-## UMATH priority review
+## UMATH implementation priorities
 
 The catalogue was reclassified after checking it against the active NEXUS work:
 nonlinear ES-EKF/InEKF/UKF, predictive control, PLL/spectral control, trajectory
@@ -252,23 +157,14 @@ phase detector may not need an FFT in every update. UCON retains PID/integrator
 state and anti-windup behavior, while UMATH supplies reusable quadrature and
 ODE operations for control and model propagation.
 
-## Accepted catalogue-gap scaffold follow-up
+## Future catalogue boundary
 
-The original findings above describe the audit baseline. The follow-up adds a
-non-selectable future catalogue with contracts and type-level outlines for
-transactional persistence, driver-owned calibration envelopes, binary
-blackbox capacity/loss semantics, PLC process-image authority and freshness,
-industrial Modbus/CANopen profiles, UART half-duplex, capture publication,
-synchronized I/O, USB/Ethernet, signed update, retained crash history,
-external FPGA/PLC artifacts, and qualification evidence. The `.uef`/`.uefs`
-type gap is documented across `Option`/`Result`, tagged variants, typed flags,
-fixed point, bounded bytes/text, and explicit shared-memory, wire and durable
-encodings. These entries are design-only and cannot be selected for generation.
+The machine-readable future catalogue is available for roadmap inspection and
+reference integrity. It remains disconnected from selectable module registries,
+project completion, umbrella headers, and generation routes. Future entries
+become capabilities only after their contracts, implementations, target
+bindings, and qualification evidence are complete.
 
-Concrete current-runtime follow-up implements bounded logger and recoverable
-fault queues, health freshness supervision, and a lease-gated watchdog refresh
-path. That watchdog gate still relies on each target/application routing every
-refresh through its injected callback; the generic API cannot prevent an
-uncoordinated direct hardware feed. The future security, storage and evidence
-contracts remain proposals, not implementation or assurance claims. This
-follow-up did not run a build or tests.
+The watchdog gate supervises refreshes routed through its injected callback;
+direct hardware feeds outside that route remain outside the generic API's
+control. Future security, storage, and evidence contracts remain proposals.

@@ -1,13 +1,9 @@
-# spi_imu
+# SPI IMU scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines initialization and sampling for one selected
+SPI-connected IMU, including identity checks, sample timing, calibration, and
+timestamped data publication.
 
-## Implementation notes
-
-Bind one selected IMU to SPI, configure its sample rate, and publish calibrated timestamped data. The sensor register map and calibration constants must come from the chosen device.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+The device, register map, SPI instance, transfer ownership, scale and bias
+calibration, and sample deadline remain target-specific inputs. The example is
+not built by default and is not ready to run on hardware.

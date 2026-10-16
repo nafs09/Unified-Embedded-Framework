@@ -4,14 +4,20 @@ This document maps UETD's C11 layers, generation boundary, and current implement
 
 ## Ownership and dependency direction
 
-```text
-UCORE (shared storage types and status)
-  ├── UMATH (shared numerical primitives)
-  └── UHAL (one selected target backend)
-       ├── UPAL (peripheral drivers)
-       ├── UOS (one selected scheduler backend)
-       └── UMID → UPROTO → UAPP
-                    └────────── UCON consumes UMATH and may use other public UETD services
+```mermaid
+flowchart LR
+    UCORE["UCORE · shared types, status, time"] --> UMATH["UMATH · numerical primitives"]
+    UCORE --> UHAL["UHAL · selected target backend"]
+    UHAL --> UPAL["UPAL · peripheral drivers"]
+    UHAL --> UOS["UOS · selected scheduler backend"]
+    UHAL --> UMID["UMID · measurement and health services"]
+    UMID --> UPROTO["UPROTO · protocol services"]
+    UPROTO --> UAPP["UAPP · application lifecycle and control"]
+    UMATH --> UCON["UCON · control algorithms"]
+    UETD["UETD registries, manifests, and templates"] --> Resolver["uef-gen resolution and project assembly"]
+    Resolver --> Scaffold["Hardware project scaffold"]
+    Language["UEF-PL frontend"] --> Plan["Application or system plan"]
+    Plan -. "firmware emitter unavailable" .-> Firmware["Generated firmware"]
 ```
 
 UETD owns reusable firmware behavior, algorithm definitions, public types, module/API metadata, and target data. `uef-gen` reads the live UETD registries and manifests to resolve hardware and module dependencies and assemble a project scaffold. Generated firmware does not depend on Python.
@@ -31,7 +37,7 @@ Portable source must not include vendor device headers. `UETD_TARGET` selects on
 | Development-board records | `api.json` declaration | `registry/targets/development_boards/registry.json` plus `manifest/` | Board clocks, reserved pins, inline module facts, build settings, and flash settings live with each board record. |
 | UETD modules | `api.json` declaration | `registry/modules/registry.json` plus `manifest/` | Module dependency and selection metadata is indexed by name; each module detail is in its own file. |
 | UPAL | `include/upal/` | `src/upal/<peripheral>/` | APIs are grouped by peripheral. Most hardware operations remain unsupported until a target backend is implemented. |
-| UOS | `include/uos/` | `src/uos/baremetal/`, `src/uos/freertos/` | Backend boundary exists. FreeRTOS source/profile pinning is incomplete and fails closed. |
+| UOS | `include/uos/` | `src/uos/baremetal/`, `src/uos/freertos/` | Bare-metal synchronization is unsupported; FreeRTOS 11.3.1 has one generic Cortex-M4F GCC source profile. The current `bool`/`void` API hides failure classes, the time epochs differ, and no exact board is qualified. See the [UOS contract](design/UOS_CONTRACTS.md). |
 | UMID | `include/umid/` (`drivers/`) | `src/umid/` (`drivers/`) | Sensor and measurement driver scaffolds are grouped under `drivers/`; physical availability follows UPAL and board integration. Driver implementations are added manually without a per-device registry. |
 | UACTUATOR | `registry/modules/manifest/uactuator/` | Target-specific driver sources remain user-authored | The `h_bridge` registry entry is a draft language-facing actuator identity; it supplies no target pin map, gate-driver code, safe-state definition, or generation-ready route. |
 | UPROTO | `include/uproto/` | `src/uproto/` | Initial protocol APIs exist; transport, parser, upstream dialect/stack, and hardware work remains declared/manual where applicable. |

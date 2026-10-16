@@ -63,8 +63,9 @@ is implemented, scaffolded, or hardware verified.
   [registry/discovery guide](guides/UEF_PL_REGISTRIES.md), and generated
   [module/type/UMATH](reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md) and
   [unit](reference/UEF_PL_UNITS_REFERENCE.md) references. These documents
-  describe the current language design and scaffold status; they do not claim
-  that the standalone compiler or target pipeline is release-ready.
+  distinguish the implemented frontend from the unfinished firmware emitter,
+  build, and target pipeline; they do not claim release-ready firmware
+  generation.
 - [ ] **Release-ready UEF Project Language specification and reference.** Use
   “UEF Project Language” as the readable name; refer to it informally as the
   `.uef` language. Explain installation and CLI workflow; lexical rules and
@@ -124,9 +125,9 @@ is implemented, scaffolded, or hardware verified.
   target/evidence changes, known limitations, and upgrade steps. The root
   `CHANGELOG.md` is drafted and should become the maintained source for these.
 
-Before public launch, replace planned-language wording with behavior proven by
-the released implementation. If a guide describes an unimplemented feature,
-label it as planned and do not present its examples as runnable.
+Published capability claims match the released implementation. Guides label
+unimplemented features as unavailable and distinguish design examples from
+runnable, target-qualified projects.
 
 ## Launch gate
 

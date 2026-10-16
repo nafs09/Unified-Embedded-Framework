@@ -48,7 +48,7 @@ The per-algorithm source files now outline the module lifecycle and its algorith
 - **Shared mathematics:** scalar/fixed-point, vector, matrix, complex, quaternion, transform, and polynomial primitives are owned by UMATH; UCON keeps a compatibility spelling `ucon_scalar_t` and algorithm-specific behavior.
 - **Lead-lag:** the source recurrence matches the Part 16.8 bilinear transform of `K(1 + Tlead*s)/(1 + Tlag*s)`, including the static gain factor. It computes into a local candidate and commits state/output only after finite-value checks.
 - **PID:** the implementation follows the stated two-degree-of-freedom error channels, trapezoidal integral, filtered derivative, conditional integration, and back-calculation update. Its clamp mode bounds the stored integral state; it is not an output-aware clamp. See the feature-parity question above.
-- The source-level audit found no other implemented UCON algorithm: PID and lead-lag are the only `registered: true` algorithm entries. No build or tests were run during this catalogue pass.
+- The source-level inventory found no other implemented UCON algorithm: PID and lead-lag are the only `registered: true` algorithm entries.
 
 ## Family coverage added
 

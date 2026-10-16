@@ -16,7 +16,7 @@ These notes are a maintainer worklist, not public usage instructions.
 | Control and estimation | `include/ucon/`, `src/ucon/`, `catalogues/` | Algorithm contracts and direct C implementations are grouped by family. Incomplete operations remain fail-closed until their typed behavior and numeric policy are reviewed. |
 | Peripheral abstraction | `include/upal/`, `src/upal/` | Hardware-neutral driver contracts and fail-closed source functions; add register bindings in the selected architecture/board implementation, not in portable code. |
 | Sensor/middleware | `include/umid/`, `include/umid/drivers/`, `src/umid/`, `src/umid/drivers/`, `include/uproto/`, `src/uproto/` | Shared UMID services plus manually maintained sensor/measurement drivers; keep transport timing and pin binding in board/backend code. |
-| Scheduler/RTOS | `include/uos/`, `src/uos/{baremetal,freertos}/`, `third_party/` | Backend implementations plus the pinned dependency integration files. The UOS checklist below tracks behavior/API contract gaps separately from linkable symbols. |
+| Scheduler/RTOS | `include/uos/`, `src/uos/{baremetal,freertos}/`, `third_party/` | Backend implementations plus the pinned dependency integration files. [UOS API contract](design/UOS_CONTRACTS.md) distinguishes current backend behavior from required result, timing, ingress, storage, and qualification semantics. |
 | Applications and lifecycle | `include/uapp/`, `src/uapp/`, `examples/` | Lifecycle, supervisor, state machine, and application examples; example mains are intentionally board integration checklists. |
 
 Read a module's public header for its API and its paired `src/.../*.c` for
@@ -164,43 +164,35 @@ separates host checks, compile-only examples, and hardware-validated behavior.
 
 ### UOS timing, deadline, blocking, and storage contracts
 
-- [ ] Make `uos_task_delay_until()` deadline updates transactional in every
-  backend. Check `*next_us + period_us`, missed-period count increment, and
-  missed-period multiplication before writing `*next_us`. Define what happens
-  on unrecoverable overflow, leave the stored deadline unchanged on failure,
-  and make failure observable through the API or a documented diagnostic path.
-- [ ] Document how callers initialize the absolute `next_us` deadline, what a
-  call does when the deadline is already due, and how missed periods are
-  skipped. The resulting deadline must follow one drift-free policy across
-  bare-metal and FreeRTOS implementations.
-- [ ] Standardize the `uos_time_now()` monotonic epoch. The header currently
-  says “since scheduler start,” bare-metal has no scheduler, and its backend
-  returns `uetd_time_now_us()` directly. Specify the common epoch and its clock
-  initialization/reset behavior, then make each backend conform.
-- [ ] Define and document result semantics for every synchronization call.
-  Distinguish unsupported operations from timeout, empty/full, invalid object,
-  and success; review the current `bool`, zero-value, and `void` APIs and decide
-  which need status returns or an explicit capability/error-reporting path.
-  Document that callers must check object creation and operation results.
-- [ ] Specify `UOS_WAIT_FOREVER` per duration-taking API and backend. Preserve
-  zero-duration polling semantics, allow unbounded waits only where supported,
-  and never forward the sentinel to a busy-wait delay or periodic deadline.
-- [ ] Verify each opaque UOS storage size and alignment against the concrete
-  task, mutex, semaphore, queue, and event control blocks for every supported
-  RTOS port and target ABI. Ensure compile-time size/alignment checks cover all
-  objects, including task storage, and keep unsupported backend combinations
-  unavailable.
-- [ ] Define overflow and argument rules for `UOS_US`, `UOS_MS`, and `UOS_S`.
-  Their multiplications can overflow before the final cast; either provide
-  checked conversion APIs or document/enforce valid input ranges.
-- [ ] Verify `UETD_ALIGNAS` and all UOS public storage declarations in the
-  supported C and C++ compilers/standards. Check the actual alignment of the
-  resulting objects, not only macro expansion or header inclusion.
-- [ ] Add UOS host unit tests for deadline calculations near `UINT64_MAX`,
-  missed-period skipping and overflow preservation, clock initialization and
-  epoch consistency, zero/finite/forever waits, duration-conversion boundaries,
-  and storage size/alignment. Exercise shared logic on host and backend-specific
-  behavior through appropriate backend tests.
+- [ ] Implement the [UOS API contract](design/UOS_CONTRACTS.md): replace
+  ambiguous synchronization results with status returns and explicit output
+  parameters; define poll, finite-timeout, forever, empty/full, object-lifetime,
+  copying, concurrency, and ISR-context behavior for every API.
+- [ ] Make `uos_time_now()` use the common UCORE system-start microsecond epoch
+  before and after scheduler startup. Resolve the current FreeRTOS tick-derived
+  epoch, tick wrap, clock initialization, and zero-on-unready ambiguity.
+- [ ] Make `uos_task_delay_until()` transactional. Keep its input deadline
+  unchanged for invalid arguments or representational overflow; retain cadence
+  while skipping missed periods using checked multiplication and addition.
+- [ ] Add checked duration-to-microsecond and duration-to-tick conversions.
+  Preserve zero as a poll only for synchronization calls; do not alias finite
+  overflow to `portMAX_DELAY` or forward `UOS_WAIT_FOREVER` to busy-wait delay.
+- [ ] Implement a dedicated FreeRTOS UOS ingress queue and keep it separate
+  from each UAPP FSM queue and each subscriber state mailbox. Require one FSM
+  owner, bounded producer behavior, newest-event overflow handling, and an
+  independent reliable path for critical causes.
+- [ ] Define target-qualified bare-metal ISR ingress. State whether the chosen
+  mechanism is a coalescing flag or record-preserving ring; specify producer
+  count, nesting/serialization, memory ordering, overflow, and owner-loop drain.
+- [ ] Extend opaque-storage compile-time size/alignment checks to every
+  supported wrapper/control-block pair and every selected compiler, ABI,
+  kernel configuration, and port. The current assertions cover only the
+  selected FreeRTOS compile and do not qualify a target.
+- [ ] Create an exact deployment profile for each supported board with the
+  compiler/ABI, RTOS configuration, clock tree, startup/vector source, linker
+  layout, and interrupt-priority rules. Require on-target evidence for
+  scheduler startup, clock/deadline behavior, queue and ISR paths, overflow,
+  and storage checks before marking that profile qualified.
 
 ### UMATH type configuration and geometry boundaries
 
@@ -279,7 +271,7 @@ instances, clocks, DMA/IRQ routes, memory regions, startup/linker data, and
 errata; add a separate physical development-board record with verified build
 and flash settings. Keep incomplete and later-roadmap records generation-unavailable.
 - [ ] Implement and verify UHAL core timing, clock/reset, GPIO, IRQ, atomics, fault capture, backup registers, MPU, and cache hooks for each selected target.
-- [ ] Resolve UOS bare-metal and RTOS semantics using the detailed UOS timing/storage checklist above. The current bare-metal backend fails or returns neutral values for unsupported synchronization rather than providing RTOS-style blocking.
+- [ ] Resolve UOS bare-metal and RTOS semantics using the [UOS API contract](design/UOS_CONTRACTS.md). The current bare-metal backend provides no blocking synchronization or queue ingress; unsupported calls currently return false or neutral values.
 - [ ] Checksum-compare the vendored FreeRTOS Kernel 11.3.1 source against upstream commit `3a22924e0a9ddbbc8b0758881c33b3422a5cc20d`; then add and validate only the port profiles for explicitly selected MCU/board targets. The lock and generic ARM Cortex-M4F GCC source profile are now present under `third_party/FreeRTOS-Kernel-11.3.1/`.
 - [ ] For every supported FreeRTOS profile, verify `FreeRTOSConfig.h`, ISR yield behavior, `configSTACK_DEPTH_TYPE`, static allocation sizes/alignment, task stack units, tick conversion, and interrupt-priority constraints on each selected MCU.
 - [x] Resolve the live UETD checkout at generation time and fingerprint the selected source/template/manifest tree; do not maintain a packaged second UETD snapshot in `uef-gen`.

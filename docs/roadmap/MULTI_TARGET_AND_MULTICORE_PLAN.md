@@ -209,6 +209,10 @@ catalogues inside `uef-gen`.
 - Build each target/core artifact with its own exact toolchain and startup
   configuration; produce one aggregate system report with hashes and link
   compatibility results.
+- Bind each runtime to its exact MCU/board, compiler/ABI, RTOS configuration,
+  clock tree, startup/vector code, linker map, and interrupt-priority policy.
+  UOS ingress and storage guarantees must be qualified for that profile; see
+  the [UOS API and target contract](../../UETD/docs/design/UOS_CONTRACTS.md).
 - Add deployment sequencing and partial-failure reporting only after every
   target has a safe, verified programming path.
 - Verify host-side schema/compiler behavior, then exercise each image and link
@@ -237,14 +241,13 @@ The first supported release is complete only when:
 
 ## 8. Current implementation status
 
-- `.uef` currently represents one target build; `.uefs` parsing and link
-  validation are scaffolds. The Tesla projects declare shared records,
+- `.uef` describes one target build. The `.uefs` frontend parses and validates
+  system composition and lowers its links to a backend-neutral plan. The Tesla projects declare shared records,
   protocol field maps, link-specific endpoint facts (including the G4 capture
-  clock profile), and explicit endpoint/task-channel bindings, but system
-  composition is not implemented.
-- The project-language parser, taskset validation/lowering, and compiler entry
-  points are still scaffolds. A system manifest alone cannot currently be
-  compiled into usable firmware.
+  clock profile), and explicit endpoint/task-channel bindings. Firmware
+  emission from the lowered system plan is not implemented.
+- Project parsing, taskset validation/lowering, and compiler entry points are
+  implemented. A system manifest cannot yet be emitted as usable firmware.
 - H745/H755 are catalogued but not generation-ready. Current Cortex-M UHAL,
   atomics, and runtime configuration do not establish multicore safety.
 - UETD therefore has a planning/example-level linked-target design, not

@@ -1,13 +1,10 @@
-# freertos_tasks
+# FreeRTOS task scaffold
 
-V1.1 example slot for this hardware scenario. The selected board, pin/clock/DMA
-routing, external device revision, and required UETD modules must be recorded
-before the example is treated as runnable.
+This source scaffold outlines creation of UOS tasks and synchronization
+objects with statically allocated stacks, control blocks, queues, and buffers.
+Scheduler startup follows successful object creation.
 
-## Implementation notes
-
-Create statically stored UOS tasks and synchronization objects, provide caller-owned stacks/queue buffers, and transfer control to the scheduler after all objects are ready.
-
-The main.c file is a compile-only starting point, not a working hardware
-example. It must not be used on hardware until the board-specific steps and
-safety behavior have been implemented and reviewed.
+The FreeRTOS port, board startup, task priorities, stack sizes, synchronization
+policy, and bounded startup-failure path remain to be supplied by a specific
+target configuration. The example is not built by default and is not ready to
+run on hardware.

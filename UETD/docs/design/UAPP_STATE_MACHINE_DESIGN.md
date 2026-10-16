@@ -5,11 +5,11 @@
 | Area | Policy |
 |---|---|
 | Execution ownership | One owner task calls the state-machine API and executes transitions. Transition callbacks run serially; the core does not execute transitions concurrently. |
-| Event posting | The embedded queue is for same-owner posting. Other tasks and ISRs should send through a platform-owned synchronized ingress queue/notification that the FSM owner drains. Direct multi-context API use is unsupported unless the application serializes every access. |
-| Queue overflow | `uapp_sm_post` returns `UETD_OVERFLOW` and rejects the newest event. Every caller checks the result. Critical events use an application-owned reliable mailbox/sticky latch or independent safety path; hardware emergency action must not depend on this FIFO. |
+| Event posting | The UAPP queue is private to the FSM owner. Under FreeRTOS, external tasks and qualified ISRs publish records to a separate, statically backed UOS ingress queue; only the owner drains it and calls UAPP. Bare metal uses the main loop as owner and a target-qualified ISR latch/ring. Direct multi-context UAPP calls are unsupported. |
+| Queue overflow | UOS ingress and the UAPP internal queue have independent capacities and overflow results. The current UOS `bool` API cannot distinguish full from other failures; the target API reports `UOS_FULL` for an immediate send and `UOS_TIMEOUT` after a finite wait. `uapp_sm_post` returns `UETD_OVERFLOW` and rejects the newest event. Critical events use a reliable mailbox/sticky latch or independent safety path. |
 | Lifecycle status | After init accepts the config, `uapp_sm_get_state` returns the last committed state; `uapp_sm_is_active` says its entry hook completed; `uapp_sm_is_faulted` reports a latched callback failure. Do not query fresh, uninitialized storage. |
 | Fault handling | Any failed exit/action/entry latches a fault and clears pending events. The failing callback may have partially changed hardware or external state; reset cannot roll that work back. The application fault path establishes a safe condition before reset. |
-| Memory and timing | Storage is fixed per machine and derived from compile-time capacities. Transition search is linear in the configured transition count; callback work is synchronous and must be bounded and non-blocking. |
+| Memory and timing | Storage is fixed per machine and derived from compile-time capacities. Ingress records are copied into their own bounded queue; the FSM queue copies again when the owner posts. State publication uses an independent latest-value mailbox per subscriber. Transition search is linear in the configured transition count; callback work is synchronous and must be bounded and non-blocking. |
 | Hierarchy | Defer parent/child states, history, orthogonal regions, deferred events, and state-local timers until a target application demonstrates the need and supplies bounded semantics. |
 
 ## Scope
@@ -19,6 +19,25 @@ task. It is a run-to-completion event dispatcher, not a hierarchical statechart
 or a scheduler. Hierarchical/orthogonal regions can be added as a separate
 composition layer if a real application needs them. Timeouts are ordinary
 events produced by the application's timer or supervisor.
+
+```mermaid
+flowchart LR
+    P[External task or qualified ISR] -->|FreeRTOS: UOS_QUEUE| IQ[Dedicated ingress queue]
+    IQ --> O[Single FSM owner]
+    O -->|owner-only post| Q[UAPP internal event queue]
+    Q --> FSM[UAPP state machine]
+    FSM --> A[Consumer A latest-state mailbox]
+    FSM --> B[Consumer B latest-state mailbox]
+    ISR[Qualified bare-metal ISR] -->|target latch or ring| LOOP[Main-loop owner]
+    LOOP -->|owner-only post| Q
+```
+
+The two ingress mechanisms are alternatives selected by the runtime. The
+UOS ingress queue, the UAPP internal event queue, and each per-consumer state
+mailbox are distinct storage and delivery contracts. The bare-metal UOS
+backend currently supplies no queue or ISR-safe ingress implementation; its
+diagram path requires a target-owned mechanism with explicit producer count,
+atomicity, ordering, and overflow rules. See the [UOS contract](UOS_CONTRACTS.md).
 
 The core uses at most 16 states, 32 transition rows, an 8-event queue, and a
 16-byte copied payload per event by default. These capacities can be overridden

@@ -20,12 +20,12 @@ State what was not checked.
 
 ## Human ownership and AI assistance
 
-- [ ] I reviewed every submitted change and take responsibility for its correctness, security, provenance, and licensing.
-- [ ] I can explain the design and implementation, including limitations, without relying on an AI tool to do so.
+- [ ] The submitted changes were reviewed for correctness, security, provenance, and licensing.
+- [ ] The design and implementation, including limitations, can be explained without relying on an AI tool.
 - AI assistance: none, or list tools used and what they materially produced or changed:
 
 ## Checklist
 
 - [ ] Documentation, schemas, manifests, examples, and generated paths are updated where needed.
 - [ ] No secrets, private data, or unlicensed third-party material are included.
-- [ ] I have not described a scaffold or host-only result as implemented or hardware-qualified.
+- [ ] No scaffold or host-only result is described as implemented or hardware-qualified.
