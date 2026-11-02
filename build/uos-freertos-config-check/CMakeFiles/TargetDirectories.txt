@@ -1,4 +1,0 @@
-C:/NEXUS/Unified Embedded Framework/build/uos-freertos-config-check/CMakeFiles/uetd_core.dir
-C:/NEXUS/Unified Embedded Framework/build/uos-freertos-config-check/CMakeFiles/INSTALL.dir
-C:/NEXUS/Unified Embedded Framework/build/uos-freertos-config-check/CMakeFiles/ALL_BUILD.dir
-C:/NEXUS/Unified Embedded Framework/build/uos-freertos-config-check/CMakeFiles/ZERO_CHECK.dir

@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

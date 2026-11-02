@@ -1,9 +1,0 @@
-C:\NEXUS\Unified Embedded Framework\UETD\tests\target_profile_scaffolds.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\target_profile_scaffolds.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\target_profiles.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\target_profiles.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\nrf52840.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\nrf52840.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32f4.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\stm32f4.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32f7.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\stm32f7.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32g0.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\stm32g0.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32g4.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\stm32g4.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32h7.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\stm32h7.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32l4plus.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_target_profile_scaffold_contracts.dir\Debug\stm32l4plus.obj

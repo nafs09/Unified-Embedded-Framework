@@ -1,6 +1,0 @@
-CMake Error at UETD/cmake/Uhal.cmake:52 (message):
-  No complete UHAL composition for architecture 'RISCV' and platform
-  'CUSTOM'.  AVR and ESP-IDF remain development work areas; unsupported
-  hardware never selects HOST.
-
-

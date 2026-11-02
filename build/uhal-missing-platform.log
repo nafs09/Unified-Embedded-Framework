@@ -1,7 +1,0 @@
-CMake Error at UETD/cmake/Uhal.cmake:34 (message):
-  Cortex-M specifies CPU operations only.  Supply UETD_UHAL_PLATFORM_SOURCES
-  for the exact SoC/platform (clocks, GPIO, memory, uetd_time_now_us/delays,
-  CPU frequency and extended cycle policy).  A development board is optional.
-  Generic peripheral TODOs are not a hardware port.
-
-

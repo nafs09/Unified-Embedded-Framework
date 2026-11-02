@@ -1,5 +1,0 @@
-uetd.canopen_fd_scaffold_contracts 2 0.321929
-uetd.canopen_cc_scaffold_contracts 2 0.285801
-uetd.fdcan_frame_contracts 2 0.00564485
-uetd.medi_can_scaffold_contracts 1 0.702214
----

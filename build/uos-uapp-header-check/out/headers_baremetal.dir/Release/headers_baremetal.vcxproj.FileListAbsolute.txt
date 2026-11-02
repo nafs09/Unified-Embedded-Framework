@@ -1,1 +1,0 @@
-C:\NEXUS\Unified Embedded Framework\build\uos-uapp-header-check\out\headers_baremetal.dir\Release\headers_baremetal.lib

@@ -1,7 +1,0 @@
-C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\storage.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\storage.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\calibration.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\calibration.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\umid\logging\blackbox.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\blackbox.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\process_image.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\process_image.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\industrial\modbus.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\modbus.obj
-C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\canopen.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\canopen.obj
-C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.c;C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_first_pass_service_scaffolds.dir\Debug\uetd_first_pass_service_scaffolds.obj

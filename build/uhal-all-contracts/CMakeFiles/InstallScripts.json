@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/NEXUS/Unified Embedded Framework/build/uhal-all-contracts/cmake_install.cmake",
-		"C:/NEXUS/Unified Embedded Framework/build/uhal-all-contracts/tests/cmake_install.cmake",
-		"C:/NEXUS/Unified Embedded Framework/build/uhal-all-contracts/tests/uhal/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
