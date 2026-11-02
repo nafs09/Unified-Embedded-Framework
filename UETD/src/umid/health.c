@@ -28,6 +28,7 @@ uetd_u8_t umid_health_register(const char* name) {
     g_entries[id].status = UMID_HEALTH_OK;
     g_entries[id].fault_code = 0u;
     g_entries[id].last_update_us = uetd_time_now_us();
+    g_entries[id].reported = false;
     uhal_critical_exit(critical_state);
     return id;
 }
@@ -43,6 +44,7 @@ void umid_health_report(uetd_u8_t id, umid_health_status_t status, uetd_u32_t fa
     g_entries[id].status = status;
     g_entries[id].fault_code = fault_code;
     g_entries[id].last_update_us = uetd_time_now_us();
+    g_entries[id].reported = true;
     uhal_critical_exit(critical_state);
 }
 
@@ -83,6 +85,6 @@ uetd_u8_t umid_health_count(void) {
 
 bool umid_health_entry_is_fresh(uetd_u8_t id, uetd_u64_t now_us, uetd_u64_t maximum_age_us) {
     umid_health_entry_t entry;
-    if (!umid_health_entry_copy(id, &entry) || now_us < entry.last_update_us) { return false; }
+    if (!umid_health_entry_copy(id, &entry) || !entry.reported || now_us < entry.last_update_us) { return false; }
     return now_us - entry.last_update_us <= maximum_age_us;
 }

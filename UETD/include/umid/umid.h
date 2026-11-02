@@ -15,8 +15,8 @@
 #include "umid/drivers/temperature.h"
 #include "umid/drivers/voltage.h"
 #include "umid/health.h"
-#include "umid/log.h"
-#include "umid/ringbuf.h"
+#include "umid/logging/log.h"
+#include "umid/messaging/ringbuf.h"
 /* The header is portable; its source binding is built only when FatFS is enabled. */
 #include "umid/fatfs.h"
 

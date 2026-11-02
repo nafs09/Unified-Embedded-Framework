@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "src/umid/messaging/ringbuf.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "headers": [
+    "include/ucore/types.h",
+    "include/uhal/atomic.h",
+    "include/umid/messaging/ringbuf.h"
+  ]
+}

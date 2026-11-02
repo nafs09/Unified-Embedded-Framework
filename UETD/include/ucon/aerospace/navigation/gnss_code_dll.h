@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for GNSS_CODE_DLL.
 #ifndef UETD_UCON_SCAFFOLD_GNSS_CODE_DLL_H
 #define UETD_UCON_SCAFFOLD_GNSS_CODE_DLL_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

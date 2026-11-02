@@ -11,14 +11,16 @@ extern "C" {
 #include "ucore/types.h"
 #include "uhal/target.h"
 
+/* Fixed-width addresses also represent program addresses wider than a data
+ * pointer on Harvard MCUs. The platform defines their address-space meaning. */
 typedef struct {
-    uetd_u32_t r0, r1, r2, r3, r12;
-    uetd_u32_t lr; /* link register at fault */
-    uetd_u32_t pc; /* faulting address */
-    uetd_u32_t psr;
-    /* FPU context if active at fault time */
-    uetd_f32_t s[16];
-    uetd_u32_t fpscr;
+    uetd_u64_t pc;
+    uetd_u64_t sp;
+    uetd_u64_t fault_address;
+    uetd_u32_t core_index;
+    uetd_u32_t architecture; /* Platform-defined architecture identifier. */
+    const void* registers; /* Optional architecture-specific snapshot. */
+    uetd_u32_t registers_size; /* Bytes; valid only during the hook. */
 } uhal_fault_context_t;
 
 #define UHAL_FAULT_HARD (1u << 0)
@@ -26,16 +28,12 @@ typedef struct {
 #define UHAL_FAULT_BUS (1u << 2)
 #define UHAL_FAULT_USAGE (1u << 3)
 
-/* Application-provided hook. Called from framework HardFault/MemFault handlers.
- * Must not return. Store info to RTC backup registers and trigger reset. */
+/* Fatal platform hook; must not return. Persistence/reset policy belongs to the
+ * platform/application. SDK-owned panic handlers are not replaced implicitly. */
 UETD_WEAK
+/// Handle a processor fault using the captured fault context.
 void uhal_fault_hook(const uhal_fault_context_t* ctx, uetd_u32_t fault_type);
 
-/* Default handler implementations — call uhal_fault_hook then reset */
-void HardFault_Handler(void);
-void MemManage_Handler(void);
-void BusFault_Handler(void);
-void UsageFault_Handler(void);
 
 #ifdef __cplusplus
 }

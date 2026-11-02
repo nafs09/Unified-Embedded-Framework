@@ -115,8 +115,7 @@ def compile_system_document(
         project_path = (system_root / node.project_path).resolve(strict=False)
         node_result = compile_project_file(project_path, uetd_root=root)
         result.nodes[node.name] = node_result
-        if not node_result.ok:
-            result.diagnostics.extend(node_result.diagnostics)
+        result.diagnostics.extend(node_result.diagnostics)
 
     if any(item.severity == "error" for item in result.diagnostics):
         return result

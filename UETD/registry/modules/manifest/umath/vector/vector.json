@@ -14,7 +14,7 @@
   "scaffold_only": true,
   "available_for_generation": false,
   "scaffold_stage": "phase0",
-  "scaffold_reason": "The fixed-buffer vector API is partly implemented, but its pointer/count ABI is not exposed through reviewed UEF-PL bindings and normalise/distance/lerp remain stubs.",
+  "scaffold_reason": "All current direct-C vector operations have implementations. This separate module identity remains generation-blocked until its pointer/count ABI, aliasing and typed language binding are reviewed; its source is also owned by umath/core.",
   "contract_status": "catalogue_only",
   "phase": 0
 }

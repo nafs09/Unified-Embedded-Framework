@@ -17,10 +17,14 @@ umath_status_t umath_vector_clamp(const umath_scalar_t* input, size_t count, uma
                                   umath_scalar_t* output);
 /// Elementwise arithmetic. Input and output ranges must not overlap; output is unchanged on failure.
 umath_status_t umath_vector_add(const umath_scalar_t* left, const umath_scalar_t* right, size_t count, umath_scalar_t* output);
+/// Subtract one vector from another element by element.
 umath_status_t umath_vector_sub(const umath_scalar_t* left, const umath_scalar_t* right, size_t count, umath_scalar_t* output);
+/// Multiply vector elements pairwise.
 umath_status_t umath_vector_mul(const umath_scalar_t* left, const umath_scalar_t* right, size_t count, umath_scalar_t* output);
+/// Divide vector elements pairwise.
 umath_status_t umath_vector_div(const umath_scalar_t* numerator, const umath_scalar_t* denominator, size_t count,
                                 umath_scalar_t* quotient);
+/// Scale a vector by a scalar.
 umath_status_t umath_vector_scale(const umath_scalar_t* input, size_t count, umath_scalar_t scale, umath_scalar_t* output);
 /// Dot product. Result must not alias either input range.
 umath_status_t umath_vector_dot(const umath_scalar_t* left, const umath_scalar_t* right, size_t count, umath_scalar_t* result);
@@ -28,8 +32,10 @@ umath_status_t umath_vector_dot(const umath_scalar_t* left, const umath_scalar_t
 umath_status_t umath_vector_norm(const umath_scalar_t* input, size_t count, umath_scalar_t* result);
 /// Generic vector geometry operations. Input/output ranges may be exactly aliased, but partial overlap is unsupported.
 umath_status_t umath_vector_normalize(const umath_scalar_t* input, size_t count, umath_scalar_t* output);
+/// Compute the Euclidean distance between two vectors.
 umath_status_t umath_vector_distance(const umath_scalar_t* left, const umath_scalar_t* right, size_t count,
                                      umath_scalar_t* distance);
+/// Linearly interpolate between two vectors.
 umath_status_t umath_vector_lerp(const umath_scalar_t* start, const umath_scalar_t* end, size_t count, umath_scalar_t t,
                                  umath_scalar_t* output);
 

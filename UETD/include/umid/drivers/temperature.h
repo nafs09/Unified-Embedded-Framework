@@ -11,7 +11,7 @@ extern "C" {
 #include "ucore/status.h"
 #include "ucore/types.h"
 #include <uhal/gpio.h>
-#include <upal/spi.h>
+#include <upal/serial/spi.h>
 
 typedef enum {
     UMID_TEMP_THERMOCOUPLE_K,
@@ -29,7 +29,9 @@ typedef struct {
     uetd_f32_t ntc_beta;
 } umid_temperature_t;
 
+/// Initialize the temperature sensor adapter.
 uetd_status_t umid_temperature_init(umid_temperature_t* ts);
+/// Read the measured temperature in degrees Celsius.
 uetd_f32_t umid_temperature_read_degC(umid_temperature_t* ts);
 
 #ifdef __cplusplus

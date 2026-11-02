@@ -1,6 +1,6 @@
 {
   "sources": [
-    "src/upal/dma/dma.c"
+    "src/upal/dma.c"
   ],
   "dependencies": [
     "uhal"
@@ -12,5 +12,9 @@
     "include/uhal/target_config.h",
     "include/uhal/cache.h",
     "include/upal/dma.h"
-  ]
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "source_scaffold",
+  "scaffold_reason": "Public declarations and fail-closed source outlines exist; operational behavior and target/provider integration remain unimplemented."
 }

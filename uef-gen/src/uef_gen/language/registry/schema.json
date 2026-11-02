@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://uetd.local/uef-gen/language-registry-1.3.schema.json",
+  "$id": "https://uetd.local/uef-gen/language-registry-1.4.schema.json",
   "title": "uef-gen project-language registry",
   "description": "Syntax and compiler-dispatch metadata only; UETD catalogue facts are excluded.",
   "type": "object",
@@ -20,7 +20,7 @@
   ],
   "properties": {
     "registry_version": {
-      "const": "1.3"
+      "const": "1.4"
     },
     "language": {
       "type": "object",

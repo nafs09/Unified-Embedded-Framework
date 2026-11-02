@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for INNOVATION_MONITOR.
 #ifndef UETD_UCON_SCAFFOLD_INNOVATION_MONITOR_H
 #define UETD_UCON_SCAFFOLD_INNOVATION_MONITOR_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

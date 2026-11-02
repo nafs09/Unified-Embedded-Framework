@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for DUAL_KF.
 #ifndef UETD_UCON_SCAFFOLD_DUAL_KF_H
 #define UETD_UCON_SCAFFOLD_DUAL_KF_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,5 +1,11 @@
 # uef-gen
 
+CPU architecture, SoC/SDK integration, physical assembly and programmer transport
+are separate choices. A development board is an optional preset. UEF-PL's
+`hardware` block can describe a chip on a custom PCB; see the
+[UHAL and target pipeline guide](../UETD/docs/design/UHAL_PORTING.md) for current
+implementation status, configuration and porting requirements.
+
 `uef-gen` is the host-side project assembler for UETD-based embedded firmware. It validates hardware configuration, resolves target resources, selects UETD modules, writes a structured project scaffold, and records build inputs and provenance. It is a Python tool; generated firmware does not require Python at runtime.
 
 
@@ -124,7 +130,7 @@ uef-gen build .\examples\showcases\stm32f722_drone_controller.uef
 uef-gen flash .\examples\showcases\stm32f722_drone_controller.uef
 ~~~
 
-The example index at [`examples/README.md`](examples/README.md) groups the
+The example index at [`docs/EXAMPLES.md`](docs/EXAMPLES.md) groups the
 basics, platform bindings, and domain showcases. The ECHO acoustic observatory
 is the broadest multi-node processing sketch; the drone remains the source
 comparison control baseline. The Tesla-coil
@@ -144,10 +150,31 @@ the Visual Studio 17.x API family for Visual Studio 2022 and 2026. A local
 VSIX build and experimental-instance highlighting have been confirmed; release
 packaging and the IDE-version compatibility matrix still need validation. The
 shared server provides compiler diagnostics, registry-backed completion/hover,
-signature help, and limited definition navigation. Parser and semantic
-coverage is incomplete, and project-local navigation is not comprehensive.
+signature help, symbols, definitions/references/rename, semantic highlighting,
+code actions, and formatting. Navigation remains conservative when a symbol
+cannot be resolved unambiguously. Parser and semantic coverage still need expansion.
 
 ## Commands
+
+Check source with readable diagnostics, or format it using the same engine as
+the editor:
+
+```powershell
+uef-gen check .\examples\basics\bare_metal_loop_controller.uef --format text
+uef-gen format .\my_controller.uef --check
+uef-gen format .\my_controller.uef --write
+```
+
+`check` on `.uef` and `.uefs` runs frontend validation; it does not require a
+generation-ready board. Warnings remain visible. JSON is still the default;
+`--format text` is available on `check`, `validate`, and `generate`. The
+hardware/module readiness gate remains on `.uef generate --dry-run`.
+`.uefs generate --dry-run` returns a validated system plan only.
+
+Formatting preserves expressions and comments, indents continued calls and
+arrays, and supports `--indent 4` or `--tabs`. Without `--write` or `--check`,
+it prints the formatted source. `--check` returns 1 for a formatting difference.
+See the [review and known issues](docs/audits/UEF_GEN_REVIEW_2026-10-29.md).
 
 Validate target/resource configuration:
 
@@ -166,15 +193,15 @@ scaffold, but it does not produce a verified build or flash-ready firmware.
 The standalone frontend can check and dry-run `.uef` sources; its emitter,
 build, and flash paths remain unfinished.
 
-Inspection commands include targets list, targets list --include-scaffolds --uetd PATH, targets show <chip> --uetd PATH, modules list/show, snapshot verify, and version. The target listing reads UETD-owned family and chip registries at runtime. Each chip record is materialized into the resolver, but physical records remain blocked for generation until their resource maps and a selected board's build/flash profile are ready. See `../UETD/registry/targets/README.md` for the concise chip and board authoring workflow.
+Inspection commands include targets list, targets list --include-scaffolds --uetd PATH, targets show <chip> --uetd PATH, modules list/show, snapshot verify, and version. The target listing reads UETD-owned family and chip registries at runtime. Each chip record is materialized into the resolver, but physical records remain blocked for generation until their resource maps and a selected board's build/flash profile are ready. See `../UETD/registry/TARGETS.md` for the concise chip and board authoring workflow.
 
 ### V1 diagnostics and live output
 
-V1 is intended to provide readable command-line diagnostics and live text output from firmware that is already running on a target connected by cable. The wired console interface and its settings will come from the selected development-board record in UETD. The current CLI emits JSON command responses; a polished human-readable mode is unfinished. The monitor command is a fail-closed scaffold and does not open a serial port. Wireless transports are deferred to a later version.
+V1 is intended to provide readable command-line diagnostics and live text output from firmware that is already running on a target connected by cable. The wired console interface and its settings will come from the selected development-board record in UETD. The CLI defaults to JSON and supports readable diagnostics with `--format text` on check, validate, and generate. The monitor command is a fail-closed scaffold and does not open a serial port. Wireless transports are deferred to a later version.
 
 ## Generated project and current limits
 
-Generated output includes selected UETD files under `uetd/`, pinned UETD-managed dependency files under their declared project-local roots, application/config/board/target scaffolding, canonical `project_*.txt` source/include/define/compiler/link lists, optional Make/CMake fragments, and JSON provenance under `manifest/`. `manifest/manual_actions.json` lists path-qualified driver, protocol, board, and other work declared by UETD; matching actions also appear as warnings in the response. The generated startup and linker files are placeholders until a verified target profile supplies real values.
+Generated output includes selected UETD files under `uetd/`, pinned UETD-managed dependency files under their declared project-local roots, application/config/board/target scaffolding, canonical `project_*.txt` source/include/define/compiler/link lists, optional Make/CMake fragments, and JSON provenance under `manifest/`. `manifest/manual_actions.json` is currently an empty placeholder; integration work is not yet aggregated into it. The generated startup and linker files are placeholders until a verified target profile supplies real values.
 
 Generated projects copy selected modules' source files and declared
 transitive public-header closure, so unrelated UETD APIs are not staged. The

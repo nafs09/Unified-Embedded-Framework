@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="UEF.ProjectLanguage.VisualStudio" Version="0.1.13" Language="en-US" Publisher="Unified Embedded Framework" />
+    <Identity Id="UEF.ProjectLanguage.VisualStudio" Version="0.1.15" Language="en-US" Publisher="Unified Embedded Framework" />
     <DisplayName>UEF Project Language</DisplayName>
-    <Description xml:space="preserve">Language file support and LSP client scaffold for UEF-PL .uef and .uefs projects.</Description>
+    <Description xml:space="preserve">UEF-PL source authoring for Visual Studio: syntax colors, compiler diagnostics, completion, navigation, hover, and formatting for .uef and .uefs projects through the shared uef-gen language server.</Description>
     <Tags>UETD;embedded;language;LSP</Tags>
   </Metadata>
   <Installation>

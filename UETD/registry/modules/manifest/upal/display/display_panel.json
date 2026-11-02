@@ -1,0 +1,24 @@
+{
+  "sources": [
+    "src/upal/display/display_panel.c"
+  ],
+  "headers": [
+    "include/upal/display/display_panel.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "upal/display"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "available_for_generation": false,
+  "contract_status": "typed_scaffold",
+  "scaffold_reason": "Bounded panel profile and initialization sequencing: typed draft only; all operations return unsupported. Implementation, bounded contracts and provider/target qualification remain required.",
+  "design_contract": "docs/design/complete-system/MIPI_DISPLAY_LINK.md#required-provider-and-panel-profile",
+  "external_dependencies": [
+    "selected panel command set, supplies/reset/TE wiring and supported bus provider"
+  ]
+}

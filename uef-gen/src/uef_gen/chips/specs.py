@@ -75,6 +75,7 @@ class ChipSpec:
     target_kind: str = "hardware"
     memory_regions: dict[str, dict[str, Any]] = field(default_factory=dict)
     resources: dict[str, Any] = field(default_factory=dict)
+    core_count: int = 1
 
 class ChipCapabilities:
     """Unified capability view; templates never branch on a part number."""

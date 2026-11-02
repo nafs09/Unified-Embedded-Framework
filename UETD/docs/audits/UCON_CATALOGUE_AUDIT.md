@@ -4,9 +4,9 @@ Audit scope: the UETD-owned catalogue and generated UCON algorithm skeletons, ch
 
 ## Current catalogue status
 
-The manifest now contains **211 keys**: 100 FIRST_PASS, 107 PLANNED, and 4 DEFERRED. Registered implementations: LEAD_LAG, PID. A priority means work scope, not implementation maturity. Every other key is `registered: false`, has no output template, and its generated functions return `UCON_NOT_IMPLEMENTED` without writing state or outputs.
+The priority-key catalogue contains **211 keys**: 101 FIRST_PASS, 106 PLANNED, and 4 DEFERRED. The module registry has **213 UCON identities**: the 211 priority algorithms, the separate draft ENMPC algorithm, and `ucon/core`. Registered implementations: LEAD_LAG, PID. A priority means work scope, not implementation maturity. Every other priority-key algorithm has no registered implementation or instance-emission template; its generated functions return `UCON_NOT_IMPLEMENTED` without writing state or outputs.
 
-The catalogue includes 50 clearly tagged roadmap proposals beyond Part XVI. They live under `ROADMAP_EXTENSIONS.md` and remain future/unselectable entries.
+The catalogue includes 50 clearly tagged roadmap proposals beyond Part XVI. Their provenance is recorded in `ROADMAP_EXTENSIONS.md`. The bounded reference `QP_ACTIVE_SET` is now FIRST_PASS in the main tree; the other 49 remain later entries. All 50 remain unselectable pending implementation and qualification.
 
 The per-algorithm source files now outline the module lifecycle and its algorithm-family operations. Each declaration has its own source definition and TODO that names the operation, required data, constraints, and unresolved policy. The shared type-erased call envelope is a development boundary only; replace it with typed fixed-size configuration/state before implementation. Empty `features`, `numerics`, `modules`, and `outputs` remain explicit gaps where the specification has not selected concrete contracts. They are not silently filled with invented parameters.
 

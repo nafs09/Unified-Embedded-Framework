@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/uos/deferred.c"
+  ],
+  "headers": [
+    "include/ucore/deadline.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uos/deferred.h"
+  ],
+  "dependencies": [
+    "ucore/deadline"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "docs/design/complete-system/FOUNDATIONS.md#uos-execution-and-synchronization",
+  "external_dependencies": [],
+  "implementation_notes": "Bounded single-owner deferred callbacks with generation-tagged cancellation."
+}

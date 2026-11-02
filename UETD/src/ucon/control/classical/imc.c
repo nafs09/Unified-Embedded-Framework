@@ -2,7 +2,7 @@
 /// @file src/ucon/control/classical/imc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/classical/imc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Internal-model controller with offline plant inverse and declared Q-filter.

@@ -7,7 +7,7 @@
 `include_dirs` and component `requirements`.
 `main/main.c.tmpl` exposes the supplied `project_entrypoint` as `app_main()`.
 
-`components/uetd/CMakeLists.txt.tmpl` registers the selected UETD `sources`,
+`uetd_component.cmake.tmpl` registers the selected UETD `sources`,
 `include_dirs`, and component `requirements`. Paths are relative to the
 component directory and must be present in the generated project.
 

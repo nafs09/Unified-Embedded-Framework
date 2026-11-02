@@ -2,13 +2,13 @@
 /// @brief Central registration and lookup for Phase 0/1 target-family scaffolds.
 #include <string.h>
 #include <uhal/target_profiles.h>
-#include <uhal/targets/nrf52840/profile.h>
-#include <uhal/targets/stm32f4/profile.h>
-#include <uhal/targets/stm32f7/profile.h>
-#include <uhal/targets/stm32g0/profile.h>
-#include <uhal/targets/stm32g4/profile.h>
-#include <uhal/targets/stm32h7/profile.h>
-#include <uhal/targets/stm32l4plus/profile.h>
+#include <uhal/targets/nrf52840.h>
+#include <uhal/targets/stm32f4.h>
+#include <uhal/targets/stm32f7.h>
+#include <uhal/targets/stm32g0.h>
+#include <uhal/targets/stm32g4.h>
+#include <uhal/targets/stm32h7.h>
+#include <uhal/targets/stm32l4plus.h>
 
 static const uetd_target_profile_t* const phase0_profiles[] = {
     &UETD_TARGET_PROFILE_STM32G4_DATA, &UETD_TARGET_PROFILE_STM32F4_DATA, &UETD_TARGET_PROFILE_STM32H7_DATA,

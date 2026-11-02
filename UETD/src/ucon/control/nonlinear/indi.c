@@ -2,7 +2,7 @@
 /// @file src/ucon/control/nonlinear/indi.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/nonlinear/indi.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Nonlinear and incremental dynamic inversion; aerospace-oriented first-pass targets.

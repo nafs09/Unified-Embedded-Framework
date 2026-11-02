@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for ALPHA_BETA.
 #ifndef UETD_UCON_SCAFFOLD_ALPHA_BETA_H
 #define UETD_UCON_SCAFFOLD_ALPHA_BETA_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -23,7 +23,8 @@ extern "C" {
 /// diagnostics together only after success; preserve prior
 /// values on failure. Operation-specific requirements:
 /// Define state ordering and acceleration/noise
-/// assumptions. Algorithm-specific focus: Alpha-beta (g-h)
+/// assumptions.
+/// Algorithm-specific focus: Alpha-beta (g-h)
 /// position/velocity tracker using a declared
 /// constant-velocity motion model.
 ucon_status_t ucon_alpha_beta_validate_config(const ucon_algorithm_scaffold_call_t* call);
@@ -36,7 +37,8 @@ ucon_status_t ucon_alpha_beta_validate_config(const ucon_algorithm_scaffold_call
 /// work/memory bounds. 4) Commit outputs, state, and diagnostics
 /// together only after success; preserve prior values on failure.
 /// Operation-specific requirements: Define initial measurement and
-/// uncertainty policy. Algorithm-specific focus: Alpha-beta (g-h)
+/// uncertainty policy.
+/// Algorithm-specific focus: Alpha-beta (g-h)
 /// position/velocity tracker using a declared constant-velocity motion
 /// model.
 ucon_status_t ucon_alpha_beta_init(const ucon_algorithm_scaffold_call_t* call);
@@ -61,7 +63,8 @@ ucon_status_t ucon_alpha_beta_reset(const ucon_algorithm_scaffold_call_t* call);
 /// work/memory bounds. 4) Commit outputs, state, and diagnostics
 /// together only after success; preserve prior values on failure.
 /// Operation-specific requirements: Handle variable dt only if
-/// explicitly supported. Algorithm-specific focus: Alpha-beta (g-h)
+/// explicitly supported.
+/// Algorithm-specific focus: Alpha-beta (g-h)
 /// position/velocity tracker using a declared constant-velocity
 /// motion model.
 ucon_status_t ucon_alpha_beta_predict(const ucon_algorithm_scaffold_call_t* call);

@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/deadbeat_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/deadbeat_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Predictive current-control method that selects an input to drive the declared discrete plant toward its

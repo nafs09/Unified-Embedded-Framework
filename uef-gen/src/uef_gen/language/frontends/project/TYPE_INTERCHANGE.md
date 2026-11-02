@@ -62,7 +62,8 @@ components callable, or recursively compile the `.uefs` system.
 
 ## 2. Existing type interchange
 
-The UETD type index currently discovers 242 public and future C declarations.
+The UETD type index discovers 472 public and future C declarations in the
+29 October 2026 working-tree inventory; the generated registry is authoritative.
 Fourteen carry numeric contracts (`f32`, `f64`, `i8` through `i64`, `u8` through
 `u64`, and `q15`, `q16`, `q31`, `q63`); their exact `dsl_name` to C alias mapping
 comes from UETD. Public enums and non-function-pointer C types also receive

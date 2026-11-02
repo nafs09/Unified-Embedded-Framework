@@ -1,0 +1,26 @@
+{
+  "sources": [
+    "src/uapp/diagnostics/diagnostics.c"
+  ],
+  "headers": [
+    "include/uapp/diagnostics/diagnostics.h",
+    "include/ucore/deadline.h",
+    "include/ucore/span.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "ucore/span",
+    "ucore/deadline"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "docs/design/complete-system/PRODUCT_SERVICES.md#diagnostics-telemetry-and-maintenance",
+  "external_dependencies": [
+    "typed metrics/command registry, redaction, authorization and selected console/telemetry transport"
+  ],
+  "implementation_notes": "Copied structured records and bounded synchronous maintenance with authorization at admission and execution."
+}

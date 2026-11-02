@@ -1,0 +1,29 @@
+{
+  "sources": [],
+  "dependencies": [
+    "ucore"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/time.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/atomic.h",
+    "include/uhal/cache.h",
+    "include/uhal/clock.h",
+    "include/uhal/core.h",
+    "include/uhal/fault.h",
+    "include/uhal/gpio.h",
+    "include/uhal/irq.h",
+    "include/uhal/memory.h"
+  ],
+  "variant_of": "uhal",
+  "target": "AVR",
+  "architecture": "AVR",
+  "platform": "CUSTOM",
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "target_integration_incomplete",
+  "scaffold_reason": "AVR device interrupt maps, exact timer, GPIO/clock/reset and build integration are not implemented."
+}

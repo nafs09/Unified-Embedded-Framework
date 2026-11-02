@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for DYNAMIC_SURFACE_CONTROL.
 #ifndef UETD_UCON_SCAFFOLD_DYNAMIC_SURFACE_CONTROL_H
 #define UETD_UCON_SCAFFOLD_DYNAMIC_SURFACE_CONTROL_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

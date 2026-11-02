@@ -1,6 +1,7 @@
 {
   "sources": [
-    "src/uos/baremetal/baremetal.c"
+    "src/uos/baremetal.c",
+    "src/uos/common.c"
   ],
   "dependencies": [
     "uhal"
@@ -11,6 +12,9 @@
     "include/ucore/status.h",
     "include/ucore/time.h",
     "include/ucore/types.h",
-    "include/uos/uos.h"
-  ]
+    "include/uos/uos.h",
+    "src/uos/detail.h"
+  ],
+  "available_for_generation": true,
+  "implementation_notes": "Initialize the shared UOS clock provider before time/deadline use. The bare-metal backend explicitly rejects kernel services; FreeRTOS requires a configured kernel target and port."
 }

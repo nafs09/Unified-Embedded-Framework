@@ -15,6 +15,7 @@ extern "C" {
 #define UETD_ASSERT(cond) ((void)0)
 #define UETD_ASSERT_MSG(cond, msg) ((void)0)
 #else
+/// Report a failed assertion and halt through the platform fault path.
 UETD_NORETURN void uetd_assert_fail(const char* expr, const char* file, int line, const char* msg);
 #define UETD_ASSERT(cond) ((cond) ? (void)0 : uetd_assert_fail(#cond, __FILE__, __LINE__, NULL))
 #define UETD_ASSERT_MSG(cond, msg) ((cond) ? (void)0 : uetd_assert_fail(#cond, __FILE__, __LINE__, msg))

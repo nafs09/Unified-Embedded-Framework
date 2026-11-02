@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for REF_MODEL_2.
 #ifndef UETD_UCON_SCAFFOLD_REF_MODEL_2_H
 #define UETD_UCON_SCAFFOLD_REF_MODEL_2_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

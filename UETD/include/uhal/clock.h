@@ -12,26 +12,27 @@ extern "C" {
 
 #include "ucore/types.h"
 
-typedef enum {
-    UHAL_CLK_SYSCLK,
-    UHAL_CLK_HCLK,
-    UHAL_CLK_APB1,
-    UHAL_CLK_APB2,
-    UHAL_CLK_APB3,
-    UHAL_CLK_AHB,
-    UHAL_CLK_ADC,
-    UHAL_CLK_USB,
-    UHAL_CLK_PLL_Q,
-} uhal_clk_t;
+/* Platform-generated IDs describe real clock domains. CPU architecture does
+ * not prescribe APB buses, PLL outputs or peripheral kernel clocks. */
+typedef uetd_u32_t uhal_clk_t;
+#define UHAL_CLK_CPU ((uhal_clk_t)0u)
+#define UHAL_CLK_SYSTEM ((uhal_clk_t)1u)
+#define UHAL_CLK_MONOTONIC ((uhal_clk_t)2u)
+#define UHAL_CLK_PLATFORM_BASE ((uhal_clk_t)0x100u)
 
 /* Query — called by UPAL to compute prescalers and baud rates */
+/// Return the current frequency of a peripheral clock in hertz.
 uetd_u32_t uhal_clk_freq_hz(uhal_clk_t clk);
 
 /* Peripheral clock gate control */
 typedef uetd_u32_t uhal_periph_clk_t; /* device-specific opaque value */
+/// Enable the selected peripheral clock.
 void uhal_clk_periph_enable(uhal_periph_clk_t periph);
+/// Disable the selected peripheral clock.
 void uhal_clk_periph_disable(uhal_periph_clk_t periph);
+/// Hold the selected peripheral in reset.
 void uhal_reset_periph_assert(uhal_periph_clk_t periph);
+/// Release the selected peripheral from reset.
 void uhal_reset_periph_release(uhal_periph_clk_t periph);
 
 /* Reset cause — read once at startup before any peripheral init */
@@ -45,7 +46,8 @@ typedef enum {
     UHAL_RESET_FAULT = (1u << 6), /* set by fault handler via RTC backup */
 } uhal_reset_cause_t;
 
-uetd_u32_t uhal_reset_cause(void); /* reads and clears RCC reset flags */
+/// Read and clear the reset-cause flags recorded by the platform.
+uetd_u32_t uhal_reset_cause(void); /* platform maps its reset flags */
 
 #ifdef __cplusplus
 }

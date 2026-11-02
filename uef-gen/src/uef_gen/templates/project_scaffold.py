@@ -80,8 +80,7 @@ def _render_linker_scaffold() -> str:
 def _render_target_readme(project: ResolvedProject) -> str:
     """Explain the selected target placeholders and architecture-specific owner."""
     chip = project.chip
-    board = project.development_board or {}
-    build = board.get("build", {}) if isinstance(board, dict) else {}
+    build = project.hardware_profile.get("build", {})
     backend = build.get("backend", "unspecified") if isinstance(build, dict) else "unspecified"
     backend_key = backend.casefold() if isinstance(backend, str) else ""
     if backend_key in {"esp-idf", "esp_idf"}:
@@ -131,8 +130,7 @@ def _render_target_files(project: ResolvedProject) -> tuple[GeneratedFile, ...]:
     linker files for those backends. Unknown profiles get a documentation-only
     manual action and are never treated as ready to build for hardware.
     """
-    board = project.development_board or {}
-    build = board.get("build", {}) if isinstance(board, dict) else {}
+    build = project.hardware_profile.get("build", {})
     backend = build.get("backend", "") if isinstance(build, dict) else ""
     backend_key = backend.casefold() if isinstance(backend, str) else ""
     if backend_key in {"esp-idf", "esp_idf", "arduino-cli", "arduino"}:
@@ -158,7 +156,7 @@ def render_project_scaffold(
     board_description = (
         f"Selected board: **{project.development_board['name']}** (`{board_id}`)."
         if project.development_board
-        else "No development-board record was selected; board setup remains a project integration step."
+        else "Custom physical target: settings come from target.hardware; no development-board preset is required."
     )
     modules = selected_modules or project.modules
     module_macros = "".join(f"#define UETD_MODULE_{_identifier(module).upper()} 1\n" for module in modules)
@@ -205,6 +203,7 @@ def render_project_scaffold(
 #define UETD_GENERATED_TARGET_H
 #define UETD_TARGET_ARCH_NAME {json.dumps(arch.name)}
 #define UETD_TARGET_WORD_BITS {arch.word_bits}U
+#define UHAL_CORE_COUNT {chip.core_count}U
 #define UETD_TARGET_FLASH_BYTES {project.flash_bytes if project.flash_bytes is not None else chip.flash_bytes}ULL
 #define UETD_TARGET_SRAM_BYTES {chip.sram_bytes}ULL
 #define UETD_TARGET_DATA_VERIFIED {1 if chip.verified else 0}
@@ -256,7 +255,7 @@ void board_deinitialize(void)
     protocol_files = _render_protocol_scaffolds(project)
     freertos_files = _render_freertos_config(project)
     application = f"""/* Application lifecycle scaffold for {_comment_text(name)}. */
-#include <uapp/lifecycle.h>
+#include <uapp/runtime/lifecycle.h>
 #include <uos/uos.h>
 #include "board/board.h"
 #include "config/uetd_config.h"
@@ -273,12 +272,13 @@ static uetd_status_t application_start(void *context)
      * that failure instead of allowing the scheduler to run a partial application. */
     return UETD_NOT_SUPPORTED;
 }}
-static void application_stop(void *context)
+static uetd_status_t application_stop(void *context)
 {{
     (void)context;
     /* TODO(application-stop): Stop task producers first, then stop services in reverse dependency
      * order, drain owned DMA/transfers, flush durable state with bounded waits, and finally call
      * board_deinitialize; make the path safe after partial startup and repeated stop requests. */
+    return UETD_NOT_SUPPORTED;
 }}
 int main(void)
 {{
@@ -292,13 +292,14 @@ int main(void)
         .ctx = NULL,
     }};
     if (uapp_component_init(&application) != UETD_OK) return 1;
-    if (uapp_component_start(&application) != UETD_OK) return 2;
+    if (uos_clock_use_platform() != UOS_OK) return 2;
+    if (uapp_component_start(&application) != UETD_OK) return 3;
     /* TODO(application-main-loop): Use the selected UOS scheduler/lifecycle policy, propagate
      * startup failure without starting tasks, and arrange a defined shutdown path when the
      * scheduler returns or a system fault requests termination. */
-    uos_scheduler_start();
-    uapp_component_stop(&application);
-    return 0;
+    const uos_status_t scheduler_status = uos_scheduler_start();
+    const uetd_status_t stop_status = uapp_component_stop(&application);
+    return scheduler_status == UOS_OK && stop_status == UETD_OK ? 0 : 4;
 }}
 """
     project_readme = f"""# {name}
@@ -398,15 +399,46 @@ def _render_freertos_config(project: ResolvedProject) -> tuple[GeneratedFile, ..
  */
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
+#include <stdint.h>
+/* Application-owned exact port settings, assertion path and callable ISR yield. */
+#include "uos_port_config.h"
+#ifndef configASSERT
+#error uos_port_config.h must define configASSERT
+#endif
+#ifndef UOS_FREERTOS_YIELD_FROM_ISR
+#error uos_port_config.h must define a callable UOS_FREERTOS_YIELD_FROM_ISR hook
+#endif
 #ifndef UETD_CPU_CLOCK_HZ
 #error Define UETD_CPU_CLOCK_HZ from the verified board clock configuration
 #endif
 #define configCPU_CLOCK_HZ UETD_CPU_CLOCK_HZ
 #define configTICK_RATE_HZ {tick_hz}UL
-#define configMAX_PRIORITIES {highest_priority + 1}U
+#define configMAX_PRIORITIES {max(2, highest_priority + 1)}U
 #define configTOTAL_HEAP_SIZE {heap_bytes}U
 #define configSUPPORT_STATIC_ALLOCATION {1 if static_allocation else 0}
 #define configSUPPORT_DYNAMIC_ALLOCATION {1 if heap_bytes > 0 else 0}
+#if configSUPPORT_STATIC_ALLOCATION != 1
+#error UOS requires static allocation
+#endif
+#define configUSE_PREEMPTION 1
+#define configUSE_IDLE_HOOK 0
+#define configUSE_TICK_HOOK 0
+#define configTICK_TYPE_WIDTH_IN_BITS TICK_TYPE_WIDTH_32_BITS
+#define configMAX_TASK_NAME_LEN 24U
+#define configMINIMAL_STACK_SIZE 256U
+#define configKERNEL_PROVIDED_STATIC_MEMORY 1
+#define configUSE_MUTEXES 1
+#define configUSE_COUNTING_SEMAPHORES 1
+#define configUSE_TIMERS 1
+#define configTIMER_TASK_PRIORITY 1U
+#define configTIMER_TASK_STACK_DEPTH 512U
+#define configTIMER_QUEUE_LENGTH 8U
+#define INCLUDE_xTaskGetSchedulerState 1
+#define INCLUDE_xTaskGetCurrentTaskHandle 1
+#define INCLUDE_xSemaphoreGetMutexHolder 1
+#define INCLUDE_xTimerPendFunctionCall 1
+#define INCLUDE_vTaskDelay 1
+#define INCLUDE_vTaskSuspend 1
 /* TODO(freertos-port-config): Resolve interrupt priorities and timer hooks from the chosen port;
  * select its stack-depth type, assertions, FPU/MPU settings, allocation hooks, and ISR-yield macro;
  * then cross-check heap/allocation and priority settings against the generated task profile.

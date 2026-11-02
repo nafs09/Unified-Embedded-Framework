@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for ALPHA_BETA_GAMMA.
 #ifndef UETD_UCON_SCAFFOLD_ALPHA_BETA_GAMMA_H
 #define UETD_UCON_SCAFFOLD_ALPHA_BETA_GAMMA_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

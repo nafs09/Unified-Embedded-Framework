@@ -27,10 +27,10 @@ class DeploymentBackendFactory:
         if preference == "auto":
             selected = flash_profile.get("backend") if isinstance(flash_profile, dict) else None
             if not isinstance(selected, str) or not selected.strip():
-                raise ValueError("automatic backend selection requires the selected UETD board flash profile")
+                raise ValueError("automatic backend selection requires the resolved target flash profile (custom assembly or optional board preset)")
             preference = selected.strip().casefold()
             if preference not in supported - {"auto"}:
-                raise ValueError(f"UETD board flash profile selects unsupported backend: {selected!r}")
+                raise ValueError(f"Target flash profile selects unsupported backend: {selected!r}")
         if preference == "dfu":
             if probe.probe_type != ProbeType.USB_DFU:
                 raise ValueError("DFU backend requires a discovered USB_DFU probe")

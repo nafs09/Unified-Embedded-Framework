@@ -1,0 +1,24 @@
+{
+  "sources": [
+    "src/upal/display/dsi_host.c"
+  ],
+  "headers": [
+    "include/upal/display/dsi_host.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "upal/transaction"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "available_for_generation": false,
+  "contract_status": "typed_scaffold",
+  "scaffold_reason": "MIPI DSI host with explicit D-PHY/C-PHY profile: typed draft only; all operations return unsupported. Implementation, bounded contracts and provider/target qualification remain required.",
+  "design_contract": "docs/design/complete-system/MIPI_DISPLAY_LINK.md",
+  "external_dependencies": [
+    "exact DSI transmitter, D-PHY/C-PHY hardware, panel link profile and qualified target provider"
+  ]
+}

@@ -1,0 +1,4 @@
+C:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check/out/CMakeFiles/headers_baremetal.dir
+C:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check/out/CMakeFiles/headers_freertos.dir
+C:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check/out/CMakeFiles/ALL_BUILD.dir
+C:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check/out/CMakeFiles/ZERO_CHECK.dir

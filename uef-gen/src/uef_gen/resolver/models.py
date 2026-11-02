@@ -40,6 +40,7 @@ class ResolvedProject:
     flash_bytes: int | None = None
     clock_domains: dict[str, dict[str, Any]] = field(default_factory=dict)
     memory_regions: dict[str, dict[str, Any]] = field(default_factory=dict)
+    hardware_profile: dict[str, Any] = field(default_factory=dict)
 
     @property
     def valid(self) -> bool:

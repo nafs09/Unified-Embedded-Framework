@@ -3,7 +3,7 @@
 ///
 /// TODO: Select a DSHOT rate and timer/UART transport, then hand DMA-owned symbol buffers to the
 /// board driver. Keep motor arming and failsafe policy in the application.
-#include "uproto/dshot.h"
+#include "uproto/rc/dshot.h"
 
 int main(void) {
     /* TODO(dshot-motor main): Initialize the selected timer-DMA or UART transport and

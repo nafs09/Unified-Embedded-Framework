@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/ucore/span.c"
+  ],
+  "headers": [
+    "include/ucore/span.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "docs/design/complete-system/FOUNDATIONS.md#core-values-errors-and-checked-storage",
+  "external_dependencies": [],
+  "implementation_notes": "Checked extents, overlap-safe byte copies and overflow-safe size arithmetic."
+}

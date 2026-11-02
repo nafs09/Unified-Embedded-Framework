@@ -25,7 +25,9 @@ typedef struct {
     uetd_u64_t timestamp_us;
 } umid_range_t;
 
+/// Initialize the range sensor adapter.
 uetd_status_t umid_range_init(umid_range_t* r);
+/// Read the measured range.
 uetd_status_t umid_range_read(umid_range_t* r);
 
 #ifdef __cplusplus

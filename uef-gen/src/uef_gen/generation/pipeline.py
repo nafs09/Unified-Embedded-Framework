@@ -109,8 +109,6 @@ def generate_project(
         return GenerationResult(False, output, diagnostics=diagnostics)
     try:
         work.mkdir(parents=True, exist_ok=True)
-        if output.exists():
-            output.rmdir()  # It was checked empty above.
         with tempfile.TemporaryDirectory(prefix="uef-gen-", dir=work) as temporary:
             stage = Path(temporary) / "project"
             stage.mkdir()
@@ -222,13 +220,15 @@ def generate_project(
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
             (stage / "uef-gen-manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-            diagnostics.extend(validate_generated_project(stage, generated_files, all_sources))
+            diagnostics.extend(validate_generated_project(stage, generated_files, all_sources, include_directories=includes))
             if any(item.severity == "error" for item in diagnostics):
                 return GenerationResult(False, output, diagnostics=diagnostics)
             output.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.TemporaryDirectory(prefix="uef-gen-publish-", dir=output.parent) as publishing:
                 complete = Path(publishing) / "project"
                 shutil.copytree(stage, complete)
+                if output.exists():
+                    output.rmdir()  # Refuse if another process has populated it.
                 os.replace(complete, output)
             return GenerationResult(True, output, manifest, diagnostics)
     except Exception as exc:

@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/uproto/network/future/coap.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Typed bounded request/response dispatch exists; RFC/profile selection, retransmission, blockwise limits, and DTLS are provider-owned and unqualified.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/network/ip.h",
+    "include/uproto/network/future/coap.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "uproto/ip or provider socket offload",
+    "optional uproto/tls"
+  ]
+}

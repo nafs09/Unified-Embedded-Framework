@@ -1,7 +1,7 @@
 /// @file examples/minimal/main.c
 /// @brief Minimal component lifecycle without board-specific peripherals.
 
-#include "uapp/lifecycle.h"
+#include "uapp/runtime/lifecycle.h"
 
 static uetd_status_t initialize_component(void* context) {
     (void)context;

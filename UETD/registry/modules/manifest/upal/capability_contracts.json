@@ -1,0 +1,31 @@
+{
+  "sources": [
+    "src/upal/capability_contracts.c"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/upal/analog/adc.h",
+    "include/upal/capability_contracts.h",
+    "include/upal/dma.h",
+    "include/upal/timing/hrtim.h",
+    "include/upal/timing/timer.h",
+    "include/upal/serial/uart.h"
+  ],
+  "dependencies": [],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "available_for_generation": false,
+  "contract_status": "typed_scaffold",
+  "scaffold_reason": "Existing advanced UART/capture/synchronized-I/O/USB development declarations now have unsupported source stubs. Exact operation semantics and target integration remain required.",
+  "design_contract": "include/upal/CAPABILITY_CONTRACTS.md",
+  "external_dependencies": [
+    "qualified peripheral, trigger/DMA and USB class/controller providers"
+  ]
+}

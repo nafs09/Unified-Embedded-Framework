@@ -1,5 +1,5 @@
 /// @file include/uhal/cache.h
-/// @brief M7 only. No-ops on all other targets.
+/// @brief Capability-gated cache maintenance; placement belongs to the platform.
 
 #ifndef UHAL_CACHE_H
 #define UHAL_CACHE_H
@@ -9,36 +9,55 @@ extern "C" {
 #endif
 
 #include "ucore/types.h"
+#include "ucore/status.h"
 #include "uhal/target.h"
 
 #if UHAL_HAS_DCACHE
+#if UHAL_CACHE_LINE_SIZE == 0
+#error "A data-cache platform must declare UHAL_CACHE_LINE_SIZE"
+#endif
 
 /* Clean (CPU→SRAM): call before DMA reads from a cacheable buffer */
-void uhal_cache_clean(const void* addr, uetd_u32_t size);
+/// Clean cache lines so DMA can read the latest CPU-written buffer data.
+uetd_status_t uhal_cache_clean(const void* addr, uetd_u32_t size);
 
 /* Invalidate (SRAM→CPU): call after DMA writes to a cacheable buffer */
-void uhal_cache_invalidate(void* addr, uetd_u32_t size);
+/// Invalidate cache lines after DMA writes to the buffer.
+uetd_status_t uhal_cache_invalidate(void* addr, uetd_u32_t size);
 
 /* Clean + Invalidate: for read-write DMA regions */
-void uhal_cache_clean_invalidate(void* addr, uetd_u32_t size);
+/// Clean and invalidate cache lines for a DMA read-write buffer.
+uetd_status_t uhal_cache_clean_invalidate(void* addr, uetd_u32_t size);
 
-/* Enable / disable caches (called in SystemInit only) */
+/* Startup only, after memory attributes and region ownership are established. */
+/// Enable the data cache during platform startup.
 void uhal_dcache_enable(void);
-void uhal_icache_enable(void);
 
-#else /* non-M7 targets: no-ops */
-#define uhal_cache_clean(a, s) ((void)0)
-#define uhal_cache_invalidate(a, s) ((void)0)
-#define uhal_cache_clean_invalidate(a, s) ((void)0)
+#else /* no data cache: no maintenance required */
+static inline uetd_status_t uhal_cache_clean(const void* address, uetd_u32_t size) { (void)address; (void)size; return UETD_OK; }
+static inline uetd_status_t uhal_cache_invalidate(void* address, uetd_u32_t size) { (void)address; (void)size; return UETD_OK; }
+static inline uetd_status_t uhal_cache_clean_invalidate(void* address, uetd_u32_t size) { (void)address; (void)size; return UETD_OK; }
 #define uhal_dcache_enable() ((void)0)
+#endif
+
+#if UHAL_HAS_ICACHE
+void uhal_icache_enable(void);
+#else
 #define uhal_icache_enable() ((void)0)
 #endif
 
-/* Memory placement attributes */
+/* Default placement attributes may be overridden by a platform/linker profile. */
+#ifndef UHAL_ATTR_DTCM
 #define UHAL_ATTR_DTCM UETD_SECTION(".dtcm_data")
+#endif
+#ifndef UHAL_ATTR_ITCM
 #define UHAL_ATTR_ITCM UETD_SECTION(".itcm_text")
-/* Non-cacheable DMA buffer — coherent without maintenance */
+#endif
+/* DMA buffer placement alone does not establish non-cacheability. */
+/* The memory/MPU profile decides whether maintenance is needed for this section. */
+#ifndef UHAL_ATTR_DMA_BUF
 #define UHAL_ATTR_DMA_BUF UETD_SECTION(".dma_buffers") UETD_ALIGNED(32)
+#endif
 
 #ifdef __cplusplus
 }

@@ -1,0 +1,9 @@
+/* Rename to irq.c only after replacing CMSIS IRQ numbers, NVIC priorities, and BASEPRI operations. */
+/* uetd_status_t uhal_irq_enable(uhal_irq_t irq, uetd_u8_t preempt_priority, uetd_u8_t sub_priority); */
+/* uetd_status_t uhal_irq_disable(uhal_irq_t irq); */
+/* uetd_status_t uhal_irq_set_pending(uhal_irq_t irq); */
+/* uetd_status_t uhal_irq_clear_pending(uhal_irq_t irq); */
+/* uhal_critical_t uhal_critical_enter(void); */
+/* void uhal_critical_exit(uhal_critical_t saved_state); */
+/* TODO: Model IDF interrupt allocation, core affinity, nesting, ISR allocation restrictions, and
+ * SMP-safe critical sections; explicitly reject operations the IDF API cannot provide. */

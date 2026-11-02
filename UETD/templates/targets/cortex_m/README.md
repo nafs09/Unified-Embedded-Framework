@@ -67,7 +67,7 @@ installable payloads.
 
 ## TrustZone-M two-image CMake template
 
-`trustzone/CMakeLists.txt.tmpl` creates secure and non-secure ELF targets and
+`trustzone.cmake.tmpl` creates secure and non-secure ELF targets and
 connects the secure CMSE import library to the non-secure link. Render it with
 `project_name`, `secure_target`, `nonsecure_target`, `secure_sources`,
 `nonsecure_sources`, `include_dirs`, `secure_compile_options`,
@@ -80,7 +80,7 @@ option bytes or create a combined signed boot image.
 
 ## Dual-core Cortex-M7/M4 CMake template
 
-`dual_core/CMakeLists.txt.tmpl` creates independent M7 and M4 ELF targets for
+`dual_core.cmake.tmpl` creates independent M7 and M4 ELF targets for
 parts such as STM32H745/H755. Render it with `project_name`, `cm7_target`,
 `cm4_target`, `cm7_sources`, `cm4_sources`, and each core's
 `*_include_dirs`, `*_compile_definitions`, `*_compile_options`,

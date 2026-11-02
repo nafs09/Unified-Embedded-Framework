@@ -2,7 +2,7 @@
 /// @file src/ucon/control/nonlinear/indi2.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/nonlinear/indi2.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: 2nd-order INDI with rate measurement

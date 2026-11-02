@@ -14,6 +14,10 @@
     "include/uhal/gpio.h",
     "include/umid/drivers/encoder.h",
     "include/upal/dma.h",
-    "include/upal/timer.h"
-  ]
+    "include/upal/timing/timer.h"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "source_scaffold",
+  "scaffold_reason": "Public declarations and fail-closed source outlines exist; operational behavior and target/provider integration remain unimplemented."
 }

@@ -10,8 +10,8 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/i2c.h"
-#include "upal/spi.h"
+#include "upal/serial/i2c.h"
+#include "upal/serial/spi.h"
 
 /* Calibrated IMU data — always in SI units */
 typedef struct {
@@ -57,9 +57,13 @@ typedef struct {
     void* on_data_ctx;
 } umid_imu_t;
 
+/// Initialize the IMU.
 uetd_status_t umid_imu_init(umid_imu_t* imu);
+/// Start the IMU.
 uetd_status_t umid_imu_start(umid_imu_t* imu);
+/// Stop the IMU.
 void umid_imu_stop(umid_imu_t* imu);
+/// Read one IMU sample, blocking until it is available.
 uetd_status_t umid_imu_read_blocking(umid_imu_t* imu, umid_imu_data_t* out);
 
 /* Device-specific init functions (registered per driver) */

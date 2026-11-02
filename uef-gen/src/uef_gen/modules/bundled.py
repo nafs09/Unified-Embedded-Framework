@@ -44,12 +44,12 @@ def resolve_bundled_dependencies(uetd_root: Path, names: tuple[str, ...], config
     architecture = str(getattr(resolved.chip.family.arch, "name", "")).strip()
     compiler = str(target_config.get("toolchain", "")).strip()
     if not compiler:
-        board = getattr(resolved, "development_board", None)
-        build_profile = board.get("build", {}) if isinstance(board, dict) else {}
+        hardware = getattr(resolved, "hardware_profile", {})
+        build_profile = hardware.get("build", {}) if isinstance(hardware, dict) else {}
         compiler = str(build_profile.get("toolchain", "")).strip() if isinstance(build_profile, dict) else ""
     if not compiler:
         raise BundledDependencyError(
-            "no toolchain was selected; set target.toolchain or register build.toolchain on the selected UETD development-board record"
+            "no toolchain was selected; set target.toolchain or target.hardware.build.toolchain (an optional board preset may supply the default)"
         )
     selections: list[BundledDependencySelection] = []
     for name in names:

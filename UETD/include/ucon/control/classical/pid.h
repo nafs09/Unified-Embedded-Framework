@@ -36,7 +36,7 @@ typedef struct {
     ucon_anti_windup_t anti_windup;
 } ucon_pid_config_t;
 
-/// Persistent state. Initialize only through ucon_pid_init().
+/// Persistent state; initialize only through ucon_pid_init().
 typedef struct {
     ucon_scalar_t previous_integral_error;
     ucon_scalar_t previous_derivative_error;

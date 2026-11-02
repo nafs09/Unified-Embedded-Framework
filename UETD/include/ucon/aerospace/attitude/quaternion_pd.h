@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for QUATERNION_PD.
 #ifndef UETD_UCON_SCAFFOLD_QUATERNION_PD_H
 #define UETD_UCON_SCAFFOLD_QUATERNION_PD_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

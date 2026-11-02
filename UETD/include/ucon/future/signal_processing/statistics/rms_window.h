@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for RMS_WINDOW.
 #ifndef UETD_UCON_SCAFFOLD_RMS_WINDOW_H
 #define UETD_UCON_SCAFFOLD_RMS_WINDOW_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

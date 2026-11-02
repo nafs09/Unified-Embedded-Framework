@@ -9,10 +9,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/// @brief Factor a symmetric matrix into a pivoted LDL-transpose representation.
 /// TODO(UMATH-LDLT): Choose bounded Bunch-Kaufman or rook pivoting and define 1x1/2x2 D-block, permutation, tolerance,
 /// and mutation contracts.
 umath_status_t umath_matrix_ldlt_factor(umath_scalar_t* row_major, size_t n, umath_scalar_t* diagonal_blocks, size_t* permutation,
                                         size_t* block_sizes);
+/// @brief Solve a linear system using a pivoted LDL-transpose factorization.
 /// TODO(UMATH-LDLT): Validate block metadata and solve L, D, and L-transpose in the exact factor convention.
 umath_status_t umath_matrix_ldlt_solve(const umath_scalar_t* lower, const umath_scalar_t* diagonal_blocks,
                                        const size_t* permutation, const size_t* block_sizes, size_t n, const umath_scalar_t* rhs,

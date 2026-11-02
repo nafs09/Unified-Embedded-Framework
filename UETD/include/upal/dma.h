@@ -39,7 +39,7 @@ typedef struct {
     void* controller; /* DMA1, DMA2 base */
     uetd_u8_t channel; /* channel / stream number */
     uetd_u8_t request; /* DMAMUX request on G4/H7 */
-    IRQn_Type irqn;
+    uhal_irq_t irqn;
     uetd_u8_t irq_priority;
 } upal_dma_hw_t;
 
@@ -65,21 +65,27 @@ typedef struct {
     volatile uetd_u32_t state;
 } upal_dma_t;
 
+/// Initialize the DMA.
 uetd_status_t upal_dma_init(upal_dma_t* dma, const upal_dma_hw_t* hw, upal_dma_callback_t cb, void* cb_ctx);
 
 /* Start a transfer. On M7: automatically performs cache maintenance
  * for cacheable buffers (clean before MEM→PERIPH, invalidate after
  * PERIPH→MEM). Buffers in UHAL_ATTR_DMA_BUF: no maintenance needed. */
+/// Start the DMA.
 uetd_status_t upal_dma_start(upal_dma_t* dma, const upal_dma_xfer_t* xfer);
 
+/// Abort the active DMA transfer.
 uetd_status_t upal_dma_abort(upal_dma_t* dma);
 
 /* Blocking wait — init sequences only; never in ISR or control loop */
+/// Wait for the DMA transfer to finish or time out.
 uetd_status_t upal_dma_wait(upal_dma_t* dma, uetd_u32_t timeout_ms);
 
+/// Return the number of transfer units remaining in the DMA operation.
 uetd_u32_t upal_dma_remaining(const upal_dma_t* dma);
 
 /* Call from the DMA stream/channel ISR */
+/// Handle the DMA stream or channel interrupt.
 void upal_dma_irq_handler(upal_dma_t* dma);
 
 #ifdef __cplusplus

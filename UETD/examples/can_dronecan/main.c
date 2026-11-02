@@ -3,7 +3,7 @@
 ///
 /// TODO: Configure CAN filters and the selected DroneCAN/UAVCAN library binding. Record node
 /// identity, transfer-ID policy, memory limits, and bus-off recovery.
-#include "uproto/uavcan.h"
+#include "uproto/can/uavcan.h"
 
 int main(void) {
     /* TODO(can-dronecan main): Initialize the selected CAN controller with verified

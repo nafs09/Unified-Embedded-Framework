@@ -29,6 +29,8 @@ endif()
 
 option(UETD_BUILD_EXAMPLE "Build the portable component-lifecycle example" OFF)
 option(UETD_BUILD_TESTS "Build UETD's scaffold contract tests" OFF)
+option(UETD_BUILD_UHAL_TESTS "Build focused host and Cortex-M contract tests" OFF)
+option(UETD_BUILD_DOCS "Add the Doxygen API documentation target" OFF)
 # The scalar choice affects UMATH/UCON ABI; the accumulator choice controls
 # numerical precision and cost. Publish both on UETD::Core for consistent use.
 set(UETD_UMATH_SCALAR_TYPE "uetd_f32_t" CACHE STRING
@@ -56,17 +58,23 @@ option(UETD_UMATH_ALLOW_FP_CONTRACTION
   "Allow the compiler to fuse ordinary multiply-add expressions (explicit umath_fma is always fused)" OFF)
 set(UETD_UMATH_TARGET_SCALAR_MATH_HEADER "" CACHE STRING
   "Optional header that overrides internal UMATH math dispatch for the selected target")
-# Select one target backend at configure time; the host simulator and Cortex-M CMSIS code provide
-# the same UHAL contract and must never be compiled into one firmware/runtime library together.
-set(UETD_TARGET "HOST" CACHE STRING "UHAL implementation: HOST or CORTEX_M")
-set_property(CACHE UETD_TARGET PROPERTY STRINGS HOST CORTEX_M)
+include(src/uhal/sources.cmake)
 set(UETD_UOS_BACKEND "BAREMETAL" CACHE STRING "UOS backend: BAREMETAL or FREERTOS")
 set_property(CACHE UETD_UOS_BACKEND PROPERTY STRINGS BAREMETAL FREERTOS)
-set(UETD_CMSIS_INCLUDE_DIR "" CACHE PATH "CMSIS/device include directory for Cortex-M builds")
-set(UETD_CMSIS_DEVICE_HEADER "" CACHE STRING "Quoted CMSIS device header name, for example stm32h743xx.h")
 set(_UETD_FREERTOS_DEFAULT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/FreeRTOS-Kernel-11.3.1")
 set(UETD_FREERTOS_ROOT "${_UETD_FREERTOS_DEFAULT_ROOT}" CACHE PATH
   "UETD-managed FreeRTOS Kernel 11.3.1 source root")
+
+if(UETD_BUILD_DOCS)
+  find_package(Doxygen REQUIRED)
+  add_custom_target(uetd-api-docs
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_SOURCE_DIR}/../build/UETD/doxygen"
+    COMMAND "${DOXYGEN_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
+    COMMENT "Generate UETD HTML/XML API documentation"
+    VERBATIM)
+endif()
+
 # Existing build directories may cache the former empty placeholder path. Move
 # that stale default to the now-populated source tree on the next configure.
 if(NOT EXISTS "${UETD_FREERTOS_ROOT}/tasks.c" AND
@@ -84,9 +92,11 @@ set(UETD_FATFS_TARGET "" CACHE STRING "Optional existing CMake target that provi
 option(UETD_BUILD_FUTURE_UCON_SCAFFOLDS
   "Compile fail-closed UCON scaffolds catalogued as planned for later work" OFF)
 option(UETD_BUILD_FUTURE_UMATH_SCAFFOLDS
-  "Compile fail-closed UMATH outlines that remain under src/umath/future" OFF)
+  "Compile later UMATH outlines, including the sparse CSR matrix scaffold" OFF)
 option(UETD_BUILD_FUTURE_UPROTO_SCAFFOLDS
   "Compile fail-closed UPROTO protocol outlines that are not selectable yet" OFF)
+option(UETD_BUILD_FUTURE_UMID_SCAFFOLDS
+  "Compile genuinely later UMID outlines; first-pass data services build normally" OFF)
 
 function(uetd_check_package_relative_path _relative _description)
   string(REPLACE "\\" "/" _normalized "${_relative}")
@@ -101,36 +111,53 @@ set(UETD_PORTABLE_SOURCES
   src/ucore/bitops.c
   src/ucore/checksum.c
   src/ucore/status.c
+  src/ucore/span.c
+  src/ucore/deadline.c
+  src/ucore/codec.c
+  src/uos/deferred.c
+  src/uos/common.c
+  src/uactuator/actuator.c
+  src/usec/provider.c
   src/uhal/target_profiles.c
-  src/uhal/targets/stm32g4/profile.c
-  src/uhal/targets/stm32f4/profile.c
-  src/uhal/targets/stm32h7/profile.c
-  src/uhal/targets/stm32f7/profile.c
-  src/uhal/targets/stm32g0/profile.c
-  src/uhal/targets/nrf52840/profile.c
-  src/uhal/targets/stm32l4plus/profile.c
-  src/uapp/fault.c
-  src/uapp/lifecycle.c
-  src/uapp/statemachine.c
-  src/uapp/supervisor.c
-  src/uapp/watchdog_gate.c
+  src/uhal/targets/stm32g4.c
+  src/uhal/targets/stm32f4.c
+  src/uhal/targets/stm32h7.c
+  src/uhal/targets/stm32f7.c
+  src/uhal/targets/stm32g0.c
+  src/uhal/targets/nrf52840.c
+  src/uhal/targets/stm32l4plus.c
+  src/uapp/diagnostics/fault.c
+  src/uapp/runtime/lifecycle.c
+  src/uapp/runtime/statemachine.c
+  src/uapp/runtime/supervisor.c
+  src/uapp/runtime/watchdog_gate.c
+  src/uapp/product_session.c
+  src/uapp/diagnostics/diagnostics.c
+  src/uapp/secure_update.c
+  src/uapp/diagnostics/fault_history.c
 )
 
 # Each module has its own translation unit. CONFIGURE_DEPENDS lets a newly added peripheral or
 # protocol module enter the build while keeping source ownership visible in the directory tree.
-file(GLOB_RECURSE UETD_UPAL_SOURCES CONFIGURE_DEPENDS src/upal/*/*.c)
+file(GLOB_RECURSE UETD_UPAL_SOURCES CONFIGURE_DEPENDS src/upal/*.c)
 # This recursive source glob includes the manually maintained UMID driver tree.
 file(GLOB_RECURSE UETD_UMID_SOURCES CONFIGURE_DEPENDS src/umid/*.c)
+if(NOT UETD_BUILD_FUTURE_UMID_SCAFFOLDS)
+  list(FILTER UETD_UMID_SOURCES EXCLUDE REGEX "/future/")
+endif()
 file(GLOB_RECURSE UETD_UPROTO_SOURCES CONFIGURE_DEPENDS src/uproto/*.c)
 if(NOT UETD_BUILD_FUTURE_UPROTO_SCAFFOLDS)
   # Planned protocol operation outlines stay out of ordinary firmware archives.
   list(FILTER UETD_UPROTO_SOURCES EXCLUDE REGEX "/future/")
+  # These later bus protocols share the industrial family folder.
+  list(FILTER UETD_UPROTO_SOURCES EXCLUDE REGEX "/industrial/(iec60870|lin)\\.c$")
 endif()
 # Phase 0/1 UMATH outline sources are compiled as fail-closed symbols for API visibility;
-# only the later catalogue outlines under /future/ are excluded from ordinary firmware archives.
+# later catalogue outlines, including sparse CSR, stay out of ordinary firmware archives.
 file(GLOB_RECURSE UETD_UMATH_SOURCES CONFIGURE_DEPENDS src/umath/*.c)
 if(NOT UETD_BUILD_FUTURE_UMATH_SCAFFOLDS)
   list(FILTER UETD_UMATH_SOURCES EXCLUDE REGEX "/future/")
+  list(FILTER UETD_UMATH_SOURCES EXCLUDE REGEX "/matrix/sparse_csr\\.c$")
 endif()
 file(GLOB_RECURSE UETD_UCON_SOURCES CONFIGURE_DEPENDS src/ucon/*.c)
 if(NOT UETD_BUILD_FUTURE_UCON_SCAFFOLDS)
@@ -147,32 +174,12 @@ else()
   list(FILTER UETD_UMID_SOURCES EXCLUDE REGEX "/fatfs\\.c$")
 endif()
 
-# Pick exactly one architecture implementation for UHAL and publish its target macros to clients.
-if(UETD_TARGET STREQUAL "HOST")
-  file(GLOB_RECURSE UETD_UHAL_SOURCES CONFIGURE_DEPENDS src/uhal/x86/*.c)
-  set(UETD_TARGET_DEFINITIONS UHAL_HOST_SIMULATION=1)
-elseif(UETD_TARGET STREQUAL "CORTEX_M")
-  if(NOT UETD_CMSIS_INCLUDE_DIR OR NOT UETD_CMSIS_DEVICE_HEADER)
-    message(FATAL_ERROR
-      "CORTEX_M requires UETD_CMSIS_INCLUDE_DIR and UETD_CMSIS_DEVICE_HEADER")
-  endif()
-  file(GLOB_RECURSE UETD_UHAL_SOURCES CONFIGURE_DEPENDS src/uhal/arm_cm/*.c)
-  set(UETD_TARGET_DEFINITIONS
-    UETD_TARGET_CORTEX_M=1
-    UETD_CMSIS_DEVICE_HEADER=\"${UETD_CMSIS_DEVICE_HEADER}\")
-else()
-  message(FATAL_ERROR
-    "UETD_TARGET='${UETD_TARGET}' has no implemented UHAL backend. The currently "
-    "selectable implementations are HOST and CORTEX_M. AVR and ESP-IDF target "
-    "work is scaffolded under src/uhal/avr and src/uhal/esp_idf; complete the "
-    "architecture-neutral IRQ/critical-section contract before adding either "
-    "backend to this selector.")
-endif()
+# UHAL source composition and target definitions are resolved in src/uhal/sources.cmake.
 
 # UOS also has mutually exclusive backends: bare-metal synchronization reports unsupported rather
 # than pretending to provide tasking, while the FreeRTOS adapter forwards to the pinned UETD-managed kernel.
 if(UETD_UOS_BACKEND STREQUAL "BAREMETAL")
-  set(UETD_UOS_SOURCES src/uos/baremetal/baremetal.c)
+  set(UETD_UOS_SOURCES src/uos/baremetal.c)
 elseif(UETD_UOS_BACKEND STREQUAL "FREERTOS")
   if(NOT EXISTS "${UETD_FREERTOS_ROOT}/tasks.c")
     message(FATAL_ERROR
@@ -301,7 +308,7 @@ elseif(UETD_UOS_BACKEND STREQUAL "FREERTOS")
     endif()
     list(APPEND _freertos_license_paths "${_license_path}")
   endforeach()
-  set(UETD_UOS_SOURCES src/uos/freertos/freertos.c)
+  set(UETD_UOS_SOURCES src/uos/freertos.c)
 else()
   message(FATAL_ERROR "UETD_UOS_BACKEND must be BAREMETAL or FREERTOS")
 endif()
@@ -333,15 +340,15 @@ target_compile_definitions(uetd_core PUBLIC
   UAPP_SM_EVENT_QUEUE_CAPACITY=${UAPP_SM_EVENT_QUEUE_CAPACITY}
   UAPP_SM_EVENT_PAYLOAD_CAPACITY=${UAPP_SM_EVENT_PAYLOAD_CAPACITY})
 
-if(UETD_TARGET STREQUAL "CORTEX_M")
+if(UETD_ARCH STREQUAL "CORTEX_M")
   target_include_directories(uetd_core PUBLIC ${UETD_CMSIS_INCLUDE_DIR})
 endif()
 if(UETD_UOS_BACKEND STREQUAL "FREERTOS")
   target_sources(uetd_core PRIVATE ${_freertos_sources})
-  target_compile_definitions(uetd_core PRIVATE ${_freertos_definitions})
-  target_include_directories(uetd_core PRIVATE
-    ${_freertos_include_directories}
-    "${UETD_FREERTOS_CONFIG_INCLUDE_DIR}")
+  target_compile_definitions(uetd_core PUBLIC UOS_FREERTOS_NATIVE_STORAGE=1 ${_freertos_definitions})
+  foreach(_freertos_public_include IN LISTS _freertos_include_directories UETD_FREERTOS_CONFIG_INCLUDE_DIR)
+    target_include_directories(uetd_core PUBLIC "$<BUILD_INTERFACE:${_freertos_public_include}>")
+  endforeach()
 endif()
 if(UETD_ENABLE_FATFS)
   target_include_directories(uetd_core PUBLIC ${UETD_FATFS_INCLUDE_DIR})
@@ -397,6 +404,13 @@ endif()
 if(UETD_BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
+endif()
+if(UETD_BUILD_UHAL_TESTS)
+  if(NOT UETD_ARCH STREQUAL "HOST")
+    message(FATAL_ERROR "UHAL contract tests run on HOST; hardware tests belong to the target project")
+  endif()
+  enable_testing()
+  add_subdirectory(tests/uhal)
 endif()
 
 include(GNUInstallDirs)

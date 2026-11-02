@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for H_INF_OF.
 #ifndef UETD_UCON_SCAFFOLD_H_INF_OF_H
 #define UETD_UCON_SCAFFOLD_H_INF_OF_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

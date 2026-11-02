@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <umath/fixed.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 
 static int16_t clamp_q15(int64_t value) {

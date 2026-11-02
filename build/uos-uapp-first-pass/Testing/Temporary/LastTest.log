@@ -1,0 +1,450 @@
+Start testing: Oct 30 23:18 Cen. Australia Summer Time
+----------------------------------------------------------
+1/27 Testing: uetd.ucon_scaffold_contracts
+1/27 Test: uetd.ucon_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_ucon_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.ucon_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 1261 UCON scaffold operations
+<end of output>
+Test time =   0.67 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.ucon_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.ucon_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/27 Testing: uetd.uproto_future_scaffold_contracts
+2/27 Test: uetd.uproto_future_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uproto_future_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uproto_future_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 33 future UPROTO scaffold operations
+<end of output>
+Test time =   0.77 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uproto_future_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uproto_future_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/27 Testing: uetd.first_pass_expansion_contracts
+3/27 Test: uetd.first_pass_expansion_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_first_pass_expansion_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.first_pass_expansion_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 102 uetd_first_pass_expansion_contracts operations from 21 source files
+<end of output>
+Test time =   0.60 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.first_pass_expansion_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.first_pass_expansion_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/27 Testing: uetd.uapp_runtime_contracts
+4/27 Test: uetd.uapp_runtime_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uapp_runtime_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uapp_runtime_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+UAPP state machine, lifecycle, deferred work and checked values passed
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uapp_runtime_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uapp_runtime_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/27 Testing: uetd.uapp_services_contracts
+5/27 Test: uetd.uapp_services_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uapp_services_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uapp_services_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+UAPP service contracts passed
+<end of output>
+Test time =   0.52 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uapp_services_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uapp_services_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/27 Testing: uetd.uapp_update_contracts
+6/27 Test: uetd.uapp_update_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uapp_update_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uapp_update_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Update admission, recovery, integrity, boot evidence and anti-rollback contracts passed
+<end of output>
+Test time =   0.57 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uapp_update_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uapp_update_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/27 Testing: uetd.uapp_capacity_contracts
+7/27 Test: uetd.uapp_capacity_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uapp_capacity_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uapp_capacity_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+UAPP state machine, lifecycle, deferred work and checked values passed
+<end of output>
+Test time =   0.55 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uapp_capacity_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uapp_capacity_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/27 Testing: uetd.uos_time_contracts
+8/27 Test: uetd.uos_time_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uos_time_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uos_time_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+UOS epoch, finite conversion, deadlines and bare-metal capabilities passed
+<end of output>
+Test time =   0.54 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uos_time_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uos_time_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/27 Testing: uetd.uapp_supervision_contracts
+9/27 Test: uetd.uapp_supervision_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uapp_supervision_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uapp_supervision_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Supervision cadence, stale leases, reentrancy and sticky faults passed
+<end of output>
+Test time =   0.67 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uapp_supervision_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uapp_supervision_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/27 Testing: uetd.uos_freertos_16
+10/27 Test: uetd.uos_freertos_16
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uos_freertos_16.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uos_freertos_16" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+creating static kernel objects
+starting scheduler
+scheduler task started
+task primitives passed; entering simulated IRQ
+UOS against the real FreeRTOS kernel and simulated IRQs passed
+<end of output>
+Test time =   0.58 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uos_freertos_16" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uos_freertos_16" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/27 Testing: uetd.uos_freertos_32
+11/27 Test: uetd.uos_freertos_32
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uos_freertos_32.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uos_freertos_32" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+creating static kernel objects
+starting scheduler
+scheduler task started
+task primitives passed; entering simulated IRQ
+UOS against the real FreeRTOS kernel and simulated IRQs passed
+<end of output>
+Test time =   0.64 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uos_freertos_32" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uos_freertos_32" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/27 Testing: uetd.uos_freertos_64
+12/27 Test: uetd.uos_freertos_64
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uos_freertos_64.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uos_freertos_64" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+creating static kernel objects
+starting scheduler
+scheduler task started
+task primitives passed; entering simulated IRQ
+UOS against the real FreeRTOS kernel and simulated IRQs passed
+<end of output>
+Test time =   0.51 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uos_freertos_64" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uos_freertos_64" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/27 Testing: uetd.manual_tasks_contracts
+13/27 Test: uetd.manual_tasks_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_manual_tasks_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.manual_tasks_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Generated task allocation, cadence, startup failure and callback failure passed
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.manual_tasks_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.manual_tasks_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/27 Testing: uetd.manual_tasks_creation_failure
+14/27 Test: uetd.manual_tasks_creation_failure
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_manual_tasks_contracts.exe" "fail"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.manual_tasks_creation_failure" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.manual_tasks_creation_failure" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.manual_tasks_creation_failure" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/27 Testing: uetd.manual_runtime_templates
+15/27 Test: uetd.manual_runtime_templates
+Command: "C:/Users/NafSm/AppData/Local/Python/bin/python.exe" "C:/NEXUS/Unified Embedded Framework/UETD/tests/test_manual_runtime.py"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.manual_runtime_templates" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.812s
+
+OK
+<end of output>
+Test time =   1.03 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.manual_runtime_templates" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.manual_runtime_templates" time elapsed: 00:00:01
+----------------------------------------------------------
+
+16/27 Testing: uetd.first_pass_service_scaffolds
+16/27 Test: uetd.first_pass_service_scaffolds
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_first_pass_service_scaffolds.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.first_pass_service_scaffolds" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 32 uetd_first_pass_service_scaffolds operations from 6 source files
+<end of output>
+Test time =   0.67 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.first_pass_service_scaffolds" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.first_pass_service_scaffolds" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/27 Testing: uetd.canopen_fd_scaffold_contracts
+17/27 Test: uetd.canopen_fd_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_canopen_fd_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.canopen_fd_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 8 uetd_canopen_fd_scaffold_contracts operations from 1 source files
+<end of output>
+Test time =   0.60 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.canopen_fd_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.canopen_fd_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/27 Testing: uetd.medi_can_scaffold_contracts
+18/27 Test: uetd.medi_can_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_medi_can_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.medi_can_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 11 uetd_medi_can_scaffold_contracts operations from 1 source files
+<end of output>
+Test time =   0.60 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.medi_can_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.medi_can_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/27 Testing: uetd.upal_scaffold_contracts
+19/27 Test: uetd.upal_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_upal_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.upal_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 149 uetd_upal_scaffold_contracts operations from 27 source files
+<end of output>
+Test time =   0.64 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.upal_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.upal_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/27 Testing: uetd.upal_fdcan_fd_scaffold_contracts
+20/27 Test: uetd.upal_fdcan_fd_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_upal_fdcan_fd_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.upal_fdcan_fd_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated UPAL FDCAN-FD fail-closed and argument-validation contracts
+<end of output>
+Test time =   0.60 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.upal_fdcan_fd_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.upal_fdcan_fd_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/27 Testing: uetd.umid_scaffold_contracts
+21/27 Test: uetd.umid_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_umid_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.umid_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 25 uetd_umid_scaffold_contracts operations from 9 source files
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.umid_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.umid_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/27 Testing: uetd.uproto_scaffold_contracts
+22/27 Test: uetd.uproto_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uproto_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uproto_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 36 uetd_uproto_scaffold_contracts operations from 9 source files
+<end of output>
+Test time =   0.61 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uproto_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uproto_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/27 Testing: uetd.uos_safertos_scaffold_contracts
+23/27 Test: uetd.uos_safertos_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_uos_safertos_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.uos_safertos_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 28 uetd_uos_safertos_scaffold_contracts operations from 1 source files
+<end of output>
+Test time =   0.61 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.uos_safertos_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.uos_safertos_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/27 Testing: uetd.umath_scaffold_contracts
+24/27 Test: uetd.umath_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_umath_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.umath_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 73 uetd_umath_scaffold_contracts operations from 22 source files
+<end of output>
+Test time =   0.61 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.umath_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.umath_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/27 Testing: uetd.target_profile_scaffold_contracts
+25/27 Test: uetd.target_profile_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_target_profile_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.target_profile_scaffold_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 7 incomplete target-family profiles and their phase partitions
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.target_profile_scaffold_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.target_profile_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/27 Testing: uetd.display_contracts
+26/27 Test: uetd.display_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_display_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.display_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Display provider contracts passed
+<end of output>
+Test time =   0.53 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.display_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.display_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/27 Testing: uetd.portable_runtime_contracts
+27/27 Test: uetd.portable_runtime_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/Release/uetd_portable_runtime_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests
+"uetd.portable_runtime_contracts" start time: Oct 30 23:18 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Portable runtime and archive-link contracts passed
+<end of output>
+Test time =   0.67 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.portable_runtime_contracts" end time: Oct 30 23:18 Cen. Australia Summer Time
+"uetd.portable_runtime_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 30 23:18 Cen. Australia Summer Time

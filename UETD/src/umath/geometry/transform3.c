@@ -3,7 +3,7 @@
 #include <float.h>
 #include <math.h>
 #include <umath/geometry/transform3.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 
 static umath_accumulator_t transform_tolerance(void) {

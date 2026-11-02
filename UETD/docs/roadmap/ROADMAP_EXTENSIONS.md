@@ -1,6 +1,6 @@
 # UCON roadmap extensions
 
-This curated extension list fills visible coverage gaps in UETD Part XVI for embedded estimation, identification, signal processing, optimization, control, guidance, trajectories, and power conversion. These are **PLANNED catalogue proposals** only. Their generated functions are fail-closed outlines, not equations, safety claims, or deployable algorithms. UCON remains the single owner of implementations and templates; uef-gen only reads registered UETD entries.
+This curated extension list records 50 proposals beyond UETD Part XVI for embedded estimation, identification, signal processing, optimization, control, guidance, trajectories, and power conversion. The bounded reference `QP_ACTIVE_SET` solver is now **FIRST_PASS**; the other 49 remain **PLANNED later proposals**. Their generated functions are fail-closed outlines, not equations, safety claims, or deployable algorithms. UCON remains the single owner of implementations and templates; uef-gen only reads registered UETD entries.
 
 
 ## Proposals

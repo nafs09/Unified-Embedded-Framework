@@ -19,17 +19,24 @@ typedef struct {
 /// less-precise configured scalar/accumulator type, and determinant one within 128 such epsilons.
 /// Interpolation uses shortest-path rotation slerp and requires t in [0,1].
 
+/// Return the identity 3D rigid transform.
 umath_transform3_t umath_transform3_identity(void);
+/// Compose two 3D rigid transforms.
 umath_status_t umath_transform3_compose(const umath_transform3_t* parent_from_mid, const umath_transform3_t* mid_from_child,
                                         umath_transform3_t* parent_from_child);
+/// Compute the inverse of a 3D rigid transform.
 umath_status_t umath_transform3_inverse(const umath_transform3_t* parent_from_child, umath_transform3_t* child_from_parent);
+/// Transform a point from child coordinates to parent coordinates.
 umath_status_t umath_transform3_point(const umath_transform3_t* parent_from_child, umath_vec3_t point_child,
                                       umath_vec3_t* point_parent);
 
 /// Convert to/from the active row-major homogeneous transform [R t; 0 1].
 
+/// Construct a 3D rigid transform from a row-major homogeneous matrix.
 umath_status_t umath_transform3_from_matrix(const umath_scalar_t* row_major_4x4, umath_transform3_t* result);
+/// Convert a 3D rigid transform to a homogeneous matrix.
 umath_status_t umath_transform3_to_matrix(const umath_transform3_t* transform, umath_scalar_t* row_major_4x4);
+/// Interpolate between two 3D rigid transforms.
 umath_status_t umath_transform3_interpolate(const umath_transform3_t* start, const umath_transform3_t* end, umath_scalar_t t, umath_transform3_t* result);
 
 #ifdef __cplusplus

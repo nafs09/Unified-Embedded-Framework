@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/uproto/rc/sbus.c"
+  ],
+  "dependencies": [
+    "upal/uart"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/uhal/cache.h",
+    "include/uhal/gpio.h",
+    "include/upal/dma.h",
+    "include/upal/serial/uart.h",
+    "include/uproto/rc/sbus.h"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "source_scaffold",
+  "scaffold_reason": "Public declarations and fail-closed source outlines exist; operational behavior and target/provider integration remain unimplemented."
+}

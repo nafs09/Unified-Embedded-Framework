@@ -1,0 +1,31 @@
+#include "{{ machine.name }}.h"
+#include "callbacks.h"
+{% if machine.rows %}static const uapp_sm_transition_t transitions[] = {
+{% for row in machine.rows %}    { {{ row.source }}, {{ row.event }}, {{ row.destination }}, {{ row.action or "NULL" }}, {{ row.guard or "NULL" }} },
+{% endfor %}};
+{% endif %}static const uapp_sm_state_hooks_t hooks[] = {
+{% for state in machine.states %}    { {{ state.enter or "NULL" }}, {{ state.exit or "NULL" }} },
+{% endfor %}};
+uetd_status_t {{ machine.name }}_init({{ machine.name }}_t* instance, void* context) {
+    if (instance == NULL) { return UETD_INVALID_ARG; }
+    const uapp_sm_config_t config = {
+        {{ "transitions" if machine.rows else "NULL" }}, {{ machine.rows | length }}, hooks, {{ machine.states | length }}, {{ machine.initial }},
+        {{ machine.unhandled or "NULL" }}, {{ machine.fault or "NULL" }}, context
+    };
+    return uapp_sm_init(&instance->machine, &config);
+}
+uetd_status_t {{ machine.name }}_post({{ machine.name }}_t* instance, uetd_u8_t id, const void* payload, size_t size) {
+    if (instance == NULL) { return UETD_INVALID_ARG; }
+    uapp_sm_event_t event;
+    const uetd_status_t status = uapp_sm_make_event(&event, id, payload, size);
+    return status == UETD_OK ? uapp_sm_post(&instance->machine, &event) : status;
+}
+uetd_status_t {{ machine.name }}_process({{ machine.name }}_t* instance) {
+    return instance != NULL ? uapp_sm_process_one(&instance->machine) : UETD_INVALID_ARG;
+}
+uetd_status_t {{ machine.name }}_reset({{ machine.name }}_t* instance) {
+    return instance != NULL ? uapp_sm_reset(&instance->machine) : UETD_INVALID_ARG;
+}
+uetd_status_t {{ machine.name }}_state(const {{ machine.name }}_t* instance, uapp_sm_state_t* state) {
+    return instance != NULL ? uapp_sm_get_state(&instance->machine, state) : UETD_INVALID_ARG;
+}

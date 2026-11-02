@@ -1,6 +1,6 @@
 /// @file src/umath/scalar.c
 /// @brief Portable checked scalar operations; target modules may provide verified accelerators.
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/constants.h>
 #include <umath/scalar.h>
 

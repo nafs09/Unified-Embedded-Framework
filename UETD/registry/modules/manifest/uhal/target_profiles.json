@@ -1,13 +1,13 @@
 {
   "sources": [
     "src/uhal/target_profiles.c",
-    "src/uhal/targets/stm32g4/profile.c",
-    "src/uhal/targets/stm32f4/profile.c",
-    "src/uhal/targets/stm32h7/profile.c",
-    "src/uhal/targets/stm32f7/profile.c",
-    "src/uhal/targets/stm32g0/profile.c",
-    "src/uhal/targets/nrf52840/profile.c",
-    "src/uhal/targets/stm32l4plus/profile.c"
+    "src/uhal/targets/stm32g4.c",
+    "src/uhal/targets/stm32f4.c",
+    "src/uhal/targets/stm32h7.c",
+    "src/uhal/targets/stm32f7.c",
+    "src/uhal/targets/stm32g0.c",
+    "src/uhal/targets/nrf52840.c",
+    "src/uhal/targets/stm32l4plus.c"
   ],
   "dependencies": [
     "ucore"
@@ -18,12 +18,14 @@
   "headers": [
     "include/ucore/types.h",
     "include/uhal/target_profiles.h",
-    "include/uhal/targets/nrf52840/profile.h",
-    "include/uhal/targets/stm32f4/profile.h",
-    "include/uhal/targets/stm32f7/profile.h",
-    "include/uhal/targets/stm32g0/profile.h",
-    "include/uhal/targets/stm32g4/profile.h",
-    "include/uhal/targets/stm32h7/profile.h",
-    "include/uhal/targets/stm32l4plus/profile.h"
-  ]
+    "include/uhal/targets/nrf52840.h",
+    "include/uhal/targets/stm32f4.h",
+    "include/uhal/targets/stm32f7.h",
+    "include/uhal/targets/stm32g0.h",
+    "include/uhal/targets/stm32g4.h",
+    "include/uhal/targets/stm32h7.h",
+    "include/uhal/targets/stm32l4plus.h"
+  ],
+  "available_for_generation": false,
+  "scaffold_stage": "phase0"
 }

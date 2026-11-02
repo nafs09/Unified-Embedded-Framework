@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-29",
+  "scope": "host and catalogue validation; no physical target qualification",
+  "module_ids": 362,
+  "public_headers": 395,
+  "schema_definitions_checked": 29,
+  "registry_indexes_checked": 11,
+  "target_records_indexed": 167,
+  "missing_markdown_file_targets": 0,
+  "catalogue_integrity_errors": 0,
+  "tests": [
+    {
+      "profile": "MSVC HOST BAREMETAL f32 Debug",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "profile": "MSVC HOST BAREMETAL f64 Release",
+      "passed": 15,
+      "failed": 0
+    }
+  ],
+  "header_checks": [
+    "C11 standalone, all 395 public headers",
+    "C++17 standalone, all 395 public headers",
+    "C++ linked UAPP/DSI/security consumer"
+  ],
+  "numerical_references": {
+    "f32": 1201,
+    "f64": 1201,
+    "kind": "deterministic independent NumPy/reference comparisons on representative normal-domain operations"
+  },
+  "confirmed_open_defects": [
+    "Cholesky solve can return UMATH_OK with infinite solution after quotient overflow",
+    "Software Q31 CORDIC cosine at zero converts positive unity out of signed range"
+  ],
+  "placement_migration": {
+    "status": "completed_after_explicit_user_approval",
+    "file_moves": 51,
+    "module_id_changes": 10,
+    "item_reclassifications": 20,
+    "new_blocked_uapp_design_records": 2,
+    "first_pass_planning_entries": 20,
+    "later_planning_entries": 6,
+    "generation_readiness_granted": false,
+    "preserved_input_files": 1865,
+    "snapshot": "C:/NEXUS/uetd-audit-work/first-pass-migration-snapshot",
+    "stale_active_references": 0,
+    "snapshot_integrity_verified": true
+  },
+  "python_tests": {
+    "run": 28,
+    "passed": 23,
+    "failed": 0,
+    "skipped": 5,
+    "skip_reason": "optional language-server extra absent",
+    "new_catalogue_placement_tests_passed": 3
+  },
+  "target_records_schema_checked": 99,
+  "final_scaffold_pass": {
+    "new_module_records": 26,
+    "new_public_headers": 25,
+    "source_operations_checked": 134,
+    "source_files_checked": 28,
+    "host_pipeline_design_records": 11,
+    "type_declarations": 472,
+    "draft_interfaces": true,
+    "generation_readiness_granted": false,
+    "orphan_public_entry_points": 0,
+    "host_pipeline_index": "registry/generation/registry.json"
+  }
+}

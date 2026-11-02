@@ -24,6 +24,7 @@ class ModuleSelector:
             raise ModuleSelectionError(str(exc)) from exc
         self._modules = document.get("modules", {})
         self._bundled_dependencies = document.get("bundled_dependencies", {})
+        self._selection_groups = document.get("selection_groups", {})
         self._include_root = str(document.get("headers_root", "include"))
         if not isinstance(self._modules, dict) or not isinstance(self._bundled_dependencies, dict):
             raise ModuleSelectionError("UETD module and bundled dependency manifests must be objects")
@@ -68,6 +69,12 @@ class ModuleSelector:
         requested = tuple(str(name).casefold() for name in requested)
         for name in requested:
             visit(name)
+        for group_name, group in self._selection_groups.items():
+            if group.get("selection") == "exactly_one":
+                variants = set(group.get("options", {}).values()) & closure
+                variants.update(name for name in closure if self._modules[name].get("variant_of") == group_name)
+                if len(variants) > 1:
+                    raise ModuleSelectionError(f"Conflicting {group_name} implementations: {', '.join(sorted(variants))}")
         sources: list[str] = []
         includes: list[str] = []
         defines: list[str] = []

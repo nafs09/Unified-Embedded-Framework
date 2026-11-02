@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "backend": "BAREMETAL",
+  "event_queue_capacity": 8,
+  "event_payload_capacity": 16,
+  "machines": [{
+    "name": "controller",
+    "states": [{"name": "idle"}, {"name": "running", "enter": "motor_enter", "exit": "motor_exit"}],
+    "initial": "idle",
+    "events": {"start": 1, "stop": 2},
+    "on_fault": "controller_failure",
+    "transitions": [
+      {"from": "idle", "event": "start", "to": "running", "guard": "start_allowed"},
+      {"from": "running", "event": "stop", "to": "idle"}
+    ]
+  }],
+  "tasks": []
+}

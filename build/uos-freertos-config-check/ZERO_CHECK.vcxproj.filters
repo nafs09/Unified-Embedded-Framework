@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\build\uos-freertos-config-check\CMakeFiles\4c024888ed1b1b997e3e30c76430a5f4\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B302B1FF-11E0-3330-B44E-90655E9511E5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

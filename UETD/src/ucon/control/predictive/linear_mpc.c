@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/linear_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/linear_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Condensed constrained QP and disturbance-augmented offset-free option.

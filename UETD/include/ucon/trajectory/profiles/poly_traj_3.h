@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for POLY_TRAJ_3.
 #ifndef UETD_UCON_SCAFFOLD_POLY_TRAJ_3_H
 #define UETD_UCON_SCAFFOLD_POLY_TRAJ_3_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

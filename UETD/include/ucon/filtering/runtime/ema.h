@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for EMA.
 #ifndef UETD_UCON_SCAFFOLD_EMA_H
 #define UETD_UCON_SCAFFOLD_EMA_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

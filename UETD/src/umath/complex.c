@@ -2,7 +2,7 @@
 /// @brief Complex arithmetic with checked division and transcendental operations.
 #include <math.h>
 #include <umath/complex.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 
 umath_complex_t umath_complex_add(umath_complex_t a, umath_complex_t b) {

@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for UKF.
 #ifndef UETD_UCON_SCAFFOLD_UKF_H
 #define UETD_UCON_SCAFFOLD_UKF_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,7 +54,8 @@ ucon_status_t ucon_ukf_generate_sigma_points(const ucon_algorithm_scaffold_call_
 /// Propagate sigma points and recover predicted moments.
 /// TODO(UKF.predict): 1) Generate points from the prior and evaluate f for each with aligned
 /// input/time. 2) Compute the weighted predicted mean and covariance using
-/// covariance weights. 3) Add process noise as declared (additive Q or
+/// covariance weights.
+/// 3) Add process noise as declared (additive Q or
 /// augmented-noise points), validate finite/PSD results, and commit the
 /// prediction. Algorithm-specific focus: Unscented Kalman filter using a
 /// declared sigma-point rule, weights, nonlinear propagation, and

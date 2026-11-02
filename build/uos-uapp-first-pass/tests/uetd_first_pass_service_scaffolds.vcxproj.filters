@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\storage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\calibration.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\logging\blackbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\process_image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\industrial\modbus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\canopen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\UETD\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D5A94482-1D77-3241-A2A1-C9074AEFBFE3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

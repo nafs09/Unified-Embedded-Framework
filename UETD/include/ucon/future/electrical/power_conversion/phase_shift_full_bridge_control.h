@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for PHASE_SHIFT_FULL_BRIDGE_CONTROL.
 #ifndef UETD_UCON_SCAFFOLD_PHASE_SHIFT_FULL_BRIDGE_CONTROL_H
 #define UETD_UCON_SCAFFOLD_PHASE_SHIFT_FULL_BRIDGE_CONTROL_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

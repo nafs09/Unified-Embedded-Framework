@@ -33,8 +33,8 @@ typedef enum {
 } uhal_gpio_pull_t;
 
 typedef struct {
-    void* port;   /* GPIO port base address: GPIOA, GPIOB, etc. */
-    uetd_u8_t pin; /* pin number 0-15 */
+    void* port;   /* Platform token; applications use generated pin bindings. */
+    uetd_u8_t pin; /* Platform pin/line index; not restricted to STM32's 0..15. */
 } uhal_gpio_pin_t;
 
 typedef struct {
@@ -44,11 +44,17 @@ typedef struct {
     uetd_u8_t alternate; /* AF number; ignored unless mode=ALTERNATE */
 } uhal_gpio_cfg_t;
 
+/// Configure a GPIO pin with the requested mode and electrical settings.
 void uhal_gpio_init(uhal_gpio_pin_t pin, const uhal_gpio_cfg_t* cfg);
+/// Set or clear a GPIO output pin.
 void uhal_gpio_write(uhal_gpio_pin_t pin, bool state);
+/// Read the current GPIO pin level.
 bool uhal_gpio_read(uhal_gpio_pin_t pin);
+/// Invert the current GPIO output level.
 void uhal_gpio_toggle(uhal_gpio_pin_t pin);
+/// Set a GPIO output pin using the hardware set register.
 void uhal_gpio_set(uhal_gpio_pin_t pin);   /* fast set (BSRR) */
+/// Clear a GPIO output pin using the hardware reset register.
 void uhal_gpio_clear(uhal_gpio_pin_t pin); /* fast clear (BSRR) */
 
 /* Timing debug markers — stripped in NDEBUG builds */

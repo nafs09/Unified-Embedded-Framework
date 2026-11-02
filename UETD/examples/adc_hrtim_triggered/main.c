@@ -3,8 +3,8 @@
 ///
 /// TODO: Configure an HRTIM-triggered ADC/DMA sample path. Record trigger phase, channel order,
 /// sample time, timer frequency, cache rules, and shutdown-on-fault behavior.
-#include "upal/adc.h"
-#include "upal/hrtim.h"
+#include "upal/analog/adc.h"
+#include "upal/timing/hrtim.h"
 
 int main(void) {
     /* TODO(adc-hrtim-triggered main): Initialize the selected board and verify its HRTIM

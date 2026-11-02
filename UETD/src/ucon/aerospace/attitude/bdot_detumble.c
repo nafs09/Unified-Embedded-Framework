@@ -2,7 +2,7 @@
 /// @file src/ucon/aerospace/attitude/bdot_detumble.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/aerospace/attitude/bdot_detumble.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Magnetic detumbling law for spacecraft with magnetometer and magnetorquer interfaces.

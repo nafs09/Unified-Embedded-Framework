@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/upal/serial/usb.c"
+  ],
+  "dependencies": [
+    "uhal",
+    "upal/dma"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h",
+    "include/upal/serial/usb.h"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "source_scaffold",
+  "scaffold_reason": "Public declarations and fail-closed source outlines exist; operational behavior and target/provider integration remain unimplemented."
+}

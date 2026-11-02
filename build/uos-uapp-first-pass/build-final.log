@@ -1,0 +1,65 @@
+MSBuild version 18.10.1-1.26427.6+3cd27c13e for .NET Framework
+
+  Checking File Globs
+  uetd_canopen_fd_scaffold_contracts.c
+  uetd_canopen_fd_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_canopen_fd_scaffold_contracts.exe
+  baremetal.c
+  common.c
+  Generating Code...
+  uetd_core.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\Debug\uetd_core.lib
+  uetd_display_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_display_contracts.exe
+  uetd_example.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\Debug\uetd_example.exe
+  uetd_first_pass_expansion_contracts.c
+  uetd_first_pass_expansion_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_first_pass_expansion_contracts.exe
+  uetd_first_pass_service_scaffolds.c
+  uetd_first_pass_service_scaffolds.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_first_pass_service_scaffolds.exe
+  manual_tasks_contracts.c
+  tasks.c
+  Generating Code...
+  uetd_manual_tasks_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_manual_tasks_contracts.exe
+  uetd_medi_can_scaffold_contracts.c
+  uetd_medi_can_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_medi_can_scaffold_contracts.exe
+  uetd_portable_runtime_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_portable_runtime_contracts.exe
+  uetd_target_profile_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_target_profile_scaffold_contracts.exe
+  uetd_uapp_capacity_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_capacity_contracts.exe
+  uetd_uapp_runtime_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_runtime_contracts.exe
+  uetd_uapp_services_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_services_contracts.exe
+  uetd_uapp_supervision_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_supervision_contracts.exe
+  uetd_uapp_update_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_update_contracts.exe
+  ucon_scaffold_contracts.c
+  uetd_ucon_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_ucon_scaffold_contracts.exe
+  uetd_umath_scaffold_contracts.c
+  uetd_umath_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_umath_scaffold_contracts.exe
+  uetd_umid_scaffold_contracts.c
+  uetd_umid_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_umid_scaffold_contracts.exe
+  common.c
+  freertos.c
+  uos_freertos_contracts.c
+  Generating Code...
+  uetd_uos_freertos_16.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_freertos_16.exe
+  common.c
+  freertos.c
+  uos_freertos_contracts.c
+  Generating Code...
+  uetd_uos_freertos_32.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_freertos_32.exe
+  common.c
+  freertos.c
+  uos_freertos_contracts.c
+  Generating Code...
+  uetd_uos_freertos_64.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_freertos_64.exe
+  safertos.c
+  uetd_uos_safertos_scaffold_contracts.c
+  Generating Code...
+  uetd_uos_safertos_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_safertos_scaffold_contracts.exe
+  baremetal.c
+  common.c
+  uos_time_contracts.c
+  Generating Code...
+  uetd_uos_time_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_time_contracts.exe
+  uetd_upal_fdcan_fd_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_upal_fdcan_fd_scaffold_contracts.exe
+  uetd_upal_scaffold_contracts.c
+  uetd_upal_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_upal_scaffold_contracts.exe
+  uproto_scaffold_contracts.c
+  uetd_uproto_future_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uproto_future_scaffold_contracts.exe
+  uetd_uproto_scaffold_contracts.c
+  uetd_uproto_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uproto_scaffold_contracts.exe

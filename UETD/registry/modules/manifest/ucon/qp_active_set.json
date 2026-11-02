@@ -1,0 +1,28 @@
+{
+  "sources": [
+    "src/ucon/qp_active_set.c"
+  ],
+  "headers": [
+    "include/ucon/qp_active_set.h"
+  ],
+  "dependencies": [
+    "ucon/core"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "algorithm": "QP_ACTIVE_SET",
+  "priority": "FIRST_PASS",
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "A bounded dense QP solver is a first-pass dependency of the existing MPC scope; typed solver behavior remains unimplemented.",
+  "contract_status": "algorithm_scaffold",
+  "outlined_functions": [
+    "ucon_qp_active_set_validate_problem",
+    "ucon_qp_active_set_init",
+    "ucon_qp_active_set_reset",
+    "ucon_qp_active_set_solve",
+    "ucon_qp_active_set_verify_solution"
+  ],
+  "project_relevance": [],
+  "generated_by": "tools/generate_ucon_scaffolds.py",
+  "phase": 0
+}

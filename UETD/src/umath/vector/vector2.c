@@ -1,7 +1,7 @@
 /// @file src/umath/vector/vector2.c
 /// @brief Two-dimensional vector operations.
 #include <math.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 #include <umath/vector/vector2.h>
 

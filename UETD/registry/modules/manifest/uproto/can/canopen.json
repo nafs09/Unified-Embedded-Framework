@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/uproto/can/canopen.c"
+  ],
+  "dependencies": [
+    "upal/can",
+    "umid/process_image"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Typed operation declarations and fail-closed source definitions exist; exact device profile, external stack boundary, and bounded process-image mapping remain unimplemented.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/industrial/industrial_contracts.h",
+    "include/uproto/can/canopen.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "optional external CANopen stack"
+  ],
+  "phase": 0
+}

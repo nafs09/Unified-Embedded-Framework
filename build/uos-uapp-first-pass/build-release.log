@@ -1,0 +1,782 @@
+MSBuild version 18.10.1-1.26427.6+3cd27c13e for .NET Framework
+
+  Checking File Globs
+  1>Checking Build System
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  canopen_fd.c
+  uetd_canopen_fd_scaffold_contracts.c
+  Generating Code...
+  uetd_canopen_fd_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_canopen_fd_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/CMakeLists.txt
+  assert.c
+  bitops.c
+  checksum.c
+  span.c
+  deadline.c
+  codec.c
+  deferred.c
+  common.c
+  actuator.c
+  provider.c
+  target_profiles.c
+  stm32g4.c
+  stm32f4.c
+  stm32h7.c
+  stm32f7.c
+  stm32g0.c
+  nrf52840.c
+  stm32l4plus.c
+  lifecycle.c
+  statemachine.c
+  Generating Code...
+  Compiling...
+  supervisor.c
+  watchdog_gate.c
+  product_session.c
+  diagnostics.c
+  secure_update.c
+  fault_history.c
+  atomic.c
+  cache.c
+  clock.c
+  gpio.c
+  irq.c
+  memory.c
+  timing.c
+  baremetal.c
+  adc.c
+  comp.c
+  dac.c
+  opamp.c
+  can.c
+  fdcan_fd.c
+  Generating Code...
+  Compiling...
+  capability_contracts.c
+  cordic.c
+  fmac.c
+  display.c
+  display_panel.c
+  dsi_host.c
+  touch.c
+  dma.c
+  ethernet.c
+  ieee802154.c
+  netif.c
+  radio_transport.c
+  power.c
+  i2c.c
+  spi.c
+  uart.c
+  usb.c
+  block_device.c
+  flash.c
+  qspi.c
+  Generating Code...
+  Compiling...
+  sdmmc.c
+  hrtim.c
+  rtc.c
+  timer.c
+  transaction.c
+  iwdg.c
+  wwdg.c
+  calibration.c
+  process_image.c
+  settings.c
+  storage.c
+  current.c
+  encoder.c
+  fpga.c
+  gnss.c
+  imu.c
+  mag.c
+  pressure.c
+  range.c
+  temp.c
+  Generating Code...
+  Compiling...
+  voltage.c
+  health.c
+  blackbox.c
+  log.c
+  log_uart.c
+  buffer_pool.c
+  event_bus.c
+  mailbox.c
+  ringbuf.c
+  sensor.c
+  graphics.c
+  input.c
+  canopen.c
+  uavcan.c
+  framing.c
+  modbus.c
+  mavlink.c
+  bluetooth.c
+  connection_manager.c
+  http.c
+  Generating Code...
+  Compiling...
+  ip.c
+  mqtt.c
+  time_sync.c
+  tls.c
+  wifi.c
+  crsf.c
+  dshot.c
+  ppm.c
+  sbus.c
+  usb_device.c
+  complex.c
+  dual.c
+  jacobian.c
+  fixed.c
+  functions.c
+  quaternion.c
+  transform3.c
+  se2.c
+  se3.c
+  so2.c
+  Generating Code...
+  Compiling...
+  so3.c
+  cholesky.c
+  ldlt.c
+  lu.c
+  qr.c
+  svd.c
+  symmetric_eigen.c
+  integration.c
+  least_squares.c
+  splines.c
+  roots.c
+  distributions.c
+  multivariate_normal.c
+  prng.c
+  streaming.c
+  scalar.c
+  fft.c
+  windows.c
+  vector.c
+  vector2.c
+  Generating Code...
+  Compiling...
+  vector3.c
+  vector4.c
+  bdot_detumble.c
+  quaternion_pd.c
+  so3_attitude.c
+  path_following_guidance.c
+  pn_guidance.c
+  gnss_carrier_fll.c
+  gnss_carrier_pll.c
+  gnss_code_dll.c
+  ins_gnss.c
+  ins_gnss_tight.c
+  extremum_seek.c
+  self_tune_reg.c
+  adrc.c
+  imc.c
+  lead_lag.c
+  pid.c
+  smith_predictor.c
+  control_allocator.c
+  Generating Code...
+  Compiling...
+  gain_schedule.c
+  adaptive_bs.c
+  backstepping.c
+  cbf_qp.c
+  clf_cbf.c
+  clf_qp.c
+  computed_torque.c
+  feedback_lin.c
+  flatness.c
+  indi.c
+  indi2.c
+  ndi.c
+  pid_autotune.c
+  ddp.c
+  deadbeat_mpc.c
+  economic_mpc.c
+  explicit_mpc.c
+  fs_mpc.c
+  ilqr.c
+  linear_mpc.c
+  Generating Code...
+  Compiling...
+  nmpc_rti.c
+  robust_mpc.c
+  sparse_mpc.c
+  stochastic_mpc.c
+  tracking_mpc.c
+  zone_mpc.c
+  reference_governor.c
+  decoupler.c
+  lqg.c
+  lqi.c
+  lqr.c
+  state_feedback.c
+  clarke_park.c
+  droop_control.c
+  dtc_control.c
+  dtc_flux_torque_estimator.c
+  foc_current_control.c
+  resonant_pr.c
+  sogi_fll.c
+  sogi_pll.c
+  Generating Code...
+  Compiling...
+  srf_pll.c
+  svpwm.c
+  complementary.c
+  madgwick.c
+  mahony.c
+  mekf.c
+  quest.c
+  triad.c
+  fll.c
+  nco.c
+  pll.c
+  sliding_dft.c
+  sogi.c
+  zero_cross_freq.c
+  ckf.c
+  ekf.c
+  error_state_ekf.c
+  imm_ekf.c
+  invariant_ekf.c
+  iterated_ekf.c
+  Generating Code...
+  Compiling...
+  linear_kf.c
+  scalar_kf.c
+  sqrt_ekf.c
+  sqrt_ukf.c
+  ukf.c
+  ukf_merwe.c
+  mhe.c
+  dob.c
+  edob.c
+  eso.c
+  luenberger.c
+  particle.c
+  rls.c
+  alpha_beta.c
+  alpha_beta_gamma.c
+  bessel.c
+  butterworth.c
+  chebyshev1.c
+  chebyshev2.c
+  elliptic.c
+  Generating Code...
+  Compiling...
+  fir_windowed.c
+  biquad_cascade.c
+  ema.c
+  fir.c
+  median.c
+  moving_average.c
+  notch.c
+  anti_windup_backcalc.c
+  anti_windup_clamp.c
+  anti_windup_cond.c
+  bumpless_transfer.c
+  deadband.c
+  gain_block.c
+  hysteresis.c
+  integrator.c
+  mode_select.c
+  multirate_bridge.c
+  rate_limiter.c
+  saturator.c
+  sensor_fdi.c
+  Generating Code...
+  Compiling...
+  sensor_voter.c
+  signal_validity.c
+  sum_junction.c
+  unit_delay.c
+  glucose_control_profile.c
+  pkpd_target_control.c
+  ventilator_control_profile.c
+  qp_active_set.c
+  bezier_traj.c
+  bspline_traj.c
+  jerk_profile.c
+  poly_traj_3.c
+  poly_traj_5.c
+  ref_model_1.c
+  ref_model_2.c
+  s_curve.c
+  trapezoid_profile.c
+  Generating Code...
+  status.c
+  fault.c
+  core.c
+  fault.c
+  core.c
+C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\core.c(298,106): warning C4244: '=': conversion from 'int' to 'umath_accumulator_t', possible loss of data [C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\uetd_core.vcxproj]
+  core.c
+  status.c
+  status.c
+  uetd_core.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\Release\uetd_core.lib
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  display_contracts.c
+  uetd_display_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_display_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/CMakeLists.txt
+  main.c
+  uetd_example.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\Release\uetd_example.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uetd_first_pass_expansion_contracts.c
+  uetd_first_pass_expansion_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_first_pass_expansion_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  storage.c
+  calibration.c
+  blackbox.c
+  process_image.c
+  modbus.c
+  canopen.c
+  uetd_first_pass_service_scaffolds.c
+  Generating Code...
+  uetd_first_pass_service_scaffolds.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_first_pass_service_scaffolds.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  manual_tasks_contracts.c
+  tasks.c
+  Generating Code...
+  uetd_manual_tasks_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_manual_tasks_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  medi_can.c
+  uetd_medi_can_scaffold_contracts.c
+  Generating Code...
+  uetd_medi_can_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_medi_can_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  portable_runtime_contracts.c
+  uetd_portable_runtime_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_portable_runtime_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  target_profile_scaffolds.c
+  target_profiles.c
+  nrf52840.c
+  stm32f4.c
+  stm32f7.c
+  stm32g0.c
+  stm32g4.c
+  stm32h7.c
+  stm32l4plus.c
+  Generating Code...
+  uetd_target_profile_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_target_profile_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_runtime_contracts.c
+  statemachine.c
+  lifecycle.c
+  deferred.c
+  deadline.c
+  span.c
+  Generating Code...
+  uetd_uapp_capacity_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uapp_capacity_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_runtime_contracts.c
+  uetd_uapp_runtime_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uapp_runtime_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_services_contracts.c
+  uetd_uapp_services_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uapp_services_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_supervision_contracts.c
+  supervisor.c
+  watchdog_gate.c
+  health.c
+  Generating Code...
+  uetd_uapp_supervision_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uapp_supervision_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_update_contracts.c
+  uetd_uapp_update_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uapp_update_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  bdot_detumble.c
+  quaternion_pd.c
+  so3_attitude.c
+  path_following_guidance.c
+  pn_guidance.c
+  gnss_carrier_fll.c
+  gnss_carrier_pll.c
+  gnss_code_dll.c
+  ins_gnss.c
+  ins_gnss_tight.c
+  extremum_seek.c
+  self_tune_reg.c
+  adrc.c
+  imc.c
+  smith_predictor.c
+  control_allocator.c
+  gain_schedule.c
+  adaptive_bs.c
+  backstepping.c
+  cbf_qp.c
+  Generating Code...
+  Compiling...
+  clf_cbf.c
+  clf_qp.c
+  computed_torque.c
+  feedback_lin.c
+  flatness.c
+  indi.c
+  indi2.c
+  ndi.c
+  pid_autotune.c
+  ddp.c
+  deadbeat_mpc.c
+  economic_mpc.c
+  explicit_mpc.c
+  fs_mpc.c
+  ilqr.c
+  linear_mpc.c
+  nmpc_rti.c
+  robust_mpc.c
+  sparse_mpc.c
+  stochastic_mpc.c
+  Generating Code...
+  Compiling...
+  tracking_mpc.c
+  zone_mpc.c
+  reference_governor.c
+  decoupler.c
+  lqg.c
+  lqi.c
+  lqr.c
+  state_feedback.c
+  clarke_park.c
+  droop_control.c
+  dtc_control.c
+  dtc_flux_torque_estimator.c
+  foc_current_control.c
+  resonant_pr.c
+  sogi_fll.c
+  sogi_pll.c
+  srf_pll.c
+  svpwm.c
+  complementary.c
+  madgwick.c
+  Generating Code...
+  Compiling...
+  mahony.c
+  mekf.c
+  quest.c
+  triad.c
+  fll.c
+  nco.c
+  pll.c
+  sliding_dft.c
+  sogi.c
+  zero_cross_freq.c
+  ckf.c
+  ekf.c
+  error_state_ekf.c
+  imm_ekf.c
+  invariant_ekf.c
+  iterated_ekf.c
+  linear_kf.c
+  scalar_kf.c
+  sqrt_ekf.c
+  sqrt_ukf.c
+  Generating Code...
+  Compiling...
+  ukf.c
+  ukf_merwe.c
+  mhe.c
+  dob.c
+  edob.c
+  eso.c
+  luenberger.c
+  particle.c
+  rls.c
+  alpha_beta.c
+  alpha_beta_gamma.c
+  bessel.c
+  butterworth.c
+  chebyshev1.c
+  chebyshev2.c
+  elliptic.c
+  fir_windowed.c
+  biquad_cascade.c
+  ema.c
+  fir.c
+  Generating Code...
+  Compiling...
+  median.c
+  moving_average.c
+  notch.c
+  los_guidance.c
+  pure_pursuit_guidance.c
+  ilc.c
+  l1_adaptive.c
+  mrac_composite.c
+  mrac_lyapunov.c
+  mrac_mit.c
+  aw_observer.c
+  dahlin.c
+  deadbeat.c
+  repetitive.c
+  dynamic_surface_control.c
+  fractional_order_smc.c
+  fuzzy_controller.c
+  ida_pbc.c
+  integral_smc.c
+  rise.c
+  Generating Code...
+  Compiling...
+  smc.c
+  super_twisting.c
+  terminal_smc.c
+  pole_place.c
+  adaptive_mpc.c
+  gain_scheduled_mpc.c
+  h2_state_feedback.c
+  h_inf_of.c
+  h_inf_sf.c
+  ddsrf_pll.c
+  dsogi_pll.c
+  msogi_fll.c
+  flux_weakening_control.c
+  mtpa_control.c
+  sensorless_foc_observer.c
+  average_current_mode_control.c
+  half_cycle_predictive_current_control.c
+  hysteretic_current_control.c
+  peak_current_mode_control.c
+  phase_shift_full_bridge_control.c
+  Generating Code...
+  Compiling...
+  cusum_change_detector.c
+  innovation_monitor.c
+  persistent_excitation_monitor.c
+  recursive_ar.c
+  recursive_arma.c
+  recursive_armax.c
+  recursive_arx.c
+  recursive_bj.c
+  recursive_iv.c
+  recursive_oe.c
+  rpem.c
+  adaptive_kf.c
+  dual_kf.c
+  fading_memory_kf.c
+  gaussian_sum_filter.c
+  out_of_sequence_kf.c
+  resonant_ekf_llc_src.c
+  robust_kf.c
+  ud_kf.c
+  h_inf_obs.c
+  Generating Code...
+  Compiling...
+  high_gain_observer.c
+  reduced_obs.c
+  sliding_mode_observer.c
+  uio.c
+  lms.c
+  nlms.c
+  savgol_filter.c
+  qp_admm.c
+  qp_projected_gradient.c
+  cic_decimator.c
+  polyphase_resampler.c
+  spectral_peak_interpolation.c
+  peak_tracker.c
+  rms_window.c
+  synchronous_demod.c
+  fft_radix2.c
+  goertzel.c
+  minimum_snap_traj.c
+  time_optimal_profile.c
+  anti_windup_backcalc.c
+  Generating Code...
+  Compiling...
+  anti_windup_clamp.c
+  anti_windup_cond.c
+  bumpless_transfer.c
+  deadband.c
+  gain_block.c
+  hysteresis.c
+  integrator.c
+  mode_select.c
+  multirate_bridge.c
+  rate_limiter.c
+  saturator.c
+  sensor_fdi.c
+  sensor_voter.c
+  signal_validity.c
+  sum_junction.c
+  unit_delay.c
+  glucose_control_profile.c
+  pkpd_target_control.c
+  ventilator_control_profile.c
+  qp_active_set.c
+  Generating Code...
+  Compiling...
+  bezier_traj.c
+  bspline_traj.c
+  jerk_profile.c
+  poly_traj_3.c
+  poly_traj_5.c
+  ref_model_1.c
+  ref_model_2.c
+  s_curve.c
+  trapezoid_profile.c
+  ucon_scaffold_contracts.c
+  Generating Code...
+  uetd_ucon_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_ucon_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  jacobian.c
+  functions.c
+  se2.c
+  se3.c
+  so2.c
+  so3.c
+  ldlt.c
+  lu.c
+  qr.c
+  sparse_csr.c
+  svd.c
+  symmetric_eigen.c
+  integration.c
+  least_squares.c
+  splines.c
+  roots.c
+  distributions.c
+  multivariate_normal.c
+  prng.c
+  streaming.c
+  Generating Code...
+  Compiling...
+  fft.c
+  windows.c
+  uetd_umath_scaffold_contracts.c
+  Generating Code...
+  uetd_umath_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_umath_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  current.c
+  encoder.c
+  gnss.c
+  imu.c
+  mag.c
+  pressure.c
+  range.c
+  temp.c
+  voltage.c
+  uetd_umid_scaffold_contracts.c
+  Generating Code...
+  uetd_umid_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_umid_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uos_freertos_contracts.c
+  freertos.c
+  common.c
+  core.c
+  timing.c
+  tasks.c
+  list.c
+  queue.c
+  event_groups.c
+  timers.c
+  port.c
+  Generating Code...
+  uetd_uos_freertos_16.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uos_freertos_16.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uos_freertos_contracts.c
+  freertos.c
+  common.c
+  core.c
+  timing.c
+  tasks.c
+  list.c
+  queue.c
+  event_groups.c
+  timers.c
+  port.c
+  Generating Code...
+  uetd_uos_freertos_32.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uos_freertos_32.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uos_freertos_contracts.c
+  freertos.c
+  common.c
+  core.c
+  timing.c
+  tasks.c
+  list.c
+  queue.c
+  event_groups.c
+  timers.c
+  port.c
+  Generating Code...
+  uetd_uos_freertos_64.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uos_freertos_64.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  safertos.c
+  uetd_uos_safertos_scaffold_contracts.c
+  Generating Code...
+  uetd_uos_safertos_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uos_safertos_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uos_time_contracts.c
+  common.c
+  baremetal.c
+  Generating Code...
+  uetd_uos_time_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uos_time_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  upal_fdcan_fd_scaffolds.c
+  fdcan_fd.c
+  Generating Code...
+  uetd_upal_fdcan_fd_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_upal_fdcan_fd_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  adc.c
+  comp.c
+  dac.c
+  opamp.c
+  can.c
+  capability_contracts.c
+  cordic.c
+  fmac.c
+  display_panel.c
+  dsi_host.c
+  touch.c
+  dma.c
+  power.c
+  i2c.c
+  spi.c
+  uart.c
+  usb.c
+  block_device.c
+  flash.c
+  qspi.c
+  Generating Code...
+  Compiling...
+  sdmmc.c
+  hrtim.c
+  rtc.c
+  timer.c
+  transaction.c
+  iwdg.c
+  wwdg.c
+  uetd_upal_scaffold_contracts.c
+  Generating Code...
+  uetd_upal_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_upal_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  j1939.c
+  uavcan_v1.c
+  iec60870.c
+  lin.c
+  elrs.c
+  msp.c
+  uproto_scaffold_contracts.c
+  Generating Code...
+  uetd_uproto_future_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uproto_future_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uavcan.c
+  framing.c
+  mavlink.c
+  connection_manager.c
+  time_sync.c
+  crsf.c
+  dshot.c
+  sbus.c
+  usb_device.c
+  uetd_uproto_scaffold_contracts.c
+  Generating Code...
+  uetd_uproto_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Release\uetd_uproto_scaffold_contracts.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/CMakeLists.txt

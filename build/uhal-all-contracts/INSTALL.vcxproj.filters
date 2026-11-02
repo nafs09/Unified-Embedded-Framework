@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\CMakeFiles\f7fc16611dc71ea192bf10b90764dd02\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{8930BF45-C50E-3C68-A6AC-5595492F9103}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

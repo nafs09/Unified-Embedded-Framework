@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/uapp/secure_update.c"
+  ],
+  "headers": [
+    "include/uapp/secure_update.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "ucore"
+  ],
+  "phase": 0,
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "include/uapp/SECURITY_AND_UPDATE.md",
+  "priority": "FIRST_PASS",
+  "implementation_notes": "Portable authenticated update orchestration with durable checkpoints and boot evidence."
+}

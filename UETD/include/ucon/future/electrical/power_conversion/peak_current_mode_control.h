@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for PEAK_CURRENT_MODE_CONTROL.
 #ifndef UETD_UCON_SCAFFOLD_PEAK_CURRENT_MODE_CONTROL_H
 #define UETD_UCON_SCAFFOLD_PEAK_CURRENT_MODE_CONTROL_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

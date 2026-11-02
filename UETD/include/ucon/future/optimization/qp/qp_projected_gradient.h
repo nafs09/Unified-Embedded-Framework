@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for QP_PROJECTED_GRADIENT.
 #ifndef UETD_UCON_SCAFFOLD_QP_PROJECTED_GRADIENT_H
 #define UETD_UCON_SCAFFOLD_QP_PROJECTED_GRADIENT_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

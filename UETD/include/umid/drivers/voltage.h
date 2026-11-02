@@ -10,7 +10,7 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/adc.h"
+#include "upal/analog/adc.h"
 
 typedef struct {
     upal_adc_t* adc;
@@ -19,7 +19,9 @@ typedef struct {
     uetd_f32_t vref_v;        /* ADC reference voltage */
 } umid_voltage_t;
 
+/// Initialize the voltage sensor adapter.
 uetd_status_t umid_voltage_init(umid_voltage_t* vs);
+/// Read the measured voltage in volts.
 uetd_f32_t umid_voltage_read_v(const umid_voltage_t* vs);
 
 #ifdef __cplusplus

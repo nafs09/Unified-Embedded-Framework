@@ -50,8 +50,14 @@ and compiler API.
 
 The server delegates validation to the shared compiler frontend. Diagnostic
 coverage therefore tracks that frontend's current implementation. Formatting
-does not rewrite expressions or reorder declarations; it only applies brace
-indentation and whitespace cleanup.
+does not rewrite expressions or reorder declarations; it applies block and
+continuation indentation and whitespace cleanup using the same engine as
+`uef-gen format`. Imported diagnostics are published on their own source file;
+one count summary links to that file at the importing node/contract. This keeps
+Visual Studio's native hover bounded while retaining every detail in Error List.
+An open buffer's current analysis takes precedence over saved-file diagnostics
+from an importer. Saving a child refreshes its importing systems; closing or
+removing imports clears diagnostics that are no longer owned by any open document.
 
 ## Architecture rules
 

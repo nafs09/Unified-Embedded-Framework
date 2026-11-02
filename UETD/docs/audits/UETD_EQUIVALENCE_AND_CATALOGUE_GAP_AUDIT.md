@@ -18,7 +18,7 @@ The implemented frontend parses, validates, and lowers `.uef` projects and
 `.uefs` systems into backend-neutral plans. The firmware emitter and target
 generation routes are incomplete; most of the registered catalogue
 does not have authoring contracts; many runtime, peripheral, protocol, math,
-and control implementations are scaffolds; and the two example target records
+and control implementations are scaffolds; and all 16 physical development-board records
 are explicitly unavailable for generation. At present, a catalogue entry is
 often only a name, not a usable capability.
 
@@ -50,10 +50,10 @@ gate.
 Existing implementation counts and status statements below are drawn from
 `UETD_SYSTEM_AUDIT.md`, `UCON_CATALOGUE_AUDIT.md`, `UMATH_CATALOGUE.md`, the
 registry/manifests, and the current language/generator sources. The
-implementation-status snapshot reports 308 registered
-module IDs, of which only four have authoring contracts; 211 UCON catalogue
-keys with only PID and lead-lag registered implementations; and 34 UMATH
-modules, of which 11 are selectable while 23 remain scaffolds. Counts are
+implementation-status snapshot reports 362 registered
+module IDs, of which only four have authoring contracts; 213 UCON module
+identities with only PID and lead-lag registered implementations; and 35 UMATH
+modules, of which 11 are eligible by module metadata while 24 remain blocked. Counts are
 useful inventory signals, not measures of application coverage.
 
 ## What “equivalent” must mean
@@ -93,8 +93,8 @@ with a placeholder.
 | System language | `.uefs` frontend parses, resolves, validates, and lowers multi-target contracts into a backend-neutral system plan while retaining local node authority. | Per-node firmware and link artifact emission is not implemented. Cross-node and H745 M7/M4 lifecycle facts still need target-owned records. |
 | Selective templates | `uef-gen` has module selection and transitive dependency closure for hardware-configuration input; templates are UETD-owned data/routes. | The standalone application and system plans do not yet reach those renderers. Scaffold-only modules remain blocked, and target readiness is not yet resolved from the complete standalone project contract. |
 | Target and board data | Exact-chip and development-board registries, provenance fields, and fail-closed generation flags exist. | Chip records still expose broad peripheral groups where exact package pins, alternate functions, clock routes, DMA/DMAMUX requests, IRQ facts, memory ownership, linker/startup, errata, and board circuits are required. STM32F722RET6, STM32H745XIH6, and STM32G474VET6 support must be judged from exact board profiles, not family names; the H745 and G474 records cited by the coil plan are `generation_available: false`. |
-| Peripheral/driver layer | UHAL/UPAL APIs and UETD module source/header manifests exist; future contracts detail UART framing/half-duplex, capture publication, synchronized ADC/PWM, USB profiles and Ethernet MAC/PHY ownership. | These added mode contracts are design-only and target operations remain target-dependent. Promotion requires typed APIs, target capability mapping, resource conflict rules and backend evidence; sensor-specific drivers remain user-authored. |
-| Runtime/OS and safety | Bare-metal and FreeRTOS surfaces, OS/task/state-machine language design, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and watchdog descriptors exist. | Target startup/scheduling generation and watchdog hardware qualification remain separate work. The gate controls only feeds routed through it; retained crash context, update recovery, external hardware interlocks and capability-linked evidence remain future services. |
+| Peripheral/driver layer | UHAL/UPAL APIs and UETD module source/header manifests exist; first-pass contracts detail UART framing/half-duplex, capture publication, synchronized ADC/PWM, USB profiles and Ethernet MAC/PHY ownership. | These added mode contracts are design-only and target operations remain target-dependent. Promotion requires typed APIs, target capability mapping, resource conflict rules and backend evidence; sensor-specific drivers remain user-authored. |
+| Runtime/OS and safety | Bare-metal and FreeRTOS surfaces, OS/task/state-machine language design, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and watchdog descriptors exist. | Target startup/scheduling generation and watchdog hardware qualification remain separate work. The gate controls only feeds routed through it; retained crash context, update recovery, external hardware interlocks and capability-linked evidence remain unimplemented first-pass services. |
 | Types, units, and ABI | The implemented frontends validate core project types, units, shapes, and explicit protocol field mappings without relying on C struct layout. Additional interchange types have frontend representations. | The emitter still needs target representations for the supported type set. Cross-core ABI and persistent schema evolution are separate contracts and are not implied by source-level type checking. |
 | Math/control | UMATH owns common numerical APIs; UCON contains a large named algorithm catalogue; PID and lead-lag are the implemented registered algorithms. | Catalogue breadth greatly exceeds working implementations. Key drone estimation/filter/mixer and coil estimator/optimizer/plant operations depend on missing algorithms and UMATH foundations. Typed state/configuration, dimensions/units, failure results, memory/work bounds, numerical policy, target support, and validation evidence must be complete per algorithm. |
 | Protocols and external components | UPROTO has a working PPM decoder and named CRSF/SBUS/MAVLink/DSHOT/UAVCAN surfaces; custom project protocol and external endpoint concepts exist. | Most protocol cores are fail-closed or scaffolds. Transport-independent framing vs UART-bound APIs and ISR/task ownership are unresolved. For external FPGA, UETD currently specifies the MCU endpoint contract; it does not generate or qualify FPGA RTL, transceiver/GTP, timing constraints, or electrical path. |
@@ -141,7 +141,7 @@ and validated rather than silently assumed.
 | Scheduling and concurrency | Bare-metal superloop, tick/tickless RTOS, ISR/deferred-work boundaries, periodic/event tasks, deadlines, WCET/stack/queue budgets, resource locks, affinity, atomicity and delivery policies. | Language concepts exist, but parser/lowering and qualified runtime profiles are missing. Generic SPSC or single-core critical sections cannot be treated as multicore/ISR-safe by default. |
 | Peripheral portfolio | GPIO/EXTI; UART/USART; SPI/I2C; timer/PWM/HRTIM/capture/encoder; ADC/DAC/comparator; DMA; CAN/CAN-FD/LIN; USB/Ethernet; storage/flash/RTC; watchdog and reset. | Hardware group names do not capture exact instances, modes, routing or drivers. UPAL sources remain broadly scaffolded. Availability must be recorded per part, package, board and operating mode. |
 | Configuration and persistence | Typed defaults and ranges; schema/version migration; calibration storage; atomic commit and power-loss behavior; wear limits; manufacturing identity and bounded NVM access. | A project `parameter` is not a persistent-data contract. Logging/storage adapters and target NVM behavior are incomplete; no general migration and crash-consistency contract is established. |
-| Communications and connectivity | Typed framing, transport-independent codecs, discovery/provisioning where used, retries/timeouts, flow control, security hooks, bus-off/recovery, network stacks and version compatibility. | Some protocol names exist, but implementations, typed authoring contracts, transport policy and qualification are incomplete. Wireless, IP/network and secure provisioning support cannot be inferred from those names. |
+| Communications and connectivity | Typed framing, transport-independent codecs, discovery/provisioning where used, retries/timeouts, flow control, security hooks, bus-off/recovery, network stacks and version compatibility. | Active WiFi/Bluetooth/IP and UPAL link-provider contracts exist, while TLS/application protocols remain outlines. The contracts do not provide vendor radios, the IP/security engines, target bindings, provisioning policy, or qualification; chip capability labels still do not imply usable wireless/network support. |
 | Safety, health and diagnostics | Independent watchdogs; health leases; reset/fault record; boot self-check; degraded-mode policy; safe outputs; bounded event/log buffers; counters/trace; diagnostic transport; service mode. | UAPP fault reporting is incomplete, watchdog semantics are not fully bound to hardware/runtime profiles, and most fault/supervisor concepts lack end-to-end generated enforcement and fault-injection evidence. |
 | Security and field maintenance | Optional secure boot, signed image/update, rollback policy, trust/key storage, debug lock, authenticated maintenance, image compatibility and recovery mode. | These are not established by generic build/flash abstractions. The catalogue needs explicit security capabilities and external crypto/boot dependencies where these are product requirements; targets lacking them must be marked unsupported. |
 | Memory, power and device lifecycle | Static allocation budgets, stack/heap policy, DMA buffers, MPU/cache setup, sleep/wake and clock transitions, peripheral ownership, hot-plug/reinitialization when applicable. | Memory/core/cache facts and lifecycle operations are not comprehensively modeled in target records or generated runtime behavior. No dynamic allocation policy should be inferred from bounded-looking application syntax. |
@@ -372,7 +372,7 @@ The full acceptance projects depend on these integration steps:
 
 - [System implementation snapshot](UETD_SYSTEM_AUDIT.md)
 - [UCON catalogue details](UCON_CATALOGUE_AUDIT.md)
-- [UMATH catalogue](../catalogues/UMATH_CATALOGUE.md)
+- [UMATH catalogue](../UMATH_CATALOGUE.md)
 - [Standalone language design](../../../docs/design/PROJECT_LANGUAGE_DESIGN.md)
 - [Multi-target and multicore plan](../../../docs/roadmap/MULTI_TARGET_AND_MULTICORE_PLAN.md)
 - [Repository implementation plan](../../../docs/roadmap/IMPLEMENTATION_PLAN.md)
@@ -399,20 +399,22 @@ The full acceptance projects depend on these integration steps:
   generation profile.
 - `UETD/docs/audits/UETD_SYSTEM_AUDIT.md`,
   `UETD/docs/audits/UCON_CATALOGUE_AUDIT.md`, and
-  `UETD/docs/catalogues/UMATH_CATALOGUE.md` describe layer and catalogue
+  `UETD/docs/UMATH_CATALOGUE.md` describe layer and catalogue
   implementation status.
 
-## Future-capability catalogue
+## First-pass and later design catalogues
 
-A design-only roadmap entry does not make a source feature generatable. The
-machine-readable future catalogue records additional capability contracts for
-data services, peripheral extensions, industrial protocols, language types,
-external hardware/evidence, and secure field updates. Linked UETD and `uef-gen`
-contracts state operational bounds, ownership, target/profile constraints,
-recovery/freshness rules, and promotion gates.
+A design-only entry does not make a source feature generatable. The approved
+[placement migration](UETD_FIRST_PASS_MIGRATION_2026-10-29.md) puts 20 required
+capability records in `registry/first_pass/registry.json`, covering data
+services, peripheral extensions, common industrial/network protocols, language
+types, external hardware/evidence and secure field updates. The six later
+planning entries remain in `registry/future/registry.json`. Shared schemas
+live in `registry/contracts/`. Linked UETD and `uef-gen` contracts state
+operational bounds, ownership, target/profile constraints, recovery/freshness
+rules and qualification gates.
 
-The future catalogue can be loaded for roadmap inspection and reference
-integrity. It is deliberately disconnected from the selectable module
-registry, project completions, normal umbrella headers, and generation routes.
-No new source-equivalence claim follows until those contracts are promoted,
-implemented and qualified for the exact target configuration.
+Both design indexes can be loaded for inspection and reference integrity.
+Neither grants module-selection or generation readiness. Promoted runtime
+records remain Phase 0 and explicitly blocked; no source-equivalence claim
+follows until their implementations are qualified for the exact target.

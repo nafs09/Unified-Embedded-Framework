@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/contracts/provider-contract-1.0.schema.json",
+  "title": "UETD proposed bounded provider profile",
+  "type": "object",
+  "required": ["schema_version", "status", "generation", "provider_id", "implementation", "target_scope", "operations", "requirements", "evidence"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "status": {"const": "design_only"},
+    "generation": {"const": "blocked"},
+    "provider_id": {"type": "string", "minLength": 1},
+    "implementation": {"type": "object", "required": ["kind", "identity", "revision", "licenses"], "properties": {
+      "kind": {"enum": ["portable", "sdk_adapter", "external_stack", "controller_firmware", "host_tool"]},
+      "identity": {"type": "string", "minLength": 1},
+      "revision": {"type": "string", "minLength": 1},
+      "content_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+      "licenses": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+    }, "additionalProperties": false},
+    "target_scope": {"type": "object", "required": ["selection", "targets", "toolchains", "runtimes", "numeric_profiles"], "properties": {
+      "selection": {"enum": ["unselected", "declared"]},
+      "targets": {"$ref": "#/$defs/identifiers"},
+      "toolchains": {"$ref": "#/$defs/identifiers"},
+      "runtimes": {"$ref": "#/$defs/identifiers"},
+      "numeric_profiles": {"$ref": "#/$defs/identifiers"}
+    }, "allOf": [{"if": {"properties": {"selection": {"const": "declared"}}}, "then": {"properties": {"targets": {"minItems": 1}, "toolchains": {"minItems": 1}, "runtimes": {"minItems": 1}}}}], "additionalProperties": false},
+    "operations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/operation"}},
+    "requirements": {"$ref": "#/$defs/identifiers"},
+    "evidence": {"$ref": "#/$defs/identifiers"}
+  },
+  "$defs": {
+    "identifiers": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "quantity": {"type": ["integer", "null"], "minimum": 0},
+    "operation": {"type": "object", "required": ["id", "interface", "contexts", "may_block", "input_ownership", "completion", "output_commit", "memory", "work"], "properties": {
+      "id": {"type": "string", "minLength": 1},
+      "interface": {"type": "string", "minLength": 1},
+      "contexts": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["main", "task", "isr", "fault"]}},
+      "may_block": {"type": "boolean"},
+      "input_ownership": {"enum": ["copy_on_admission", "borrow_for_call", "borrow_until_terminal", "in_place"]},
+      "completion": {"enum": ["synchronous", "terminal_poll", "deferred_event"]},
+      "output_commit": {"enum": ["unchanged_on_failure", "scratch_modified", "completion_owned"]},
+      "memory": {"type": "object", "required": ["persistent_bytes", "scratch_bytes", "stack_bytes", "evidence_class"], "properties": {
+        "persistent_bytes": {"$ref": "#/$defs/quantity"}, "scratch_bytes": {"$ref": "#/$defs/quantity"}, "stack_bytes": {"$ref": "#/$defs/quantity"},
+        "evidence_class": {"enum": ["static_bound", "measured", "estimated", "unknown"]}
+      }, "additionalProperties": false},
+      "work": {"type": "object", "required": ["evidence_class", "maximum_units", "unit"], "properties": {
+        "evidence_class": {"enum": ["static_bound", "measured", "estimated", "unknown"]},
+        "maximum_units": {"$ref": "#/$defs/quantity"}, "unit": {"type": "string", "minLength": 1}
+      }, "additionalProperties": false}
+    }, "allOf": [{"if": {"properties": {"contexts": {"contains": {"enum": ["isr", "fault"]}}}}, "then": {"properties": {"may_block": {"const": false}}}}], "additionalProperties": false}
+  },
+  "additionalProperties": false
+}

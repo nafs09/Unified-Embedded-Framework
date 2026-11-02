@@ -6,7 +6,14 @@
   "headers": [
     "include/ucore/status.h",
     "include/ucore/types.h",
+    "include/uproto/network/bluetooth.h",
+    "include/uproto/network/ip.h",
+    "include/uproto/mavlink.h",
     "include/uproto/uproto.h",
-    "include/uproto/mavlink.h"
-  ]
+    "include/uproto/network/wifi.h"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "source_scaffold",
+  "scaffold_reason": "Public declarations and fail-closed source outlines exist; operational behavior and target/provider integration remain unimplemented."
 }

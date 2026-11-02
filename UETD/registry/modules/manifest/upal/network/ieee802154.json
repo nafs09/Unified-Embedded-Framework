@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/upal/network/ieee802154.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Fixed-frame MAC/radio dispatch exists; exact PHY, channel plan, interrupt/DMA timing, security hardware, and target qualification remain provider-owned.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/upal/network/ieee802154.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "target IEEE 802.15.4 radio provider",
+    "optional upal/radio_transport"
+  ]
+}

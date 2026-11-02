@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <upal/fdcan_fd.h>
+#include <upal/can/fdcan_fd.h>
 
 int main(void) {
     size_t failures = 0u;

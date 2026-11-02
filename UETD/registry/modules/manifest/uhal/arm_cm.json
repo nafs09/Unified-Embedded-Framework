@@ -1,14 +1,10 @@
 {
   "sources": [
-    "src/uhal/arm_cm/atomic.c",
-    "src/uhal/arm_cm/cache.c",
-    "src/uhal/arm_cm/clock.c",
-    "src/uhal/arm_cm/core.c",
-    "src/uhal/arm_cm/fault.c",
-    "src/uhal/arm_cm/gpio.c",
-    "src/uhal/arm_cm/irq.c",
-    "src/uhal/arm_cm/memory.c",
-    "src/uhal/arm_cm/timing.c"
+    "src/uhal/arch/cortex_m/atomic.c",
+    "src/uhal/arch/cortex_m/cache.c",
+    "src/uhal/arch/cortex_m/core.c",
+    "src/uhal/arch/cortex_m/fault.c",
+    "src/uhal/arch/cortex_m/irq.c"
   ],
   "dependencies": [
     "ucore"
@@ -28,6 +24,17 @@
     "include/uhal/fault.h",
     "include/uhal/gpio.h",
     "include/uhal/irq.h",
-    "include/uhal/memory.h"
+    "include/uhal/memory.h",
+    "src/uhal/arch/cortex_m/cmsis.h"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "target_integration_incomplete",
+  "scaffold_reason": "CPU primitives are implemented, but an exact SoC platform for clock/GPIO/memory/time and startup/linking is required. A development board is optional.",
+  "architecture": "CORTEX_M",
+  "platform": "CUSTOM",
+  "defines": [
+    "UETD_TARGET_CORTEX_M=1",
+    "UETD_ARCH_CORTEX_M=1"
   ]
 }

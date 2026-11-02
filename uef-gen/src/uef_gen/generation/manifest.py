@@ -6,6 +6,7 @@ from uef_gen import __version__
 from uef_gen.generation.models import GenerationResult
 from uef_gen.modules.bundled import BundledDependencySelection
 from uef_gen.resolver.models import ResolvedProject
+from uef_gen.resolver.hardware import architecture_family
 from uef_gen.uetd_adapter.snapshot import UETDSnapshot
 
 def build_manifest(
@@ -29,11 +30,14 @@ def build_manifest(
         "flash_bytes": project.flash_bytes,
         "arithmetic": project.arithmetic,
         "rtos": project.rtos,
+        "architecture": architecture_family(project.chip.family.arch.name),
+        "core_count": project.chip.core_count,
+        "hardware_profile": project.hardware_profile,
+        "build_profile": project.hardware_profile.get("build", {}),
+        "flash_profile": project.hardware_profile.get("flash", {}),
     }
     if project.development_board is not None:
         target["development_board"] = project.development_board["id"]
-        target["build_profile"] = project.development_board.get("build", {})
-        target["flash_profile"] = project.development_board.get("flash", {})
     return {
         "manifest_version": "1.0",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),

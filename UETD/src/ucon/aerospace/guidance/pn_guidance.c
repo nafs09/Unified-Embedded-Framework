@@ -2,7 +2,7 @@
 /// @file src/ucon/aerospace/guidance/pn_guidance.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/aerospace/guidance/pn_guidance.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Proportional-navigation and route-following laws separated from inner-loop control.

@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for QP_ADMM.
 #ifndef UETD_UCON_SCAFFOLD_QP_ADMM_H
 #define UETD_UCON_SCAFFOLD_QP_ADMM_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

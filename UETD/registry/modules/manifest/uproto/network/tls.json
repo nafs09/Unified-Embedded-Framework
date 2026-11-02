@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/uproto/network/tls.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Opaque credential/session dispatch exists; cryptographic provider, trust policy, entropy, key storage, and security qualification remain external dependencies.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/network/ip.h",
+    "include/uproto/network/tls.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "consumer-selected cryptographic/TLS implementation",
+    "target entropy source",
+    "optional secure key store"
+  ],
+  "phase": 0
+}

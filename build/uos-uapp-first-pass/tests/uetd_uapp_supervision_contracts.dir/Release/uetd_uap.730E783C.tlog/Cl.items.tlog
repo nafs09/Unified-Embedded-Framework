@@ -1,0 +1,4 @@
+C:\NEXUS\Unified Embedded Framework\UETD\tests\uapp_supervision_contracts.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_supervision_contracts.dir\Release\uapp_supervision_contracts.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\supervisor.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_supervision_contracts.dir\Release\supervisor.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\watchdog_gate.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_supervision_contracts.dir\Release\watchdog_gate.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\health.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_supervision_contracts.dir\Release\health.obj

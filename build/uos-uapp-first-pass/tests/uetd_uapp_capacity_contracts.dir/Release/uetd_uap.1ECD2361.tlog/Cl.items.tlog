@@ -1,0 +1,6 @@
+C:\NEXUS\Unified Embedded Framework\UETD\tests\uapp_runtime_contracts.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_capacity_contracts.dir\Release\uapp_runtime_contracts.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\statemachine.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_capacity_contracts.dir\Release\statemachine.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\lifecycle.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_capacity_contracts.dir\Release\lifecycle.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uos\deferred.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_capacity_contracts.dir\Release\deferred.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\deadline.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_capacity_contracts.dir\Release\deadline.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\span.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uapp_capacity_contracts.dir\Release\span.obj

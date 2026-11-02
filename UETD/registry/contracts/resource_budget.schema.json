@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/contracts/resource-budget-1.0.schema.json",
+  "title": "UETD proposed image resource budget report",
+  "type": "object",
+  "required": ["schema_version", "status", "generation", "image_id", "target_id", "allocations", "execution", "assumptions", "unresolved"],
+  "properties": {
+    "schema_version": {"const": "1.0"}, "status": {"const": "design_only"}, "generation": {"const": "blocked"},
+    "image_id": {"type": "string", "minLength": 1}, "target_id": {"type": "string", "minLength": 1},
+    "allocations": {"type": "array", "items": {"type": "object", "required": ["owner", "kind", "region", "bytes", "alignment", "evidence_class"], "properties": {
+      "owner": {"type": "string", "minLength": 1},
+      "kind": {"enum": ["state", "stack", "scratch", "queue", "pool", "dma", "framebuffer", "retained", "partition", "external_provider"]},
+      "region": {"type": "string", "minLength": 1},
+      "offset": {"type": ["integer", "null"], "minimum": 0},
+      "bytes": {"type": ["integer", "null"], "minimum": 0},
+      "alignment": {"type": "integer", "minimum": 1},
+      "evidence_class": {"$ref": "#/$defs/evidence"},
+      "lifetime": {"type": "string", "minLength": 1}
+    }, "additionalProperties": false}},
+    "execution": {"type": "array", "items": {"type": "object", "required": ["owner", "context", "maximum_us", "evidence_class"], "properties": {
+      "owner": {"type": "string", "minLength": 1}, "context": {"enum": ["main", "task", "isr", "fault"]},
+      "period_us": {"type": ["integer", "null"], "minimum": 1}, "deadline_us": {"type": ["integer", "null"], "minimum": 1},
+      "maximum_us": {"type": ["integer", "null"], "minimum": 0}, "evidence_class": {"$ref": "#/$defs/evidence"}
+    }, "additionalProperties": false}},
+    "assumptions": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "unresolved": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {"evidence": {"enum": ["static_bound", "measured", "estimated", "unknown"]}},
+  "additionalProperties": false,
+  "$comment": "Unknown/null is not zero. Region reachability, overlap, lifetime sharing, bandwidth and timing guarantees require semantic/evidence checks."
+}

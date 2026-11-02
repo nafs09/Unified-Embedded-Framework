@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for SO3_ATTITUDE.
 #ifndef UETD_UCON_SCAFFOLD_SO3_ATTITUDE_H
 #define UETD_UCON_SCAFFOLD_SO3_ATTITUDE_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

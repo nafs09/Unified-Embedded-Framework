@@ -5,6 +5,16 @@
 #define UETD_UHAL_TARGET_CONFIG_H
 
 /* Target builds may override these values in their board configuration header. */
+/* Capabilities come from the chip/platform independently of any board preset. */
+#ifndef UHAL_HAS_IRQ_PRIORITY_MASK
+#define UHAL_HAS_IRQ_PRIORITY_MASK 0
+#endif
+#ifndef UHAL_IRQ_COUNT
+#define UHAL_IRQ_COUNT 0u
+#endif
+#ifndef UHAL_CORE_COUNT
+#define UHAL_CORE_COUNT 1u
+#endif
 #ifndef UHAL_HAS_FPU
 #define UHAL_HAS_FPU 0
 #endif

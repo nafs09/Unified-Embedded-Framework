@@ -9,7 +9,7 @@
     "include/ucore/constants.h",
     "include/umath/config.h",
     "include/umath/constants.h",
-    "include/umath/internal/scalar_math.h",
+    "include/umath/internal_scalar_math.h",
     "include/umath/scalar.h",
     "include/umath/status.h",
     "include/umath/vector/vector.h"

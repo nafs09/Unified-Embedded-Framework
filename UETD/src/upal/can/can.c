@@ -1,5 +1,5 @@
 /// @file src/upal/can/can.c
-/// @brief Source scaffold for the V1.2 public contract in upal/can.h.
+/// @brief Source scaffold for the V1.2 public contract in upal/can/can.h.
 ///
 /// Implementation intent: Validate standard/extended identifiers and frame length; keep bxCAN
 ///   and FDCAN-specific differences behind the API boundary.
@@ -7,7 +7,7 @@
 /// Every public function in the paired header has a linkable definition below.
 /// Unimplemented status-returning functions report UETD_NOT_SUPPORTED; value functions
 /// return a neutral value until the target behavior is implemented.
-#include <upal/can.h>
+#include <upal/can/can.h>
 
 uetd_status_t upal_can_init(upal_can_t* c, const upal_can_hw_t* hw, const upal_can_cfg_t* cfg, upal_can_rx_cb_t rx_cb,
                            void* rx_ctx) {

@@ -1,14 +1,14 @@
 {
   "sources": [
-    "src/uhal/x86/atomic.c",
-    "src/uhal/x86/cache.c",
-    "src/uhal/x86/clock.c",
-    "src/uhal/x86/core.c",
-    "src/uhal/x86/fault.c",
-    "src/uhal/x86/gpio.c",
-    "src/uhal/x86/irq.c",
-    "src/uhal/x86/memory.c",
-    "src/uhal/x86/timing.c"
+    "src/uhal/platform/host/atomic.c",
+    "src/uhal/platform/host/cache.c",
+    "src/uhal/platform/host/clock.c",
+    "src/uhal/platform/host/core.c",
+    "src/uhal/platform/host/fault.c",
+    "src/uhal/platform/host/gpio.c",
+    "src/uhal/platform/host/irq.c",
+    "src/uhal/platform/host/memory.c",
+    "src/uhal/platform/host/timing.c"
   ],
   "dependencies": [
     "ucore"
@@ -29,5 +29,11 @@
     "include/uhal/gpio.h",
     "include/uhal/irq.h",
     "include/uhal/memory.h"
+  ],
+  "architecture": "HOST",
+  "platform": "HOST",
+  "defines": [
+    "UHAL_HOST_SIMULATION=1",
+    "UETD_ARCH_HOST=1"
   ]
 }

@@ -10,14 +10,14 @@ These notes are a maintainer worklist, not public usage instructions.
 | --- | --- | --- |
 | Foundational status/types/time | `include/ucore/`, `src/ucore/` | Shared types, status, assertions, checksums, and the monotonic-time declarations used by portable code. |
 | Architecture abstraction | `include/uhal/`, `src/uhal/README.md`, `src/uhal/{arm_cm,x86}/` | Existing CMSIS Cortex-M and host implementations; the README maps each source to its public contract and documents AVR/ESP-IDF work locations and blockers. |
-| Chip/family/board/tool records | `registry/targets/README.md`, `registry/targets/toolchains/README.md`, `registry/targets/{chips,families,development_boards,toolchains}/` | JSON indexes point to per-record manifests. Keep exact silicon facts on the chip, carrier/module facts on development boards, and version/hash pins in the toolchain registry. |
-| Target startup/link contract | `templates/targets/README.md`, `api.json`, board/chip registry records | Parameterized Cortex-M startup/linker, AVR toolchain/flash, Arduino entry, ESP-IDF, Nordic/Zephyr, RP2040, and i.MX RT project templates are available. Missing target facts stay unavailable rather than being guessed. |
+| Chip/family/board/tool records | `registry/TARGETS.md`, `registry/targets/toolchains/README.md`, `registry/targets/{chips,families,development_boards,toolchains}/` | JSON indexes point to per-record manifests. Keep exact silicon facts on the chip, carrier/module facts on development boards, and version/hash pins in the toolchain registry. |
+| Target startup/link contract | `docs/TARGET_TEMPLATES.md`, `api.json`, board/chip registry records | Parameterized Cortex-M startup/linker, AVR toolchain/flash, Arduino entry, ESP-IDF, Nordic/Zephyr, RP2040, and i.MX RT project templates are available. Missing target facts stay unavailable rather than being guessed. |
 | Portable math | `include/umath/`, `src/umath/`, `catalogues/UMATH_CATALOGUE.md`, `registry/modules/manifest/umath/` | Each module header/source is registered. Implemented functions have behavior; scaffold functions have detailed operation-level TODOs and remain fail-closed/selectability-gated as described by their manifest. |
 | Control and estimation | `include/ucon/`, `src/ucon/`, `catalogues/` | Algorithm contracts and direct C implementations are grouped by family. Incomplete operations remain fail-closed until their typed behavior and numeric policy are reviewed. |
 | Peripheral abstraction | `include/upal/`, `src/upal/` | Hardware-neutral driver contracts and fail-closed source functions; add register bindings in the selected architecture/board implementation, not in portable code. |
 | Sensor/middleware | `include/umid/`, `include/umid/drivers/`, `src/umid/`, `src/umid/drivers/`, `include/uproto/`, `src/uproto/` | Shared UMID services plus manually maintained sensor/measurement drivers; keep transport timing and pin binding in board/backend code. |
-| Scheduler/RTOS | `include/uos/`, `src/uos/{baremetal,freertos}/`, `third_party/` | Backend implementations plus the pinned dependency integration files. [UOS API contract](design/UOS_CONTRACTS.md) distinguishes current backend behavior from required result, timing, ingress, storage, and qualification semantics. |
-| Applications and lifecycle | `include/uapp/`, `src/uapp/`, `examples/` | Lifecycle, supervisor, state machine, and application examples; example mains are intentionally board integration checklists. |
+| Scheduler/RTOS | `include/uos/`, `src/uos/`, `third_party/` | Implemented portable clock/deadline/deferred services and static FreeRTOS adapter; exact ports still need qualification. See [UOS contracts](design/UOS_CONTRACTS.md). |
+| Applications and lifecycle | `include/uapp/`, `src/uapp/`, `examples/manual_runtime/` | Portable first-pass services and runnable manual templates are implemented; concrete I/O/security/storage/boot providers remain application responsibilities. See [the guide](UOS_UAPP_FIRST_PASS.md). |
 
 Read a module's public header for its API and its paired `src/.../*.c` for
 implementation progress. Do not promote a `SCAFFOLD_ONLY` registry/module entry
@@ -164,30 +164,32 @@ separates host checks, compile-only examples, and hardware-validated behavior.
 
 ### UOS timing, deadline, blocking, and storage contracts
 
-- [ ] Implement the [UOS API contract](design/UOS_CONTRACTS.md): replace
+- [x] Implement the [UOS API contract](design/UOS_CONTRACTS.md): replace
   ambiguous synchronization results with status returns and explicit output
   parameters; define poll, finite-timeout, forever, empty/full, object-lifetime,
   copying, concurrency, and ISR-context behavior for every API.
-- [ ] Make `uos_time_now()` use the common UCORE system-start microsecond epoch
-  before and after scheduler startup. Resolve the current FreeRTOS tick-derived
-  epoch, tick wrap, clock initialization, and zero-on-unready ambiguity.
-- [ ] Make `uos_task_delay_until()` transactional. Keep its input deadline
+- [x] Use an explicitly bound common microsecond clock before and after scheduler
+  startup, with status-bearing readiness. The platform adapter binds UCORE time;
+  FreeRTOS scheduler ticks are no longer used as the absolute epoch.
+- [x] Make `uos_task_delay_until()` transactional. Keep its input deadline
   unchanged for invalid arguments or representational overflow; retain cadence
   while skipping missed periods using checked multiplication and addition.
-- [ ] Add checked duration-to-microsecond and duration-to-tick conversions.
+- [x] Add checked duration-to-microsecond and duration-to-tick conversions.
   Preserve zero as a poll only for synchronization calls; do not alias finite
   overflow to `portMAX_DELAY` or forward `UOS_WAIT_FOREVER` to busy-wait delay.
-- [ ] Implement a dedicated FreeRTOS UOS ingress queue and keep it separate
+- [x] Implement FreeRTOS UOS queue operations, including explicit ISR admission
+  and full/empty/timeout results. Kernel simulator tests cover the primitive.
+- [ ] Wire each application's dedicated ingress queue and keep it separate
   from each UAPP FSM queue and each subscriber state mailbox. Require one FSM
   owner, bounded producer behavior, newest-event overflow handling, and an
   independent reliable path for critical causes.
 - [ ] Define target-qualified bare-metal ISR ingress. State whether the chosen
   mechanism is a coalescing flag or record-preserving ring; specify producer
   count, nesting/serialization, memory ordering, overflow, and owner-loop drain.
-- [ ] Extend opaque-storage compile-time size/alignment checks to every
-  supported wrapper/control-block pair and every selected compiler, ABI,
-  kernel configuration, and port. The current assertions cover only the
-  selected FreeRTOS compile and do not qualify a target.
+- [x] Check native static control-block size/alignment for every FreeRTOS wrapper
+  and allocate generated stacks with the native stack element type. Publish
+  consistent storage configuration to consumers. These checks cover the selected
+  compile; exact compiler/ABI/kernel/port qualification remains below.
 - [ ] Create an exact deployment profile for each supported board with the
   compiler/ABI, RTOS configuration, clock tree, startup/vector source, linker
   layout, and interrupt-priority rules. Require on-target evidence for
@@ -235,7 +237,7 @@ separates host checks, compile-only examples, and hardware-validated behavior.
   headers, sources, and manifests exist; each remains fail-closed and unavailable
   to uef-gen.
 - [ ] Implement the Phase 0 UMATH contracts in
-  [`catalogues/UMATH_CATALOGUE.md`](catalogues/UMATH_CATALOGUE.md), starting with derivative/Jacobian
+  [`catalogues/UMATH_CATALOGUE.md`](UMATH_CATALOGUE.md), starting with derivative/Jacobian
   support, deterministic fixed-work integration and estimator propagation,
   FFT/window conventions, and matrix solves for EKF/UKF/MPC. Define dimensions,
   workspace, aliasing, finite-value behavior, convergence limits, and scalar
@@ -376,10 +378,10 @@ describing UETD as a supported embedded release:
    core; generated wrappers do not make the other transports functional. The
    future protocol outlines are documented but not selectable until typed
    profiles, transport requirements, and UETD-owned templates are reviewed.
-6. Recoverable fault reports now enter a fixed RAM queue and can be dispatched
-   from task context. Implement the retained crash-history contract in
-   `include/uapp/future/FAULT_HISTORY.md`; do not write filesystems from a
-   fault handler.
+6. Recoverable fault reports and the portable retained crash-history service
+   are implemented. Supply and qualify atomic retention and architecture
+   capture providers described in `include/uapp/FAULT_HISTORY.md`; do not write
+   filesystems from a fault handler.
 7. Add the host and hardware validation suites listed in Part XIV, and add an
    installable CMake package/configuration that includes the metadata and
    templates required by downstream `uef-gen` use.
@@ -396,10 +398,12 @@ loads the same index for planning and validates that linked files exist. Do not
 copy these items into generation-ready module selection until the APIs,
 backends and evidence are promoted.
 
-- [ ] Promote the UPAL operation extensions from `include/upal/future/`: UART framing/half-duplex, timer capture delivery, synchronized ADC/PWM groups, USB CDC/HID, and Ethernet MAC/PHY.
-- [ ] Implement UMID storage, calibration envelope, binary blackbox, and PLC process-image services from `include/umid/future/`; keep sensor-specific driver algorithms user-authored.
-- [ ] Implement retained crash history and secure-update profiles from `include/uapp/future/` with exact target boot/retention capabilities.
-- [ ] Promote Modbus RTU/TCP and CANopen only after their bounded profiles and PLC process-image mappings are reviewed; see `roadmap/UPROTO_ROADMAP.md` and the future catalogue.
+- [ ] Promote the remaining UPAL operation extensions from `include/upal/future/`: UART framing/half-duplex, timer capture delivery, synchronized ADC/PWM groups, and USB CDC/HID.
+- [ ] Implement and qualify target providers for the active UPAL radio transport, packet netif, and Ethernet contracts; bind UPROTO WiFi/Bluetooth/IP to external module firmware or an integrated target SDK. Complete first-pass TLS/MQTT/HTTP using their provider/security profiles. IEEE 802.15.4, CoAP and Thread/Zigbee remain later profiles.
+- [ ] Implement UMID storage, calibration envelope, binary blackbox, and PLC process-image services from `include/umid/future/`; per-service fail-closed C scaffolds and module records now exist. Keep sensor-specific driver algorithms user-authored and UMID transport-neutral.
+- [x] Implement portable retained crash history and secure-update orchestration, with provider failure/recovery tests and selectable module templates.
+- [ ] Supply and qualify their exact boot/retention/crypto providers; portable host tests do not qualify physical persistence or secure boot.
+- [ ] Promote Modbus RTU/TCP, CANopen CC and CANopen FD only after their bounded profiles and PLC process-image mappings are reviewed; see `roadmap/UPROTO_ROADMAP.md` and the future catalogue. CANopen FD requires USDO and XDD/XDC support. Implement and test Myovena's separate MEDI CAN protocol scaffold: acknowledged delivery, bounded retries, explicit loss/unknown outcomes, integrity/freshness/replay, durable recovery and trusted execution; see `design/MEDI_CAN.md`.
 - [ ] Complete `.uef`/`.uefs` type support from `../uef-gen/src/uef_gen/language/frontends/project/TYPE_INTERCHANGE.md` end to end through parser, validation, lowering, generated C and editor metadata.
 - [ ] Implement system external-artifact and qualification evidence records using the schemas in `registry/future/` and the system-language contract under uef-gen.
 - [ ] Add authenticated signing/update orchestration only with matching bootloader capabilities and the power-loss/rollback evidence required by the secure-update contracts.

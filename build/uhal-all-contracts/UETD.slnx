@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Solution>
+	<Configurations>
+		<BuildType Name="Debug"/>
+		<BuildType Name="Release"/>
+		<BuildType Name="MinSizeRel"/>
+		<BuildType Name="RelWithDebInfo"/>
+		<Platform Name="x64"/>
+	</Configurations>
+	<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1393b658-9f16-35eb-afa9-fe5f0ddfa949" DefaultStartup="true">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="tests/uetd_canopen_fd_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+		<BuildDependency Project="tests/uetd_display_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_first_pass_expansion_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_first_pass_service_scaffolds.vcxproj"/>
+		<BuildDependency Project="tests/uetd_manual_tasks_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_medi_can_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_portable_runtime_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_target_profile_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uapp_runtime_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uapp_services_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uapp_supervision_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uapp_update_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_ucon_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uhal/uetd_uhal_cortex_m0.vcxproj"/>
+		<BuildDependency Project="tests/uhal/uetd_uhal_cortex_m23.vcxproj"/>
+		<BuildDependency Project="tests/uhal/uetd_uhal_cortex_m4.vcxproj"/>
+		<BuildDependency Project="tests/uhal/uetd_uhal_host_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uhal/uetd_uhal_icache_only.vcxproj"/>
+		<BuildDependency Project="tests/uhal/uetd_uhal_neutral_headers.vcxproj"/>
+		<BuildDependency Project="tests/uetd_umath_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_umid_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uos_freertos_16.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uos_freertos_32.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uos_freertos_64.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uos_safertos_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uos_time_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_upal_fdcan_fd_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_upal_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uproto_future_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uproto_scaffold_contracts.vcxproj"/>
+	</Project>
+	<Project Path="INSTALL.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="fae4d11a-b787-3ef3-a4ce-b8bc00a43aa8">
+		<BuildDependency Project="ALL_BUILD.vcxproj"/>
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<Build Solution="Debug|*" Project="false"/>
+		<Build Solution="Release|*" Project="false"/>
+		<Build Solution="MinSizeRel|*" Project="false"/>
+		<Build Solution="RelWithDebInfo|*" Project="false"/>
+	</Project>
+	<Project Path="RUN_TESTS.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="d206a124-7b1b-3dba-9df7-512c8206262d">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<Build Solution="Debug|*" Project="false"/>
+		<Build Solution="Release|*" Project="false"/>
+		<Build Solution="MinSizeRel|*" Project="false"/>
+		<Build Solution="RelWithDebInfo|*" Project="false"/>
+	</Project>
+	<Project Path="ZERO_CHECK.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1456e076-5fed-3e1c-9999-492219ffdf41"/>
+	<Project Path="tests/uetd_canopen_fd_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1c876d22-729f-3186-a480-f331d5045b1d">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="uetd_core.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="decc473a-8660-3dbb-b746-1eddf7c35e31">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_display_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="31aebe62-fd47-39d8-aca5-1b642adf1e83">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_first_pass_expansion_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="18605388-c8cb-35fd-9bac-f5d83389541c">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_first_pass_service_scaffolds.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a3d5d8a9-8f1c-38e4-8517-d972dbf6d9ba">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_manual_tasks_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="180b57b2-65e7-3347-86b4-ffa0b93918a3">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_medi_can_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="6a2ef7cb-7306-392b-a34f-8d136c2e04a9">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_portable_runtime_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="7753b039-19d6-399b-a9e7-b7c62b7bec6b">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="bf621476-a9a8-38ae-8471-0f6df724f5b4">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="tests/uetd_canopen_fd_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_first_pass_expansion_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_first_pass_service_scaffolds.vcxproj"/>
+		<BuildDependency Project="tests/uetd_medi_can_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_target_profile_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_ucon_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_umath_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_umid_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uos_safertos_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_upal_fdcan_fd_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_upal_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uproto_future_scaffold_contracts.vcxproj"/>
+		<BuildDependency Project="tests/uetd_uproto_scaffold_contracts.vcxproj"/>
+		<Build Solution="Debug|*" Project="false"/>
+		<Build Solution="Release|*" Project="false"/>
+		<Build Solution="MinSizeRel|*" Project="false"/>
+		<Build Solution="RelWithDebInfo|*" Project="false"/>
+	</Project>
+	<Project Path="tests/uetd_target_profile_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="0a9f29a9-28b6-3202-b51b-e815be46a189">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uapp_runtime_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="fb3f8ad4-5698-38df-ad7d-edca616c2289">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uapp_services_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a27deb56-7291-373b-8f4e-4639275cb768">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uapp_supervision_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1f56d3cc-720a-3138-8fde-f75b9d4b3dbd">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uapp_update_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="70ecc34f-5201-3311-9c28-e2d8c8b71960">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_ucon_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="e0898bbf-b3f1-366c-a292-1f1e9d27d890">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uhal/uetd_uhal_cortex_m0.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="4749bab7-cfca-39bc-81f6-3dd562eaf938">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uhal/uetd_uhal_cortex_m23.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="c88418ea-b01e-3f9a-89e0-44c0ce85d353">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uhal/uetd_uhal_cortex_m4.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="2d079c3c-0546-3f8c-9e30-8b6b9c313030">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uhal/uetd_uhal_host_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="81ee39ab-ec4d-3789-90db-b7dd8821bf2e">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="uetd_core.vcxproj"/>
+	</Project>
+	<Project Path="tests/uhal/uetd_uhal_icache_only.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="94fe097f-de64-35cf-a46c-9c46562aa495">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uhal/uetd_uhal_neutral_headers.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="da85beae-b159-3e43-bd18-f70bc0c27243">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_umath_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="19bbed02-26f0-3115-9b1c-aaee50f14b67">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_umid_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="8a6b9fed-3035-3393-913d-b534ad77ca63">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uos_freertos_16.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="76ec659e-4ec8-3a02-8e79-1fb7ec6d7f10">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uos_freertos_32.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="7f2ce4b8-5915-3896-9975-5f04aa2e8a5a">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uos_freertos_64.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="7c48c512-a907-3e9d-8d57-997f008f4a38">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uos_safertos_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a4c7c395-d8ae-34da-b45f-b39a7345ca15">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uos_time_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ea45af02-3176-3b5a-8fe3-2e5015254c87">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_upal_fdcan_fd_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="a92f1df5-72f0-34a1-8ded-660e7eb79127">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_upal_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ef5c9522-7b6d-38de-af69-bb953cc16a46">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uproto_future_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="3b4cf364-4f4b-34a9-9c78-aca32f583317">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="tests/uetd_uproto_scaffold_contracts.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="7d6ca303-c6b3-35df-a945-0d32ce660bb0">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+</Solution>

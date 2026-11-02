@@ -1,0 +1,67 @@
+Start testing: Oct 29 01:14 Cen. Australia Summer Time
+----------------------------------------------------------
+1/4 Testing: uetd.medi_can_scaffold_contracts
+1/4 Test: uetd.medi_can_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out/Debug/uetd_medi_can_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out
+"uetd.medi_can_scaffold_contracts" start time: Oct 29 01:14 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 11 uetd_medi_can_scaffold_contracts operations from 1 source files
+<end of output>
+Test time =   0.70 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.medi_can_scaffold_contracts" end time: Oct 29 01:14 Cen. Australia Summer Time
+"uetd.medi_can_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: uetd.canopen_fd_scaffold_contracts
+2/4 Test: uetd.canopen_fd_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out/Debug/uetd_canopen_fd_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out
+"uetd.canopen_fd_scaffold_contracts" start time: Oct 29 01:14 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 8 uetd_canopen_fd_scaffold_contracts operations from 1 source files
+<end of output>
+Test time =   0.64 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.canopen_fd_scaffold_contracts" end time: Oct 29 01:14 Cen. Australia Summer Time
+"uetd.canopen_fd_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: uetd.canopen_cc_scaffold_contracts
+3/4 Test: uetd.canopen_cc_scaffold_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out/Debug/uetd_canopen_cc_scaffold_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out
+"uetd.canopen_cc_scaffold_contracts" start time: Oct 29 01:14 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated 8 uetd_canopen_cc_scaffold_contracts operations from 1 source files
+<end of output>
+Test time =   0.57 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.canopen_cc_scaffold_contracts" end time: Oct 29 01:14 Cen. Australia Summer Time
+"uetd.canopen_cc_scaffold_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: uetd.fdcan_frame_contracts
+4/4 Test: uetd.fdcan_frame_contracts
+Command: "C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out/Debug/uetd_fdcan_frame_contracts.exe"
+Directory: C:/NEXUS/Unified Embedded Framework/build/canopen-fd-contract-review/out
+"uetd.fdcan_frame_contracts" start time: Oct 29 01:14 Cen. Australia Summer Time
+Output:
+----------------------------------------------------------
+Validated UPAL FDCAN-FD fail-closed and argument-validation contracts
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"uetd.fdcan_frame_contracts" end time: Oct 29 01:14 Cen. Australia Summer Time
+"uetd.fdcan_frame_contracts" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 29 01:14 Cen. Australia Summer Time

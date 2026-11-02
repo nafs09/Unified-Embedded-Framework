@@ -18,4 +18,4 @@ The `generic-reference` entry is a non-physical fixture retained for examples;
 it is deliberately marked `target_kind: pipeline_fixture`. Never add chip or
 board facts to Python as a fallback: add them to the UETD record and index, then
 let the resolver materialize them at runtime. See
-`UETD/registry/targets/README.md` for compact record examples.
+`UETD/registry/TARGETS.md` for compact record examples.

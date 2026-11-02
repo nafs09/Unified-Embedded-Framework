@@ -6,7 +6,7 @@
 |---|---|
 | Execution ownership | One owner task calls the state-machine API and executes transitions. Transition callbacks run serially; the core does not execute transitions concurrently. |
 | Event posting | The UAPP queue is private to the FSM owner. Under FreeRTOS, external tasks and qualified ISRs publish records to a separate, statically backed UOS ingress queue; only the owner drains it and calls UAPP. Bare metal uses the main loop as owner and a target-qualified ISR latch/ring. Direct multi-context UAPP calls are unsupported. |
-| Queue overflow | UOS ingress and the UAPP internal queue have independent capacities and overflow results. The current UOS `bool` API cannot distinguish full from other failures; the target API reports `UOS_FULL` for an immediate send and `UOS_TIMEOUT` after a finite wait. `uapp_sm_post` returns `UETD_OVERFLOW` and rejects the newest event. Critical events use a reliable mailbox/sticky latch or independent safety path. |
+| Queue overflow | UOS ingress and the UAPP internal queue have independent capacities and overflow results. The UOS status API reports `UOS_FULL` for an immediate send and `UOS_TIMEOUT` after a finite wait. `uapp_sm_post` returns `UETD_OVERFLOW` and rejects the newest event. Critical events use a reliable mailbox/sticky latch or independent safety path. |
 | Lifecycle status | After init accepts the config, `uapp_sm_get_state` returns the last committed state; `uapp_sm_is_active` says its entry hook completed; `uapp_sm_is_faulted` reports a latched callback failure. Do not query fresh, uninitialized storage. |
 | Fault handling | Any failed exit/action/entry latches a fault and clears pending events. The failing callback may have partially changed hardware or external state; reset cannot roll that work back. The application fault path establishes a safe condition before reset. |
 | Memory and timing | Storage is fixed per machine and derived from compile-time capacities. Ingress records are copied into their own bounded queue; the FSM queue copies again when the owner posts. State publication uses an independent latest-value mailbox per subscriber. Transition search is linear in the configured transition count; callback work is synchronous and must be bounded and non-blocking. |
@@ -131,7 +131,8 @@ dynamic allocation is performed.
    must not call init or recursively dispatch; request reset after the callback
    sequence because reset returns `UETD_BUSY` while processing. `on_fault` is
    synchronous too and must remain bounded. The API is not ISR-safe.
-7. `uapp_sm_reset` discards pending events, exits the active current state if
+7. `uapp_sm_reset` discards pending events (including events posted by the old
+   activation's exit hook), exits the active current state if
    applicable, returns to the initial state, and runs its entry hook. If a
    previous exit/action/entry failed, the state may be partially exited,
    partially acted upon, or partially entered; reset does not retry the failed
@@ -198,12 +199,18 @@ The owner coordinates tasks through explicit routes; it does not control the
 RTOS scheduler or synchronously stop another task. Naming the ownership
 contract does not make the UEF-PL model executable by itself.
 
-## Test design when the host harness is planned
+## Executable validation and manual templates
 
-Use table-driven tests to cover configuration rejection, initial entry, event
+`tests/uapp_runtime_contracts.c` covers configuration rejection, initial entry, event
 copying and FIFO order, queue-full behavior, guard fallthrough and declaration
 priority, exit/action/entry order, nested-process rejection, unhandled events,
 each callback-failure latch point and corresponding state/active/fault queries,
 pending-event clearing, reset after safe-state cleanup, and lifecycle fault
-preservation. Keep target timing and ISR integration checks separate from host
-semantic tests.
+preservation. It runs with default and maximum u8 capacities. Target timing and
+ISR integration checks remain separate from host semantic tests.
+
+The independent [manual renderer](../../tools/render_manual_runtime.py) consumes
+explicit JSON and renders working state-machine tables/wrappers and optional
+static FreeRTOS tasks. It does not consume UEF-PL's snapshot/route model. Start
+with the [manual example](../../examples/manual_runtime/README.md) and
+[assembly guide](../UOS_UAPP_FIRST_PASS.md).

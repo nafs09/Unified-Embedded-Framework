@@ -1,0 +1,7 @@
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\storage.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\storage.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\calibration.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\calibration.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\logging\blackbox.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\blackbox.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\process_image.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\process_image.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\industrial\modbus.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\modbus.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\canopen.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\canopen.obj
+C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_first_pass_service_scaffolds.dir\Release\uetd_first_pass_service_scaffolds.obj

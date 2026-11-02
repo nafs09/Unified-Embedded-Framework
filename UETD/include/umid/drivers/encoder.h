@@ -10,7 +10,7 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/timer.h"
+#include "upal/timing/timer.h"
 
 typedef enum {
     UMID_ENC_QUADRATURE, /* AB quadrature */
@@ -27,10 +27,15 @@ typedef struct {
     uetd_u32_t vel_filter_taps;
 } umid_encoder_t;
 
+/// Initialize the encoder measurement adapter.
 uetd_status_t umid_encoder_init(umid_encoder_t* enc);
+/// Return the current encoder count.
 uetd_i32_t umid_encoder_count(const umid_encoder_t* enc);
+/// Return the encoder position in radians.
 uetd_f32_t umid_encoder_position_rad(const umid_encoder_t* enc);
+/// Return the encoder velocity in revolutions per second.
 uetd_f32_t umid_encoder_velocity_rps(umid_encoder_t* enc);
+/// Reset the encoder count and position reference.
 void umid_encoder_reset(umid_encoder_t* enc);
 
 #ifdef __cplusplus

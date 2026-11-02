@@ -49,7 +49,7 @@
     },
     {
       "id": "gd32vf103cbt6",
-      "path": "registry/targets/chips/manifest/gigadevice/gd32vf103cbt6.json"
+      "path": "registry/targets/chips/manifest/gd32vf103cbt6.json"
     },
     {
       "id": "atsamd21g18a-au",
@@ -121,7 +121,7 @@
     },
     {
       "id": "r7fa6m4af3cfb-aa0",
-      "path": "registry/targets/chips/manifest/renesas/r7fa6m4af3cfb-aa0.json"
+      "path": "registry/targets/chips/manifest/r7fa6m4af3cfb-aa0.json"
     },
     {
       "id": "stm32c071cbt6",
@@ -229,7 +229,7 @@
     },
     {
       "id": "generic-reference",
-      "path": "registry/targets/chips/manifest/uetd/generic-reference.json"
+      "path": "registry/targets/chips/manifest/generic-reference.json"
     }
   ]
 }

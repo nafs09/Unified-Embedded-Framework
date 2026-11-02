@@ -29,7 +29,8 @@ live indexes and manifests.
 - The compiler/verifier owns parser errors, type and unit
   checking, registry-contract linting, model and protocol validation,
   scheduling checks, and source locations.
-- Formatting is limited to indentation and whitespace cleanup. Source
+- Formatting is shared with `uef-gen format` and covers block/continuation
+  indentation, newline preferences, and whitespace cleanup. Source
   navigation and cross-file rename are offered only when the declaration or
   explicit contract import resolves unambiguously.
 

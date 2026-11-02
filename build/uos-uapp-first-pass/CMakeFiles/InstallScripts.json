@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/cmake_install.cmake",
+		"C:/NEXUS/Unified Embedded Framework/build/uos-uapp-first-pass/tests/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

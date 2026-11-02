@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for CLF_QP.
 #ifndef UETD_UCON_SCAFFOLD_CLF_QP_H
 #define UETD_UCON_SCAFFOLD_CLF_QP_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

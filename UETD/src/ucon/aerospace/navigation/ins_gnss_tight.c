@@ -2,7 +2,7 @@
 /// @file src/ucon/aerospace/navigation/ins_gnss_tight.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/aerospace/navigation/ins_gnss_tight.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Strapdown inertial propagation with raw pseudorange/Doppler measurement updates and satellite/receiver

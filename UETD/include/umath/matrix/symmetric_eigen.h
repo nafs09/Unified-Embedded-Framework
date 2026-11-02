@@ -9,6 +9,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/// @brief Compute the eigenvalues and eigenvectors of a real symmetric matrix.
 /// TODO(UMATH-EIGEN): Fix Jacobi schedule, symmetry tolerance, eigenvalue sorting, eigenvector column layout, sweep
 /// limit, and repeated-eigenvalue policy.
 umath_status_t umath_matrix_symmetric_eigen(const umath_scalar_t* row_major, size_t dimension, umath_scalar_t* eigenvalues,

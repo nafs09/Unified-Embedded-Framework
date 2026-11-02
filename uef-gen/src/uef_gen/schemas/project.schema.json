@@ -20,8 +20,16 @@
     "target": {
       "type": "object",
       "anyOf": [
-        { "required": ["chip"] },
-        { "required": ["development_board"] }
+        {
+          "required": [
+            "chip"
+          ]
+        },
+        {
+          "required": [
+            "development_board"
+          ]
+        }
       ],
       "properties": {
         "chip": {
@@ -36,7 +44,7 @@
         "toolchain": {
           "type": "string",
           "minLength": 1,
-          "description": "Optional explicit toolchain profile override; otherwise uses build.toolchain from the selected UETD development-board record."
+          "description": "Optional toolchain override; otherwise use resolved target.hardware.build.toolchain or its board-preset default."
         },
         "arithmetic": {
           "enum": [
@@ -67,6 +75,230 @@
             }
           },
           "additionalProperties": true
+        },
+        "hardware": {
+          "type": "object",
+          "properties": {
+            "clock_sources": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "memory_regions": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "required": [
+                  "origin",
+                  "length_bytes"
+                ],
+                "properties": {
+                  "origin": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "length_bytes": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "kind": {
+                    "type": "string"
+                  },
+                  "dma_accessible": {
+                    "type": "boolean"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "address_space": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Explicit address space, e.g. program/data for Harvard targets; defaults to unified."
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "reserved_pins": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "module": {
+              "type": "object",
+              "description": "Optional module details live with the board record; no separate module catalogue is needed.",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "variant": {
+                  "type": "string"
+                },
+                "flash_bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "psram_bytes": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "crystal_hz": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "antenna": {
+                  "type": "string"
+                },
+                "exposed_pins": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "additionalProperties": true
+            },
+            "build": {
+              "type": "object",
+              "description": "Target compiler/SDK adapter and pinned UETD toolchain; independent of board selection.",
+              "properties": {
+                "backend": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "framework": {
+                  "type": "string"
+                },
+                "toolchain": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                },
+                "settings": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "backend",
+                "toolchain"
+              ],
+              "additionalProperties": true
+            },
+            "flash": {
+              "type": "object",
+              "description": "Target programming adapter, toolchain and transport settings; required by flashing, not compilation.",
+              "properties": {
+                "backend": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "toolchain": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "interface": {
+                  "type": "string"
+                },
+                "dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                },
+                "settings": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "backend",
+                "toolchain"
+              ],
+              "additionalProperties": true
+            },
+            "debug_console": {
+              "type": "object",
+              "description": "Optional wired V1 live-output endpoint. Port names are selected on the host at runtime; baud/framing belong to the board record.",
+              "required": [
+                "transport",
+                "baud_rate",
+                "data_bits",
+                "parity",
+                "stop_bits",
+                "encoding"
+              ],
+              "properties": {
+                "transport": {
+                  "enum": [
+                    "usb_cdc",
+                    "usb_uart"
+                  ]
+                },
+                "baud_rate": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "data_bits": {
+                  "enum": [
+                    7,
+                    8
+                  ]
+                },
+                "parity": {
+                  "enum": [
+                    "none",
+                    "even",
+                    "odd"
+                  ]
+                },
+                "stop_bits": {
+                  "enum": [
+                    1,
+                    2
+                  ]
+                },
+                "encoding": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "line_ending": {
+                  "enum": [
+                    "lf",
+                    "crlf",
+                    "cr",
+                    "none"
+                  ]
+                },
+                "dtr": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "rts": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "notes": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "description": "Physical target and build/programming settings for a bare chip or custom assembly; optional board settings provide defaults."
         }
       },
       "additionalProperties": true

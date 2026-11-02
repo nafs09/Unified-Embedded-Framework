@@ -85,8 +85,24 @@ def enum_members(statement: str) -> list[str]:
             members.append(match.group(1))
     return members
 
+def future_header_paths(module_index: dict[str, Any]) -> set[str]:
+    """Find headers owned only by later modules, independent of folder names."""
+    owners: dict[str, set[bool]] = {}
+    for module_id, reference in module_index.get("modules", {}).items():
+        manifest = load_json(UETD / reference["manifest"])
+        later = "future" in module_id.split("/") or manifest.get("scaffold_stage") == "future"
+        for relative in manifest.get("headers", []):
+            owners.setdefault(relative.replace("\\", "/"), set()).add(later)
+    return {relative for relative, scopes in owners.items() if scopes == {True}}
+
+
+def internal_header(relative: str) -> bool:
+    return "/internal/" in relative or Path(relative).name.startswith("internal_")
+
+
 def collect_types(
-    headers: list[Path], previous_entries: dict[tuple[str, str], dict[str, Any]] | None = None
+    headers: list[Path], previous_entries: dict[tuple[str, str], dict[str, Any]] | None = None,
+    future_headers: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     """Index C declarations and retain UETD-authored language type contracts.
 
@@ -96,6 +112,7 @@ def collect_types(
     when the exact C type and header are unchanged.
     """
     previous_entries = previous_entries or {}
+    future_headers = future_headers or set()
     found: dict[tuple[str, str, str], dict[str, Any]] = {}
     fixed_aliases = {
         "uetd_f32_t",
@@ -120,7 +137,7 @@ def collect_types(
             name, kind = typedef_name(statement)
             if not name:
                 continue
-            status = "future_header" if "/future/" in relative else "public_header"
+            status = "future_header" if "/future/" in relative or relative in future_headers else "public_header"
             previous = previous_entries.get((name, relative), {})
             if status == "future_header" or kind == "function_pointer":
                 default_contract = None
@@ -192,7 +209,7 @@ def collect_functions(
     discovered_names = []
     for header in headers:
         relative = header.relative_to(UETD).as_posix()
-        if "/internal/" in relative:
+        if internal_header(relative):
             continue
         clean = strip_comments_and_directives(header.read_text(encoding="utf-8-sig"))
         discovered_names.extend(re.findall(r"\b(umath_[A-Za-z0-9_]+)\s*\(", clean))
@@ -204,7 +221,7 @@ def collect_functions(
     family_prefixes.update(name for name, count in prefix_counts.items() if count > 1)
     for header in headers:
         relative = header.relative_to(UETD).as_posix()
-        if "/internal/" in relative:
+        if internal_header(relative):
             continue
         clean = strip_comments_and_directives(header.read_text(encoding="utf-8-sig"))
         for match in pattern.finditer(clean):
@@ -608,7 +625,7 @@ def main() -> None:
             for entry in old_type_catalogue.get("types", [])
             if isinstance(entry.get("c_name"), str) and isinstance(entry.get("header"), str)
         }
-    types = collect_types(headers, old_type_entries)
+    types = collect_types(headers, old_type_entries, future_header_paths(module_index))
     old_umath_path = REGISTRY / "umath" / "registry.json"
     old_entries = {}
     if old_umath_path.exists():

@@ -1,0 +1,9 @@
+/* Rename to irq.c after replacing uhal_irq_t, PRIMASK, and BASEPRI with an architecture-neutral API. */
+/* uetd_status_t uhal_irq_enable(uhal_irq_t irq, uetd_u8_t preempt_priority, uetd_u8_t sub_priority); */
+/* uetd_status_t uhal_irq_disable(uhal_irq_t irq); */
+/* uetd_status_t uhal_irq_set_pending(uhal_irq_t irq); */
+/* uetd_status_t uhal_irq_clear_pending(uhal_irq_t irq); */
+/* uhal_critical_t uhal_critical_enter(void); */
+/* void uhal_critical_exit(uhal_critical_t saved_state); */
+/* TODO: AVR typically has global interrupt masking without NVIC-style per-line priorities;
+ * reject unsupported pending/priority requests and restore the caller's prior state. */

@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "backend": "FREERTOS",
+  "machines": [{"name": "minimal", "states": [{"name": "idle"}], "initial": "idle"}],
+  "tasks": [{"name": "owner", "operation": "owner_step", "priority": 2, "stack_bytes": 1024, "period_us": 1000}]
+}

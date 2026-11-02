@@ -62,6 +62,22 @@ def lower_hardware_configuration(document: ProjectDocument, catalogue: Authoring
         # Keep an exact unresolved name so the common target validator can
         # produce the canonical unknown-target diagnostic.
         config["target"]["chip"] = target_value
+    hardware_node = _one(document.declarations, "hardware")
+    if hardware_node:
+        hardware: dict[str, Any] = {}
+        for prop in hardware_node.properties:
+            parts = prop.name.split(".")
+            destination = hardware
+            for part in parts[:-1]:
+                existing = destination.setdefault(part, {})
+                if not isinstance(existing, dict):
+                    raise ValueError(f"Conflicting hardware properties at {prop.name!r}")
+                destination = existing
+            if parts[-1] in destination:
+                raise ValueError(f"Conflicting hardware properties at {prop.name!r}")
+            destination[parts[-1]] = _hardware_value(prop.value)
+            source_map.add(f"target.hardware.{prop.name}", prop.span)
+        config["target"]["hardware"] = hardware
     os_node = _one(document.declarations, "operatingsystem")
     runtime = _property_name(os_node, "runtime") if os_node else None
     if runtime and runtime.casefold() not in {"baremetal", "bare_metal"}:
@@ -857,6 +873,23 @@ def _value(value: Any) -> Any:
     if isinstance(expression, dict) and expression.get("kind") == "literal": return expression["value"]
     if isinstance(expression, dict) and expression.get("kind") == "reference" and len(expression["path"]) == 1: return expression["path"][0]
     return expression
+
+def _hardware_value(value: Any) -> Any:
+    """Hardware profiles contain data, never runtime expressions or shell code."""
+    if isinstance(value, Literal):
+        return value.value
+    if isinstance(value, Identifier):
+        return value.value
+    if isinstance(value, Reference) and len(value.path) == 1:
+        return value.path[0]
+    if isinstance(value, ListValue):
+        return [_hardware_value(item) for item in value.items]
+    if isinstance(value, RecordValue):
+        names = [name for name, _ in value.fields]
+        if len(names) != len(set(names)):
+            raise ValueError("Hardware record fields must be unique")
+        return {name: _hardware_value(item) for name, item in value.fields}
+    raise ValueError("Hardware properties must be literals, identifiers, lists or records")
 
 def _name(value: Any) -> str | None:
     if isinstance(value, str): return value

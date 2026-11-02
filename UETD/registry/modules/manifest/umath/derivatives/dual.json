@@ -14,7 +14,7 @@
   "scaffold_only": true,
   "available_for_generation": false,
   "scaffold_stage": "phase0",
-  "scaffold_reason": "Partial direct-C implementation; blocked from generation until missing operation policies and the typed authoring/binding contract are implemented and reviewed.",
+  "scaffold_reason": "All current direct-C dual-number operations have implementations. Generation remains blocked pending typed binding, bounded derivative propagation and nondifferentiable-point policy review.",
   "contract_status": "catalogue_only",
   "phase": 0
 }

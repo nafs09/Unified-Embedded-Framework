@@ -1,0 +1,19 @@
+/* Generated from explicit manual input. One task/main-loop owns each instance. */
+#ifndef MANUAL_{{ machine.macro }}_H
+#define MANUAL_{{ machine.macro }}_H
+#include "runtime_config.h"
+typedef struct { uapp_statemachine_t machine; } {{ machine.name }}_t;
+#define {{ machine.macro }}_INITIALIZER { UAPP_SM_INITIALIZER }
+enum {
+{% for state in machine.states %}    {{ machine.macro }}_STATE_{{ state.name | upper }} = {{ loop.index0 }}{{ "," if not loop.last else "" }}
+{% endfor %}};
+{% if machine.events %}enum {
+{% for name, id in machine.events.items() %}    {{ machine.macro }}_EVENT_{{ name | upper }} = {{ id }}{{ "," if not loop.last else "" }}
+{% endfor %}};
+{% endif %}
+uetd_status_t {{ machine.name }}_init({{ machine.name }}_t* instance, void* context);
+uetd_status_t {{ machine.name }}_post({{ machine.name }}_t* instance, uetd_u8_t event_id, const void* payload, size_t size);
+uetd_status_t {{ machine.name }}_process({{ machine.name }}_t* instance);
+uetd_status_t {{ machine.name }}_reset({{ machine.name }}_t* instance);
+uetd_status_t {{ machine.name }}_state(const {{ machine.name }}_t* instance, uapp_sm_state_t* state);
+#endif

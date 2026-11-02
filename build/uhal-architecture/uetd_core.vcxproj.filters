@@ -1,0 +1,868 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\assert.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\bitops.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\checksum.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\status.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\span.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\deadline.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucore\codec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uos\deferred.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uos\common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uactuator\actuator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\usec\provider.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\target_profiles.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32g4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32f4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32h7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32f7.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32g0.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\nrf52840.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\targets\stm32l4plus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\diagnostics\fault.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\lifecycle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\statemachine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\supervisor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\runtime\watchdog_gate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\product_session.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\diagnostics\diagnostics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\secure_update.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uapp\diagnostics\fault_history.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\atomic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\cache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\clock.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\core.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\fault.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\gpio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\irq.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\platform\host\timing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uos\baremetal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\adc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\comp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\dac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\opamp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\can\can.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\can\fdcan_fd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\capability_contracts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\compute\cordic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\compute\fmac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\display.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\display_panel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\dsi_host.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\touch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\dma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\network\ethernet.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\network\ieee802154.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\network\netif.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\network\radio_transport.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\power.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\i2c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\spi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\uart.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\usb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\block_device.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\flash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\qspi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\sdmmc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\timing\hrtim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\timing\rtc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\timing\timer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\transaction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\watchdog\iwdg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\watchdog\wwdg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\calibration.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\process_image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\settings.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\data\storage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\current.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\encoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\fpga.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\gnss.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\imu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\mag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\pressure.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\range.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\temp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\voltage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\health.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\logging\blackbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\logging\log.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\logging\log_uart.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\messaging\buffer_pool.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\messaging\event_bus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\messaging\mailbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\messaging\ringbuf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\sensor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\ui\graphics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umid\ui\input.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\canopen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\uavcan.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\framing.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\industrial\modbus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\mavlink.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\bluetooth.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\connection_manager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\http.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\ip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\mqtt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\time_sync.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\tls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\wifi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\crsf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\dshot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\ppm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\sbus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\usb_device.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\complex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\derivatives\dual.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\derivatives\jacobian.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\fixed.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\functions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\geometry\quaternion.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\geometry\transform3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\se2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\se3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\so2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\so3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\cholesky.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\core.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\ldlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\lu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\qr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\svd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\symmetric_eigen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\numerical\integration.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\numerical\least_squares.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\numerical\splines.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\polynomial\core.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\polynomial\roots.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\distributions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\multivariate_normal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\prng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\streaming.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\scalar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\signal\fft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\signal\windows.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\status.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\vector\vector.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\vector\vector2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\vector\vector3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\vector\vector4.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\attitude\bdot_detumble.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\attitude\quaternion_pd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\attitude\so3_attitude.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\guidance\path_following_guidance.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\guidance\pn_guidance.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\navigation\gnss_carrier_fll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\navigation\gnss_carrier_pll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\navigation\gnss_code_dll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\navigation\ins_gnss.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\aerospace\navigation\ins_gnss_tight.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\adaptive\extremum_seek.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\adaptive\self_tune_reg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\adrc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\classical\imc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\classical\lead_lag.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\classical\pid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\classical\smith_predictor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\control_allocator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\gain_schedule.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\adaptive_bs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\backstepping.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\cbf_qp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\clf_cbf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\clf_qp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\computed_torque.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\feedback_lin.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\flatness.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\indi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\indi2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\nonlinear\ndi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\pid_autotune.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\ddp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\deadbeat_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\economic_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\explicit_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\fs_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\ilqr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\linear_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\nmpc_rti.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\robust_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\sparse_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\stochastic_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\tracking_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\predictive\zone_mpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\reference_governor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\state_space\decoupler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\state_space\lqg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\state_space\lqi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\state_space\lqr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\control\state_space\state_feedback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\clarke_park.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\droop_control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\dtc_control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\dtc_flux_torque_estimator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\foc_current_control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\resonant_pr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\sogi_fll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\sogi_pll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\srf_pll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\electrical\svpwm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\attitude\complementary.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\attitude\madgwick.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\attitude\mahony.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\attitude\mekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\attitude\quest.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\attitude\triad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\frequency\fll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\frequency\nco.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\frequency\pll.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\frequency\sliding_dft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\frequency\sogi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\frequency\zero_cross_freq.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\ckf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\ekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\error_state_ekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\imm_ekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\invariant_ekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\iterated_ekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\linear_kf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\scalar_kf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\sqrt_ekf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\sqrt_ukf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\ukf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\kalman\ukf_merwe.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\mhe.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\observers\dob.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\observers\edob.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\observers\eso.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\observers\luenberger.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\particle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\rls.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\tracking\alpha_beta.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\estimators\tracking\alpha_beta_gamma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\coefficient_design\bessel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\coefficient_design\butterworth.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\coefficient_design\chebyshev1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\coefficient_design\chebyshev2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\coefficient_design\elliptic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\coefficient_design\fir_windowed.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\runtime\biquad_cascade.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\runtime\ema.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\runtime\fir.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\runtime\median.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\runtime\moving_average.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\filtering\runtime\notch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\anti_windup_backcalc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\anti_windup_clamp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\anti_windup_cond.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\bumpless_transfer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\deadband.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\gain_block.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\hysteresis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\integrator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\mode_select.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\multirate_bridge.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\rate_limiter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\saturator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\sensor_fdi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\sensor_voter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\signal_validity.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\sum_junction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\infrastructure\unit_delay.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\medical\profiles\glucose_control_profile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\medical\profiles\pkpd_target_control.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\medical\profiles\ventilator_control_profile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\qp_active_set.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\status.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\bezier_traj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\bspline_traj.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\jerk_profile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\poly_traj_3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\poly_traj_5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\ref_model_1.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\ref_model_2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\s_curve.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\ucon\trajectory\profiles\trapezoid_profile.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\UETD\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{F3F3B1D8-B172-3E2F-AFF2-B0BE871B9454}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

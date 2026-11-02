@@ -6,6 +6,7 @@ from uef_gen.chips.specs import ChipCapabilities, ChipSpec
 from uef_gen.config.normalize import normalize_configuration
 from uef_gen.diagnostics import Diagnostic, error, warning
 from uef_gen.resolver.models import ResolvedPeripheral, ResolvedProject, ResolvedTask
+from uef_gen.resolver.hardware import compose_hardware_profile, extend_memory_regions
 
 class UnknownDevelopmentBoardError(ValueError):
     """Raised when a project names a board absent from UETD's board registry."""
@@ -53,12 +54,14 @@ class ResourceResolver:
                     "target.chip",
                 )
             )
-        if board is None and chip.target_kind != "pipeline_fixture":
+        hardware, hardware_diagnostics = compose_hardware_profile(target, board)
+        diagnostics.extend(hardware_diagnostics)
+        if not hardware.get("build") and chip.target_kind != "pipeline_fixture":
             diagnostics.append(
                 error(
-                    "development_board_required",
-                    "Select a registered UETD development board to supply board clocks, reserved pins, build, and flash settings",
-                    "target.development_board",
+                    "target_build_profile_required",
+                    "Supply target.hardware.build for this chip/custom assembly, or select an optional development-board preset",
+                    "target.hardware.build",
                 )
             )
         if board is not None and not board.get("generation_available", False):
@@ -70,11 +73,11 @@ class ResourceResolver:
                 )
             )
         flash_bytes = chip.flash_bytes
-        module = (board or {}).get("module", {})
+        module = hardware.get("module", {})
         module_flash = module.get("flash_bytes") if isinstance(module, dict) else None
         if flash_bytes == 0 and isinstance(module_flash, int) and not isinstance(module_flash, bool):
             flash_bytes = module_flash
-        board_clock_sources = (board or {}).get("clock_sources", {})
+        board_clock_sources = hardware.get("clock_sources", {})
         clock_domains = {str(name): dict(spec) for name, spec in chip.family.clock_domains.items() if isinstance(spec, dict)}
         if isinstance(board_clock_sources, dict):
             for domain in clock_domains.values():
@@ -82,11 +85,9 @@ class ResourceResolver:
                 source_hz = board_clock_sources.get(source_name) if isinstance(source_name, str) else None
                 if isinstance(source_hz, int) and not isinstance(source_hz, bool):
                     domain["source_hz"] = source_hz
-        memory_regions = dict(chip.memory_regions)
-        board_memory_regions = (board or {}).get("memory_regions", {})
-        if isinstance(board_memory_regions, dict):
-            memory_regions.update(board_memory_regions)
-        claimed_pins: dict[str, str] = {str(pin).upper(): f"{board['id']} reserved pin" for pin in (board or {}).get("reserved_pins", [])}
+        memory_regions, memory_diagnostics = extend_memory_regions(chip.memory_regions, hardware)
+        diagnostics.extend(memory_diagnostics)
+        claimed_pins: dict[str, str] = {str(pin).upper(): "physical target reserved pin" for pin in hardware.get("reserved_pins", [])}
         claimed_dma: dict[str, str] = {}
         claimed_irq_priorities: dict[tuple[str, int], str] = {}
         peripherals: list[ResolvedPeripheral] = []
@@ -422,6 +423,7 @@ class ResourceResolver:
             flash_bytes,
             clock_domains,
             memory_regions,
+            hardware,
         )
 
 def _automatic_dma_channel(request: str, request_map: dict[str, Any], claimed: dict[str, str]) -> str | None:

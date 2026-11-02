@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "src/uproto/can/future/medi_can.c"
+  ],
+  "dependencies": [
+    "uproto/future/industrial/canopen_fd",
+    "upal/fdcan_fd"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Separate Myovena MEDI CAN protocol extending CANopen FD. Typed bounded state and fail-closed operations exist; wire binding, acknowledged delivery, retry/deadline policy, replay/deduplication, durable outcome recovery and execution gating remain unimplemented. No medical-device safety or lossless-delivery claim is made.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/upal/can/fdcan_fd.h",
+    "include/uproto/can/future/medi_can.h"
+  ],
+  "external_dependencies": [
+    "selected MEDI integrity, durable journal and trusted execution providers"
+  ],
+  "available_for_generation": false
+}

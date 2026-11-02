@@ -17,14 +17,19 @@ For a user walkthrough, see the [UEF-PL handbook](../../../docs/guides/UEF_PROJE
 - Shared language-server support for diagnostics, context-aware completion
   (including component outputs and record fields), hover, signature help,
   go-to-definition, document/workspace symbols, references, safe rename,
-  document highlights, folding, and brace-indentation formatting.
+  document highlights, folding, and formatting for blocks and continued expressions.
+- A compiler-status menu with Problems, outline, formatting, restart, output,
+  and settings actions. Registry-only mode is visible when the server is disabled
+  or unavailable; changing UEF-PL settings reconnects the server.
+- A small, checked `uef-project` starter with a typed subsystem and BareMetal loop.
 
-The extension includes a `UEF-PL Dark` color theme with a more distinct palette
+The extension includes `UEF-PL Dark` and `UEF-PL Light` color themes with a coordinated palette
 for declarations, control-flow words, types, registered UETD names, functions,
-units, enum cases, properties, and values. Select it from **File > Preferences
+units, enum cases, properties, and values. Select one from **File > Preferences
 > Theme > Color Theme** (or run **Preferences: Color Theme**) to use those
-colors. The TextMate grammar still works with other themes, which may choose a
-more limited palette. Visual Studio uses the same grammar and maps its scopes
+colors. Source text colors meet a 4.5:1 contrast ratio against the editor
+background in both themes. Custom semantic tokens inherit standard token types
+for other themes. Visual Studio uses the same grammar and maps its scopes
 to the IDE's built-in classifications; those colors follow the selected Visual
 Studio theme and can be adjusted under **Tools > Options > Environment > Fonts
 and Colors**.
@@ -34,7 +39,25 @@ semantic colors and language features from the shared parser and UETD
 registries. Registry names are not copied into an editor keyword list. The
 server delegates diagnostics to the same compiler frontend as `uef-gen check`;
 it does not implement a second parser or verifier. Formatting is deliberately
-limited to deterministic brace indentation and whitespace cleanup.
+limited to deterministic block/continuation indentation and whitespace cleanup.
+Final newline preferences, CRLF files and range boundaries are respected.
+The language defaults to two-space indentation; ordinary editor settings can
+override this. The compiler and formatter improvements also apply to Visual Studio.
+
+## Daily workflow
+
+1. Create a `.uef` file and insert the `uef-project` snippet.
+2. Set the registered target, then add types, hardware declarations and algorithms.
+3. Use the **UEF-PL** status-bar menu to inspect Problems and navigate the outline.
+4. Format with the editor's **Format Document**, or run
+   `uef-gen format project.uef --write` outside the editor.
+5. Run `uef-gen check project.uef --format text` for the same frontend diagnostics.
+
+A connected compiler is not a firmware-readiness indicator. Successful source
+checks do not enable the unfinished emitter, build, or flash routes. If the
+status says **Registry only**, use **UEF-PL: Open Settings** to select Python
+and UETD, then **UEF-PL: Restart Language Server**. **UEF-PL: Show Server Output**
+shows startup failures without opening a terminal.
 
 ## Registry discovery
 
@@ -68,6 +91,10 @@ The included `.vscode/launch.json` starts the extension host. The extension is
 plain JavaScript and has no compile step. `npm ci` installs the language
 client and `@vscode/vsce` packaging tool. Run `npm run package` to produce the
 installable `.vsix` file in this directory.
+
+Run `npm test` before packaging. The tests cover server lifecycle, fallback
+status, and theme source contrast. Version 0.1.5 includes the authoring refresh;
+its package and lockfile metadata are aligned.
 
 The registry hints work without the language server. To enable the full shared
 language service, install the optional server package from the `uef-gen`

@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for STATE_FEEDBACK.
 #ifndef UETD_UCON_SCAFFOLD_STATE_FEEDBACK_H
 #define UETD_UCON_SCAFFOLD_STATE_FEEDBACK_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

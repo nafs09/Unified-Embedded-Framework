@@ -1,0 +1,26 @@
+{
+  "sources": [
+    "src/uapp/product_session.c"
+  ],
+  "headers": [
+    "include/uapp/product_session.h",
+    "include/ucore/deadline.h",
+    "include/ucore/span.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "ucore/span",
+    "ucore/deadline"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "docs/design/complete-system/MYOVENA_HANDHELD.md#blewifi-control-semantics",
+  "external_dependencies": [
+    "selected product protocol, authenticated peer/authorization and BLE/IP/other transport providers"
+  ],
+  "implementation_notes": "Bounded command admission, no automatic replay, provider-authorized evidence-based outcomes."
+}

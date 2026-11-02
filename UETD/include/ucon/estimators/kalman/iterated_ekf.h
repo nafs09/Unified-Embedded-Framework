@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for ITERATED_EKF.
 #ifndef UETD_UCON_SCAFFOLD_ITERATED_EKF_H
 #define UETD_UCON_SCAFFOLD_ITERATED_EKF_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -51,7 +51,8 @@ ucon_status_t ucon_iterated_ekf_predict(const ucon_algorithm_scaffold_call_t* ca
 
 /// Iterate the nonlinear measurement correction to a bounded stopping rule.
 /// TODO(ITERATED_EKF.iterate_measurement): 1) Initialize x_i=x_prior and hold x_prior/P_prior
-/// fixed. 2) At each iteration evaluate h(x_i),
+/// fixed.
+/// 2) At each iteration evaluate h(x_i),
 /// H(x_i), form the iterated residual
 /// z−h(x_i)+H(x_i)(x_i−x_prior), and solve the
 /// innovation system. 3) Compute the next candidate,

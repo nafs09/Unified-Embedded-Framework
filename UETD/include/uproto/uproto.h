@@ -10,6 +10,9 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
+#include "uproto/network/bluetooth.h"
+#include "uproto/network/ip.h"
+#include "uproto/network/wifi.h"
 
 /* Generic byte-stream transport — implemented per physical transport */
 typedef struct {

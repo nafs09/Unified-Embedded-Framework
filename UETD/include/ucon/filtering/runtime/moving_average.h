@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for MOVING_AVERAGE.
 #ifndef UETD_UCON_SCAFFOLD_MOVING_AVERAGE_H
 #define UETD_UCON_SCAFFOLD_MOVING_AVERAGE_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

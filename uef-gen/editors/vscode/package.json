@@ -1,8 +1,8 @@
 {
   "name": "uef-project-language",
   "displayName": "UEF Project Language",
-  "description": "UEF-PL syntax colors, UETD registry intelligence, diagnostics, and language-server support.",
-  "version": "0.1.4",
+  "description": "UEF-PL authoring tools: compiler diagnostics, navigation, formatting, live UETD intelligence, and coordinated dark and light themes.",
+  "version": "0.1.5",
   "publisher": "uef",
   "license": "GPL-3.0-only",
   "repository": {
@@ -66,6 +66,11 @@
         "label": "UEF-PL Dark",
         "uiTheme": "vs-dark",
         "path": "./themes/uef-pl-dark-color-theme.json"
+      },
+      {
+        "label": "UEF-PL Light",
+        "uiTheme": "vs",
+        "path": "./themes/uef-pl-light-color-theme.json"
       }
     ],
     "snippets": [
@@ -103,15 +108,124 @@
         },
         "uef-project-language.languageServer.arguments": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Additional command-line arguments passed to the language server."
         }
       }
-    }
+    },
+    "commands": [
+      {
+        "command": "uef-project-language.showActions",
+        "title": "Source Tools",
+        "category": "UEF-PL"
+      },
+      {
+        "command": "uef-project-language.restartServer",
+        "title": "Restart Language Server",
+        "category": "UEF-PL"
+      },
+      {
+        "command": "uef-project-language.showOutput",
+        "title": "Show Server Output",
+        "category": "UEF-PL"
+      },
+      {
+        "command": "uef-project-language.openSettings",
+        "title": "Open Settings",
+        "category": "UEF-PL"
+      }
+    ],
+    "configurationDefaults": {
+      "[uef-project]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.defaultFormatter": "uef.uef-project-language"
+      },
+      "[uef-system]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.defaultFormatter": "uef.uef-project-language"
+      }
+    },
+    "semanticTokenTypes": [
+      {
+        "id": "unit",
+        "superType": "number",
+        "description": "UEF-PL unit"
+      },
+      {
+        "id": "projectKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL projectKeyword"
+      },
+      {
+        "id": "typeKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL typeKeyword"
+      },
+      {
+        "id": "hardwareKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL hardwareKeyword"
+      },
+      {
+        "id": "algorithmKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL algorithmKeyword"
+      },
+      {
+        "id": "runtimeKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL runtimeKeyword"
+      },
+      {
+        "id": "bindingKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL bindingKeyword"
+      },
+      {
+        "id": "flowKeyword",
+        "superType": "keyword",
+        "description": "UEF-PL flowKeyword"
+      },
+      {
+        "id": "projectName",
+        "superType": "namespace",
+        "description": "UEF-PL projectName"
+      },
+      {
+        "id": "hardwareName",
+        "superType": "variable",
+        "description": "UEF-PL hardwareName"
+      },
+      {
+        "id": "algorithmName",
+        "superType": "function",
+        "description": "UEF-PL algorithmName"
+      },
+      {
+        "id": "runtimeName",
+        "superType": "namespace",
+        "description": "UEF-PL runtimeName"
+      },
+      {
+        "id": "typeName",
+        "superType": "type",
+        "description": "UEF-PL typeName"
+      },
+      {
+        "id": "recordField",
+        "superType": "property",
+        "description": "UEF-PL recordField"
+      }
+    ]
   },
   "scripts": {
-    "package": "vsce package"
+    "package": "vsce package",
+    "test": "node --test tests/*.test.js"
   },
   "devDependencies": {
     "@vscode/vsce": "4.0.0"

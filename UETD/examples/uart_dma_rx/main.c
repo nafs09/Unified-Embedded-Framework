@@ -3,7 +3,7 @@
 ///
 /// TODO: Configure a UART receive buffer and DMA/IDLE handling. Document buffer ownership,
 /// overflow reporting, IRQ priority, and how bytes reach a task or parser.
-#include "upal/uart.h"
+#include "upal/serial/uart.h"
 
 int main(void) {
     /* TODO(uart-dma-rx main): Initialize UART framing/baud and a statically allocated,

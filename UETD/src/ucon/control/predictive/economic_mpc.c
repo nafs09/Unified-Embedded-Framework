@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/economic_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/economic_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Economic cost function; stage cost = economic

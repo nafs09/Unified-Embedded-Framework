@@ -12,24 +12,34 @@ extern "C" {
 #include "ucore/types.h"
 #include "uhal/target.h"
 
-/* Core identification */
-uetd_u32_t uhal_core_id(void);     /* unique core ID where available */
+/* Execution-core index, not a silicon serial number or CPU model identifier. */
+/// Return the zero-based index of the executing core.
+uetd_u32_t uhal_core_id(void);
+/// Return the current CPU clock frequency in hertz.
 uetd_u32_t uhal_cpu_freq_hz(void); /* current SYSCLK in Hz */
+/// Request an immediate system reset.
 void uhal_system_reset(void);     /* software reset */
 
-/* CPU cycle counter — uses DWT on Cortex-M; RDTSC on x86 */
+/* Optional CPU counter; zero means unavailable. This is not the portable timebase.
+ * Platforms document per-core scope, clock changes and sleep behavior. */
+/// Return the low 32 bits of the CPU cycle counter.
 uetd_u32_t uhal_cycle_count(void);    /* wraps at 2^32 cycles */
-uetd_u64_t uhal_cycle_count_64(void); /* monotonic, never wraps */
+/// Return an extended counter if the platform supports it, otherwise zero.
+uetd_u64_t uhal_cycle_count_64(void);
+/// Return the number of CPU cycles per microsecond.
 uetd_u32_t uhal_cycles_per_us(void);  /* cpu_freq_hz / 1e6 */
 
 /* Memory barriers */
-#define UHAL_DMB() __DMB()
-#define UHAL_DSB() __DSB()
-#define UHAL_ISB() __ISB()
-/* x86 fallback: _mm_mfence() / _mm_sfence() / _mm_lfence() */
+void uhal_data_memory_barrier(void);
+void uhal_data_sync_barrier(void);
+void uhal_instruction_sync_barrier(void);
+#define UHAL_DMB() uhal_data_memory_barrier()
+#define UHAL_DSB() uhal_data_sync_barrier()
+#define UHAL_ISB() uhal_instruction_sync_barrier()
 
 /* NOP — for timing alignment */
-#define UHAL_NOP() __NOP()
+void uhal_nop(void);
+#define UHAL_NOP() uhal_nop()
 
 #ifdef __cplusplus
 }

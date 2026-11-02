@@ -2,7 +2,7 @@
 /// @brief Three-dimensional vector operations in a right-handed coordinate basis.
 #include <math.h>
 #include <stddef.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 #include <umath/vector/vector3.h>
 

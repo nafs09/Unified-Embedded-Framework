@@ -15,11 +15,17 @@ extern "C" {
  * critical section, so it is safe across tasks and maskable ISRs on one core.
  * Calls from NMI/fault handlers and multicore sharing are outside this contract.
  */
+/// Atomically replace the value only when it matches the expected value.
 bool uhal_atomic_cas_u32(volatile uetd_u32_t* target, uetd_u32_t expected, uetd_u32_t desired);
+/// Atomically add a value and return the previous value.
 uetd_u32_t uhal_atomic_fetch_add_u32(volatile uetd_u32_t* target, uetd_u32_t val);
+/// Atomically AND a value and return the previous value.
 uetd_u32_t uhal_atomic_fetch_and_u32(volatile uetd_u32_t* target, uetd_u32_t val);
+/// Atomically OR a value and return the previous value.
 uetd_u32_t uhal_atomic_fetch_or_u32(volatile uetd_u32_t* target, uetd_u32_t val);
+/// Atomically read a 32-bit value.
 uetd_u32_t uhal_atomic_load_u32(const volatile uetd_u32_t* src);
+/// Atomically write a 32-bit value.
 void uhal_atomic_store_u32(volatile uetd_u32_t* dst, uetd_u32_t val);
 
 #ifdef __cplusplus

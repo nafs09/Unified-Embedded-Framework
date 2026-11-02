@@ -35,7 +35,7 @@ def _legacy_parser() -> argparse.ArgumentParser:
 def _command_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="uef-gen", description="Compile declarative UETD projects and assemble UETD-based firmware.")
     commands = parser.add_subparsers(dest="command", required=True)
-    check = commands.add_parser("check", help="parse and validate a .uef, YAML, or JSON project without writing output")
+    check = commands.add_parser("check", help="check .uef/.uefs source, or validate a YAML/JSON hardware project")
     check.add_argument("configuration", type=Path)
     check.add_argument("--uetd", type=Path, help="UETD checkout used for registry resolution")
     generate = commands.add_parser("generate", help="generate a firmware project")
@@ -47,6 +47,15 @@ def _command_parser() -> argparse.ArgumentParser:
     generate.add_argument("--dry-run", action="store_true", help="validate and resolve modules without writing project files")
     validate = commands.add_parser("validate", help="validate configuration and target resources")
     validate.add_argument("configuration", type=Path)
+    for command in (check, generate, validate):
+        command.add_argument("--format", choices=("json", "text"), default="json", help="response format (default: json)")
+    formatter = commands.add_parser("format", help="format .uef/.uefs indentation without changing syntax")
+    formatter.add_argument("configuration", type=Path)
+    format_mode = formatter.add_mutually_exclusive_group()
+    format_mode.add_argument("--write", action="store_true", help="update the source file in place")
+    format_mode.add_argument("--check", action="store_true", help="return 1 if formatting would change the file")
+    formatter.add_argument("--indent", type=int, choices=range(1, 9), default=2, help="indentation width (default: 2)")
+    formatter.add_argument("--tabs", action="store_true", help="indent with tabs")
     targets = commands.add_parser("targets", help="inspect registered target records")
     target_commands = targets.add_subparsers(dest="targets_command", required=True)
     target_list = target_commands.add_parser("list")
@@ -163,6 +172,17 @@ def _run_legacy(argv: list[str]) -> int:
 def _run_command(argv: list[str]) -> int:
     parser = _command_parser()
     args = parser.parse_args(argv)
+    if args.command == "format":
+        from uef_gen.cli_output import run_format_command
+        return run_format_command(args)
+
+    def _emit(value: dict[str, Any]) -> None:
+        if getattr(args, "format", "json") == "text":
+            from uef_gen.cli_output import format_response
+            print(format_response(value, command=args.command, source_path=getattr(args, "configuration", None)))
+        else:
+            print(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False))
+
     try:
         if args.command == "tools":
             response, exit_code = handle_tool_command(args)
@@ -176,14 +196,10 @@ def _run_command(argv: list[str]) -> int:
                 return 0 if compiled_system.ok else 2
             if source_path.suffix.casefold() == ".uef":
                 compiled = _compile_uetd_source(source_path, args.uetd)
-                if not compiled.ok:
-                    _emit(compiled.to_dict())
-                    return 2
-                config = compiled.hardware_configuration
-                application = compiled.to_dict().get("application")
+                _emit(compiled.to_dict())
+                return 0 if compiled.ok else 2
             else:
                 config = _load_project(source_path)
-                application = None
                 if args.uetd is not None:
                     config.setdefault("uetd", {})["path"] = str(args.uetd.expanduser().resolve())
             snapshot, selection, diagnostics = _module_selection(config, source_path)
@@ -199,11 +215,6 @@ def _run_command(argv: list[str]) -> int:
                         "sources": list(selection.sources),
                     }
                 )
-                if application is not None:
-                    response["application"] = application
-                    compiled_dict = compiled.to_dict()
-                    response["hardware_configuration"] = compiled_dict.get("hardware_configuration")
-                    response["backend_input"] = compiled_dict.get("backend_input")
             _emit(response)
             return 0 if response["ok"] else 2
         if args.command == "validate":
@@ -219,35 +230,29 @@ def _run_command(argv: list[str]) -> int:
             return 0 if response["ok"] else 2
         if args.command == "generate":
             source_path = args.configuration.expanduser().resolve()
+            if source_path.suffix.casefold() in {".uef", ".uefs"} and args.target is not None:
+                _emit({"ok": False, "diagnostics": [error("project_language_cli_override", "UEF-PL source owns its target; edit the source instead of using --target.").to_dict()]})
+                return 2
             if source_path.suffix.casefold() == ".uefs":
                 compiled_system = _compile_uefs_source(source_path, args.uetd)
-                if not compiled_system.ok:
+                if not compiled_system.ok or args.dry_run:
                     _emit(compiled_system.to_dict())
-                    return 2
-                _emit({"ok": False, "diagnostics": [{"severity": "error", "code": "system_generation_backend_unavailable", "message": "The .uefs frontend validates and lowers a complete multi-target build input, but no firmware emitter consumes it yet."}], "build_plan": compiled_system.to_dict().get("build_plan"), "backend_input": compiled_system.to_dict().get("backend_input")})
+                    return 0 if compiled_system.ok else 2
+                response = compiled_system.to_dict()
+                response["ok"] = False
+                response.setdefault("diagnostics", []).append(error("system_generation_backend_unavailable", "The .uefs frontend lowers a multi-target build input, but no firmware emitter consumes it yet.").to_dict())
+                _emit(response)
                 return 2
             if source_path.suffix.casefold() == ".uef":
-                if args.target is not None:
-                    _emit(
-                        {
-                            "ok": False,
-                            "diagnostics": [
-                                {
-                                    "severity": "error",
-                                    "code": "project_language_cli_override",
-                                    "message": "A .uef file owns its target and project graph; put them in the source file instead of using --target.",
-                                }
-                            ],
-                        }
-                    )
-                    return 2
                 compiled = _compile_uetd_source(source_path, args.uetd)
                 if not compiled.ok:
                     _emit(compiled.to_dict())
                     return 2
                 if not args.dry_run:
                     compiled_dict = compiled.to_dict()
-                    _emit({"ok": False, "diagnostics": [{"severity": "error", "code": "project_language_generation_backend_unavailable", "message": "The .uef frontend validates and lowers a complete standalone backend input, but the firmware generation pipeline still consumes hardware configuration."}], "backend_input": compiled_dict.get("backend_input"), "application": compiled_dict.get("application")})
+                    compiled_dict["ok"] = False
+                    compiled_dict.setdefault("diagnostics", []).append(error("project_language_generation_backend_unavailable", "The .uef frontend lowers application input, but no firmware emitter consumes it yet.").to_dict())
+                    _emit(compiled_dict)
                     return 2
                 config = compiled.hardware_configuration
             else:
@@ -257,6 +262,8 @@ def _run_command(argv: list[str]) -> int:
             if args.dry_run:
                 snapshot, selection, diagnostics = _module_selection(config, source_path)
                 response = _diagnostic_response(diagnostics)
+                if source_path.suffix.casefold() == ".uef":
+                    response["diagnostics"] = [item.to_dict() for item in compiled.diagnostics] + response["diagnostics"]
                 if response["ok"] and selection is not None:
                     response["uetd"] = {"version": snapshot.version, "source_hash": snapshot.source_hash}
                     response["selected_modules"] = list(selection.modules)
@@ -479,7 +486,7 @@ def main(argv: list[str] | None = None) -> int:
     if arguments and arguments[0] == "monitor":
         from uef_gen.deploy.cli import main as deployment_main
         return deployment_main(arguments)
-    if arguments and arguments[0] in {"check", "generate", "validate", "targets", "modules", "snapshot", "tools", "version"}:
+    if arguments and arguments[0] in {"check", "format", "generate", "validate", "targets", "modules", "snapshot", "tools", "version"}:
         return _run_command(arguments)
     return _run_legacy(arguments)
 

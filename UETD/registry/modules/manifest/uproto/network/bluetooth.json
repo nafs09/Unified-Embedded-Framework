@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/uproto/network/bluetooth.c"
+  ],
+  "dependencies": [],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/network/bluetooth.h"
+  ],
+  "available_for_generation": false,
+  "contract_status": "provider_interface",
+  "scaffold_reason": "Portable provider dispatch is implemented; a selected, integrated provider and its target/runtime contract are required before firmware generation.",
+  "external_dependencies": [
+    "provider: UPAL radio transport/HCI controller or integrated target Bluetooth SDK"
+  ]
+}

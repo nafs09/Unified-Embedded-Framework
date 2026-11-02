@@ -18,13 +18,13 @@
 #include "umath/umath.h"
 #include "umid/umid.h"
 #include "uos/uos.h"
-#include "upal/fdcan_fd.h"
+#include "upal/can/fdcan_fd.h"
 #include "upal/upal.h"
-#include "uproto/crsf.h"
-#include "uproto/dshot.h"
+#include "uproto/rc/crsf.h"
+#include "uproto/rc/dshot.h"
 #include "uproto/mavlink.h"
-#include "uproto/sbus.h"
-#include "uproto/uavcan.h"
+#include "uproto/rc/sbus.h"
+#include "uproto/can/uavcan.h"
 #include "uproto/uproto.h"
 
 #endif /* UETD_UETD_H */

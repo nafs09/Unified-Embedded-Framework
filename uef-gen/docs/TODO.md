@@ -13,8 +13,8 @@ tool-version database.
 
 
 The corresponding UETD source map is in `UETD/src/uhal/README.md` and
-`UETD/templates/targets/README.md`. Start chip/board/tool registration in
-`UETD/registry/targets/README.md` and
+`UETD/docs/TARGET_TEMPLATES.md`. Start chip/board/tool registration in
+`UETD/registry/TARGETS.md` and
 `UETD/registry/targets/toolchains/README.md`; do not add Python constants to
 `chips/` or `deploy/backends/` as a substitute for UETD registry data.
 
@@ -50,15 +50,15 @@ as separate input workflows with explicit ownership and validation contracts.
 - [x] Keep syntax productions and dispatch IDs in `src/uef_gen/language/registry/`; resolve UETD names and contracts from UETD's live registries.
 - [x] Discover module spellings through `DSL_descriptor`, load available authoring contracts, and report registered-but-unready entries.
 - [x] Implement project symbols, type/unit/shape checks, model/algorithm/protocol/FSM/OS validation, and lowering to a backend-neutral application specification. Composition output and branch contracts, scheduled-call arguments, state actions, nested UMATH restrictions, and exact registry-backed UMATH routes are preserved and checked.
-- [ ] Reconcile the basic, platform, drone, ECHO, rover, optical-bench, and Tesla examples with the current UETD authoring contracts and type/unit catalogue; they parse, but none currently passes semantic compilation against the live checkout.
+- [ ] Complete the sorter and H745 coil designs. Eight of ten `.uef` examples pass frontend checks; the sorter has unknown descriptors and the H745 sketch has incomplete model/invocation details. Its importing `.uefs` also fails.
 - [x] Implement `.uefs` parsing, node compilation, shared link-contract validation, and deterministic system-plan lowering.
 - [ ] Implement the standalone `.uef` emitter from the lowered application specification and UETD-owned generation contracts.
 - [ ] Implement the `.uefs` firmware emitter after single-target emission, preserving independent node builds and link metadata.
 - [ ] Complete source-to-generated diagnostic maps and generated-project validation once an emitter exists.
-- [ ] Add human-readable CLI summaries while retaining machine-readable JSON output for scripts and the existing request bridge.
+- [x] Add opt-in human-readable CLI summaries with `--format text`, retaining JSON as the default and preserving the request bridge.
 - [ ] Route `.uef` and `.uefs` through build/flash only after generation, toolchain resolution, artifact validation, and safe deployment work end-to-end.
 - [x] Connect registry-backed completion, hover, signature help, definitions, compiler diagnostics, and UTF-16 LSP coordinates to the shared editor server.
-- [ ] Expand grammar-aware completion, project navigation/references, semantic tokens, formatting, code actions, and editor package release validation.
+- [ ] Expand editor coverage and IDE-host release validation. Shared formatting, symbols/references/rename, semantic tokens and code actions are implemented; the 2026-10-29 review adds regressions, formatter CLI, and VS Code status/theme improvements.
 
 ### Milestone 0 — maintain input, ownership, and live UETD contracts
 

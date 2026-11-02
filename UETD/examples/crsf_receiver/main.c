@@ -3,7 +3,7 @@
 ///
 /// TODO: Configure the serial transport, validate CRSF framing/CRC, then publish RC state with
 /// age/failsafe metadata. Do not update channels from partial frames.
-#include "uproto/crsf.h"
+#include "uproto/rc/crsf.h"
 
 int main(void) {
     /* TODO(crsf-receiver main): Initialize the board UART at the selected CRSF settings,

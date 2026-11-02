@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\derivatives\jacobian.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\functions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\se2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\se3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\so2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\lie\so3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\ldlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\lu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\qr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\sparse_csr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\svd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\matrix\symmetric_eigen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\numerical\integration.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\numerical\least_squares.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\numerical\splines.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\polynomial\roots.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\distributions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\multivariate_normal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\prng.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\probability\streaming.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\signal\fft.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\umath\signal\windows.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_umath_scaffold_contracts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\UETD\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E9E4C964-C242-321E-BF29-8EA344C4A9E4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

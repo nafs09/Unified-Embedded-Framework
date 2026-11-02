@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for BDOT_DETUMBLE.
 #ifndef UETD_UCON_SCAFFOLD_BDOT_DETUMBLE_H
 #define UETD_UCON_SCAFFOLD_BDOT_DETUMBLE_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

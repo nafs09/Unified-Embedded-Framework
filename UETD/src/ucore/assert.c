@@ -1,8 +1,10 @@
 /// @file src/ucore/assert.c
 /// @brief Fail-fast default for debug assertions.
 ///
-/// Firmware projects may replace this weak function to record the expression,
-/// source location, and message before entering their board fault path.
+/// GCC/Clang firmware projects may replace this weak function to record the
+/// expression and source location before entering their board fault path.
+/// Toolchains without weak-function support must select a replacement source
+/// at build time rather than relying on duplicate-symbol override behavior.
 
 #include "ucore/assert.h"
 #include <stdlib.h>

@@ -3,10 +3,10 @@
 ///
 /// TODO: Compose the selected sensing, control, actuator, communication, health, and fault
 /// components. Confirm timing budget and safe output state before enabling the actuator path.
-#include "uapp/lifecycle.h"
+#include "uapp/runtime/lifecycle.h"
 #include "umid/drivers/imu.h"
-#include "uproto/crsf.h"
-#include "uproto/dshot.h"
+#include "uproto/rc/crsf.h"
+#include "uproto/rc/dshot.h"
 
 int main(void) {
     /* TODO(full-motor-control main): Initialize sensing, estimator, controller,

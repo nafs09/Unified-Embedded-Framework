@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "src/uapp/runtime/lifecycle.c"
+  ],
+  "dependencies": [
+    "ucore"
+  ],
+  "headers": [
+    "include/uapp/runtime/lifecycle.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "available_for_generation": true,
+  "contract_status": "portable_implemented"
+}

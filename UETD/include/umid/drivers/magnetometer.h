@@ -10,7 +10,7 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/i2c.h"
+#include "upal/serial/i2c.h"
 
 typedef struct {
     uetd_f32_t x_uT, y_uT, z_uT;
@@ -24,7 +24,9 @@ typedef struct {
     uetd_f32_t soft_iron[9]; /* 3×3 scale/cross-axis correction */
 } umid_magnetometer_t;
 
+/// Initialize the magnetometer sensor adapter.
 uetd_status_t umid_magnetometer_init(umid_magnetometer_t* m);
+/// Read the measured magnetic field vector.
 uetd_status_t umid_magnetometer_read(umid_magnetometer_t* m, umid_mag_data_t* out);
 
 #ifdef __cplusplus

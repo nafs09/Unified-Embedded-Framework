@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for NMPC_RTI.
 #ifndef UETD_UCON_SCAFFOLD_NMPC_RTI_H
 #define UETD_UCON_SCAFFOLD_NMPC_RTI_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

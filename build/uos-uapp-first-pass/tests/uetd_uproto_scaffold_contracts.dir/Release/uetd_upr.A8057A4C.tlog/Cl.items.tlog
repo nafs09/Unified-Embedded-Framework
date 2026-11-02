@@ -1,0 +1,10 @@
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\uavcan.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\uavcan.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\framing.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\framing.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\mavlink.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\mavlink.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\connection_manager.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\connection_manager.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\network\time_sync.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\time_sync.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\crsf.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\crsf.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\dshot.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\dshot.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\sbus.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\sbus.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\usb_device.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\usb_device.obj
+C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_scaffold_contracts.dir\Release\uetd_uproto_scaffold_contracts.obj

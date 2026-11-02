@@ -1,5 +1,11 @@
 # Future capability catalogue
 
+Scope policy: `future/` is for genuinely later work. The approved
+[placement migration](../../docs/design/complete-system/FIRST_PASS_SCOPE.md#proposed-migration-of-older-first-pass-entries)
+moved 20 first-pass records to `registry/first_pass/`. Six later records remain
+here. Incomplete implementation alone does not classify a requirement as later.
+The generic display driver is in the main Phase 0 catalogue.
+
 `registry.json` is the planning index for capability gaps whose design has
 been made concrete enough to review but is not yet an implemented UETD or
 `uef-gen` capability. Each entry is deliberately marked `design_only` and
@@ -24,9 +30,10 @@ Promotion requires all of the following, as appropriate to the capability:
 4. Host tests and target evidence for timing, memory, errors, recovery and
    applicable safety/security properties, linked to exact source, artifact,
    configuration, board and toolchain identities.
-5. A deliberate promotion that changes the entry out of this future index and
-   into the normal selectable registry. A future entry alone cannot support
-   an equivalence or qualification claim.
+5. A deliberate implementation-readiness change in the owning module/provider
+   record. Moving a requirement into first-pass scope can happen before these
+   implementation gates; scope placement alone cannot support generation,
+   equivalence or qualification claims.
 
 Use `uef-gen`'s `load_future_catalogue` only for roadmap inspection and link
 integrity. It validates that the index, schemas and referenced design files

@@ -1,6 +1,6 @@
 # Module build routes
 
-Each `route.tmpl` is a Jinja template that renders one CMake target for the
+Each `<capability>.cmake.tmpl` is a Jinja template that renders one CMake target for the
 module listed in its detail manifest. The rendered target compiles the
 manifest's implementation sources, publishes its public headers and UETD
 include root, and links the module's declared dependencies.
@@ -25,7 +25,7 @@ from uef_gen.templates import render_uetd_template
 
 route = render_uetd_template(
     Path("UETD/templates"),
-    "modules/ucon/control/classical/pid/route.tmpl",
+    "modules/ucon/control/classical/pid.cmake.tmpl",
     {},
 )
 ```
@@ -36,9 +36,15 @@ routes after module registry or detail-manifest changes:
 
 ```powershell
 python tools/generate_module_templates.py
+python tools/audit_layout.py
 ```
 
 These CMake routes package declared UETD sources for a build. They do not
 create algorithm instances or change `authoring.generation.template_paths`,
 module availability, or target readiness. UETD project generation continues
 to enforce the availability and scaffold status recorded in each manifest.
+
+Route folders mirror the physical detail-manifest folders, while module IDs
+remain stable. Related routes share topic folders; a module does not get a
+folder solely to hold one template. Future scope comes from the module ID and
+manifest metadata, so colocating an outline does not make it available.

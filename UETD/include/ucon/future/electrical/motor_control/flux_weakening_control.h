@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for FLUX_WEAKENING_CONTROL.
 #ifndef UETD_UCON_SCAFFOLD_FLUX_WEAKENING_CONTROL_H
 #define UETD_UCON_SCAFFOLD_FLUX_WEAKENING_CONTROL_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

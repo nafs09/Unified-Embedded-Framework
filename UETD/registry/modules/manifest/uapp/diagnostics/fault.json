@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/uapp/diagnostics/fault.c"
+  ],
+  "dependencies": [
+    "uhal"
+  ],
+  "headers": [
+    "include/uapp/diagnostics/fault.h",
+    "include/ucore/status.h",
+    "include/ucore/time.h",
+    "include/ucore/types.h",
+    "include/uhal/clock.h",
+    "include/uhal/core.h",
+    "include/uhal/fault.h",
+    "include/uhal/irq.h",
+    "include/uhal/memory.h",
+    "include/uhal/target.h",
+    "include/uhal/target_config.h"
+  ],
+  "available_for_generation": true,
+  "contract_status": "portable_implemented"
+}

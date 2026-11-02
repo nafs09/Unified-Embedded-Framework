@@ -65,7 +65,7 @@ project MotorController {
 This is a structural example. A target ID, module descriptor, and every
 component setting must resolve to actual UETD registry data before a real
 project is accepted. See the runnable-shape examples in
-[`uef-gen/examples`](../../uef-gen/examples/README.md).
+[`uef-gen/examples`](../../uef-gen/docs/EXAMPLES.md).
 
 ## Components and UETD names
 

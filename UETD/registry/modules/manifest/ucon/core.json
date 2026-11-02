@@ -3,6 +3,7 @@
     "src/ucon/status.c"
   ],
   "headers": [
+    "include/ucon/algorithm_call.h",
     "include/ucon/status.h",
     "include/ucon/types.h",
     "include/ucore/types.h",

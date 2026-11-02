@@ -24,6 +24,7 @@ typedef enum {
     UETD_CONFLICT = 12, /* resource already in use */
 } uetd_status_t;
 
+/// Return a stable, human-readable name for a UETD status value.
 const char* uetd_status_str(uetd_status_t s);
 
 #ifdef __cplusplus

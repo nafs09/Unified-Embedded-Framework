@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "src/uproto/industrial/iec60870.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Part XV.3 lists IEC 60870-5; select the 101 or 104 profile and define link, ASDU, event, and security behavior before adding a public API.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/industrial/iec60870.h",
+    "include/uproto/scaffold_call.h"
+  ],
+  "available_for_generation": false
+}

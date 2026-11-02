@@ -1,0 +1,9 @@
+/* Rename to atomic.c only after the AVR IRQ/critical-section contract is ready. */
+/* bool uhal_atomic_cas_u32(volatile uetd_u32_t *target, uetd_u32_t expected, uetd_u32_t desired); */
+/* uetd_u32_t uhal_atomic_fetch_add_u32(volatile uetd_u32_t *target, uetd_u32_t value); */
+/* uetd_u32_t uhal_atomic_fetch_and_u32(volatile uetd_u32_t *target, uetd_u32_t value); */
+/* uetd_u32_t uhal_atomic_fetch_or_u32(volatile uetd_u32_t *target, uetd_u32_t value); */
+/* uetd_u32_t uhal_atomic_load_u32(const volatile uetd_u32_t *source); */
+/* void uhal_atomic_store_u32(volatile uetd_u32_t *destination, uetd_u32_t value); */
+/* TODO: In README.md, define 8-bit AVR alignment/atomicity, save-and-restore prior IRQ state,
+ * ISR/NMI restrictions, and memory barriers. Never claim 32-bit lock-free behavior. */

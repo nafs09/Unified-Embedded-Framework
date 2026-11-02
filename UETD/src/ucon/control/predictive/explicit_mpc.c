@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/explicit_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/explicit_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Pre-solved piecewise-affine law, with a correct multi-facet region representation.

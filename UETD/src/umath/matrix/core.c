@@ -4,6 +4,7 @@
 #include <float.h>
 #include <stdint.h>
 #include <umath/matrix/core.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 
 static bool valid_shape(size_t rows, size_t columns) {

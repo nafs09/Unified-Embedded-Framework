@@ -2,7 +2,7 @@
 /// @file src/ucon/control/state_space/lqg.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/state_space/lqg.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: LQR/LQI are state-feedback variants; LQG composes a linear estimator with a state-feedback law.

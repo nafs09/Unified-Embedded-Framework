@@ -32,7 +32,9 @@ explains how UETD JSON catalogues feed the language.
   limitations.
 - [Language audit](audits/LANGUAGE_AUDIT.md) records the standalone language
   frontend's current scope and implementation gates.
+- [29 October 2026 review](audits/UEF_GEN_REVIEW_2026-10-29.md) records reproduced
+  defects, fixes, remaining generator risks, and the authoring refresh.
 
 Focused READMEs remain beside schemas, editors, language registries, target
 resolvers, and deployment code. The example catalogue is at
-[`../examples/README.md`](../examples/README.md).
+[`../docs/EXAMPLES.md`](../docs/EXAMPLES.md).

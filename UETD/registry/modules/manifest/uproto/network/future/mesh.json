@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/uproto/network/future/mesh.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Typed Thread/Zigbee provider dispatch exists; commissioning, key storage, routing, ZCL profile selection, and radio qualification remain external-stack responsibilities.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/network/future/mesh.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "upal/future/ieee802154 or integrated target SDK",
+    "provider: Thread/Zigbee stack",
+    "optional uproto/ip"
+  ]
+}

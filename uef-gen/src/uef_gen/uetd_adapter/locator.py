@@ -96,6 +96,11 @@ class UETDLocator:
                 ]
             except (KeyError, TypeError):
                 continue
+            # First-pass design discovery is optional for older compatible UETD
+            # checkouts, but a declared index must exist just like the others.
+            for optional_index in ("first_pass_catalogue", "generation_catalogue"):
+                if optional_index in api:
+                    registry_paths.append(api[optional_index])
             resolved_paths = []
             for relative in registry_paths:
                 if not isinstance(relative, str) or not relative.strip():

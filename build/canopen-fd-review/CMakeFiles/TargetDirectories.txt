@@ -1,0 +1,4 @@
+C:/NEXUS/Unified Embedded Framework/build/canopen-fd-review/CMakeFiles/uetd_core.dir
+C:/NEXUS/Unified Embedded Framework/build/canopen-fd-review/CMakeFiles/INSTALL.dir
+C:/NEXUS/Unified Embedded Framework/build/canopen-fd-review/CMakeFiles/ALL_BUILD.dir
+C:/NEXUS/Unified Embedded Framework/build/canopen-fd-review/CMakeFiles/ZERO_CHECK.dir

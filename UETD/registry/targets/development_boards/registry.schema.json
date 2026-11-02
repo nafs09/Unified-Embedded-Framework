@@ -16,7 +16,7 @@
         "required": ["id", "path"],
         "properties": {
           "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
-          "path": { "type": "string", "pattern": "^registry/targets/development_boards/manifest/[a-z0-9-]+/[a-z0-9-]+\\.json$" }
+          "path": { "type": "string", "pattern": "^registry/targets/development_boards/manifest/(?:[a-z0-9-]+/)?[a-z0-9-]+\\.json$" }
         },
         "additionalProperties": false
       }

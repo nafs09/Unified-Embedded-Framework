@@ -28,9 +28,12 @@ typedef struct {
     uetd_u32_t rx_pos;
 } uproto_mavlink_t;
 
+/// Initialize the MAVLink parser.
 uetd_status_t uproto_mavlink_init(uproto_mavlink_t* m, uproto_stream_t transport, uetd_u8_t sys_id, uetd_u8_t comp_id);
+/// Send a packed MAVLink message over the configured transport.
 uetd_status_t uproto_mavlink_send(uproto_mavlink_t* m, const uetd_u8_t* packed_msg, uetd_u32_t len);
 /* Returns true and fills msg_buf if a complete message was received */
+/// Return a complete MAVLink message when one has been received.
 bool uproto_mavlink_receive(uproto_mavlink_t* m, uetd_u8_t* msg_buf, uetd_u32_t* len);
 
 #ifdef __cplusplus

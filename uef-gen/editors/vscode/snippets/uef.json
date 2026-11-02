@@ -2,29 +2,44 @@
   "UEF-PL project shell": {
     "prefix": "uef-project",
     "body": [
-      "project ${1:project_name} {",
-      "  target = \"${2:stm32f722ret6}\";",
-      "  numeric { scalar = f32; accumulator = f64; rounding = nearest_even; overflow = reject; non_finite = reject; fused_multiply_add = disabled; matrix_layout = row_major; }",
+      "// Select a chip or an optional development-board preset; custom wiring belongs in hardware.",
+      "project ${1:MyController} {",
+      "  target = \"${2:esp32-devkitc-v4}\";",
       "",
-      "  parameter setpoint : f32;",
-      "  parameter measurement_value : f32;",
-      "  algorithm ${3:controller} : ${4:pid};",
-      "  subsystem ${5:application};",
+      "  numeric {",
+      "    scalar = f32;",
+      "    accumulator = f64;",
+      "    rounding = nearest_even;",
+      "    overflow = reject;",
+      "    non_finite = reject;",
+      "    fused_multiply_add = disabled;",
+      "    matrix_layout = row_major;",
+      "  }",
       "",
-      "  operatingsystem ${6:Runtime} {",
-      "    runtime = ${7:FreeRTOS};",
-      "    component_failure_policy = ${11:assert_safe_state};",
-      "    task ${8:control} { run = ${5:application}(request = setpoint, measurement = measurement_value); rate = ${9:500} Hz; priority = ${10:5}; }",
+      "  parameter setpoint : f32 = 0.0;",
+      "  subsystem ${3:application};",
+      "",
+      "  operatingsystem ${4:Runtime} {",
+      "    runtime = BareMetal;",
+      "    component_failure_policy = assert_safe_state;",
+      "    loop control {",
+      "      run = ${3:application}(request = setpoint);",
+      "      rate = 100 Hz;",
+      "      deadline = 10 ms;",
+      "    }",
       "  }",
       "",
       "  implementation {",
-      "    algorithm ${3:controller} { reference = setpoint; measurement = measurement_value; kp = 1.0; }",
-      "    subsystem ${5:application} { input request : f32; input measurement : f32; output command : f32; use ${3:controller} as controller; stage control = controller(reference = request, measurement = measurement); output command = control.output; }",
-      "    ${0}",
+      "    subsystem ${3:application} {",
+      "      input request : f32;",
+      "      output command : f32;",
+      "      output command = request;",
+      "      ${0}",
+      "    }",
       "  }",
       "}"
     ],
-    "description": "Create the required constructor, operating-system, implementation layout"
+    "description": "Start a small BareMetal project with explicit scheduling and typed input/output; hardware and control algorithms can be added next."
   },
   "Subsystem signature and definition": {
     "prefix": "uetd-subsystem",
@@ -267,5 +282,19 @@
       "}"
     ],
     "description": "Declare a fixed-shape typed application record for ports and message contracts"
+  },
+  "UEF-PL custom hardware profile": {
+    "prefix": "uef-hardware",
+    "body": [
+      "hardware {",
+      "  build.backend = ${1:cmake};",
+      "  build.toolchain = \"${2:arm-none-eabi}\";",
+      "  flash.backend = ${3:openocd};",
+      "  flash.toolchain = \"${4:openocd}\";",
+      "  flash.interface = \"${5:swd}\";",
+      "  reserved_pins = [${6:\"PA13\", \"PA14\"}];",
+      "}"
+    ],
+    "description": "Describe a bare chip or custom assembly without requiring a development-board record."
   }
 }

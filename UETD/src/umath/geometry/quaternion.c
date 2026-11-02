@@ -4,7 +4,7 @@
 #include <float.h>
 #include <umath/constants.h>
 #include <umath/geometry/quaternion.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 
 umath_quaternion_t umath_quaternion_identity(void) {

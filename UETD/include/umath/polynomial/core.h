@@ -17,14 +17,21 @@ extern "C" {
 /// Addition, multiplication, and composition retain leading zero coefficients.
 umath_status_t umath_polynomial_evaluate(const umath_scalar_t* coefficients, size_t degree, umath_scalar_t x,
                                          umath_scalar_t* value);
+/// Evaluate the derivative of a polynomial at a point.
 umath_status_t umath_polynomial_derivative_evaluate(const umath_scalar_t* coefficients, size_t degree, umath_scalar_t x,
                                                     umath_scalar_t* value);
+/// Evaluate the integral of a polynomial at a point.
 umath_status_t umath_polynomial_integral_evaluate(const umath_scalar_t* coefficients, size_t degree, umath_scalar_t lower,
                                                   umath_scalar_t upper, umath_scalar_t* integral);
+/// Compute coefficients for the derivative polynomial.
 umath_status_t umath_polynomial_derivative_coefficients(const umath_scalar_t* coefficients, size_t degree, umath_scalar_t* output, size_t output_capacity);
+/// Compute coefficients for the integral polynomial.
 umath_status_t umath_polynomial_integral_coefficients(const umath_scalar_t* coefficients, size_t degree, umath_scalar_t integration_constant, umath_scalar_t* output, size_t output_capacity);
+/// Add two polynomials.
 umath_status_t umath_polynomial_add(const umath_scalar_t* left, size_t left_degree, const umath_scalar_t* right, size_t right_degree, umath_scalar_t* output, size_t output_capacity);
+/// Multiply two polynomials.
 umath_status_t umath_polynomial_multiply(const umath_scalar_t* left, size_t left_degree, const umath_scalar_t* right, size_t right_degree, umath_scalar_t* output, size_t output_capacity);
+/// Compose one polynomial with another.
 umath_status_t umath_polynomial_compose(const umath_scalar_t* outer, size_t outer_degree, const umath_scalar_t* inner, size_t inner_degree, umath_scalar_t* output, size_t output_capacity);
 
 #ifdef __cplusplus

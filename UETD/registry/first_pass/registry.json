@@ -1,0 +1,401 @@
+{
+  "schema_version": "1.0",
+  "registry_schema": "registry/first_pass/registry.schema.json",
+  "schemas": {
+    "persistent_record": "registry/contracts/persistent_record.schema.json",
+    "plc_process_image": "registry/contracts/plc_process_image.schema.json",
+    "external_artifact": "registry/contracts/external_artifact.schema.json",
+    "calibration_record": "registry/contracts/calibration_record.schema.json",
+    "blackbox_stream": "registry/contracts/blackbox_stream.schema.json",
+    "qualification_evidence": "registry/contracts/qualification_evidence.schema.json",
+    "signed_artifact_manifest": "registry/contracts/signed_artifact_manifest.schema.json",
+    "crash_record": "registry/contracts/crash_record.schema.json",
+    "update_progress": "registry/contracts/update_progress.schema.json",
+    "trust_policy": "registry/contracts/trust_policy.schema.json"
+  },
+  "items": {
+    "upal.can_fd": {
+      "area": "upal",
+      "title": "CAN FD frame transport (FDCAN-FD)",
+      "status": "design_only",
+      "contract_file": "docs/design/can/CANOPEN_FD_MEDI_CAN.md#can-fd-transport",
+      "api_outline": "include/upal/can/fdcan_fd.h",
+      "generation": "blocked",
+      "reason": "Existing Phase 0 frame API validates arguments; exact controller/transceiver timing, message RAM, queues, interrupts and bus recovery remain unimplemented.",
+      "depends_on": [
+        "upal/fdcan_fd",
+        "exact target CAN FD provider"
+      ],
+      "project_relevance": [
+        "industrial control",
+        "CANopen FD",
+        "future CAN FD protocols"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "upal.uart_modes": {
+      "area": "upal",
+      "title": "UART framing and half-duplex direction modes",
+      "status": "design_only",
+      "contract_file": "include/upal/CAPABILITY_CONTRACTS.md#uart-framing-and-half-duplex-direction",
+      "api_outline": "include/upal/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "Needs typed framing, DE timing, turnaround, collision and DShot-UART semantics plus target mappings.",
+      "depends_on": [
+        "upal/uart"
+      ],
+      "project_relevance": [
+        "drone",
+        "PLC",
+        "industrial serial"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "upal.timer_capture_events": {
+      "area": "upal",
+      "title": "Timer capture result/event publication",
+      "status": "design_only",
+      "contract_file": "include/upal/CAPABILITY_CONTRACTS.md#timer-capture-publication",
+      "api_outline": "include/upal/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "Needs edge/filter/wrap semantics, result delivery, overcapture policy and target implementation.",
+      "depends_on": [
+        "upal/timer",
+        "upal/dma"
+      ],
+      "project_relevance": [
+        "drone",
+        "power conversion",
+        "motor control"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "upal.synchronized_io": {
+      "area": "upal",
+      "title": "Synchronized ADC, timer, DMA and PWM groups",
+      "status": "design_only",
+      "contract_file": "include/upal/CAPABILITY_CONTRACTS.md#synchronized-acquisition-and-output-update",
+      "api_outline": "include/upal/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "Trigger routes and atomic start boundaries are target-specific and require capability resolution.",
+      "depends_on": [
+        "upal/adc",
+        "upal/timer",
+        "upal/hrtim",
+        "upal/dma"
+      ],
+      "project_relevance": [
+        "power conversion",
+        "motor control",
+        "high-rate sensing"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "upal.usb_profiles": {
+      "area": "upal",
+      "title": "USB CDC and HID profiles",
+      "status": "design_only",
+      "contract_file": "include/upal/CAPABILITY_CONTRACTS.md#usb-profiles",
+      "api_outline": "include/upal/capability_contracts.h",
+      "generation": "blocked",
+      "reason": "The existing USB boundary is reserved; class descriptors, endpoint budgets and lifecycle are not defined.",
+      "depends_on": [
+        "upal/usb"
+      ],
+      "project_relevance": [
+        "diagnostics",
+        "wired control"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "umid.storage_transactions": {
+      "area": "umid",
+      "title": "Backend-neutral transactional storage",
+      "status": "design_only",
+      "contract_file": "include/umid/DATA_SERVICES.md#common-storage-service",
+      "api_outline": "include/umid/data/storage.h",
+      "generation": "blocked",
+      "reason": "The public record/backend contract and fail-closed service source exist; atomic commit, record verification, recovery, and backend qualification remain unimplemented.",
+      "depends_on": [
+        "upal/flash",
+        "upal/qspi",
+        "upal/sdmmc",
+        "optional FatFS"
+      ],
+      "project_relevance": [
+        "all persistent configurations"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "umid.calibration_records": {
+      "area": "umid",
+      "title": "Driver-owned calibration record envelope and persistence",
+      "status": "design_only",
+      "contract_file": "include/umid/DATA_SERVICES.md#calibration-records",
+      "api_outline": "include/umid/data/calibration.h",
+      "generation": "blocked",
+      "reason": "The identity/version-bound envelope has a fail-closed source; driver math remains user-owned and persistence is not implemented.",
+      "depends_on": [
+        "umid.storage_transactions",
+        "UMID driver calibration contract"
+      ],
+      "project_relevance": [
+        "sensor drivers"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "umid.blackbox": {
+      "area": "umid",
+      "title": "Binary blackbox acquisition logging",
+      "status": "design_only",
+      "contract_file": "include/umid/DATA_SERVICES.md#binary-blackbox",
+      "api_outline": "include/umid/logging/blackbox.h",
+      "generation": "blocked",
+      "reason": "Typed records, backend, caller-owned queue, and capacity fields have a fail-closed source; rate validation, buffering, backpressure, recovery and wear behavior remain unimplemented.",
+      "depends_on": [
+        "umid.storage_transactions",
+        "UMID log queue"
+      ],
+      "project_relevance": [
+        "drone",
+        "power conversion",
+        "system diagnosis"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "umid.plc_process_image": {
+      "area": "umid",
+      "title": "Typed PLC/external-peer process image",
+      "status": "design_only",
+      "contract_file": "include/umid/DATA_SERVICES.md#plc-process-image",
+      "api_outline": "include/umid/data/process_image.h",
+      "generation": "blocked",
+      "reason": "The instance-aware scan contract has a fail-closed source and includes generation, quality/freshness, authority, and safe-value metadata; staging, validation, publication, and synchronization remain unimplemented.",
+      "depends_on": [
+        "uproto industrial adapter",
+        "future external endpoint types"
+      ],
+      "project_relevance": [
+        "PLC",
+        "industrial control"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uapp.secure_update": {
+      "area": "uapp",
+      "title": "Authenticated and recoverable firmware update profiles",
+      "status": "design_only",
+      "contract_file": "include/uapp/SECURITY_AND_UPDATE.md",
+      "api_outline": "include/uapp/secure_update.h",
+      "generation": "blocked",
+      "reason": "Portable orchestrator and templates are implemented. Deployment still requires authenticated canonical-manifest/crypto providers, durable staging and progress, exact compatibility, verified boot health and power-loss-qualified rollback.",
+      "depends_on": [
+        "uef-gen signed artifact metadata",
+        "target bootloader profile"
+      ],
+      "project_relevance": [
+        "field-maintained devices"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uproto.modbus": {
+      "area": "uproto",
+      "title": "Modbus RTU and TCP adapter",
+      "status": "design_only",
+      "contract_file": "include/uproto/INDUSTRIAL.md#modbus-rtu",
+      "api_outline": "include/uproto/industrial/modbus.h",
+      "generation": "blocked",
+      "reason": "Typed declarations and fail-closed C definitions exist; role/function subset, RTU timing, TCP transaction limits, and process-image mapping are not implemented.",
+      "depends_on": [
+        "upal/uart",
+        "uproto/ip",
+        "umid.plc_process_image"
+      ],
+      "project_relevance": [
+        "PLC",
+        "industrial sensors and drives"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uproto.canopen": {
+      "area": "uproto",
+      "title": "CANopen CC (CiA 301) bounded object-dictionary adapter",
+      "status": "design_only",
+      "contract_file": "include/uproto/INDUSTRIAL.md#canopen",
+      "api_outline": "include/uproto/can/canopen.h",
+      "generation": "blocked",
+      "reason": "Typed declarations and fail-closed C definitions exist; CANopen profile, object-dictionary limits, NMT/heartbeat/PDO/SDO behavior and optional stack boundary remain unimplemented.",
+      "depends_on": [
+        "upal/can",
+        "umid.plc_process_image"
+      ],
+      "project_relevance": [
+        "PLC",
+        "industrial control"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uproto.tls": {
+      "area": "uproto",
+      "title": "TLS/DTLS provider facade",
+      "status": "design_only",
+      "contract_file": "include/uproto/CONNECTIVITY.md#tls-and-dtls",
+      "api_outline": "include/uproto/network/tls.h",
+      "generation": "blocked",
+      "reason": "Opaque session and credential-handle dispatch exists; crypto provider, trust policy, entropy, key storage, and security review are required.",
+      "depends_on": [
+        "consumer-selected TLS/DTLS library",
+        "target entropy source",
+        "optional secure key store"
+      ],
+      "project_relevance": [
+        "MQTT",
+        "CoAP",
+        "HTTP",
+        "field maintenance"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uproto.mqtt": {
+      "area": "uproto",
+      "title": "MQTT 3.1.1 and 5.0 client adapter",
+      "status": "design_only",
+      "contract_file": "include/uproto/CONNECTIVITY.md#mqtt",
+      "api_outline": "include/uproto/network/mqtt.h",
+      "generation": "blocked",
+      "reason": "Typed client dispatch exists; packet limits, ACK queues, reconnect/backpressure, TLS, and broker interoperability remain provider-owned.",
+      "depends_on": [
+        "uproto/ip or provider socket offload",
+        "optional uproto.tls"
+      ],
+      "project_relevance": [
+        "telemetry",
+        "sensor gateways",
+        "connected devices"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uproto.http": {
+      "area": "uproto",
+      "title": "Caller-buffered HTTP client adapter",
+      "status": "design_only",
+      "contract_file": "include/uproto/CONNECTIVITY.md#http",
+      "api_outline": "include/uproto/network/http.h",
+      "generation": "blocked",
+      "reason": "Typed request/response dispatch exists; HTTP version, bounded headers/body, redirect policy, TLS, and exact provider remain unqualified.",
+      "depends_on": [
+        "uproto/ip or provider HTTP offload",
+        "optional uproto.tls"
+      ],
+      "project_relevance": [
+        "device management",
+        "connected products"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "uapp.fault_history": {
+      "area": "uapp",
+      "title": "Retained crash and fault history",
+      "status": "design_only",
+      "contract_file": "include/uapp/FAULT_HISTORY.md",
+      "api_outline": "include/uapp/diagnostics/fault_history.h",
+      "generation": "blocked",
+      "reason": "Portable canonical codec, CRC and record lifecycle are implemented. Deployment still requires architecture capture and an atomic retained-storage provider qualified for its execution context.",
+      "depends_on": [
+        "target retained memory profile",
+        "uhal fault context capture"
+      ],
+      "project_relevance": [
+        "diagnostics",
+        "field recovery"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "project_language.type_interchange": {
+      "area": "project_language",
+      "title": "Option/result, tagged variants, flags, fixed point and boundary codecs",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/language/frontends/project/TYPE_INTERCHANGE.md",
+      "generation": "blocked",
+      "reason": "Requires one end-to-end compiler path across AST, validation, lowering, C layout and editor contracts.",
+      "depends_on": [
+        "uef-gen project-language compiler"
+      ],
+      "project_relevance": [
+        "all typed projects"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "system_language.external_evidence": {
+      "area": "system_language",
+      "title": "External FPGA/PLC artifact identity and qualification evidence",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/language/frontends/system/EXTERNAL_ENDPOINTS_AND_EVIDENCE.md",
+      "generation": "blocked",
+      "reason": "System composition needs typed external artifact and evidence links tied to exact node/link hashes and conditions.",
+      "depends_on": [
+        ".uefs system compiler",
+        "future evidence schemas"
+      ],
+      "project_relevance": [
+        "FPGA-connected systems",
+        "PLC-connected systems",
+        "qualified releases"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "deploy.signed_update": {
+      "area": "deploy",
+      "title": "Signed artifact and target update orchestration",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/deploy/SECURE_UPDATE.md",
+      "generation": "blocked",
+      "reason": "Artifact signing, boot verification, safe staging and release policy are distinct from build hashes and ordinary flashing.",
+      "depends_on": [
+        "uapp.secure_update",
+        "future artifact schema"
+      ],
+      "project_relevance": [
+        "field-maintained devices"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    },
+    "evidence.qualification": {
+      "area": "evidence",
+      "title": "Capability-linked build, test and hardware qualification evidence",
+      "status": "design_only",
+      "contract_file": "@repo/uef-gen/src/uef_gen/language/frontends/system/EXTERNAL_ENDPOINTS_AND_EVIDENCE.md#evidence-records",
+      "generation": "blocked",
+      "reason": "Build provenance and structured evidence are different claims and need separate schemas and aggregation rules.",
+      "depends_on": [
+        "target identity",
+        "artifact identity",
+        "test/harness provenance"
+      ],
+      "project_relevance": [
+        "all release profiles"
+      ],
+      "priority": "FIRST_PASS",
+      "phase": 0
+    }
+  }
+}

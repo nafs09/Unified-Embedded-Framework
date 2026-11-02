@@ -353,7 +353,7 @@
     },
     {
       "id": "ra6m4",
-      "path": "registry/targets/families/manifest/renesas/ra6m4.json"
+      "path": "registry/targets/families/manifest/ra6m4.json"
     },
     {
       "id": "c2000-piccolo",
@@ -377,7 +377,7 @@
     },
     {
       "id": "gd32vf103",
-      "path": "registry/targets/families/manifest/gigadevice/gd32vf103.json"
+      "path": "registry/targets/families/manifest/gd32vf103.json"
     },
     {
       "id": "esp32",
@@ -445,7 +445,7 @@
     },
     {
       "id": "uetd-reference",
-      "path": "registry/targets/families/manifest/uetd/uetd-reference.json"
+      "path": "registry/targets/families/manifest/uetd-reference.json"
     }
   ]
 }

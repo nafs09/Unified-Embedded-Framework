@@ -5,28 +5,48 @@
   "authoring_contract_schema": "registry/modules/authoring_contract.schema.json",
   "registry_schema": "registry/modules/registry.schema.json",
   "modules": {
+    "uactuator/actuator": {
+      "manifest": "registry/modules/manifest/uactuator/actuator.json",
+      "DSL_descriptor": "actuator_service"
+    },
     "uactuator/h_bridge": {
       "manifest": "registry/modules/manifest/uactuator/h_bridge.json",
       "DSL_descriptor": "h_bridge"
     },
+    "uapp/diagnostics": {
+      "manifest": "registry/modules/manifest/uapp/diagnostics/diagnostics.json",
+      "DSL_descriptor": "diagnostics"
+    },
     "uapp/fault": {
-      "manifest": "registry/modules/manifest/uapp/fault.json",
+      "manifest": "registry/modules/manifest/uapp/diagnostics/fault.json",
       "DSL_descriptor": "fault"
     },
+    "uapp/fault_history": {
+      "manifest": "registry/modules/manifest/uapp/diagnostics/fault_history.json",
+      "DSL_descriptor": "fault_history"
+    },
     "uapp/lifecycle": {
-      "manifest": "registry/modules/manifest/uapp/lifecycle.json",
+      "manifest": "registry/modules/manifest/uapp/runtime/lifecycle.json",
       "DSL_descriptor": "lifecycle"
     },
+    "uapp/product_session": {
+      "manifest": "registry/modules/manifest/uapp/product_session.json",
+      "DSL_descriptor": "product_session"
+    },
+    "uapp/secure_update": {
+      "manifest": "registry/modules/manifest/uapp/secure_update.json",
+      "DSL_descriptor": "secure_update"
+    },
     "uapp/statemachine": {
-      "manifest": "registry/modules/manifest/uapp/statemachine.json",
+      "manifest": "registry/modules/manifest/uapp/runtime/statemachine.json",
       "DSL_descriptor": "statemachine"
     },
     "uapp/supervisor": {
-      "manifest": "registry/modules/manifest/uapp/supervisor.json",
+      "manifest": "registry/modules/manifest/uapp/runtime/supervisor.json",
       "DSL_descriptor": "supervisor"
     },
     "uapp/watchdog_gate": {
-      "manifest": "registry/modules/manifest/uapp/watchdog_gate.json",
+      "manifest": "registry/modules/manifest/uapp/runtime/watchdog_gate.json",
       "DSL_descriptor": "watchdog_gate"
     },
     "ucon/aerospace/attitude/bdot_detumble": {
@@ -78,24 +98,28 @@
       "DSL_descriptor": "self_tune_reg"
     },
     "ucon/control/allocation/control_allocator": {
-      "manifest": "registry/modules/manifest/ucon/control/allocation/control_allocator.json",
+      "manifest": "registry/modules/manifest/ucon/control/control_allocator.json",
       "DSL_descriptor": "control_allocator"
     },
     "ucon/control/classical/imc": {
       "manifest": "registry/modules/manifest/ucon/control/classical/imc.json",
       "DSL_descriptor": "imc"
     },
+    "ucon/control/classical/lead_lag": {
+      "manifest": "registry/modules/manifest/ucon/control/classical/lead_lag.json",
+      "DSL_descriptor": "lead_lag"
+    },
+    "ucon/control/classical/pid": {
+      "manifest": "registry/modules/manifest/ucon/control/classical/pid.json",
+      "DSL_descriptor": "pid"
+    },
     "ucon/control/classical/smith_predictor": {
       "manifest": "registry/modules/manifest/ucon/control/classical/smith_predictor.json",
       "DSL_descriptor": "smith_predictor"
     },
     "ucon/control/disturbance_rejection/adrc": {
-      "manifest": "registry/modules/manifest/ucon/control/disturbance_rejection/adrc.json",
+      "manifest": "registry/modules/manifest/ucon/control/adrc.json",
       "DSL_descriptor": "adrc"
-    },
-    "ucon/control/classical/lead_lag": {
-      "manifest": "registry/modules/manifest/ucon/control/classical/lead_lag.json",
-      "DSL_descriptor": "lead_lag"
     },
     "ucon/control/nonlinear/adaptive_bs": {
       "manifest": "registry/modules/manifest/ucon/control/nonlinear/adaptive_bs.json",
@@ -140,10 +164,6 @@
     "ucon/control/nonlinear/ndi": {
       "manifest": "registry/modules/manifest/ucon/control/nonlinear/ndi.json",
       "DSL_descriptor": "ndi"
-    },
-    "ucon/control/classical/pid": {
-      "manifest": "registry/modules/manifest/ucon/control/classical/pid.json",
-      "DSL_descriptor": "pid"
     },
     "ucon/control/predictive/ddp": {
       "manifest": "registry/modules/manifest/ucon/control/predictive/ddp.json",
@@ -202,11 +222,11 @@
       "DSL_descriptor": "zone_mpc"
     },
     "ucon/control/safety/reference_governor": {
-      "manifest": "registry/modules/manifest/ucon/control/safety/reference_governor.json",
+      "manifest": "registry/modules/manifest/ucon/control/reference_governor.json",
       "DSL_descriptor": "reference_governor"
     },
     "ucon/control/scheduled/gain_schedule": {
-      "manifest": "registry/modules/manifest/ucon/control/scheduled/gain_schedule.json",
+      "manifest": "registry/modules/manifest/ucon/control/gain_schedule.json",
       "DSL_descriptor": "gain_schedule"
     },
     "ucon/control/state_space/decoupler": {
@@ -230,7 +250,7 @@
       "DSL_descriptor": "state_feedback"
     },
     "ucon/control/tuning/pid_autotune": {
-      "manifest": "registry/modules/manifest/ucon/control/tuning/pid_autotune.json",
+      "manifest": "registry/modules/manifest/ucon/control/pid_autotune.json",
       "DSL_descriptor": "pid_autotune"
     },
     "ucon/core": {
@@ -238,43 +258,43 @@
       "DSL_descriptor": "ucon_core"
     },
     "ucon/electrical/grid/droop_control": {
-      "manifest": "registry/modules/manifest/ucon/electrical/grid/droop_control.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/droop_control.json",
       "DSL_descriptor": "droop_control"
     },
     "ucon/electrical/grid/resonant_pr": {
-      "manifest": "registry/modules/manifest/ucon/electrical/grid/resonant_pr.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/resonant_pr.json",
       "DSL_descriptor": "resonant_pr"
     },
     "ucon/electrical/grid/sogi_fll": {
-      "manifest": "registry/modules/manifest/ucon/electrical/grid/sogi_fll.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/sogi_fll.json",
       "DSL_descriptor": "sogi_fll"
     },
     "ucon/electrical/grid/sogi_pll": {
-      "manifest": "registry/modules/manifest/ucon/electrical/grid/sogi_pll.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/sogi_pll.json",
       "DSL_descriptor": "sogi_pll"
     },
     "ucon/electrical/grid/srf_pll": {
-      "manifest": "registry/modules/manifest/ucon/electrical/grid/srf_pll.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/srf_pll.json",
       "DSL_descriptor": "srf_pll"
     },
     "ucon/electrical/motor_control/dtc_control": {
-      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/dtc_control.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/dtc_control.json",
       "DSL_descriptor": "dtc_control"
     },
     "ucon/electrical/motor_control/dtc_flux_torque_estimator": {
-      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/dtc_flux_torque_estimator.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/dtc_flux_torque_estimator.json",
       "DSL_descriptor": "dtc_flux_torque_estimator"
     },
     "ucon/electrical/motor_control/foc_current_control": {
-      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/foc_current_control.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/foc_current_control.json",
       "DSL_descriptor": "foc_current_control"
     },
     "ucon/electrical/motor_control/svpwm": {
-      "manifest": "registry/modules/manifest/ucon/electrical/motor_control/svpwm.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/svpwm.json",
       "DSL_descriptor": "svpwm"
     },
     "ucon/electrical/transforms/clarke_park": {
-      "manifest": "registry/modules/manifest/ucon/electrical/transforms/clarke_park.json",
+      "manifest": "registry/modules/manifest/ucon/electrical/clarke_park.json",
       "DSL_descriptor": "clarke_park"
     },
     "ucon/estimators/attitude/complementary": {
@@ -302,7 +322,7 @@
       "DSL_descriptor": "triad"
     },
     "ucon/estimators/bayesian/particle": {
-      "manifest": "registry/modules/manifest/ucon/estimators/bayesian/particle.json",
+      "manifest": "registry/modules/manifest/ucon/estimators/particle.json",
       "DSL_descriptor": "particle"
     },
     "ucon/estimators/frequency/fll": {
@@ -330,7 +350,7 @@
       "DSL_descriptor": "zero_cross_freq"
     },
     "ucon/estimators/identification/rls": {
-      "manifest": "registry/modules/manifest/ucon/estimators/identification/rls.json",
+      "manifest": "registry/modules/manifest/ucon/estimators/rls.json",
       "DSL_descriptor": "rls"
     },
     "ucon/estimators/kalman/ckf": {
@@ -382,7 +402,7 @@
       "DSL_descriptor": "ukf_merwe"
     },
     "ucon/estimators/moving_horizon/mhe": {
-      "manifest": "registry/modules/manifest/ucon/estimators/moving_horizon/mhe.json",
+      "manifest": "registry/modules/manifest/ucon/estimators/mhe.json",
       "DSL_descriptor": "mhe"
     },
     "ucon/estimators/observers/dob": {
@@ -554,7 +574,7 @@
       "DSL_descriptor": "h_inf_sf"
     },
     "ucon/future/control/synthesis/pole_place": {
-      "manifest": "registry/modules/manifest/ucon/future/control/synthesis/pole_place.json",
+      "manifest": "registry/modules/manifest/ucon/future/control/pole_place.json",
       "DSL_descriptor": "pole_place"
     },
     "ucon/future/electrical/grid/ddsrf_pll": {
@@ -666,7 +686,7 @@
       "DSL_descriptor": "out_of_sequence_kf"
     },
     "ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src": {
-      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/power_conversion/resonant_ekf_llc_src.json",
+      "manifest": "registry/modules/manifest/ucon/future/estimators/kalman/resonant_ekf_llc_src.json",
       "DSL_descriptor": "resonant_ekf_llc_src"
     },
     "ucon/future/estimators/kalman/robust_kf": {
@@ -698,24 +718,20 @@
       "DSL_descriptor": "uio"
     },
     "ucon/future/filtering/adaptive/lms": {
-      "manifest": "registry/modules/manifest/ucon/future/filtering/adaptive/lms.json",
+      "manifest": "registry/modules/manifest/ucon/future/filtering/lms.json",
       "DSL_descriptor": "lms"
     },
     "ucon/future/filtering/adaptive/nlms": {
-      "manifest": "registry/modules/manifest/ucon/future/filtering/adaptive/nlms.json",
+      "manifest": "registry/modules/manifest/ucon/future/filtering/nlms.json",
       "DSL_descriptor": "nlms"
     },
     "ucon/future/filtering/runtime/savgol_filter": {
-      "manifest": "registry/modules/manifest/ucon/future/filtering/runtime/savgol_filter.json",
+      "manifest": "registry/modules/manifest/ucon/future/filtering/savgol_filter.json",
       "DSL_descriptor": "savgol_filter"
     },
     "ucon/future/infrastructure/blocks/aw_observer": {
-      "manifest": "registry/modules/manifest/ucon/future/infrastructure/blocks/aw_observer.json",
+      "manifest": "registry/modules/manifest/ucon/future/control/aw_observer.json",
       "DSL_descriptor": "aw_observer"
-    },
-    "ucon/future/optimization/qp/qp_active_set": {
-      "manifest": "registry/modules/manifest/ucon/future/optimization/qp/qp_active_set.json",
-      "DSL_descriptor": "qp_active_set"
     },
     "ucon/future/optimization/qp/qp_admm": {
       "manifest": "registry/modules/manifest/ucon/future/optimization/qp/qp_admm.json",
@@ -726,11 +742,11 @@
       "DSL_descriptor": "qp_projected_gradient"
     },
     "ucon/future/signal_processing/analysis/spectral_peak_interpolation": {
-      "manifest": "registry/modules/manifest/ucon/future/signal_processing/analysis/spectral_peak_interpolation.json",
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/spectral_peak_interpolation.json",
       "DSL_descriptor": "spectral_peak_interpolation"
     },
     "ucon/future/signal_processing/demodulation/synchronous_demod": {
-      "manifest": "registry/modules/manifest/ucon/future/signal_processing/demodulation/synchronous_demod.json",
+      "manifest": "registry/modules/manifest/ucon/future/signal_processing/synchronous_demod.json",
       "DSL_descriptor": "synchronous_demod"
     },
     "ucon/future/signal_processing/resampling/cic_decimator": {
@@ -758,79 +774,79 @@
       "DSL_descriptor": "goertzel"
     },
     "ucon/future/trajectory/optimization/minimum_snap_traj": {
-      "manifest": "registry/modules/manifest/ucon/future/trajectory/optimization/minimum_snap_traj.json",
+      "manifest": "registry/modules/manifest/ucon/future/trajectory/minimum_snap_traj.json",
       "DSL_descriptor": "minimum_snap_traj"
     },
     "ucon/future/trajectory/profiles/time_optimal_profile": {
-      "manifest": "registry/modules/manifest/ucon/future/trajectory/profiles/time_optimal_profile.json",
+      "manifest": "registry/modules/manifest/ucon/future/trajectory/time_optimal_profile.json",
       "DSL_descriptor": "time_optimal_profile"
     },
     "ucon/infrastructure/blocks/anti_windup_backcalc": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_backcalc.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/anti_windup_backcalc.json",
       "DSL_descriptor": "anti_windup_backcalc"
     },
     "ucon/infrastructure/blocks/anti_windup_clamp": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_clamp.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/anti_windup_clamp.json",
       "DSL_descriptor": "anti_windup_clamp"
     },
     "ucon/infrastructure/blocks/anti_windup_cond": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/anti_windup_cond.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/anti_windup_cond.json",
       "DSL_descriptor": "anti_windup_cond"
     },
     "ucon/infrastructure/blocks/bumpless_transfer": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/bumpless_transfer.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/bumpless_transfer.json",
       "DSL_descriptor": "bumpless_transfer"
     },
     "ucon/infrastructure/blocks/deadband": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/deadband.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/deadband.json",
       "DSL_descriptor": "deadband"
     },
     "ucon/infrastructure/blocks/gain_block": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/gain_block.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/gain_block.json",
       "DSL_descriptor": "gain_block"
     },
     "ucon/infrastructure/blocks/hysteresis": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/hysteresis.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/hysteresis.json",
       "DSL_descriptor": "hysteresis"
     },
     "ucon/infrastructure/blocks/integrator": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/integrator.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/integrator.json",
       "DSL_descriptor": "integrator"
     },
     "ucon/infrastructure/blocks/mode_select": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/mode_select.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/mode_select.json",
       "DSL_descriptor": "mode_select"
     },
     "ucon/infrastructure/blocks/multirate_bridge": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/multirate_bridge.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/multirate_bridge.json",
       "DSL_descriptor": "multirate_bridge"
     },
     "ucon/infrastructure/blocks/rate_limiter": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/rate_limiter.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/rate_limiter.json",
       "DSL_descriptor": "rate_limiter"
     },
     "ucon/infrastructure/blocks/saturator": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/saturator.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/saturator.json",
       "DSL_descriptor": "saturator"
     },
     "ucon/infrastructure/blocks/sensor_voter": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/sensor_voter.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/sensor_voter.json",
       "DSL_descriptor": "sensor_voter"
     },
     "ucon/infrastructure/blocks/signal_validity": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/signal_validity.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/signal_validity.json",
       "DSL_descriptor": "signal_validity"
     },
     "ucon/infrastructure/blocks/sum_junction": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/sum_junction.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/sum_junction.json",
       "DSL_descriptor": "sum_junction"
     },
     "ucon/infrastructure/blocks/unit_delay": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/blocks/unit_delay.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/unit_delay.json",
       "DSL_descriptor": "unit_delay"
     },
     "ucon/infrastructure/fault_detection/sensor_fdi": {
-      "manifest": "registry/modules/manifest/ucon/infrastructure/fault_detection/sensor_fdi.json",
+      "manifest": "registry/modules/manifest/ucon/infrastructure/sensor_fdi.json",
       "DSL_descriptor": "sensor_fdi"
     },
     "ucon/medical/profiles/glucose_control_profile": {
@@ -844,6 +860,10 @@
     "ucon/medical/profiles/ventilator_control_profile": {
       "manifest": "registry/modules/manifest/ucon/medical/profiles/ventilator_control_profile.json",
       "DSL_descriptor": "ventilator_control_profile"
+    },
+    "ucon/optimization/qp/qp_active_set": {
+      "manifest": "registry/modules/manifest/ucon/qp_active_set.json",
+      "DSL_descriptor": "qp_active_set"
     },
     "ucon/trajectory/profiles/bezier_traj": {
       "manifest": "registry/modules/manifest/ucon/trajectory/profiles/bezier_traj.json",
@@ -885,6 +905,18 @@
       "manifest": "registry/modules/manifest/ucore.json",
       "DSL_descriptor": "ucore"
     },
+    "ucore/codec": {
+      "manifest": "registry/modules/manifest/ucore/codec.json",
+      "DSL_descriptor": "binary_codec"
+    },
+    "ucore/deadline": {
+      "manifest": "registry/modules/manifest/ucore/deadline.json",
+      "DSL_descriptor": "checked_deadline"
+    },
+    "ucore/span": {
+      "manifest": "registry/modules/manifest/ucore/span.json",
+      "DSL_descriptor": "checked_span"
+    },
     "uhal": {
       "manifest": "registry/modules/manifest/uhal.json",
       "DSL_descriptor": "uhal"
@@ -892,6 +924,14 @@
     "uhal/arm_cm": {
       "manifest": "registry/modules/manifest/uhal/arm_cm.json",
       "DSL_descriptor": "arm_cm"
+    },
+    "uhal/avr": {
+      "manifest": "registry/modules/manifest/uhal/avr.json",
+      "DSL_descriptor": "avr"
+    },
+    "uhal/esp_idf": {
+      "manifest": "registry/modules/manifest/uhal/esp_idf.json",
+      "DSL_descriptor": "esp_idf"
     },
     "uhal/target_profiles": {
       "manifest": "registry/modules/manifest/uhal/target_profiles.json",
@@ -901,10 +941,6 @@
       "manifest": "registry/modules/manifest/uhal/x86.json",
       "DSL_descriptor": "x86"
     },
-    "umath/derivatives/dual": {
-      "manifest": "registry/modules/manifest/umath/derivatives/dual.json",
-      "DSL_descriptor": "dual"
-    },
     "umath/complex": {
       "manifest": "registry/modules/manifest/umath/complex.json",
       "DSL_descriptor": "complex"
@@ -912,6 +948,10 @@
     "umath/core": {
       "manifest": "registry/modules/manifest/umath/core.json",
       "DSL_descriptor": "umath_core"
+    },
+    "umath/derivatives/dual": {
+      "manifest": "registry/modules/manifest/umath/derivatives/dual.json",
+      "DSL_descriptor": "dual"
     },
     "umath/derivatives/jacobian": {
       "manifest": "registry/modules/manifest/umath/derivatives/jacobian.json",
@@ -922,15 +962,19 @@
       "DSL_descriptor": "fixed"
     },
     "umath/future/matrix/sparse_csr": {
-      "manifest": "registry/modules/manifest/umath/future/matrix/sparse_csr.json",
+      "manifest": "registry/modules/manifest/umath/matrix/sparse_csr.json",
       "DSL_descriptor": "sparse_csr"
+    },
+    "umath/geometry/quaternion": {
+      "manifest": "registry/modules/manifest/umath/geometry/quaternion.json",
+      "DSL_descriptor": "quaternion"
     },
     "umath/geometry/transform3": {
       "manifest": "registry/modules/manifest/umath/geometry/transform3.json",
       "DSL_descriptor": "transform3"
     },
     "umath/interpolation/splines": {
-      "manifest": "registry/modules/manifest/umath/interpolation/splines.json",
+      "manifest": "registry/modules/manifest/umath/numerical/splines.json",
       "DSL_descriptor": "splines"
     },
     "umath/lie/se2": {
@@ -982,7 +1026,7 @@
       "DSL_descriptor": "integration"
     },
     "umath/optimization/least_squares": {
-      "manifest": "registry/modules/manifest/umath/optimization/least_squares.json",
+      "manifest": "registry/modules/manifest/umath/numerical/least_squares.json",
       "DSL_descriptor": "least_squares"
     },
     "umath/polynomial/core": {
@@ -1001,12 +1045,8 @@
       "manifest": "registry/modules/manifest/umath/probability/multivariate_normal.json",
       "DSL_descriptor": "multivariate_normal"
     },
-    "umath/geometry/quaternion": {
-      "manifest": "registry/modules/manifest/umath/geometry/quaternion.json",
-      "DSL_descriptor": "quaternion"
-    },
     "umath/random/prng": {
-      "manifest": "registry/modules/manifest/umath/random/prng.json",
+      "manifest": "registry/modules/manifest/umath/probability/prng.json",
       "DSL_descriptor": "prng"
     },
     "umath/signal/fft": {
@@ -1018,12 +1058,16 @@
       "DSL_descriptor": "windows"
     },
     "umath/special/functions": {
-      "manifest": "registry/modules/manifest/umath/special/functions.json",
+      "manifest": "registry/modules/manifest/umath/functions.json",
       "DSL_descriptor": "functions"
     },
     "umath/statistics/streaming": {
-      "manifest": "registry/modules/manifest/umath/statistics/streaming.json",
+      "manifest": "registry/modules/manifest/umath/probability/streaming.json",
       "DSL_descriptor": "streaming"
+    },
+    "umath/vector/vector": {
+      "manifest": "registry/modules/manifest/umath/vector/vector.json",
+      "DSL_descriptor": "vector"
     },
     "umath/vector/vector2": {
       "manifest": "registry/modules/manifest/umath/vector/vector2.json",
@@ -1037,6 +1081,18 @@
       "manifest": "registry/modules/manifest/umath/vector/vector4.json",
       "DSL_descriptor": "vector4"
     },
+    "umid/blackbox": {
+      "manifest": "registry/modules/manifest/umid/logging/blackbox.json",
+      "DSL_descriptor": "blackbox"
+    },
+    "umid/buffer_pool": {
+      "manifest": "registry/modules/manifest/umid/messaging/buffer_pool.json",
+      "DSL_descriptor": "buffer_pool"
+    },
+    "umid/calibration": {
+      "manifest": "registry/modules/manifest/umid/data/calibration.json",
+      "DSL_descriptor": "calibration"
+    },
     "umid/current": {
       "manifest": "registry/modules/manifest/umid/current.json",
       "DSL_descriptor": "current"
@@ -1044,6 +1100,10 @@
     "umid/encoder": {
       "manifest": "registry/modules/manifest/umid/encoder.json",
       "DSL_descriptor": "encoder"
+    },
+    "umid/event_bus": {
+      "manifest": "registry/modules/manifest/umid/messaging/event_bus.json",
+      "DSL_descriptor": "event_bus"
     },
     "umid/fatfs": {
       "manifest": "registry/modules/manifest/umid/fatfs.json",
@@ -1057,6 +1117,10 @@
       "manifest": "registry/modules/manifest/umid/gnss.json",
       "DSL_descriptor": "gnss"
     },
+    "umid/graphics": {
+      "manifest": "registry/modules/manifest/umid/ui/graphics.json",
+      "DSL_descriptor": "graphics_adapter"
+    },
     "umid/health": {
       "manifest": "registry/modules/manifest/umid/health.json",
       "DSL_descriptor": "health"
@@ -1065,25 +1129,53 @@
       "manifest": "registry/modules/manifest/umid/imu.json",
       "DSL_descriptor": "imu"
     },
+    "umid/input": {
+      "manifest": "registry/modules/manifest/umid/ui/input.json",
+      "DSL_descriptor": "input_service"
+    },
     "umid/log": {
-      "manifest": "registry/modules/manifest/umid/log.json",
+      "manifest": "registry/modules/manifest/umid/logging/log.json",
       "DSL_descriptor": "log"
+    },
+    "umid/log_uart": {
+      "manifest": "registry/modules/manifest/umid/logging/log_uart.json",
+      "DSL_descriptor": "log_uart"
     },
     "umid/mag": {
       "manifest": "registry/modules/manifest/umid/mag.json",
       "DSL_descriptor": "magnetometer"
     },
+    "umid/mailbox": {
+      "manifest": "registry/modules/manifest/umid/messaging/mailbox.json",
+      "DSL_descriptor": "latest_mailbox"
+    },
     "umid/pressure": {
       "manifest": "registry/modules/manifest/umid/pressure.json",
       "DSL_descriptor": "pressure"
+    },
+    "umid/process_image": {
+      "manifest": "registry/modules/manifest/umid/data/process_image.json",
+      "DSL_descriptor": "process_image"
     },
     "umid/range": {
       "manifest": "registry/modules/manifest/umid/range.json",
       "DSL_descriptor": "range"
     },
     "umid/ringbuf": {
-      "manifest": "registry/modules/manifest/umid/ringbuf.json",
+      "manifest": "registry/modules/manifest/umid/messaging/ringbuf.json",
       "DSL_descriptor": "ringbuf"
+    },
+    "umid/sensor": {
+      "manifest": "registry/modules/manifest/umid/sensor.json",
+      "DSL_descriptor": "sensor_service"
+    },
+    "umid/settings": {
+      "manifest": "registry/modules/manifest/umid/data/settings.json",
+      "DSL_descriptor": "settings"
+    },
+    "umid/storage": {
+      "manifest": "registry/modules/manifest/umid/data/storage.json",
+      "DSL_descriptor": "storage"
     },
     "umid/temp": {
       "manifest": "registry/modules/manifest/umid/temp.json",
@@ -1101,6 +1193,10 @@
       "manifest": "registry/modules/manifest/uos/baremetal.json",
       "DSL_descriptor": "BareMetal"
     },
+    "uos/deferred": {
+      "manifest": "registry/modules/manifest/uos/deferred.json",
+      "DSL_descriptor": "deferred_work"
+    },
     "uos/freertos": {
       "manifest": "registry/modules/manifest/uos/freertos.json",
       "DSL_descriptor": "FreeRTOS"
@@ -1110,144 +1206,260 @@
       "DSL_descriptor": "SafeRTOS"
     },
     "upal/adc": {
-      "manifest": "registry/modules/manifest/upal/adc.json",
+      "manifest": "registry/modules/manifest/upal/analog/adc.json",
       "DSL_descriptor": "adc"
     },
+    "upal/block_device": {
+      "manifest": "registry/modules/manifest/upal/storage/block_device.json",
+      "DSL_descriptor": "block_device"
+    },
     "upal/can": {
-      "manifest": "registry/modules/manifest/upal/can.json",
+      "manifest": "registry/modules/manifest/upal/can/can.json",
       "DSL_descriptor": "can"
     },
+    "upal/capability_contracts": {
+      "manifest": "registry/modules/manifest/upal/capability_contracts.json",
+      "DSL_descriptor": "peripheral_extensions"
+    },
     "upal/comp": {
-      "manifest": "registry/modules/manifest/upal/comp.json",
+      "manifest": "registry/modules/manifest/upal/analog/comp.json",
       "DSL_descriptor": "comp"
     },
     "upal/cordic": {
-      "manifest": "registry/modules/manifest/upal/cordic.json",
+      "manifest": "registry/modules/manifest/upal/compute/cordic.json",
       "DSL_descriptor": "cordic"
     },
     "upal/dac": {
-      "manifest": "registry/modules/manifest/upal/dac.json",
+      "manifest": "registry/modules/manifest/upal/analog/dac.json",
       "DSL_descriptor": "dac"
+    },
+    "upal/display": {
+      "manifest": "registry/modules/manifest/upal/display/display.json",
+      "DSL_descriptor": "display"
+    },
+    "upal/display_panel": {
+      "manifest": "registry/modules/manifest/upal/display/display_panel.json",
+      "DSL_descriptor": "display_panel"
     },
     "upal/dma": {
       "manifest": "registry/modules/manifest/upal/dma.json",
       "DSL_descriptor": "dma"
     },
+    "upal/dsi_host": {
+      "manifest": "registry/modules/manifest/upal/display/dsi_host.json",
+      "DSL_descriptor": "dsi_host"
+    },
+    "upal/ethernet": {
+      "manifest": "registry/modules/manifest/upal/network/ethernet.json",
+      "DSL_descriptor": "ethernet"
+    },
     "upal/fdcan_fd": {
-      "manifest": "registry/modules/manifest/upal/fdcan_fd.json",
+      "manifest": "registry/modules/manifest/upal/can/fdcan_fd.json",
       "DSL_descriptor": "fdcan_fd"
     },
     "upal/flash": {
-      "manifest": "registry/modules/manifest/upal/flash.json",
+      "manifest": "registry/modules/manifest/upal/storage/flash.json",
       "DSL_descriptor": "flash"
     },
     "upal/fmac": {
-      "manifest": "registry/modules/manifest/upal/fmac.json",
+      "manifest": "registry/modules/manifest/upal/compute/fmac.json",
       "DSL_descriptor": "fmac"
     },
+    "upal/future/ieee802154": {
+      "manifest": "registry/modules/manifest/upal/network/ieee802154.json",
+      "DSL_descriptor": "ieee802154"
+    },
     "upal/hrtim": {
-      "manifest": "registry/modules/manifest/upal/hrtim.json",
+      "manifest": "registry/modules/manifest/upal/timing/hrtim.json",
       "DSL_descriptor": "hrtim"
     },
     "upal/i2c": {
-      "manifest": "registry/modules/manifest/upal/i2c.json",
+      "manifest": "registry/modules/manifest/upal/serial/i2c.json",
       "DSL_descriptor": "i2c"
     },
     "upal/iwdg": {
-      "manifest": "registry/modules/manifest/upal/iwdg.json",
+      "manifest": "registry/modules/manifest/upal/watchdog/iwdg.json",
       "DSL_descriptor": "watchdog"
     },
+    "upal/netif": {
+      "manifest": "registry/modules/manifest/upal/network/netif.json",
+      "DSL_descriptor": "netif"
+    },
     "upal/opamp": {
-      "manifest": "registry/modules/manifest/upal/opamp.json",
+      "manifest": "registry/modules/manifest/upal/analog/opamp.json",
       "DSL_descriptor": "opamp"
     },
+    "upal/power": {
+      "manifest": "registry/modules/manifest/upal/power.json",
+      "DSL_descriptor": "power_manager"
+    },
     "upal/qspi": {
-      "manifest": "registry/modules/manifest/upal/qspi.json",
+      "manifest": "registry/modules/manifest/upal/storage/qspi.json",
       "DSL_descriptor": "qspi"
     },
+    "upal/radio_transport": {
+      "manifest": "registry/modules/manifest/upal/network/radio_transport.json",
+      "DSL_descriptor": "radio_transport"
+    },
     "upal/rtc": {
-      "manifest": "registry/modules/manifest/upal/rtc.json",
+      "manifest": "registry/modules/manifest/upal/timing/rtc.json",
       "DSL_descriptor": "rtc"
     },
     "upal/sdmmc": {
-      "manifest": "registry/modules/manifest/upal/sdmmc.json",
+      "manifest": "registry/modules/manifest/upal/storage/sdmmc.json",
       "DSL_descriptor": "sdmmc"
     },
     "upal/spi": {
-      "manifest": "registry/modules/manifest/upal/spi.json",
+      "manifest": "registry/modules/manifest/upal/serial/spi.json",
       "DSL_descriptor": "spi"
     },
     "upal/timer": {
-      "manifest": "registry/modules/manifest/upal/timer.json",
+      "manifest": "registry/modules/manifest/upal/timing/timer.json",
       "DSL_descriptor": "timer"
     },
+    "upal/touch": {
+      "manifest": "registry/modules/manifest/upal/display/touch.json",
+      "DSL_descriptor": "touch"
+    },
+    "upal/transaction": {
+      "manifest": "registry/modules/manifest/upal/transaction.json",
+      "DSL_descriptor": "io_transaction"
+    },
     "upal/uart": {
-      "manifest": "registry/modules/manifest/upal/uart.json",
+      "manifest": "registry/modules/manifest/upal/serial/uart.json",
       "DSL_descriptor": "uart"
     },
     "upal/usb": {
-      "manifest": "registry/modules/manifest/upal/usb.json",
+      "manifest": "registry/modules/manifest/upal/serial/usb.json",
       "DSL_descriptor": "usb"
     },
     "upal/wwdg": {
-      "manifest": "registry/modules/manifest/upal/wwdg.json",
+      "manifest": "registry/modules/manifest/upal/watchdog/wwdg.json",
       "DSL_descriptor": "window_watchdog"
     },
+    "uphysics/future/constants": {
+      "manifest": "registry/modules/manifest/uphysics/constants.json",
+      "DSL_descriptor": "physics_constants"
+    },
+    "uproto/bluetooth": {
+      "manifest": "registry/modules/manifest/uproto/network/bluetooth.json",
+      "DSL_descriptor": "bluetooth"
+    },
+    "uproto/canopen": {
+      "manifest": "registry/modules/manifest/uproto/can/canopen.json",
+      "DSL_descriptor": "canopen"
+    },
+    "uproto/connection_manager": {
+      "manifest": "registry/modules/manifest/uproto/network/connection_manager.json",
+      "DSL_descriptor": "connection_manager"
+    },
     "uproto/crsf": {
-      "manifest": "registry/modules/manifest/uproto/crsf.json",
+      "manifest": "registry/modules/manifest/uproto/rc/crsf.json",
       "DSL_descriptor": "crsf"
     },
     "uproto/dshot": {
-      "manifest": "registry/modules/manifest/uproto/dshot.json",
+      "manifest": "registry/modules/manifest/uproto/rc/dshot.json",
       "DSL_descriptor": "dshot"
     },
+    "uproto/framing": {
+      "manifest": "registry/modules/manifest/uproto/framing.json",
+      "DSL_descriptor": "bounded_framing"
+    },
+    "uproto/future/connectivity/coap": {
+      "manifest": "registry/modules/manifest/uproto/network/future/coap.json",
+      "DSL_descriptor": "coap"
+    },
+    "uproto/future/connectivity/mesh": {
+      "manifest": "registry/modules/manifest/uproto/network/future/mesh.json",
+      "DSL_descriptor": "mesh_network"
+    },
+    "uproto/future/connectivity/ppp": {
+      "manifest": "registry/modules/manifest/uproto/network/future/ppp.json",
+      "DSL_descriptor": "ppp"
+    },
     "uproto/future/elrs": {
-      "manifest": "registry/modules/manifest/uproto/future/elrs.json",
+      "manifest": "registry/modules/manifest/uproto/rc/future/elrs.json",
       "DSL_descriptor": "elrs"
     },
     "uproto/future/iec60870": {
-      "manifest": "registry/modules/manifest/uproto/future/iec60870.json",
+      "manifest": "registry/modules/manifest/uproto/industrial/iec60870.json",
       "DSL_descriptor": "iec60870"
     },
+    "uproto/future/industrial/canopen_fd": {
+      "manifest": "registry/modules/manifest/uproto/can/future/canopen_fd.json",
+      "DSL_descriptor": "canopen_fd"
+    },
     "uproto/future/j1939": {
-      "manifest": "registry/modules/manifest/uproto/future/j1939.json",
+      "manifest": "registry/modules/manifest/uproto/can/future/j1939.json",
       "DSL_descriptor": "j1939"
     },
     "uproto/future/lin": {
-      "manifest": "registry/modules/manifest/uproto/future/lin.json",
+      "manifest": "registry/modules/manifest/uproto/industrial/lin.json",
       "DSL_descriptor": "lin"
     },
+    "uproto/future/medi_can": {
+      "manifest": "registry/modules/manifest/uproto/can/future/medi_can.json",
+      "DSL_descriptor": "medi_can"
+    },
     "uproto/future/msp": {
-      "manifest": "registry/modules/manifest/uproto/future/msp.json",
+      "manifest": "registry/modules/manifest/uproto/rc/future/msp.json",
       "DSL_descriptor": "msp"
     },
     "uproto/future/uavcan_v1": {
-      "manifest": "registry/modules/manifest/uproto/future/uavcan_v1.json",
+      "manifest": "registry/modules/manifest/uproto/can/future/uavcan_v1.json",
       "DSL_descriptor": "uavcan_v1"
+    },
+    "uproto/http": {
+      "manifest": "registry/modules/manifest/uproto/network/http.json",
+      "DSL_descriptor": "http"
+    },
+    "uproto/ip": {
+      "manifest": "registry/modules/manifest/uproto/network/ip.json",
+      "DSL_descriptor": "ip_stack"
     },
     "uproto/mavlink": {
       "manifest": "registry/modules/manifest/uproto/mavlink.json",
       "DSL_descriptor": "mavlink"
     },
+    "uproto/modbus": {
+      "manifest": "registry/modules/manifest/uproto/industrial/modbus.json",
+      "DSL_descriptor": "modbus"
+    },
+    "uproto/mqtt": {
+      "manifest": "registry/modules/manifest/uproto/network/mqtt.json",
+      "DSL_descriptor": "mqtt"
+    },
     "uproto/ppm": {
-      "manifest": "registry/modules/manifest/uproto/ppm.json",
+      "manifest": "registry/modules/manifest/uproto/rc/ppm.json",
       "DSL_descriptor": "ppm"
     },
     "uproto/sbus": {
-      "manifest": "registry/modules/manifest/uproto/sbus.json",
+      "manifest": "registry/modules/manifest/uproto/rc/sbus.json",
       "DSL_descriptor": "sbus"
     },
+    "uproto/time_sync": {
+      "manifest": "registry/modules/manifest/uproto/network/time_sync.json",
+      "DSL_descriptor": "time_sync"
+    },
+    "uproto/tls": {
+      "manifest": "registry/modules/manifest/uproto/network/tls.json",
+      "DSL_descriptor": "tls"
+    },
     "uproto/uavcan": {
-      "manifest": "registry/modules/manifest/uproto/uavcan.json",
+      "manifest": "registry/modules/manifest/uproto/can/uavcan.json",
       "DSL_descriptor": "uavcan"
     },
-    "umath/vector/vector": {
-      "manifest": "registry/modules/manifest/umath/vector/vector.json",
-      "DSL_descriptor": "vector"
+    "uproto/usb_device": {
+      "manifest": "registry/modules/manifest/uproto/usb_device.json",
+      "DSL_descriptor": "usb_device"
     },
-    "uphysics/future/constants": {
-      "manifest": "registry/modules/manifest/uphysics/future/constants.json",
-      "DSL_descriptor": "physics_constants"
+    "uproto/wifi": {
+      "manifest": "registry/modules/manifest/uproto/network/wifi.json",
+      "DSL_descriptor": "wifi"
+    },
+    "usec/provider": {
+      "manifest": "registry/modules/manifest/usec/provider.json",
+      "DSL_descriptor": "security_provider"
     }
   },
   "selection_groups": {
@@ -1256,7 +1468,9 @@
       "selector": "target",
       "options": {
         "HOST": "uhal/x86",
-        "CORTEX_M": "uhal/arm_cm"
+        "CORTEX_M": "uhal/arm_cm",
+        "AVR": "uhal/avr",
+        "ESP_IDF": "uhal/esp_idf"
       }
     },
     "uos": {

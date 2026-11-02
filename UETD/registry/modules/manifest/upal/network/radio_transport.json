@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "src/upal/network/radio_transport.c"
+  ],
+  "dependencies": [
+    "upal/spi",
+    "upal/i2c",
+    "upal/uart"
+  ],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/upal/network/radio_transport.h"
+  ],
+  "available_for_generation": false,
+  "contract_status": "provider_interface",
+  "scaffold_reason": "Portable provider dispatch is implemented; a selected, integrated provider and its target/runtime contract are required before firmware generation."
+}

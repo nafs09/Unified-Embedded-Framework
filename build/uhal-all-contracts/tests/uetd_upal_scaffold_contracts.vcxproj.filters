@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\adc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\comp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\dac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\analog\opamp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\can\can.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\capability_contracts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\compute\cordic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\compute\fmac.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\display_panel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\dsi_host.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\display\touch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\dma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\power.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\i2c.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\spi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\uart.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\serial\usb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\block_device.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\flash.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\qspi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\storage\sdmmc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\timing\hrtim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\timing\rtc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\timing\timer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\transaction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\watchdog\iwdg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\UETD\src\upal\watchdog\wwdg.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\NEXUS\Unified Embedded Framework\build\uhal-all-contracts\tests\uetd_upal_scaffold_contracts.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\UETD\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E9E4C964-C242-321E-BF29-8EA344C4A9E4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

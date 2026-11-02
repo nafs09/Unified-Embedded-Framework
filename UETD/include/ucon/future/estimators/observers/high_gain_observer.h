@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for HIGH_GAIN_OBSERVER.
 #ifndef UETD_UCON_SCAFFOLD_HIGH_GAIN_OBSERVER_H
 #define UETD_UCON_SCAFFOLD_HIGH_GAIN_OBSERVER_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

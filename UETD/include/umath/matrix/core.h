@@ -17,38 +17,57 @@ extern "C" {
 /// Rank-one update modifies its matrix in place; its vector inputs must be disjoint from the matrix.
 umath_status_t umath_matrix_vector(const umath_scalar_t* matrix, const umath_scalar_t* vector, size_t rows, size_t columns,
                                    umath_scalar_t* output);
+/// Multiply two matrices.
 umath_status_t umath_matrix_multiply(const umath_scalar_t* left, const umath_scalar_t* right, size_t rows, size_t inner,
                                      size_t columns, umath_scalar_t* output);
+/// Transpose a matrix.
 umath_status_t umath_matrix_transpose(const umath_scalar_t* input, size_t rows, size_t columns, umath_scalar_t* output);
+/// Add two matrices element by element.
 umath_status_t umath_matrix_add(const umath_scalar_t* left, const umath_scalar_t* right, size_t rows, size_t columns,
                                 umath_scalar_t* output);
+/// Subtract matrices element by element.
 umath_status_t umath_matrix_sub(const umath_scalar_t* left, const umath_scalar_t* right, size_t rows, size_t columns,
                                 umath_scalar_t* output);
+/// Scale every element of a matrix by a scalar.
 umath_status_t umath_matrix_scale(const umath_scalar_t* input, size_t rows, size_t columns, umath_scalar_t scale,
                                   umath_scalar_t* output);
+/// Make a matrix symmetric by averaging mirrored elements.
 umath_status_t umath_matrix_symmetrize(umath_scalar_t* matrix, size_t dimension);
+/// Write an identity matrix to the output buffer.
 umath_status_t umath_matrix_identity(size_t dimension, umath_scalar_t* output);
+/// Build a diagonal matrix from the supplied values.
 umath_status_t umath_matrix_diagonal(const umath_scalar_t* diagonal, size_t dimension, umath_scalar_t* output);
+/// Multiply two matrices element by element.
 umath_status_t umath_matrix_elementwise_mul(const umath_scalar_t* left, const umath_scalar_t* right, size_t rows, size_t columns,
                                             umath_scalar_t* output);
+/// Compute the sum of a matrix diagonal.
 umath_status_t umath_matrix_trace(const umath_scalar_t* matrix, size_t dimension, umath_scalar_t* trace);
+/// Compute the Frobenius norm of a matrix.
 umath_status_t umath_matrix_norm_frobenius(const umath_scalar_t* matrix, size_t rows, size_t columns, umath_scalar_t* norm);
+/// Compute the matrix one-norm.
 umath_status_t umath_matrix_norm_one(const umath_scalar_t* matrix, size_t rows, size_t columns, umath_scalar_t* norm);
+/// Compute the matrix infinity-norm.
 umath_status_t umath_matrix_norm_infinity(const umath_scalar_t* matrix, size_t rows, size_t columns, umath_scalar_t* norm);
 /// Workspace count queries return umath_accumulator_t elements, not bytes. The caller owns allocation; the query guarantees
 /// converting its result to bytes will not overflow size_t. Execution rejects undersized workspace; extra elements are accepted.
 umath_status_t umath_matrix_determinant_workspace_count(size_t dimension, size_t* workspace_count);
+/// Compute the determinant of a matrix.
 umath_status_t umath_matrix_determinant(const umath_scalar_t* matrix, size_t dimension, umath_scalar_t* determinant,
                                         umath_accumulator_t* workspace, size_t workspace_count);
+/// Return the workspace size required for matrix inversion.
 umath_status_t umath_matrix_inverse_workspace_count(size_t dimension, size_t* workspace_count);
+/// Compute the inverse of a matrix.
 umath_status_t umath_matrix_inverse(const umath_scalar_t* matrix, size_t dimension, umath_scalar_t* inverse,
                                     umath_accumulator_t* workspace, size_t workspace_count);
+/// Compute the outer product of two vectors.
 umath_status_t umath_matrix_outer_product(const umath_scalar_t* left, size_t rows, const umath_scalar_t* right, size_t columns,
                                           umath_scalar_t* output);
+/// Apply a rank-one update to a matrix.
 umath_status_t umath_matrix_rank_one_update(umath_scalar_t* matrix, size_t rows, size_t columns, umath_scalar_t alpha,
                                             const umath_scalar_t* left, const umath_scalar_t* right);
 /// Matrix exponential uses scaling and squaring with a Taylor series and three dimension-by-dimension accumulator arrays.
 umath_status_t umath_matrix_exponential_workspace_count(size_t dimension, size_t* workspace_count);
+/// Compute the matrix exponential.
 umath_status_t umath_matrix_exponential(const umath_scalar_t* matrix, size_t dimension, umath_scalar_t* exponential,
                                         umath_accumulator_t* workspace, size_t workspace_count);
 

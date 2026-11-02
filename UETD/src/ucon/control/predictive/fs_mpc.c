@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/fs_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/fs_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Finite candidate enumeration for switching systems; current project priority.

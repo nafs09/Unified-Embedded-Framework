@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\NEXUS\Unified Embedded Framework\build\canopen-fd-review\CMakeFiles\52c490400e9d2d2b0774cf8afc4b8e8d\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{1015E5AA-BF24-3F4F-9B53-D916B89475D6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

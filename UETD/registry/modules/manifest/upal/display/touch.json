@@ -1,0 +1,24 @@
+{
+  "sources": [
+    "src/upal/display/touch.c"
+  ],
+  "headers": [
+    "include/upal/display/touch.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "ucore/deadline"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "available_for_generation": false,
+  "contract_status": "typed_scaffold",
+  "scaffold_reason": "Coherent bounded touchscreen contact snapshots: typed draft only; all operations return unsupported. Implementation, bounded contracts and provider/target qualification remain required.",
+  "design_contract": "docs/design/complete-system/MYOVENA_HANDHELD.md#rendering-flush-and-touch",
+  "external_dependencies": [
+    "exact touch controller, I2C/SPI/other bus, IRQ/reset and calibration provider"
+  ]
+}

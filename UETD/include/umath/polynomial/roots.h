@@ -11,6 +11,7 @@ extern "C" {
 /// Coefficients use descending powers. TODO: specify repeated-root, tolerance, ordering, and iteration-limit policy.
 umath_status_t umath_poly_roots_real(const umath_scalar_t* coefficients, size_t degree, umath_scalar_t* roots, size_t capacity,
                                      size_t* root_count);
+/// @brief Find the complex roots of a polynomial with complex coefficients.
 /// TODO(UMATH-POLY-ROOTS): Choose a bounded complex solver and define scaling, convergence, repeated roots, and
 /// workspace.
 umath_status_t umath_poly_roots_complex(const umath_complex_t* coefficients, size_t degree, umath_complex_t* roots,

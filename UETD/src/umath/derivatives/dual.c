@@ -3,7 +3,7 @@
 #include <math.h>
 #include <umath/derivatives/dual.h>
 #include <umath/constants.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 
 static bool dual_is_finite(umath_dual_t value) {

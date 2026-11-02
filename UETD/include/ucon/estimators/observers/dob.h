@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for DOB.
 #ifndef UETD_UCON_SCAFFOLD_DOB_H
 #define UETD_UCON_SCAFFOLD_DOB_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

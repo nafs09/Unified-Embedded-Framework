@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/uproto/network/http.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Typed caller-buffered HTTP dispatch exists; HTTP version, response bounds, redirects, retry policy, TLS, and exact provider remain unresolved.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/network/http.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "uproto/ip or provider HTTP offload",
+    "optional uproto/tls"
+  ],
+  "phase": 0
+}

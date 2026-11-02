@@ -133,28 +133,40 @@ def load_module_manifest(uetd_root: Path) -> dict[str, Any]:
     return expand_entry_map(root, document, "modules")
 
 def load_future_catalogue(uetd_root: Path) -> dict[str, Any]:
-    """Load UETD's non-selectable design catalogue and verify linked contracts.
+    """Load genuinely later, non-selectable designs and verify linked contracts."""
+    return _load_design_catalogue(uetd_root, "future_catalogue", "future")
+
+def load_first_pass_catalogue(uetd_root: Path) -> dict[str, Any]:
+    """Load first-pass design requirements without granting implementation readiness."""
+    return _load_design_catalogue(uetd_root, "first_pass_catalogue", "first-pass")
+
+def load_generation_catalogue(uetd_root: Path) -> dict[str, Any]:
+    """Inspect host generation obligations without treating them as C modules."""
+    return _load_design_catalogue(uetd_root, "generation_catalogue", "generation")
+
+def _load_design_catalogue(uetd_root: Path, api_field: str, label: str) -> dict[str, Any]:
+    """Load a non-selectable design catalogue and verify its schema/references.
 
     Paths normally resolve beneath the UETD checkout. ``@repo/`` paths resolve
-    beneath the containing repository root so UETD can link to future language
+    beneath the containing repository root so UETD can link to language
     and deployment contracts owned by the sibling uef-gen package without
     permitting arbitrary path traversal.
     """
     from jsonschema import Draft202012Validator
     root = uetd_root.expanduser().resolve()
     api = _read_json(root / "api.json", "UETD API manifest")
-    declared_path = api.get("future_catalogue")
+    declared_path = api.get(api_field)
     if not isinstance(declared_path, str) or not declared_path.strip():
-        raise UETDRegistryError("UETD API manifest does not declare future_catalogue")
+        raise UETDRegistryError(f"UETD API manifest does not declare {api_field}")
     catalogue = load_registry_document(root, declared_path)
     schema_path = catalogue.get("registry_schema")
-    schema_file = _under_root(root, schema_path, "future catalogue schema path")
-    schema = _read_json(schema_file, "UETD future catalogue schema")
+    schema_file = _under_root(root, schema_path, f"{label} catalogue schema path")
+    schema = _read_json(schema_file, f"UETD {label} catalogue schema")
     errors = sorted(Draft202012Validator(schema).iter_errors(catalogue), key=lambda error: list(error.absolute_path))
     if errors:
         first = errors[0]
         location = "/".join(str(item) for item in first.absolute_path) or "<root>"
-        raise UETDRegistryError(f"UETD future catalogue is invalid at {location}: {first.message}")
+        raise UETDRegistryError(f"UETD {label} catalogue is invalid at {location}: {first.message}")
     repository_root = root.parent.resolve()
     for item_id, item in catalogue["items"].items():
         for field in ("contract_file", "api_outline"):
@@ -168,11 +180,11 @@ def load_future_catalogue(uetd_root: Path) -> dict[str, Any]:
             else:
                 relative = referenced
                 owner_root = root
-            referenced_path = _under_root(owner_root, relative, f"future {field} for {item_id}")
+            referenced_path = _under_root(owner_root, relative, f"{label} {field} for {item_id}")
             if not referenced_path.is_file():
-                raise UETDRegistryError(f"UETD future {field} for {item_id!r} does not exist: {referenced_path}")
+                raise UETDRegistryError(f"UETD {label} {field} for {item_id!r} does not exist: {referenced_path}")
     for schema_id, relative in catalogue.get("schemas", {}).items():
-        schema_file = _under_root(root, relative, f"future schema {schema_id}")
+        schema_file = _under_root(root, relative, f"{label} schema {schema_id}")
         if not schema_file.is_file():
-            raise UETDRegistryError(f"UETD future schema {schema_id!r} does not exist: {schema_file}")
+            raise UETDRegistryError(f"UETD {label} schema {schema_id!r} does not exist: {schema_file}")
     return catalogue

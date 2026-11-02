@@ -14,20 +14,27 @@ change, see the repository's [UEF-PL registries and discovery guide](../../docs/
 ```text
 registry/
   targets/
-    families/           registry.json + manifest/<vendor>/<family>.json
-    chips/              registry.json + manifest/<vendor>/<part>.json
-    development_boards/  registry.json + manifest/<vendor>/<board>.json
+    families/           registry.json + manifest/[<vendor>/]<family>.json
+    chips/              registry.json + manifest/[<vendor>/]<part>.json
+    development_boards/  registry.json + manifest/[<vendor>/]<board>.json
     toolchains/          registry.json + manifest/<toolchain>.json
-  modules/               registry.json + manifest/<UETD module path>.json
+  modules/               registry.json + manifest/<U* layer>/<topic>/<capability>.json
   types/                 public-header-derived type index + schema
   umath/                 public UMATH function index + schema
   units/                 project-language dimensions and unit scales
-  future/                 design-only cross-layer capability catalogue and schema
+  contracts/             shared first-pass data, provider and evidence schemas
+  first_pass/            Phase 0 cross-layer designs; generation remains blocked
+  generation/            first-pass host pipeline obligations; no embedded C IDs
+  future/                 genuinely later capability designs and schema
 ```
 
 To add a target/module record, add its detail manifest and one entry in that
 catalogue's index. Shared catalogue policy belongs in the index; record-specific
 facts belong in the manifest. Do not create duplicate aliases or catalogues.
+Related module manifests share topic folders. The index preserves public module
+IDs while declaring each manifest's physical path; those two paths need not
+match. Vendor folders are optional for target vendors with a single record.
+See [the folder guide](../docs/STRUCTURE.md) and [target authoring](TARGETS.md).
 The top-level `api.json` links the type, unit, and UMATH catalogues used by language
 tooling. Their C declarations are generated from `include/**/*.h`, while
 module readiness continues to come from the ordinary module manifests.
@@ -128,12 +135,12 @@ documents the source contract; the generated inventories are in the
 [catalogue reference](../../docs/reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md)
 and [unit reference](../../docs/reference/UEF_PL_UNITS_REFERENCE.md).
 
-`future/registry.json` indexes accepted design work across UETD and uef-gen. It
-links to the owning future contract and marks every entry `design_only` with
-generation blocked. Promote an item into the selectable module registry only
-after its public API, source ownership, target constraints, dependency closure,
-and generation route have been reviewed. The future index keeps planned work
-discoverable without allowing generated projects to select it.
+`first_pass/registry.json` owns unfinished Phase 0 requirements across UETD and
+uef-gen; `future/registry.json` owns genuinely later scope. Both mark designs
+`design_only` and generation-blocked. Shared schemas live in `contracts/`.
+Scope placement is separate from implementation readiness: a first-pass item
+does not become selectable until its API, source/provider ownership, target
+constraints, dependency closure and generation route are implemented/reviewed.
 
 ## Module identifiers in `.uef`
 

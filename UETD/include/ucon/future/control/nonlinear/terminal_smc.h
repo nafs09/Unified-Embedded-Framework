@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for TERMINAL_SMC.
 #ifndef UETD_UCON_SCAFFOLD_TERMINAL_SMC_H
 #define UETD_UCON_SCAFFOLD_TERMINAL_SMC_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

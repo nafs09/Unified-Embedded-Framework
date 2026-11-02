@@ -10,7 +10,7 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/uart.h"
+#include "upal/serial/uart.h"
 
 typedef struct {
     uetd_f64_t latitude_deg;
@@ -36,8 +36,11 @@ typedef struct {
     void* on_fix_ctx;
 } umid_gnss_t;
 
+/// Initialize the GNSS receiver.
 uetd_status_t umid_gnss_init(umid_gnss_t* g);
+/// Process buffered GNSS bytes and report decoded position fixes.
 void umid_gnss_process(umid_gnss_t* g); /* call from UART IDLE ISR */
+/// Return whether the GNSS receiver has a valid position fix.
 bool umid_gnss_has_fix(const umid_gnss_t* g);
 
 #ifdef __cplusplus

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/contracts/design-contract-1.0.schema.json",
+  "title": "UETD planned capability design contract",
+  "type": "object",
+  "required": ["schema_version", "status", "generation", "id", "priority", "owner", "contract", "interfaces", "resources", "failure_rules", "acceptance"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "status": {"const": "design_only"},
+    "generation": {"const": "blocked"},
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9_./-]+$"},
+    "priority": {"enum": ["FIRST_PASS", "LATER", "DEFERRED_PROFILE"]},
+    "owner": {"type": "string", "minLength": 1},
+    "contract": {"type": "string", "minLength": 1},
+    "strategy": {"enum": ["portable", "target_provider", "external_adapter", "generator"]},
+    "interfaces": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "resources": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "failure_rules": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "acceptance": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "requires": {"type": "array", "uniqueItems": true, "items": {
+      "type": "object", "required": ["kind", "id"],
+      "properties": {"kind": {"enum": ["module", "capability", "provider", "target_fact"]}, "id": {"type": "string", "minLength": 1}},
+      "additionalProperties": false
+    }},
+    "open_selections": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false
+}

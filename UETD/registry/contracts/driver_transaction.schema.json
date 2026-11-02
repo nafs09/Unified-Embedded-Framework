@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://uetd.local/registry/contracts/driver-transaction-1.0.schema.json",
+  "title": "UETD proposed asynchronous driver transaction profile",
+  "type": "object",
+  "required": ["schema_version", "status", "generation", "operation", "contexts", "maximum_in_flight", "maximum_payload_bytes", "alignment_bytes", "ownership", "deadline", "completion", "cancel", "resources"],
+  "properties": {
+    "schema_version": {"const": "1.0"}, "status": {"const": "design_only"}, "generation": {"const": "blocked"},
+    "operation": {"type": "string", "minLength": 1},
+    "contexts": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["main", "task", "isr"]}},
+    "maximum_in_flight": {"type": "integer", "minimum": 1},
+    "maximum_payload_bytes": {"type": "integer", "minimum": 1},
+    "alignment_bytes": {"type": "integer", "minimum": 1},
+    "ownership": {"enum": ["copied_on_admission", "borrowed_until_terminal"]},
+    "deadline": {"type": "object", "required": ["clock_domain", "finite_only", "maximum_duration_us"], "properties": {
+      "clock_domain": {"type": "string", "minLength": 1}, "finite_only": {"const": true},
+      "maximum_duration_us": {"type": "integer", "minimum": 1}
+    }, "additionalProperties": false},
+    "completion": {"type": "object", "required": ["delivery", "exactly_one_terminal", "releases_buffers", "lost_completion_policy"], "properties": {
+      "delivery": {"enum": ["poll", "deferred_queue"]}, "exactly_one_terminal": {"const": true}, "releases_buffers": {"const": true},
+      "lost_completion_policy": {"enum": ["sticky_terminal_slot", "reserved_queue_capacity", "provider_recovery_required"]}
+    }, "additionalProperties": false},
+    "cancel": {"enum": ["unsupported", "request_then_terminal", "synchronous_quiescence"]},
+    "resources": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+  },
+  "additionalProperties": false,
+  "$comment": "Semantic validation must check alignment is a supported power of two, resources exist and terminal ownership is implemented."
+}

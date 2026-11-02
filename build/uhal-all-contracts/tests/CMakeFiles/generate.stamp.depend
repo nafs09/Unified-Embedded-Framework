@@ -1,0 +1,10 @@
+# CMake generation dependency list for this directory.
+C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+C:/NEXUS/Unified Embedded Framework/UETD/tests/first_pass_expansion.cmake
+C:/NEXUS/Unified Embedded Framework/UETD/tests/generate_scaffold_contracts.cmake
+C:/NEXUS/Unified Embedded Framework/UETD/tests/uos_uapp.cmake
+C:/NEXUS/Unified Embedded Framework/build/uhal-all-contracts/CMakeFiles/cmake.verify_globs
+C:/Program Files/Microsoft Visual Studio/18/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.3/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/Microsoft Visual Studio/18/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.3/Modules/FindPackageMessage.cmake
+C:/Program Files/Microsoft Visual Studio/18/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.3/Modules/FindPython/Support.cmake
+C:/Program Files/Microsoft Visual Studio/18/Professional/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-4.3/Modules/FindPython3.cmake

@@ -52,13 +52,19 @@ def _is_future(module_id: str, record: dict[str, Any], resources: list[str]) -> 
     )
 
 
-def _output_relative_path(module_id: str, future: bool) -> Path:
+def _output_relative_path(module_id: str, manifest_path: str) -> Path:
     if not MODULE_ID.fullmatch(module_id):
         raise ValueError(f"invalid module ID: {module_id!r}")
-    parts = list(PurePosixPath(module_id).parts)
-    if future and len(parts) > 1 and "future" not in parts:
-        parts.insert(1, "future")
-    return Path(*parts, "route.tmpl")
+    # Physical topic groups belong to the manifest index. Module IDs remain
+    # stable even when a capability moves to another folder.
+    relative = PurePosixPath(_safe_relative(manifest_path, "module manifest"))
+    try:
+        relative = relative.relative_to("registry/modules/manifest")
+    except ValueError as exc:
+        raise ValueError(f"module manifest is outside the manifest tree: {manifest_path!r}") from exc
+    if relative.suffix != ".json":
+        raise ValueError(f"module manifest must be JSON: {manifest_path!r}")
+    return Path(*relative.with_suffix(".cmake.tmpl").parts)
 
 
 def _target_id(module_id: str) -> str:
@@ -82,9 +88,29 @@ def _template_source(
         f"{{% set {name} = {json.dumps(value, ensure_ascii=False)} %}}"
         for name, value in values.items()
     )
+    backend_guard = ""
+    backend_link = ""
+    if module_id in {"uos/baremetal", "uos/freertos"}:
+        other = "freertos" if module_id.endswith("baremetal") else "baremetal"
+        backend_guard = f'''if(TARGET uetd_module_uos_{other})
+  message(FATAL_ERROR "Select exactly one UOS backend")
+endif()
+'''
+    if module_id == "uos/freertos":
+        backend_guard += '''if(NOT UETD_FREERTOS_KERNEL_TARGET)
+  message(FATAL_ERROR "Set UETD_FREERTOS_KERNEL_TARGET to the configured kernel target (including FreeRTOSConfig.h and port)")
+endif()
+if(NOT TARGET ${UETD_FREERTOS_KERNEL_TARGET})
+  message(FATAL_ERROR "UETD_FREERTOS_KERNEL_TARGET must name an existing target")
+endif()
+'''
+        backend_link = ('  target_link_libraries(${_uetd_module_target} PUBLIC ${UETD_FREERTOS_KERNEL_TARGET})\n'
+                        '  target_compile_definitions(${_uetd_module_target} PUBLIC UOS_FREERTOS_NATIVE_STORAGE=1)\n')
     return f"""{declarations}
 
 include_guard(GLOBAL)
+
+{backend_guard}
 
 if(NOT DEFINED UETD_ROOT OR NOT IS_DIRECTORY "${{UETD_ROOT}}/include")
   message(FATAL_ERROR "Set UETD_ROOT to the UETD checkout or copied source root")
@@ -140,6 +166,7 @@ if(NOT TARGET ${{_uetd_module_target}})
     target_link_libraries(${{_uetd_module_target}} ${{_uetd_module_link_scope}} ${{UETD_MODULE_LINK_LIBRARIES}})
   endif()
   add_library(UETD::Module_{{{{ target_id }}}} ALIAS ${{_uetd_module_target}})
+{backend_link}
   foreach(_uetd_module_dependency IN LISTS _uetd_module_dependencies)
     if(NOT TARGET ${{_uetd_module_dependency}})
       message(FATAL_ERROR "Include the dependency route before {{{{ module_id }}}}: ${{_uetd_module_dependency}}")
@@ -230,7 +257,7 @@ def main() -> None:
             raise ValueError(f"module manifest dependencies must be an array: {manifest_path}")
         dependencies = [str(item) for item in dependencies]
         future = _is_future(module_id, record, sources + headers)
-        relative_template = _output_relative_path(module_id, future)
+        relative_template = _output_relative_path(module_id, manifest_path)
         template_path = OUTPUT_ROOT / relative_template
         if template_path in rendered:
             raise ValueError(f"multiple module IDs map to {relative_template.as_posix()}")
@@ -300,7 +327,7 @@ def main() -> None:
         route = item["template"].removeprefix("templates/modules/")
         catalog_lines.append(
             f"| `{module_id}` | {scope} | {str(availability).lower()} | {authoring_status} | "
-            f"{len(item['sources'])} | {len(item['headers'])} | {len(item['dependencies'])} | [`route.tmpl`]({route}) |"
+            f"{len(item['sources'])} | {len(item['headers'])} | {len(item['dependencies'])} | [`{Path(route).name}`]({route}) |"
         )
     catalog = "\n".join(catalog_lines) + "\n"
     catalog_legacy_hash = old_index.get("catalog_sha256")

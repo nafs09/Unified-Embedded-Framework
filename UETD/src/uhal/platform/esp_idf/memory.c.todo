@@ -1,0 +1,6 @@
+/* Rename to memory.c only after ESP32 MPU and retained-memory capabilities are explicit. */
+/* void uhal_mpu_configure(void); */
+/* void uhal_backup_write(uetd_u8_t index, uetd_u32_t value); */
+/* uetd_u32_t uhal_backup_read(uetd_u8_t index); */
+/* TODO: Report Cortex MPU unsupported; map documented RTC retention registers/memory with bounds,
+ * reset/deep-sleep retention rules, and exact-chip capability checks. */

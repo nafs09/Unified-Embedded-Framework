@@ -1,7 +1,7 @@
 /// @file src/umath/matrix/cholesky.c
 /// @brief Allocation-free Cholesky factorization and solve.
 #include <math.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/matrix/cholesky.h>
 #include <umath/scalar.h>
 

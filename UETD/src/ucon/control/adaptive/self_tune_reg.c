@@ -2,7 +2,7 @@
 /// @file src/ucon/control/adaptive/self_tune_reg.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/adaptive/self_tune_reg.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Online parameter-estimation and pole-placement controller; RLS is reusable separately.

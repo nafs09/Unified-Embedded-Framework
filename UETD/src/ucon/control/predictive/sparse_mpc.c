@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/sparse_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/sparse_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Sparse QP via OSQP wrapper; for large horizons

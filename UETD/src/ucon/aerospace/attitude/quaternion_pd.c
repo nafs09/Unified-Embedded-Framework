@@ -2,7 +2,7 @@
 /// @file src/ucon/aerospace/attitude/quaternion_pd.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/aerospace/attitude/quaternion_pd.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Attitude/rate tracking with explicit quaternion or rotation-group conventions.

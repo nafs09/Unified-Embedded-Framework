@@ -1,0 +1,5 @@
+uetd.uhal_host 1 0.577403
+uetd.uhal_cortex_m0 1 0.549577
+uetd.uhal_cortex_m4 1 0.60224
+uetd.uhal_icache_only 1 0.542401
+---

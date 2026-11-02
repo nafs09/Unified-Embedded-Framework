@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for CHEBYSHEV1.
 #ifndef UETD_UCON_SCAFFOLD_CHEBYSHEV1_H
 #define UETD_UCON_SCAFFOLD_CHEBYSHEV1_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,0 +1,6 @@
+/* Rename to timing.c only after choosing the IDF monotonic clock and sleep policy. */
+/* uetd_time_us_t uetd_time_now_us(void); */
+/* void uetd_delay_us(uetd_dur_us_t duration_us); */
+/* void uetd_delay_ms(uetd_u32_t duration_ms); */
+/* TODO: Use a documented monotonic IDF timer; define pre-scheduler, light/deep-sleep, and
+ * dynamic-clock behavior; check overflow; avoid long task busy-waits. */

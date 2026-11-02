@@ -22,6 +22,7 @@ umath_status_t umath_cholesky_solve(const umath_scalar_t* lower_factor, const um
 /// The inverse requires non-overlapping lower-factor and output buffers. The output is scratch storage;
 /// discard it if a numeric failure occurs after calculation begins.
 umath_status_t umath_cholesky_log_determinant(const umath_scalar_t* lower_factor, size_t dimension, umath_scalar_t* log_determinant);
+/// Invert a symmetric positive-definite matrix from its Cholesky factor.
 umath_status_t umath_cholesky_inverse(const umath_scalar_t* lower_factor, size_t dimension, umath_scalar_t* inverse);
 
 #ifdef __cplusplus

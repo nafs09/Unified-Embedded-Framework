@@ -22,10 +22,13 @@ extern "C" {
 
 /* Keep function attributes usable from the C core and C++ consumers. */
 #if defined(__GNUC__) || defined(__clang__)
+#define UETD_WEAK __attribute__((weak))
 #define UETD_NORETURN __attribute__((noreturn))
 #elif defined(_MSC_VER)
+#define UETD_WEAK
 #define UETD_NORETURN __declspec(noreturn)
 #else
+#define UETD_WEAK
 #define UETD_NORETURN
 #endif
 

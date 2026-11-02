@@ -1,0 +1,10 @@
+^C:\NEXUS\UNIFIED EMBEDDED FRAMEWORK\BUILD\UOS-UAPP-HEADER-CHECK\OUT\CMAKEFILES\E8FB122277F413F3CC0CE9A30F84ABD0\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\18\Professional\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" "-SC:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check" "-BC:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check/out" --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file "C:/NEXUS/Unified Embedded Framework/build/uos-uapp-header-check/out/uos_uapp_header_check.slnx"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

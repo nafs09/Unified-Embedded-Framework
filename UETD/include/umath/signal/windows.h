@@ -10,11 +10,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/// @brief Generate Hann window coefficients for the requested length.
 /// TODO(UMATH-WINDOW): Define symmetric/periodic denominator and length-one behavior.
 umath_status_t umath_window_hann(umath_scalar_t* output, size_t length, bool periodic);
+/// Generate a Hamming window for the requested sample count.
 umath_status_t umath_window_hamming(umath_scalar_t* output, size_t length, bool periodic);
+/// @brief Generate Blackman window coefficients for the requested length.
 /// TODO(UMATH-WINDOW): Pin the coefficient definition, endpoint convention, and roundoff limits.
 umath_status_t umath_window_blackman(umath_scalar_t* output, size_t length, bool periodic);
+/// @brief Generate Kaiser window coefficients using the supplied beta parameter.
 /// TODO(UMATH-WINDOW): Bound beta, specify I0 approximation and endpoint convention.
 umath_status_t umath_window_kaiser(umath_scalar_t* output, size_t length, umath_scalar_t beta, bool periodic);
 #ifdef __cplusplus

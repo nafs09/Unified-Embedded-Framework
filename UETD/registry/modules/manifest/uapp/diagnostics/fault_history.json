@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/uapp/diagnostics/fault_history.c"
+  ],
+  "headers": [
+    "include/uapp/diagnostics/fault_history.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "ucore"
+  ],
+  "phase": 0,
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "include/uapp/FAULT_HISTORY.md",
+  "priority": "FIRST_PASS",
+  "implementation_notes": "Canonical retained-record codec, CRC and atomic provider-backed lifecycle."
+}

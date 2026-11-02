@@ -1,0 +1,11 @@
+{
+  "sources": ["src/umid/logging/log_uart.c"],
+  "dependencies": ["umid/log", "upal/uart"],
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/umid/logging/log.h",
+    "include/umid/logging/log_uart.h",
+    "include/upal/serial/uart.h"
+  ]
+}

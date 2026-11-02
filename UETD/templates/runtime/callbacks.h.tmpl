@@ -1,0 +1,17 @@
+/* Implement these callbacks in application-owned C files. Never edit generated tables. */
+#ifndef MANUAL_RUNTIME_CALLBACKS_H
+#define MANUAL_RUNTIME_CALLBACKS_H
+#include "runtime_config.h"
+#include "uos/uos.h"
+{% for name, kind in callbacks.items() %}
+{% if kind == "guard" %}bool {{ name }}(const uapp_sm_event_t* event, void* context);
+{% elif kind == "action" %}uetd_status_t {{ name }}(const uapp_sm_event_t* event, void* context);
+{% elif kind == "hook" %}uetd_status_t {{ name }}(uapp_sm_state_t state, const uapp_sm_event_t* event, void* context);
+{% elif kind == "fault" %}void {{ name }}(uapp_sm_state_t state, const uapp_sm_event_t* event, uetd_status_t status, void* context);
+{% elif kind == "unhandled" %}void {{ name }}(uapp_sm_state_t state, const uapp_sm_event_t* event, void* context);
+{% elif kind == "operation" %}uetd_status_t {{ name }}(void* context);
+{% endif %}{% endfor %}
+{% if tasks %}/* These handlers must establish the product's safe state and not return. */
+UETD_NORETURN void manual_runtime_os_failure(uos_status_t status);
+UETD_NORETURN void manual_runtime_component_failure(uetd_status_t status);
+{% endif %}#endif

@@ -16,6 +16,6 @@
     "include/uhal/gpio.h",
     "include/umid/fatfs.h",
     "include/upal/dma.h",
-    "include/upal/sdmmc.h"
+    "include/upal/storage/sdmmc.h"
   ]
 }

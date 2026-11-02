@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/umid/logging/blackbox.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Typed records, backend, caller-owned queue, and capacity fields are defined; rate validation, buffering, backpressure, recovery, and wear behavior remain unimplemented.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/umid/logging/blackbox.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "provider: selected bounded binary sink",
+    "optional umid/storage"
+  ],
+  "phase": 0
+}

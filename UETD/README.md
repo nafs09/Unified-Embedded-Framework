@@ -1,5 +1,10 @@
 # Unified Embedded Template Directory (UETD)
 
+CPU architecture, SoC/SDK implementation, physical assembly and programming transport
+are independent. Development boards are optional presets; UEF-PL `hardware`
+settings can describe bare chips and custom PCBs. See the [UHAL and target
+pipeline guide](docs/design/UHAL_PORTING.md) for implementation status and migration details.
+
 UETD (the Unified Embedded Template Directory) contains the allocation-conscious
 C11 framework for embedded applications: portable core APIs, hardware and
 peripheral boundaries, middleware, protocols, lifecycle services, algorithms,
@@ -7,6 +12,18 @@ catalogues, and reusable templates. Firmware can call its C APIs directly.
 `uef-gen` assembles a hardware-configured project scaffold from UETD's public
 hardware and module catalogues; generated firmware does not require Python at
 runtime.
+
+The portable UOS/UAPP first pass includes an independent JSON-to-C template
+renderer and a runnable host example. See the
+[manual assembly guide](docs/UOS_UAPP_FIRST_PASS.md) for the implemented
+contracts, API migration, provider requirements and remaining U* dependencies.
+
+The [critical catalogue audit](docs/audits/UETD_CRITICAL_CATALOGUE_AUDIT_2026-10-29.md)
+and [complete-system design](docs/design/complete-system/README.md) describe
+implementation gaps and first-pass scope. The generic [UPAL display driver](include/upal/display/display.h)
+is a first-pass provider interface; the [Myovena handheld specification](docs/design/complete-system/MYOVENA_HANDHELD.md)
+records the approximately 7-inch OLED touch/BLE/WiFi requirements without
+selecting a panel or MCU.
 
 The public UETD workflow is through the C APIs and the documented hardware-
 configuration path.
@@ -27,7 +44,8 @@ Dependencies retain their own license terms.
 | UPAL | Peripheral APIs and drivers | `include/upal`, `src/upal` |
 | UOS | Bare-metal and FreeRTOS Kernel abstraction | `include/uos`, `src/uos` |
 | UMID | Sensor-facing APIs and manual hardware drivers, logging, health, storage adapters | `include/umid`, `src/umid` |
-| UACTUATOR | Target-independent actuator authoring identities; physical drivers remain handwritten per target | `registry/modules/manifest/uactuator` |
+| UACTUATOR | Actuator authority/expiry/safe-output scaffold and H-bridge authoring identity; physical implementations remain target-specific | `include/uactuator`, `src/uactuator` |
+| USEC | Shared entropy/key/crypto/authorization provider scaffold; no cryptographic implementation supplied | `include/usec`, `src/usec` |
 | UPROTO | Reusable protocol APIs and portable protocol logic | `include/uproto`, `src/uproto` |
 | UAPP | Component lifecycle, state machines, supervision, faults | `include/uapp`, `src/uapp` |
 | UCON | Reusable control and estimation APIs and algorithms | `include/ucon`, `src/ucon` |
@@ -51,10 +69,14 @@ flowchart TB
 
 ### File naming
 
+The [folder structure guide](docs/STRUCTURE.md) describes the topic groups,
+CAN family layout and template naming. Related files share folders across
+headers, sources, manifests and templates; U* layer roots remain in place.
+
 The directory and include path carry the module identity, so module-owned files
 use the capability name without repeating the layer prefix: for example,
-`include/umid/health.h`, `include/upal/uart.h`, and
-`src/uos/freertos/freertos.c`. Keep layer prefixes on public C symbols and
+`include/umid/health.h`, `include/upal/serial/uart.h`, and
+`src/uos/freertos.c`. Keep layer prefixes on public C symbols and
 globally unique include guards; this convention changes filesystem names, not
 the C API namespace. Retain names whose prefix is part of the capability,
 protocol, or algorithm itself, such as `uavcan_v1.h` and `ukf_merwe.h`.
@@ -133,14 +155,14 @@ development board, create its detail JSON and add one index reference to
 board schematic, and programming-tool documentation used for each record.
 Leave `generation_available` false until the chip resources and the board's
 build/flash profiles are complete and reviewed. See
-[`registry/targets/README.md`](registry/targets/README.md) for the authoring
+[`registry/TARGETS.md`](registry/TARGETS.md) for the authoring
 shape and separation between chip, board, and inline module facts.
 
 ## UMATH numerical foundation
 
-UMATH owns reusable numerical primitives used across UCON and other UETD modules. The implemented surface includes checked scalar operations, Q-format fixed-point arithmetic, vectors, complex numbers, dense row-major matrices, Cholesky factorization/solve, quaternions, rigid 3D transforms, and polynomial evaluation/calculus. The priority catalogue now places nonlinear-estimator Jacobians/autodiff, numerical integration and ODE steps, FFT/windowing for spectral PLL work, 3D Lie operations, matrix factorizations and eigensystems, probability/statistics, least squares, and trajectory primitives in Phase 0. Planar Lie groups and deterministic random sampling are Phase 1; sparse CSR remains later. [UMATH catalogue](docs/catalogues/UMATH_CATALOGUE.md) explains the project reasons and lists every module.
+UMATH owns reusable numerical primitives used across UCON and other UETD modules. The implemented surface includes checked scalar operations, Q-format fixed-point arithmetic, vectors, complex numbers, dense row-major matrices, Cholesky factorization/solve, quaternions, rigid 3D transforms, and polynomial evaluation/calculus. The priority catalogue now places nonlinear-estimator Jacobians/autodiff, numerical integration and ODE steps, FFT/windowing for spectral PLL work, 3D Lie operations, matrix factorizations and eigensystems, probability/statistics, least squares, and trajectory primitives in Phase 0. Planar Lie groups and deterministic random sampling are Phase 1; sparse CSR remains later. [UMATH catalogue](docs/UMATH_CATALOGUE.md) explains the project reasons and lists every module.
 
-Each UMATH module has an individual registry record. Generated projects receive only selected, implemented modules, their declared C sources, and each module’s explicit transitive public-header closure. Phase 0/1 entries are priority scaffolds: their source functions remain fail-closed and return `UMATH_NOT_IMPLEMENTED`, and uef-gen blocks them until implementation and review. Only outlines still under `src/umath/future/` are excluded from the default library source set; compiling a scaffold does not make its math usable.
+Each UMATH module has an individual registry record. Generated projects receive only selected, implemented modules, their declared C sources, and each module’s explicit transitive public-header closure. Phase 0/1 entries are priority scaffolds: their source functions remain fail-closed and return `UMATH_NOT_IMPLEMENTED`, and uef-gen blocks them until implementation and review. The later sparse CSR outline at `src/umath/matrix/sparse_csr.c` is excluded from the default library source set; compiling a scaffold does not make its math usable.
 
 Use the [equation checklist](docs/design/UETD_EQUATION_CHECKLIST.md) as the per-file
 equation and algorithm worklist for UMATH, UCON, and other equation-bearing
@@ -173,9 +195,12 @@ backend is for host simulation; the Cortex-M UHAL source is still a target
 outline except for its single-core atomic operations and fail-stop fault path.
 No exact board profile has verified startup, clocks, pins, DMA routes, cache
 policy, or linker placement. UPAL peripheral APIs, including Phase 1 SDMMC and
-FDCAN-FD, are linkable outlines and do not yet drive hardware. The optional
-FatFS adapter cannot work until a target SDMMC implementation and a selected
-FatFS package are supplied.
+FDCAN-FD, are linkable outlines and do not yet drive hardware. Future UPAL
+scaffolds now define bounded radio-module transactions and byte streams over SPI/I2C/UART,
+packet-mode network links, Ethernet MAC/PHY status, and IEEE 802.15.4 frames;
+each still needs a selected provider and target resource/qualification data.
+The optional FatFS adapter cannot work until a target SDMMC implementation and
+a selected FatFS package are supplied.
 
 UOS contains a FreeRTOS adapter and a bare-metal backend. The current public
 API uses `bool`, `void`, and zero-valued outputs for several synchronization
@@ -194,15 +219,35 @@ and board-specific startup/interrupt setup. This does not make any UETD MCU
 target generation-ready. A non-selectable SafeRTOS operation outline records
 the additional backend work. UMID's byte ring buffer
 now uses UHAL atomic index operations under an explicit single-producer/single-
-consumer contract; sensor adapters remain scaffolds. Health snapshots are
-available for concurrent supervision.
+consumer contract; its bounded text logger uses a transport-neutral sink with
+an optional UPAL UART adapter. Sensor adapters remain scaffolds. Health snapshots are
+available for concurrent supervision. New UMID future contracts cover
+transactional storage, driver calibration records, binary blackbox capture,
+and typed PLC/external-peer process images; their C symbols fail closed until
+storage, integrity, and synchronization behavior is implemented.
 
 UPROTO's PPM interval decoder is implemented as fixed-memory portable code.
 DSHOT, CRSF, SBUS, MAVLink, and UAVCAN/DroneCAN remain fail-closed protocol
 outlines. The six Part XV.3 protocol additions have individual operation
-outlines under `include/uproto/future/` and `src/uproto/future/`; they are
+outlines grouped under the CAN, RC and industrial protocol families; they are
 not exposed through `uproto.h` or `protocol_provides`.
-`UETD_BUILD_FUTURE_UPROTO_SCAFFOLDS` is OFF by default. Read
+Active UETD-owned API and validation contracts now cover WiFi, Bluetooth, IP
+services, external-radio SPI/I2C/UART transport, packet netifs, and Ethernet
+MAC/PHY dispatch. Radio firmware/PHY, board drivers, and one IP stack or socket
+offload provider are still required for actual connectivity. PPP, TLS/DTLS,
+MQTT, CoAP, HTTP, Thread/Zigbee, Modbus, CANopen CC (CiA 301), and CANopen FD
+(CiA 1301) remain future modules. CANopen FD has a separate bounded USDO/PDO
+outline over the existing UPAL CAN FD frame API. Myovena's MEDI CAN has its own
+future protocol scaffold extending CANopen FD, with planned acknowledged
+delivery, bounded retries, integrity/freshness, recovery and execution gating.
+See the [MEDI CAN protocol design](docs/design/can/MEDI_CAN.md) and
+[CANopen FD foundation](docs/design/can/CANOPEN_FD_MEDI_CAN.md). See
+[`connectivity contracts`](include/uproto/CONNECTIVITY.md) for how external
+modules, packet netifs, socket offload, and native SoC SDKs bind. UMID remains
+transport-neutral; it supplies future data services that applications may
+encode over UPROTO without adding a network dependency to UMID.
+`UETD_BUILD_FUTURE_UPROTO_SCAFFOLDS` and
+`UETD_BUILD_FUTURE_UMID_SCAFFOLDS` are OFF by default. Read
 [UETD system audit](docs/audits/UETD_SYSTEM_AUDIT.md) and
 [UPROTO roadmap](docs/roadmap/UPROTO_ROADMAP.md) for specific gaps and promotion gates.
 
@@ -232,7 +277,8 @@ For Cortex-M, set `UETD_TARGET=CORTEX_M` and supply `UETD_CMSIS_INCLUDE_DIR` and
 | `UETD_FREERTOS_PROFILE` | Exact key from `third_party/FreeRTOS-Kernel-11.3.1/uetd-integration.json` (currently `arm_cm4f_gcc`) |
 | `UETD_FREERTOS_CONFIG_INCLUDE_DIR` | Generated firmware directory containing `FreeRTOSConfig.h` |
 | `UETD_BUILD_EXAMPLE` | Build the minimal component-lifecycle example |
-| `UETD_BUILD_FUTURE_UMATH_SCAFFOLDS` | Opt in to compile the later UMATH outlines under `src/umath/future/` |
+| `UETD_BUILD_DOCS` | Add the optional Doxygen API documentation target (default `OFF`) |
+| `UETD_BUILD_FUTURE_UMATH_SCAFFOLDS` | Opt in to compile the later sparse CSR matrix outline |
 | `UETD_BUILD_FUTURE_UPROTO_SCAFFOLDS` | Opt in to compile non-selectable planned protocol outlines |
 | `UETD_ENABLE_FATFS` | Include the optional FatFS diskio adapter |
 | `UETD_FATFS_INCLUDE_DIR` | Directory containing consumer-supplied `ff.h` and `diskio.h` |
@@ -247,12 +293,28 @@ ctest --test-dir build --output-on-failure
 
 The suite covers generic UCON operations; UPAL peripheral source outlines; UMID sensor-driver outlines; legacy and future UPROTO outlines; the unselected SafeRTOS backend; every UMATH operation returning `UMATH_NOT_IMPLEMENTED`; and all registered incomplete UHAL target profiles. Function-level checks are generated from the scaffold sources, verify fail-closed return values or neutral results, and check that caller-owned storage remains unchanged. UPAL's FDCAN-FD checks also cover argument validation and preserve-on-failure rules. The UCON and future UPROTO tests check their call-structure validation rules.
 
+## API documentation
+
+The public headers use Doxygen comments for IDE hover text and generated API
+reference pages. Install Doxygen 1.9 or newer and make `doxygen` available on
+`PATH`, then run this script from the repository root:
+
+```powershell
+.\UETD\tools\generate_api_docs.ps1
+```
+
+It generates HTML and XML under `build/UETD/doxygen/` and writes Doxygen
+warnings to `build/UETD/doxygen/warnings.log`. To generate the same output from
+CMake, configure with `-DUETD_BUILD_DOCS=ON` and build the `uetd-api-docs`
+target. The Doxygen target is optional and does not affect normal firmware
+builds.
+
 ## Minimal API example
 
 `examples/minimal/` demonstrates the UAPP lifecycle only; it does not configure hardware:
 
 ```c
-#include "uapp/lifecycle.h"
+#include "uapp/runtime/lifecycle.h"
 
 static uetd_status_t init(void *context)  { (void)context; return UETD_OK; }
 static uetd_status_t start(void *context) { (void)context; return UETD_OK; }
@@ -276,7 +338,7 @@ The bounded state machine copies events into a fixed queue, so callback code
 can post follow-up work without recursively changing state:
 
 ```c
-#include "uapp/statemachine.h"
+#include "uapp/runtime/statemachine.h"
 
 enum { APP_IDLE, APP_RUNNING };
 enum { APP_EVENT_START = 1 };
@@ -341,12 +403,12 @@ need to understand or change a registry record.
 
 ## Read next
 
-- [UETD example catalogue](examples/README.md) indexes the portable lifecycle example and target-specific source scaffolds.
+- [UETD example catalogue](docs/EXAMPLES.md) indexes the portable lifecycle example and target-specific source scaffolds.
 - [UEF-PL user handbook](../docs/guides/UEF_PROJECT_LANGUAGE_HANDBOOK.md) explains how a standalone language project is intended to work.
 - [UETD registries and discovery](../docs/guides/UEF_PL_REGISTRIES.md) explains the JSON indexes, manifests, schemas, and lookup flow.
 - [UEF-PL technical guide](../docs/guides/UEF_PROJECT_LANGUAGE_GUIDE.md) and [generated catalogue](../docs/reference/UEF_PROJECT_LANGUAGE_CATALOGUE.md) document the source rules and registered names.
 - [Maintainer architecture notes](docs/ARCHITECTURE.md) map APIs, source ownership, and scaffold status.
 - [Implementation inventory](docs/TODO.md) is the maintainer worklist; the repository-level [implementation plan](../docs/roadmap/IMPLEMENTATION_PLAN.md) gives the ordered cross-project checklist.
 - [`templates/modules/README.md`](templates/modules/README.md) documents the renderable CMake build route for every catalog module; [`templates/modules/catalog.md`](templates/modules/catalog.md) lists them by module ID.
-- [`templates/targets/README.md`](templates/targets/README.md) indexes the parameterized Cortex-M, AVR, Arduino, ESP-IDF, Nordic/Zephyr, RP2040, and i.MX RT templates and their input contracts.
-- [`third_party/README.md`](third_party/README.md) describes the UETD-managed FreeRTOS dependency policy.
+- [`docs/TARGET_TEMPLATES.md`](docs/TARGET_TEMPLATES.md) indexes the parameterized Cortex-M, AVR, Arduino, ESP-IDF, Nordic/Zephyr, RP2040, and i.MX RT templates and their input contracts.
+- [`docs/DEPENDENCIES.md`](docs/DEPENDENCIES.md) describes the UETD-managed FreeRTOS dependency policy.

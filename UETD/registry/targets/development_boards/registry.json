@@ -26,11 +26,11 @@
     },
     {
       "id": "esp32-devkitc-v4",
-      "path": "registry/targets/development_boards/manifest/espressif/esp32-devkitc-v4.json"
+      "path": "registry/targets/development_boards/manifest/esp32-devkitc-v4.json"
     },
     {
       "id": "nrf9160-dk",
-      "path": "registry/targets/development_boards/manifest/nordic-semiconductor/nrf9160-dk.json"
+      "path": "registry/targets/development_boards/manifest/nrf9160-dk.json"
     },
     {
       "id": "nucleo-g474re",

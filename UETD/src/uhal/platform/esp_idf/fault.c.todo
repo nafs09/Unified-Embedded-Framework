@@ -1,0 +1,4 @@
+/* Rename to fault.c only after adding an ESP-IDF-specific panic/fault adapter contract. */
+/* void uhal_fault_hook(const uhal_fault_context_t *context, uetd_u32_t fault_type); */
+/* TODO: Do not define Cortex HardFault/MemManage/BusFault/UsageFault vectors on Xtensa. Hook the
+ * documented IDF panic path, preserve SDK panic behavior where required, and persist bounded data. */

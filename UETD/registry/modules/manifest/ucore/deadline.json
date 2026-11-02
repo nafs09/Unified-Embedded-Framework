@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "src/ucore/deadline.c"
+  ],
+  "headers": [
+    "include/ucore/deadline.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": false,
+  "available_for_generation": true,
+  "contract_status": "portable_implemented",
+  "design_contract": "docs/design/complete-system/FOUNDATIONS.md#monotonic-time-and-deadlines",
+  "external_dependencies": [],
+  "implementation_notes": "Clock-domain finite deadlines and checked duration arithmetic."
+}

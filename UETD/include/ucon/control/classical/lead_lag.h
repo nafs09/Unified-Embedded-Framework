@@ -24,8 +24,11 @@ typedef struct {
     bool initialized;
 } ucon_lead_lag_state_t;
 
+/// Initialize the lead–lag compensator.
 ucon_status_t ucon_lead_lag_init(ucon_lead_lag_state_t* state, const ucon_lead_lag_config_t* config);
+/// Reset the lead–lag compensator state.
 ucon_status_t ucon_lead_lag_reset(ucon_lead_lag_state_t* state);
+/// Process one sample with the lead–lag compensator.
 ucon_status_t ucon_lead_lag_step(ucon_lead_lag_state_t* state, const ucon_lead_lag_config_t* config, ucon_scalar_t input,
                                  ucon_scalar_t* output);
 

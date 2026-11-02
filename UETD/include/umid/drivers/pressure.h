@@ -10,8 +10,8 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/i2c.h"
-#include "upal/spi.h"
+#include "upal/serial/i2c.h"
+#include "upal/serial/spi.h"
 
 typedef struct {
     /* Bus config — same union pattern as umid_imu_t */
@@ -27,7 +27,9 @@ typedef struct {
     uetd_u32_t calib[12];
 } umid_pressure_t;
 
+/// Initialize the pressure sensor adapter.
 uetd_status_t umid_pressure_init(umid_pressure_t* ps);
+/// Read the measured pressure.
 uetd_status_t umid_pressure_read(umid_pressure_t* ps, umid_pressure_data_t* out);
 
 #ifdef __cplusplus

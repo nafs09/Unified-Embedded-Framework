@@ -1,5 +1,10 @@
 # Unified Embedded Framework (UEF)
 
+CPU architecture, SoC/SDK implementation, physical assembly and programming transport
+are independent. Development boards are optional presets; UEF-PL `hardware`
+settings can describe bare chips and custom PCBs. See the [UHAL and target
+pipeline guide](UETD/docs/design/UHAL_PORTING.md) for implementation status and migration details.
+
 UEF combines UETD, an allocation-conscious C11 embedded framework, with
 `uef-gen`, a host-side Python project assembler. UETD owns the public embedded
 APIs, module and target registries, algorithms, and templates. `uef-gen` reads

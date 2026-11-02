@@ -545,7 +545,7 @@ def validate_declaration_layout(document: ProjectDocument) -> list[LanguageDiagn
 def validate_project_parameters(document: ProjectDocument, symbols: ProjectSymbolTable) -> list[LanguageDiagnostic]:
     """Check project parameter declarations and ensure defaults are constant data."""
     errors: list[LanguageDiagnostic] = []
-    reserved = {"project", "target", "numeric", "implementation", "operatingsystem", "map", "select", "match", "cast", "convert_unit"}
+    reserved = {"project", "target", "hardware", "numeric", "implementation", "operatingsystem", "map", "select", "match", "cast", "convert_unit"}
     seen: set[str] = set()
     for binding in document.parameters:
         if binding.name in reserved: errors.append(source_error("reserved_parameter_name", f"{binding.name!r} is a reserved UEF-PL identifier.", binding.span))
@@ -1906,6 +1906,10 @@ def _project_expressions(document: ProjectDocument):
 
 def _declaration_expressions(declaration: Declaration):
     """Yield expressions owned by one lexical declaration scope."""
+    # Target metadata is constant configuration, not application data with
+    # nominal record types. The hardware lowerer validates its literal shape.
+    if declaration.kind == "hardware":
+        return
     if declaration.kind == "choose":
         for prop in declaration.properties:
             if prop.name == "when" and isinstance(prop.value, RecordValue):
@@ -1980,6 +1984,8 @@ def _references(value: Any):
 
 def _expressions_with_context(document: ProjectDocument):
     def visit(declaration: Declaration, inherited_context: str = "configuration"):
+        if declaration.kind == "hardware":
+            return
         context = inherited_context
         if declaration.kind == "custom_algorithm": context = "custom_algorithm"
         elif declaration.kind == "model": context = "model_equations"

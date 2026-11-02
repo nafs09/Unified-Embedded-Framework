@@ -2,7 +2,7 @@
 /// @file src/ucon/control/nonlinear/flatness.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/nonlinear/flatness.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Flatness-based trajectory tracking

@@ -1,0 +1,21 @@
+{
+  "sources": [
+    "src/uproto/network/mqtt.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "Typed MQTT 3.1.1/5.0 client dispatch exists; packet/transaction limits, reconnect policy, credentials, TLS, and broker interoperability require a selected provider.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/uproto/network/ip.h",
+    "include/uproto/network/mqtt.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "uproto/ip or provider socket offload",
+    "optional uproto/tls"
+  ],
+  "phase": 0
+}

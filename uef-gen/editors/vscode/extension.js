@@ -21,6 +21,63 @@ let registryRoot = null;
 let languageClient = null;
 let languageServerActive = false;
 let registryLoaded = false;
+let statusItem = null;
+let serverOutput = null;
+let serverStatus = "starting";
+let serverLifecycle = Promise.resolve();
+let shuttingDown = false;
+
+function updateStatus() {
+  if (!statusItem) return;
+  const document = vscode.window.activeTextEditor?.document;
+  if (!document || !["uef-project", "uef-system"].includes(document.languageId)) {
+    statusItem.hide();
+    return;
+  }
+  const diagnostics = vscode.languages.getDiagnostics(document.uri);
+  const errors = diagnostics.filter((item) => item.severity === vscode.DiagnosticSeverity.Error).length;
+  const warnings = diagnostics.filter((item) => item.severity === vscode.DiagnosticSeverity.Warning).length;
+  const summary = errors || warnings ? `$(error) ${errors} $(warning) ${warnings}` : "$(check)";
+  statusItem.text = serverStatus === "starting" ? "$(sync~spin) UEF-PL" :
+    languageServerActive ? `UEF-PL  ${summary}` : "$(info) UEF-PL · Registry only";
+  statusItem.tooltip = languageServerActive
+    ? "UEF-PL compiler connected. Open Problems, format source, or manage the language server. Frontend checks do not qualify firmware."
+    : "UEF-PL compiler is unavailable or disabled. Registry hints do not validate your project. Click for setup and server output.";
+  statusItem.show();
+}
+
+async function showActions() {
+  const choice = await vscode.window.showQuickPick([
+    { label: "$(warning) Show Problems", description: "Source errors and readiness warnings", command: "workbench.actions.view.problems" },
+    { label: "$(list-tree) Go to Symbol", description: "Navigate project sections and declarations", command: "workbench.action.gotoSymbol" },
+    { label: "$(symbol-keyword) Format Document", description: "Indent blocks and continued expressions", command: "editor.action.formatDocument" },
+    { label: "$(refresh) Restart Language Server", description: "Reconnect the compiler and reload registries", command: "uef-project-language.restartServer" },
+    { label: "$(output) Show Server Output", description: "Startup details and compiler logs", command: "uef-project-language.showOutput" },
+    { label: "$(gear) Open UEF-PL Settings", description: "UETD location and Python interpreter", command: "uef-project-language.openSettings" },
+  ], { title: "UEF Project Language", placeHolder: "Source tools and compiler status" });
+  if (choice) await vscode.commands.executeCommand(choice.command);
+}
+
+function restartLanguageServer(context) {
+  serverLifecycle = serverLifecycle.catch(() => {}).then(async () => {
+    if (shuttingDown) return;
+    const previous = languageClient;
+    languageClient = null;
+    languageServerActive = false;
+    serverStatus = "starting";
+    updateStatus();
+    if (previous) await previous.dispose();
+    registryLoaded = false;
+    await startLanguageServer(context);
+  }).catch((error) => {
+    languageServerActive = false;
+    serverStatus = "fallback";
+    serverOutput?.appendLine(`Language-server error: ${error.message}`);
+    initializeFallbackFeatures();
+    updateStatus();
+  });
+  return serverLifecycle;
+}
 
 function candidateRegistryPaths() {
   const configured = vscode.workspace.getConfiguration("uef-project-language").get("uefRoot");
@@ -70,7 +127,7 @@ function loadModuleRegistry() {
         moduleId,
         manifestPath,
         authoring: manifest.authoring || null,
-        available: manifest.available_for_generation !== false && manifest.scaffold_only !== true,
+        available: manifest.available_for_generation === true && manifest.scaffold_only !== true,
       });
     }
     const apiPath = path.join(registryRoot, "api.json");
@@ -289,7 +346,23 @@ function provideModuleTokens(document) {
 }
 
 function activate(context) {
+  shuttingDown = false;
+  serverOutput = vscode.window.createOutputChannel("UEF-PL Language Server");
+  statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 90);
+  statusItem.name = "UEF Project Language";
+  statusItem.command = "uef-project-language.showActions";
   context.subscriptions.push(
+    serverOutput,
+    statusItem,
+    vscode.commands.registerCommand("uef-project-language.showActions", showActions),
+    vscode.commands.registerCommand("uef-project-language.showOutput", () => serverOutput.show(true)),
+    vscode.commands.registerCommand("uef-project-language.openSettings", () => vscode.commands.executeCommand("workbench.action.openSettings", "@ext:uef.uef-project-language")),
+    vscode.commands.registerCommand("uef-project-language.restartServer", () => restartLanguageServer(context)),
+    vscode.window.onDidChangeActiveTextEditor(updateStatus),
+    vscode.languages.onDidChangeDiagnostics(updateStatus),
+    vscode.workspace.onDidChangeConfiguration((event) => {
+      if (event.affectsConfiguration("uef-project-language")) void restartLanguageServer(context);
+    }),
     moduleDiagnostics,
     vscode.languages.registerDocumentSemanticTokensProvider(
       [{ language: "uef-project" }, { language: "uef-system" }],
@@ -307,12 +380,6 @@ function activate(context) {
     }),
     vscode.workspace.onDidChangeWorkspaceFolders(() => {
       if (!languageServerActive) {
-        loadModuleRegistry();
-        for (const document of vscode.workspace.textDocuments) refreshDiagnostics(document);
-      }
-    }),
-    vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration("uef-project-language.uefRoot") && !languageServerActive) {
         loadModuleRegistry();
         for (const document of vscode.workspace.textDocuments) refreshDiagnostics(document);
       }
@@ -390,19 +457,21 @@ function activate(context) {
       },
     ),
   );
-  void startLanguageServer(context);
+  updateStatus();
+  void restartLanguageServer(context);
 }
 
 async function startLanguageServer(context) {
   const configuration = vscode.workspace.getConfiguration("uef-project-language");
   if (!configuration.get("languageServer.enabled", true)) {
+    serverStatus = "fallback";
     initializeFallbackFeatures();
+    updateStatus();
     return;
   }
 
-  const output = vscode.window.createOutputChannel("UEF-PL Language Server");
-  context.subscriptions.push(output);
-  const { LanguageClient, TransportKind } = require("vscode-languageclient/node");
+  const output = serverOutput;
+  const { LanguageClient, TransportKind, State } = require("vscode-languageclient/node");
   const extraArguments = [...configuration.get("languageServer.arguments", [])];
   const uetdRoot = configuration.get("uefRoot", "");
   if (uetdRoot) extraArguments.push("--uetd-root", uetdRoot);
@@ -437,32 +506,53 @@ async function startLanguageServer(context) {
     try {
       output.appendLine(`Starting language server with ${candidate.description}: ${candidate.command}`);
       await client.start();
+      if (shuttingDown) {
+        await client.dispose();
+        return;
+      }
       languageClient = client;
       languageServerActive = true;
-      context.subscriptions.push(client);
+      serverStatus = "running";
+      client.onDidChangeState((event) => {
+        if (languageClient !== client || shuttingDown) return;
+        languageServerActive = event.newState === State.Running;
+        serverStatus = languageServerActive ? "running" : event.newState === State.Starting ? "starting" : "fallback";
+        if (languageServerActive) {
+          clearDiagnosticRefreshTimers();
+          moduleDiagnostics.clear();
+        } else if (serverStatus === "fallback") {
+          initializeFallbackFeatures();
+        }
+        updateStatus();
+      });
       clearDiagnosticRefreshTimers();
       for (const document of vscode.workspace.textDocuments) moduleDiagnostics.delete(document.uri);
       output.appendLine("UEF-PL language server initialized.");
+      updateStatus();
       return;
     } catch (error) {
       output.appendLine(`Could not start ${candidate.description}: ${error.message}`);
-      try { await client.stop(); } catch (_stopError) { /* failed start may already be stopped */ }
+      try { await client.dispose(); } catch (_stopError) { /* failed start may already be stopped */ }
     }
   }
 
   languageServerActive = false;
+  serverStatus = "fallback";
   initializeFallbackFeatures();
+  updateStatus();
   output.appendLine("Language-server startup failed; using registry-only fallback features.");
   void vscode.window.showWarningMessage(
     "The UEF-PL language server did not start. Registry completion and hover remain available; see the UEF-PL Language Server output channel.",
   );
 }
 
-function deactivate() {
+async function deactivate() {
+  shuttingDown = true;
+  await serverLifecycle;
   clearDiagnosticRefreshTimers();
   moduleDiagnostics.clear();
   if (languageClient) {
-    const stopping = languageClient.stop();
+    const stopping = languageClient.dispose();
     languageClient = null;
     languageServerActive = false;
     return stopping;

@@ -28,7 +28,7 @@ file(WRITE "${_ucon_test_source}" [=[
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #include <ucon/status.h>
 
 typedef ucon_status_t (*ucon_scaffold_operation_t)(const ucon_algorithm_scaffold_call_t* call);
@@ -104,7 +104,8 @@ target_compile_definitions(uetd_ucon_scaffold_contracts PRIVATE ${UETD_UMATH_DEF
 add_test(NAME uetd.ucon_scaffold_contracts COMMAND uetd_ucon_scaffold_contracts)
 
 file(GLOB_RECURSE _uproto_future_sources CONFIGURE_DEPENDS
-  "${PROJECT_SOURCE_DIR}/src/uproto/future/*.c")
+  "${PROJECT_SOURCE_DIR}/src/uproto/*.c")
+list(FILTER _uproto_future_sources INCLUDE REGEX "/future/|/industrial/(iec60870|lin)\\.c$")
 set(_uproto_scaffold_sources)
 set(_uproto_declarations "")
 set(_uproto_cases "")
@@ -133,7 +134,7 @@ file(WRITE "${_uproto_test_source}" [=[
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <uproto/future/scaffold_call.h>
+#include <uproto/scaffold_call.h>
 
 typedef uetd_status_t (*uproto_scaffold_operation_t)(uproto_future_call_t* call);
 typedef struct {
@@ -216,16 +217,40 @@ add_test(NAME uetd.uproto_future_scaffold_contracts
   COMMAND uetd_uproto_future_scaffold_contracts)
 
 include("${CMAKE_CURRENT_LIST_DIR}/generate_scaffold_contracts.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/first_pass_expansion.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/uos_uapp.cmake")
+
+# These first-pass sources are now in the ordinary build. Keep their existing
+# fail-closed behavior and caller-storage contract checked at consumer link time.
+uetd_add_scaffold_contract_test(uetd_first_pass_service_scaffolds UETD_NOT_SUPPORTED
+  SOURCES
+    "${PROJECT_SOURCE_DIR}/src/umid/data/storage.c"
+    "${PROJECT_SOURCE_DIR}/src/umid/data/calibration.c"
+    "${PROJECT_SOURCE_DIR}/src/umid/logging/blackbox.c"
+    "${PROJECT_SOURCE_DIR}/src/umid/data/process_image.c"
+    "${PROJECT_SOURCE_DIR}/src/uproto/industrial/modbus.c"
+    "${PROJECT_SOURCE_DIR}/src/uproto/can/canopen.c")
+
+# Typed FD adapter must remain fail-closed until its standard wire behavior exists.
+uetd_add_scaffold_contract_test(uetd_canopen_fd_scaffold_contracts UETD_NOT_SUPPORTED
+  SOURCES "${PROJECT_SOURCE_DIR}/src/uproto/can/future/canopen_fd.c")
+
+# MEDI is an independent protocol outline, never a successful execution path yet.
+uetd_add_scaffold_contract_test(uetd_medi_can_scaffold_contracts UETD_NOT_SUPPORTED
+  SOURCES "${PROJECT_SOURCE_DIR}/src/uproto/can/future/medi_can.c")
 
 file(GLOB_RECURSE _upal_sources CONFIGURE_DEPENDS
   "${PROJECT_SOURCE_DIR}/src/upal/*.c")
 set(_upal_fdcan_fd_source)
 set(_upal_contract_sources)
 foreach(_source IN LISTS _upal_sources)
-  if(_source MATCHES "/fdcan_fd/")
+  if(_source MATCHES "/fdcan_fd\\.c$")
     set(_upal_fdcan_fd_source "${_source}")
   else()
-    list(APPEND _upal_contract_sources "${_source}")
+    file(STRINGS "${_source}" _scaffold_marker REGEX "Source scaffold")
+    if(_scaffold_marker)
+      list(APPEND _upal_contract_sources "${_source}")
+    endif()
   endif()
 endforeach()
 uetd_add_scaffold_contract_test(uetd_upal_scaffold_contracts UETD_NOT_SUPPORTED
@@ -257,11 +282,13 @@ endforeach()
 uetd_add_scaffold_contract_test(uetd_umid_scaffold_contracts UETD_NOT_SUPPORTED
   SOURCES ${_umid_scaffold_sources})
 
-file(GLOB _uproto_legacy_candidates CONFIGURE_DEPENDS
+file(GLOB_RECURSE _uproto_legacy_candidates CONFIGURE_DEPENDS
   "${PROJECT_SOURCE_DIR}/src/uproto/*.c")
+list(FILTER _uproto_legacy_candidates EXCLUDE REGEX "/future/|/industrial/(iec60870|lin)\\.c$")
 set(_uproto_legacy_sources)
 foreach(_source IN LISTS _uproto_legacy_candidates)
-  if(NOT _source MATCHES "/ppm\\.c$")
+  file(STRINGS "${_source}" _scaffold_marker REGEX "Source scaffold")
+  if(_scaffold_marker)
     list(APPEND _uproto_legacy_sources "${_source}")
   endif()
 endforeach()
@@ -269,8 +296,8 @@ uetd_add_scaffold_contract_test(uetd_uproto_scaffold_contracts UETD_NOT_SUPPORTE
   SOURCES ${_uproto_legacy_sources})
 
 file(GLOB_RECURSE _uos_safertos_sources CONFIGURE_DEPENDS
-  "${PROJECT_SOURCE_DIR}/src/uos/future/safertos/*.c")
-uetd_add_scaffold_contract_test(uetd_uos_safertos_scaffold_contracts 0
+  "${PROJECT_SOURCE_DIR}/src/uos/safertos.c")
+uetd_add_scaffold_contract_test(uetd_uos_safertos_scaffold_contracts UOS_NOT_SUPPORTED
   SOURCES ${_uos_safertos_sources})
 
 file(GLOB_RECURSE _umath_candidates CONFIGURE_DEPENDS
@@ -286,7 +313,7 @@ uetd_add_scaffold_contract_test(uetd_umath_scaffold_contracts UMATH_NOT_IMPLEMEN
   SOURCES ${_umath_scaffold_sources})
 
 file(GLOB_RECURSE _target_profile_sources CONFIGURE_DEPENDS
-  "${PROJECT_SOURCE_DIR}/src/uhal/targets/*/profile.c")
+  "${PROJECT_SOURCE_DIR}/src/uhal/targets/*.c")
 add_executable(uetd_target_profile_scaffold_contracts
   target_profile_scaffolds.c
   "${PROJECT_SOURCE_DIR}/src/uhal/target_profiles.c"
@@ -295,14 +322,27 @@ target_include_directories(uetd_target_profile_scaffold_contracts PRIVATE "${PRO
 target_compile_features(uetd_target_profile_scaffold_contracts PRIVATE c_std_11)
 add_test(NAME uetd.target_profile_scaffold_contracts COMMAND uetd_target_profile_scaffold_contracts)
 
+if(UETD_ARCH STREQUAL "HOST")
+  add_executable(uetd_display_contracts display_contracts.c)
+  target_link_libraries(uetd_display_contracts PRIVATE UETD::Core)
+  add_test(NAME uetd.display_contracts COMMAND uetd_display_contracts)
+  add_executable(uetd_portable_runtime_contracts portable_runtime_contracts.c)
+  target_link_libraries(uetd_portable_runtime_contracts PRIVATE UETD::Core)
+  add_test(NAME uetd.portable_runtime_contracts COMMAND uetd_portable_runtime_contracts)
+endif()
+
 add_custom_target(uetd_scaffold_contracts)
 add_dependencies(uetd_scaffold_contracts
+  uetd_first_pass_expansion_contracts
+  uetd_first_pass_service_scaffolds
   uetd_ucon_scaffold_contracts
   uetd_upal_scaffold_contracts
   uetd_upal_fdcan_fd_scaffold_contracts
   uetd_umid_scaffold_contracts
   uetd_uproto_scaffold_contracts
   uetd_uproto_future_scaffold_contracts
+  uetd_canopen_fd_scaffold_contracts
+  uetd_medi_can_scaffold_contracts
   uetd_uos_safertos_scaffold_contracts
   uetd_umath_scaffold_contracts
   uetd_target_profile_scaffold_contracts)

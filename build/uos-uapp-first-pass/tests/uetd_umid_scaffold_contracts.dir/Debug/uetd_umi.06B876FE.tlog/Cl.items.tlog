@@ -1,0 +1,10 @@
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\current.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\current.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\encoder.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\encoder.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\gnss.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\gnss.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\imu.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\imu.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\mag.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\mag.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\pressure.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\pressure.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\range.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\range.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\temp.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\temp.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\umid\drivers\voltage.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\voltage.obj
+C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_umid_scaffold_contracts.dir\Debug\uetd_umid_scaffold_contracts.obj

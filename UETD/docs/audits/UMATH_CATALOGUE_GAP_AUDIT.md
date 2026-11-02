@@ -1,7 +1,7 @@
 # UMATH header and source coverage audit
 
-**Audit date:** 2026-10-13  
-**Scope:** all 39 headers under `include/umath`, all 36 C files under `src/umath`, all 34 registered UMATH modules, and their UMATH equation checklist and registries.
+**Audit date:** 2026-10-29 (inventory refreshed; earlier coverage history retained)
+**Scope:** all 40 headers under `include/umath`, all 36 C files under `src/umath`, all 35 registered UMATH modules, and their UMATH equation checklist and registries.
 
 This is a static inventory of declared APIs, source definitions, fail-closed
 stubs, and common mathematical operations missing from otherwise implemented
@@ -127,12 +127,12 @@ than pretending they are scalar/matrix library functions.
 
 ## Static consistency and remaining coverage gaps
 
-Static matching found 328 unique public function declarations and 328 UMATH
+Static matching found 331 unique public function declarations and 331 UMATH
 registry records; each declaration has a matching source definition or a
 header-inline definition. The 22 fully scaffolded C sources remain fail-closed.
 Of the 124 added coverage functions, 119 are implemented and five remain
 fail-closed: LU determinant, standard deviation/RMS, and softmax/log-softmax.
-Across the full registry, 70 APIs remain `scaffold` and three remain `future`.
+The current registry labels 127 declarations `scaffold` and three `future` from module readiness. A separate source-body scan finds 258 bodies without a not-implemented return and 73 fail-closed operations. The difference includes implemented dual-number and generic-vector functions whose owning module contracts are still blocked. These counts must not be conflated.
 The unchecked equations and unresolved policies are recorded in
 `UETD_EQUATION_CHECKLIST.md`.
 

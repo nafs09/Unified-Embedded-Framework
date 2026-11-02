@@ -62,6 +62,7 @@ KNOWN_LOWERING_RULE_IDS = frozenset(
         "project_metadata",
         "implementation_collection",
         "hardware_target",
+        "physical_target_profile",
         "numeric_profile",
         "peripheral_binding",
         "bus_binding",

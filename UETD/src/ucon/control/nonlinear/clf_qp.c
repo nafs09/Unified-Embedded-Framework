@@ -2,7 +2,7 @@
 /// @file src/ucon/control/nonlinear/clf_qp.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/nonlinear/clf_qp.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Control Lyapunov function QP; safety-agnostic

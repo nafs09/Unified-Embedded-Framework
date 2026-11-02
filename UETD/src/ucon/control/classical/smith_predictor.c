@@ -2,7 +2,7 @@
 /// @file src/ucon/control/classical/smith_predictor.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/classical/smith_predictor.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Delay-compensated wrapper around a declared plant model and inner controller.

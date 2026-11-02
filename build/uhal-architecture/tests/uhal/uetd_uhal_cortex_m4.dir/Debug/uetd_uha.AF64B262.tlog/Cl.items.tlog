@@ -1,0 +1,5 @@
+C:\NEXUS\Unified Embedded Framework\UETD\tests\uhal\cortex_contracts.c;C:\NEXUS\Unified Embedded Framework\build\uhal-architecture\tests\uhal\uetd_uhal_cortex_m4.dir\Debug\cortex_contracts.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\arch\cortex_m\atomic.c;C:\NEXUS\Unified Embedded Framework\build\uhal-architecture\tests\uhal\uetd_uhal_cortex_m4.dir\Debug\atomic.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\arch\cortex_m\core.c;C:\NEXUS\Unified Embedded Framework\build\uhal-architecture\tests\uhal\uetd_uhal_cortex_m4.dir\Debug\core.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\arch\cortex_m\irq.c;C:\NEXUS\Unified Embedded Framework\build\uhal-architecture\tests\uhal\uetd_uhal_cortex_m4.dir\Debug\irq.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uhal\arch\cortex_m\cache.c;C:\NEXUS\Unified Embedded Framework\build\uhal-architecture\tests\uhal\uetd_uhal_cortex_m4.dir\Debug\cache.obj

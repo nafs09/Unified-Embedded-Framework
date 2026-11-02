@@ -16,7 +16,11 @@
     "include/uhal/gpio.h",
     "include/umid/drivers/imu.h",
     "include/upal/dma.h",
-    "include/upal/i2c.h",
-    "include/upal/spi.h"
-  ]
+    "include/upal/serial/i2c.h",
+    "include/upal/serial/spi.h"
+  ],
+  "scaffold_only": true,
+  "available_for_generation": false,
+  "contract_status": "source_scaffold",
+  "scaffold_reason": "Public declarations and fail-closed source outlines exist; operational behavior and target/provider integration remain unimplemented."
 }

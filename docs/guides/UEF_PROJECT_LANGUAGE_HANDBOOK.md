@@ -7,6 +7,17 @@ written. It introduces the `.uef` and `.uefs` files, explains the role of
 
 ## What you are downloading
 
+For a first project in VS Code, insert the `uef-project` snippet in a new
+`.uef` file. It starts with a small typed BareMetal loop. The UEF-PL status-bar
+menu opens Problems, the outline, formatting, compiler output and settings.
+Select **UEF-PL Dark** or **UEF-PL Light** from the color-theme picker.
+
+From a terminal, use `uef-gen check project.uef --format text` for source
+diagnostics and `uef-gen format project.uef --write` to format it. JSON remains
+the default output for checks. `check` validates source; generation readiness
+is a separate step. See the [authoring review](../../uef-gen/docs/audits/UEF_GEN_REVIEW_2026-10-29.md)
+for known generator limitations and compatibility details.
+
 The repository contains two related projects:
 
 - **UETD** is the C11 embedded framework. Applications can use its public C
@@ -195,7 +206,7 @@ Start with the smallest example matching the runtime you want to understand:
   communications contract.
 
 These files are design examples, not board-verified or flashable outputs.
-Browse the [example index](../../uef-gen/examples/README.md) for the full list.
+Browse the [example index](../../uef-gen/docs/EXAMPLES.md) for the full list.
 
 ## Where the JSON files fit
 

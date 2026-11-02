@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "registry_schema": "registry/generation/registry.schema.json",
+  "items": {
+    "generation.typed_emission": {
+      "area": "generation",
+      "title": "Typed source-to-C emission",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Complete the typed IR-to-C backend, configuration/state/step emission, failure mapping and generated/direct equivalence.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.provider_resolution": {
+      "area": "generation",
+      "title": "Pinned provider and dependency resolution",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Resolve actual operation subsets, versions/hashes, ABI/license/resource compatibility and requested evidence; metadata discovery alone is insufficient.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.resource_assignment": {
+      "area": "generation",
+      "title": "Exact target resource assignment",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Finish exact chip/package/board pin, clock, IRQ, DMA, trigger and intercore ownership assignment with conflicts and missing facts reported.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.memory_layout": {
+      "area": "generation",
+      "title": "Static memory and linker planning",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Bound persistent/scratch/stack/DMA/GUI/network arenas and emit a compatible partition/linker plan with post-link checks.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.codec_generation": {
+      "area": "generation",
+      "title": "Typed protocol codec generation",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Emit bounded encoders/decoders and reference vectors from the shared protocol schema; native C layout is not the wire format.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.build_profiles": {
+      "area": "generation",
+      "title": "Qualified source-to-image build profiles",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Emit and validate matching startup, SDK, runtime configuration and reproducible toolchain/build inputs for an exact board.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.artifact_signing": {
+      "area": "generation",
+      "title": "Artifact verification and signing",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Bind image, compatibility manifest, signatures, trust and anti-rollback policy through vetted host signing providers.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.deployment": {
+      "area": "generation",
+      "title": "Discovery, programming and update",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Complete read-only discovery and qualified exact-device programming/update with identity, recovery and verification.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.diagnostic_decoding": {
+      "area": "generation",
+      "title": "Build-bound diagnostics and blackbox decoding",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Provide bounded schema/build-specific decoding and symbolization using the actual image/debug artifacts.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.manufacturing": {
+      "area": "generation",
+      "title": "Manufacturing and provisioning records",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Bind serial/board identity, enrollment/calibration/test results and image provenance without leaking keys or inventing qualification.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    },
+    "generation.qualification": {
+      "area": "generation",
+      "title": "Generated acceptance and release evidence",
+      "status": "design_only",
+      "generation": "blocked",
+      "priority": "FIRST_PASS",
+      "phase": 0,
+      "reason": "Run generated/direct equivalence and host/target acceptance for the actual configuration; collect traceable results and enforce requested evidence gates.",
+      "contract_file": "docs/design/complete-system/GENERATION_QUALIFICATION.md",
+      "api_outline": "@repo/uef-gen/src/uef_gen/generation/pipeline.py"
+    }
+  }
+}

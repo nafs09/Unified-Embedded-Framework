@@ -1,0 +1,32 @@
+#include "tasks.h"
+#include "callbacks.h"
+{% for task in tasks %}
+static uos_task_t {{ task.name }}_task = UOS_OBJECT_INITIALIZER;
+/* Round the requested byte minimum up to a complete native stack element. */
+static UETD_ALIGNAS(UOS_STORAGE_ALIGN) uos_stack_word_t {{ task.name }}_stack[({{ task.stack_bytes }}u + sizeof(uos_stack_word_t) - 1u) / sizeof(uos_stack_word_t)];
+static void {{ task.name }}_entry(void* context) {
+    uos_time_t next;
+    uos_status_t os_status = uos_time_now(&next);
+    if (os_status != UOS_OK) { manual_runtime_os_failure(os_status); }
+    if (UINT64_C({{ task.period_us }}) > UINT64_MAX - next) { manual_runtime_os_failure(UOS_OVERFLOW); }
+    next += UINT64_C({{ task.period_us }});
+    /* First activation is immediate; later releases retain the original cadence. */
+    for (;;) {
+        const uetd_status_t status = {{ task.operation }}(context);
+        if (status != UETD_OK) { manual_runtime_component_failure(status); }
+        os_status = uos_task_delay_until(&next, UINT64_C({{ task.period_us }}));
+        if (os_status != UOS_OK) { manual_runtime_os_failure(os_status); }
+    }
+}
+{% endfor %}
+uos_status_t manual_tasks_create(void* const contexts[MANUAL_RUNTIME_TASK_COUNT]) {
+    static bool attempted;
+    static uos_status_t result = UOS_NOT_READY;
+    if (attempted) { return result; }
+    attempted = true;
+{% for task in tasks %}    result = uos_task_create_static(&{{ task.name }}_task, "{{ task.name }}", {{ task.name }}_entry,
+                                    contexts != NULL ? contexts[{{ loop.index0 }}] : NULL,
+                                    {{ task.priority }}u, {{ task.name }}_stack, sizeof({{ task.name }}_stack));
+    if (result != UOS_OK) { return result; }
+{% endfor %}    return result;
+}

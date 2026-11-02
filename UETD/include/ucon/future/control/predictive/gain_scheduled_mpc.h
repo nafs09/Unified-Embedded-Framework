@@ -3,7 +3,7 @@
 /// @brief Future-wave fail-closed module outline for GAIN_SCHEDULED_MPC.
 #ifndef UETD_UCON_SCAFFOLD_GAIN_SCHEDULED_MPC_H
 #define UETD_UCON_SCAFFOLD_GAIN_SCHEDULED_MPC_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

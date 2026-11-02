@@ -93,13 +93,20 @@ def write_module_registry(document: dict[str, Any], root: Path = ROOT) -> None:
             raise RegistryFormatError(f"DSL_descriptor {descriptor!r} is assigned to both {seen_descriptors[descriptor]!r} and {key!r}")
         seen_descriptors[descriptor] = key
     index = dict(document)
+    # Preserve the authored topic layout instead of rebuilding filesystem
+    # paths from stable module IDs on every maintenance write.
+    index_file = root / "registry" / "modules" / "registry.json"
+    previous_references = _read(index_file).get("modules", {}) if index_file.is_file() else {}
     references: dict[str, Any] = {}
     for key, record in sorted(modules.items()):
         if not isinstance(key, str) or not isinstance(record, dict):
             raise RegistryFormatError("module names and records must be strings and objects")
         if key.startswith("/") or "\\" in key or any(part in {"", ".", ".."} for part in key.split("/")):
             raise RegistryFormatError(f"unsafe module name: {key!r}")
-        relative = f"registry/modules/manifest/{key}.json"
+        previous = previous_references.get(key, {})
+        relative = previous.get("manifest", previous.get("path")) if isinstance(previous, dict) else None
+        if not isinstance(relative, str) or not relative:
+            relative = f"registry/modules/manifest/{key}.json"
         detail = dict(record)
         descriptor = detail.pop("DSL_descriptor", None)
         if isinstance(descriptor, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", descriptor):

@@ -2,7 +2,7 @@
 /// @file src/ucon/aerospace/navigation/gnss_code_dll.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/aerospace/navigation/gnss_code_dll.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Code-delay and carrier phase/frequency tracking from prompt correlator outputs; RF sampling and correlators

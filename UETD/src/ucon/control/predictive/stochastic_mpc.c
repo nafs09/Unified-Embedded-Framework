@@ -2,7 +2,7 @@
 /// @file src/ucon/control/predictive/stochastic_mpc.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/predictive/stochastic_mpc.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Predictive-control formulation for a declared stochastic/uncertain model and probabilistic or expected-cost

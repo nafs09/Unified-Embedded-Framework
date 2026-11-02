@@ -2,7 +2,7 @@
 /// @file src/ucon/control/nonlinear/computed_torque.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/nonlinear/computed_torque.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Robot joint inverse-dynamics controller.

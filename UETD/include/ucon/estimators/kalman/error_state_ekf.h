@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for ERROR_STATE_EKF.
 #ifndef UETD_UCON_SCAFFOLD_ERROR_STATE_EKF_H
 #define UETD_UCON_SCAFFOLD_ERROR_STATE_EKF_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

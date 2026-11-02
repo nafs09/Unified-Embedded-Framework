@@ -9,12 +9,16 @@ extern "C" {
 #endif
 /// Tangent order is [rho_x,rho_y,rho_z,phi_x,phi_y,phi_z]; translation and angle units belong to the caller.
 umath_status_t umath_se3_exp(const umath_scalar_t tangent[6], umath_transform3_t* transform);
+/// @brief Map a 3D rigid transform to its SE(3) tangent coordinates.
 /// TODO(UMATH-SE3): Pin transform direction, principal SO(3) branch, and translation inverse-Jacobian behavior.
 umath_status_t umath_se3_log(const umath_transform3_t* transform, umath_scalar_t tangent[6]);
+/// @brief Compute the row-major adjoint matrix of a 3D rigid transform.
 /// TODO(UMATH-SE3): Define row-major adjoint blocks for rho-then-phi tangent order.
 umath_status_t umath_se3_adjoint(const umath_transform3_t* transform, umath_scalar_t adjoint_row_major[36]);
+/// @brief Compute the SE(3) left Jacobian for the supplied tangent coordinates.
 /// TODO(UMATH-SE3): Implement bounded left Jacobian using the selected SO(3) convention.
 umath_status_t umath_se3_left_jacobian(const umath_scalar_t tangent[6], umath_scalar_t row_major[36]);
+/// @brief Compute the inverse SE(3) left Jacobian for the supplied tangent coordinates.
 /// TODO(UMATH-SE3): Implement its stable inverse and define singularity behavior.
 umath_status_t umath_se3_left_jacobian_inverse(const umath_scalar_t tangent[6], umath_scalar_t row_major[36]);
 #ifdef __cplusplus

@@ -295,6 +295,7 @@ def load_chip_database(uetd_root: Path) -> ChipDatabase:
             target_kind=str(record.get("target_kind", "hardware")),
             memory_regions=dict(memory_regions),
             resources=resources,
+            core_count=int(core["count"]),
         )
         database.register(chip, tuple(str(alias) for alias in record.get("aliases", [])))
     return database

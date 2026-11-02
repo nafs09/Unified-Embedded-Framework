@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/umid/sensor.c"
+  ],
+  "headers": [
+    "include/umid/sensor.h",
+    "include/ucore/status.h",
+    "include/ucore/types.h"
+  ],
+  "dependencies": [
+    "ucore/span",
+    "ucore/deadline"
+  ],
+  "phase": 0,
+  "priority": "FIRST_PASS",
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "available_for_generation": false,
+  "contract_status": "typed_scaffold",
+  "scaffold_reason": "Shared sample quality, clock and calibration envelopes: typed draft only; all operations return unsupported. Implementation, bounded contracts and provider/target qualification remain required.",
+  "design_contract": "docs/design/complete-system/PRODUCT_SERVICES.md#sensor-and-acquisition-services",
+  "external_dependencies": []
+}

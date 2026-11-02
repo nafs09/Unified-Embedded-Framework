@@ -1,0 +1,23 @@
+{
+  "sources": [
+    "src/uproto/can/future/canopen_fd.c"
+  ],
+  "dependencies": [
+    "upal/fdcan_fd",
+    "umid/process_image"
+  ],
+  "scaffold_only": true,
+  "scaffold_stage": "future",
+  "scaffold_reason": "Bounded CANopen FD declarations and fail-closed definitions exist; CiA 1301 revision/profile, FD transport binding, standard USDO/PDO/NMT behavior and conformance evidence remain unimplemented. MEDI CAN has its own separate protocol-extension scaffold.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/upal/can/fdcan_fd.h",
+    "include/uproto/industrial/industrial_contracts.h",
+    "include/uproto/can/future/canopen_fd.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "optional external CANopen FD stack"
+  ]
+}

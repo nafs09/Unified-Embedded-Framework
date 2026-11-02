@@ -18,6 +18,7 @@ typedef enum { UMATH_JACOBIAN_FORWARD = 0, UMATH_JACOBIAN_CENTRAL } umath_jacobi
 typedef umath_status_t (*umath_vector_function_fn)(const umath_scalar_t* input, size_t input_dimension, void* context,
                                                    umath_scalar_t* output, size_t output_dimension);
 
+/// @brief Return the caller workspace size required for the selected finite-difference scheme.
 /// TODO(UMATH-JACOBIAN): Check dimensions/scheme and overflow in n + m or n + 2*m; define zero-size behavior.
 umath_status_t umath_jacobian_workspace_count(size_t input_dimension, size_t output_dimension, umath_jacobian_scheme_t scheme,
                                               size_t* workspace_count);

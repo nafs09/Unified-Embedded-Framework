@@ -27,6 +27,7 @@ from uef_gen.language.frontends.project import compile_project_text
 from uef_gen.language.frontends.project.ast import MathCallExpression
 from uef_gen.language.frontends.project.hints import HintContext, complete as complete_language, complete_contract_import_paths, hover as hover_language
 from uef_gen.language.frontends.project.lexer import Lexer
+from uef_gen.language.frontends.project.source_formatting import format_source
 from uef_gen.language.frontends.project.parser import Parser
 from uef_gen.language.frontends.project.validation import build_project_symbol_table
 from uef_gen.language.registry.loader import load_language_registry
@@ -209,6 +210,8 @@ def _offset_from_lsp(source: str, position: types.Position) -> int:
     lines = source.splitlines(keepends=True)
     if not lines:
         return 0
+    if position.line >= len(lines):
+        return len(source)
     line_index = max(0, min(position.line, len(lines) - 1))
     line = lines[line_index].rstrip("\r\n")
     return sum(len(item) for item in lines[:line_index]) + _utf16_to_codepoint(line, position.character)
@@ -315,7 +318,75 @@ def _lsp_range(span: object | None, source_lines: list[str] | None = None) -> ty
         end=types.Position(line=end_line_idx, character=end_char),
     )
 
-def _diagnostics(uri: str, source: str) -> list[types.Diagnostic]:
+def _adapt_diagnostics(diagnostics, source_path: Path, source: str, *,
+                       imported: dict[str, list[types.Diagnostic]] | None = None) -> list[types.Diagnostic]:
+    """Summarize imported failures at the import; keep details on their own file.
+
+    Visual Studio appends every diagnostic at a hovered span to Quick Info.
+    Putting all child diagnostics on one node creates a screen-sized popup.
+    Publish one small summary there and route the complete list to the child.
+    """
+    sources = {source_path.resolve(): source.splitlines()}
+
+    def location(span):
+        path = (span.path or source_path).resolve()
+        if path not in sources:
+            try:
+                sources[path] = path.read_text(encoding="utf-8-sig").splitlines()
+            except (OSError, UnicodeError):
+                sources[path] = []
+        return types.Location(uri=path.as_uri(), range=_lsp_range(span, sources[path]))
+
+    def adapt(diagnostic):
+        severity = {"error": types.DiagnosticSeverity.Error, "warning": types.DiagnosticSeverity.Warning,
+                    "information": types.DiagnosticSeverity.Information, "hint": types.DiagnosticSeverity.Hint}.get(
+                        diagnostic.severity, types.DiagnosticSeverity.Warning)
+        if diagnostic.code == "project_language_frontend_incomplete":
+            severity = types.DiagnosticSeverity.Warning
+        span = diagnostic.span
+        related = [types.DiagnosticRelatedInformation(location=location(item_span), message=message)
+                   for message, item_span in diagnostic.related]
+        return types.Diagnostic(range=location(span).range if span else _lsp_range(None), message=diagnostic.message,
+                                severity=severity, code=diagnostic.code, source="uef-gen", related_information=related or None)
+
+    result = []
+    foreign: dict[Path, list] = {}
+    for diagnostic in diagnostics:
+        span = diagnostic.span
+        if span and span.path and span.path.resolve() != source_path.resolve():
+            foreign.setdefault(span.path.resolve(), []).append(diagnostic)
+        else:
+            result.append(adapt(diagnostic))
+    if not foreign:
+        return result
+    project, system = _parse_editor_ast(source_path, source)
+    for target, items in foreign.items():
+        detailed = _unique_diagnostics([adapt(item) for item in items])
+        if imported is not None:
+            imported[target.as_uri()] = detailed
+        errors = sum(item.severity == types.DiagnosticSeverity.Error for item in detailed)
+        warnings = sum(item.severity == types.DiagnosticSeverity.Warning for item in detailed)
+        counts = ", ".join(text for text in (
+            f"{errors} error{'s' if errors != 1 else ''}" if errors else "",
+            f"{warnings} warning{'s' if warnings != 1 else ''}" if warnings else "",
+        ) if text) or f"{len(detailed)} diagnostic(s)"
+        span = next((node.source_span for node in getattr(system, "nodes", ())
+                     if (source_path.parent / node.project_path).resolve() == target), None)
+        if span is None:
+            span = next((item.span for item in getattr(project, "contract_imports", ())
+                         if (source_path.parent / item.path).resolve() == target), None)
+        first = min(detailed, key=lambda item: item.severity or types.DiagnosticSeverity.Hint)
+        result.append(types.Diagnostic(
+            range=_lsp_range(span, source.splitlines()),
+            message=f"{target.name}: {counts}. See Error List or open the referenced file for details.",
+            severity=first.severity, code="imported_source_diagnostics", source="uef-gen",
+            related_information=[types.DiagnosticRelatedInformation(
+                location=types.Location(uri=target.as_uri(), range=first.range), message="First diagnostic in the referenced source.")],
+        ))
+    return result
+
+
+def _diagnostics(uri: str, source: str, *, imported: dict[str, list[types.Diagnostic]] | None = None) -> list[types.Diagnostic]:
     """Ask the compiler API for current diagnostics, then adapt them to LSP."""
     source_path = _path_from_uri(uri)
     if source_path is None:
@@ -348,18 +419,7 @@ def _diagnostics(uri: str, source: str) -> list[types.Diagnostic]:
             code="uef-pl-analysis-failed",
             source="uef-gen",
         )]
-    adapted: list[types.Diagnostic] = []
-    for diagnostic in result.diagnostics:
-        severity = {
-            "error": types.DiagnosticSeverity.Error,
-            "warning": types.DiagnosticSeverity.Warning,
-            "information": types.DiagnosticSeverity.Information,
-            "hint": types.DiagnosticSeverity.Hint,
-        }.get(diagnostic.severity, types.DiagnosticSeverity.Warning)
-        # This status is a tooling limitation, not an error in the user's file.
-        if diagnostic.code == "project_language_frontend_incomplete":
-            severity = types.DiagnosticSeverity.Warning
-        adapted.append(types.Diagnostic(range=_lsp_range(diagnostic.span, source.splitlines()), message=diagnostic.message, severity=severity, code=diagnostic.code, source="uef-gen"))
+    adapted = _adapt_diagnostics(result.diagnostics, source_path, source, imported=imported)
     if source_path.suffix.lower() == ".uef":
         adapted.extend(_registry_readiness_diagnostics(source, uetd_root))
     error_count = sum(item.severity == types.DiagnosticSeverity.Error for item in adapted)
@@ -433,9 +493,58 @@ def _registry_readiness_diagnostics(source: str, uetd_root: Path) -> list[types.
     return results
 
 _DIAGNOSTICS_BY_URI: dict[str, tuple[int | None, list[types.Diagnostic]]] = {}
+_IMPORTED_DIAGNOSTICS_BY_URI: dict[str, dict[str, list[types.Diagnostic]]] = {}
 _PENDING_DIAGNOSTICS: dict[str, tuple[int, int | None]] = {}
 _DIAGNOSTIC_TASKS: dict[str, asyncio.Task[None]] = {}
 _DIAGNOSTIC_SEMAPHORE = asyncio.Semaphore(2)
+
+
+def _unique_diagnostics(diagnostics: list[types.Diagnostic]) -> list[types.Diagnostic]:
+    """Avoid duplicate Error List rows when several systems import one file."""
+    unique = {}
+    for item in diagnostics:
+        key = (item.range.start.line, item.range.start.character, item.range.end.line, item.range.end.character,
+               item.severity, str(item.code), item.source, item.message)
+        unique.setdefault(key, item)
+    return list(unique.values())
+
+
+def _diagnostic_document_key(uri: str) -> str:
+    path = _path_from_uri(uri)
+    return os.path.normcase(str(path)) if path is not None else uri
+
+
+def _publish_best_diagnostics(uri: str, *, closing_uri: str | None = None) -> None:
+    """Prefer checked open buffers over imports compiled from saved source."""
+    key = _diagnostic_document_key(uri)
+    closing = _diagnostic_document_key(closing_uri) if closing_uri else None
+    document = next((doc for open_uri, doc in server.workspace.text_documents.items()
+                     if _diagnostic_document_key(open_uri) == key and key != closing), None)
+    version = None
+    if document is not None:
+        cached = next((value for cached_uri, value in _DIAGNOSTICS_BY_URI.items()
+                       if _diagnostic_document_key(cached_uri) == key), None)
+        if cached is None or cached[0] != document.version:
+            return  # Do not overwrite a newer buffer while its analysis is pending.
+        version, diagnostics = cached
+        uri = document.uri
+    else:
+        diagnostics = _unique_diagnostics([
+            item for imports in _IMPORTED_DIAGNOSTICS_BY_URI.values()
+            for target, items in imports.items() if _diagnostic_document_key(target) == key
+            for item in items
+        ])
+    server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(uri=uri, version=version, diagnostics=diagnostics))
+
+
+def _publish_diagnostic_report(uri: str, version: int | None, diagnostics: list[types.Diagnostic],
+                               imported: dict[str, list[types.Diagnostic]]) -> None:
+    """Commit one current analysis, including clearing obsolete imported errors."""
+    previous = _IMPORTED_DIAGNOSTICS_BY_URI.get(uri, {})
+    _DIAGNOSTICS_BY_URI[uri] = (version, diagnostics)
+    _IMPORTED_DIAGNOSTICS_BY_URI[uri] = imported
+    for target in sorted({uri, *previous, *imported}):
+        _publish_best_diagnostics(target)
 
 
 def _start_diagnostic_worker(uri: str) -> None:
@@ -479,7 +588,8 @@ async def _diagnostic_worker(uri: str) -> None:
             async with _DIAGNOSTIC_SEMAPHORE:
                 if _PENDING_DIAGNOSTICS.get(uri) != request:
                     continue
-                diagnostics = await asyncio.to_thread(_diagnostics, uri, source)
+                imported: dict[str, list[types.Diagnostic]] = {}
+                diagnostics = await asyncio.to_thread(_diagnostics, uri, source, imported=imported)
             latest_request = _PENDING_DIAGNOSTICS.get(uri)
             try:
                 current_document = server.workspace.get_text_document(uri)
@@ -491,11 +601,8 @@ async def _diagnostic_worker(uri: str) -> None:
                     _PENDING_DIAGNOSTICS[uri] = (request[0] + 1, current_document.version)
                 continue
 
-            _DIAGNOSTICS_BY_URI[uri] = (document.version, diagnostics)
             _LOGGER.debug("Publishing diagnostics uri=%s version=%s count=%d", uri, document.version, len(diagnostics))
-            server.text_document_publish_diagnostics(
-                types.PublishDiagnosticsParams(uri=uri, version=document.version, diagnostics=diagnostics)
-            )
+            _publish_diagnostic_report(uri, document.version, diagnostics, imported)
             _PENDING_DIAGNOSTICS.pop(uri, None)
             return
     finally:
@@ -521,6 +628,10 @@ def did_save(_ls: LanguageServer, params: types.DidSaveTextDocumentParams) -> No
     if saved_path is not None and (saved_path.name == "api.json" or "registry" in saved_path.parts):
         _catalogue_for_root.cache_clear()
     _request_diagnostics(params.text_document.uri)
+    saved_key = _diagnostic_document_key(params.text_document.uri)
+    for owner, imports in list(_IMPORTED_DIAGNOSTICS_BY_URI.items()):
+        if any(_diagnostic_document_key(target) == saved_key for target in imports):
+            _request_diagnostics(owner)
 
 
 @server.feature(types.TEXT_DOCUMENT_DID_CLOSE)
@@ -528,10 +639,13 @@ def did_close(_ls: LanguageServer, params: types.DidCloseTextDocumentParams) -> 
     """Release per-document diagnostics after the editor closes a buffer."""
     uri = params.text_document.uri
     _DIAGNOSTICS_BY_URI.pop(uri, None)
+    imported = _IMPORTED_DIAGNOSTICS_BY_URI.pop(uri, {})
     _PENDING_DIAGNOSTICS.pop(uri, None)
     task = _DIAGNOSTIC_TASKS.get(uri)
     if task is not None:
         task.cancel()
+    for target in sorted({uri, *imported}):
+        _publish_best_diagnostics(target, closing_uri=uri)
 
 def _registry_completions(uri: str, context: HintContext, source: str) -> list[types.CompletionItem]:
     """Adapt compiler hint providers to LSP completion items."""
@@ -912,7 +1026,8 @@ def _member_completion_items(uri: str, source: str, line_number: int, line: str,
     if path is None or path.suffix.casefold() != ".uef":
         return []
     project = _parse_partial_source(source, path)
-    members = _members_for_receiver(project, _catalogue_for_document(uri), prefix_match.group(1))
+    receiver = prefix_match.group(1)
+    members = _members_for_receiver(project, _catalogue_for_document(uri), receiver)
     member_prefix = prefix_match.group(2) or ""
     start = prefix_match.start(2) if prefix_match.group(2) is not None else prefix_match.end()
     edit_range = types.Range(start=types.Position(line_number, _column_to_utf16(line, start + 1)),
@@ -948,7 +1063,7 @@ def _member_hover_content(project: object, catalogue: AuthoringCatalogue | None,
 @lru_cache(maxsize=1)
 def _system_language_words() -> tuple[str, ...]:
     """Derive .uefs keyword suggestions from its declarative grammar registry."""
-    registry_path = Path(__file__).parents[1] / "system" / "registry.json"
+    registry_path = Path(__file__).parents[1] / "frontends" / "system" / "registry.json"
     try:
         data = json.loads(registry_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -4020,66 +4135,31 @@ async def semantic_tokens(_ls: LanguageServer, params: types.SemanticTokensParam
     return types.SemanticTokens(data=data)
 
 def _formatted_source(source: str, tab_size: int, insert_spaces: bool, trim_trailing: bool) -> str:
-    """Apply deterministic brace indentation while preserving token spelling and line endings."""
-    path = None
-    tokens, _ = Lexer(source, path).tokenize()
-    source_lines = source.splitlines()
-    newline = "\r\n" if "\r\n" in source else "\n"
-    by_line: dict[int, list[object]] = {}
-    for token in tokens:
-        by_line.setdefault(token.span.start.line - 1, []).append(token)
-    indentation = " " * max(1, tab_size) if insert_spaces else "\t"
-    depth = 0
-    rendered: list[str] = []
-    for line_number, original in enumerate(source_lines):
-        stripped = original.strip()
-        line_tokens = [item for item in by_line.get(line_number, ()) if item.kind.value != "newline"]
-        leading_closes = 0
-        for item in line_tokens:
-            if item.kind.value == "}":
-                leading_closes += 1
-            else:
-                break
-        prefix = indentation * max(0, depth - leading_closes) if stripped else ""
-        content = stripped if stripped else ""
-        if not trim_trailing:
-            content = original.lstrip(" \t")
-        rendered.append(prefix + content)
-        for item in line_tokens:
-            if item.kind.value == "{":
-                depth += 1
-            elif item.kind.value == "}":
-                depth = max(0, depth - 1)
-    formatted = newline.join(rendered)
-    return formatted
+    """Use the same token-preserving formatter as the command-line tool."""
+    return format_source(source, tab_size=tab_size, insert_spaces=insert_spaces, trim_trailing=trim_trailing)
+
 
 def _formatting_edit(source: str, tab_size: int, insert_spaces: bool, trim_trailing: bool,
                      insert_final_newline: bool | None, trim_final_newlines: bool | None,
                      start_line: int | None = None, end_line: int | None = None) -> types.TextEdit | None:
-    """Format one complete document or selected line interval with safe indentation."""
-    lines = source.splitlines()
-    if not lines:
+    """Replace the complete document, or only the selected full lines."""
+    if not source:
         return None
-    formatted = _formatted_source(source, tab_size, insert_spaces, trim_trailing)
-    formatted_lines = formatted.splitlines()
-    if len(formatted_lines) < len(lines):
-        formatted_lines.extend([""] * (len(lines) - len(formatted_lines)))
-    first = max(0, start_line or 0)
+    formatted = format_source(source, tab_size=tab_size, insert_spaces=insert_spaces,
+                              trim_trailing=trim_trailing, insert_final_newline=insert_final_newline,
+                              trim_final_newlines=trim_final_newlines)
+    lines = source.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    if start_line is None:
+        if formatted == source:
+            return None
+        end = types.Position(len(lines) - 1, len(lines[-1].encode("utf-16le")) // 2)
+        return types.TextEdit(range=types.Range(start=types.Position(0, 0), end=end), new_text=formatted)
+    formatted_lines = formatted.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    first = max(0, start_line)
     last = min(len(lines) - 1, end_line if end_line is not None else len(lines) - 1)
     if first > last:
         return None
-    if start_line is None:
-        output = formatted
-        if trim_final_newlines:
-            output = output.rstrip("\r\n")
-        if insert_final_newline:
-            output = output.rstrip("\r\n") + ("\r\n" if "\r\n" in source else "\n")
-        if output == source:
-            return None
-        end_line_index = len(lines) - 1
-        end_char = len(lines[-1].encode("utf-16le")) // 2
-        return types.TextEdit(range=types.Range(start=types.Position(0, 0), end=types.Position(end_line_index, end_char)), new_text=output.rstrip("\r\n") if source.endswith(("\n", "\r")) else output)
-    newline = "\r\n" if "\r\n" in source else "\n"
+    newline = "\r\n" if "\r\n" in source else "\r" if "\r" in source else "\n"
     old_text = newline.join(lines[first:last + 1])
     new_text = newline.join(formatted_lines[first:last + 1])
     if old_text == new_text:
@@ -4102,7 +4182,7 @@ def range_formatting(_ls: LanguageServer, params: types.DocumentRangeFormattingP
     document = server.workspace.get_text_document(params.text_document.uri)
     edit = _formatting_edit(document.source, params.options.tab_size, params.options.insert_spaces,
                             params.options.trim_trailing_whitespace is not False, None, None,
-                            params.range.start.line, params.range.end.line)
+                            params.range.start.line, params.range.end.line - (1 if params.range.end.character == 0 and params.range.end.line > params.range.start.line else 0))
     return [edit] if edit else []
 
 @server.feature(types.TEXT_DOCUMENT_FOLDING_RANGE, types.FoldingRangeOptions())

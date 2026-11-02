@@ -1,0 +1,31 @@
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26300.
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke
+MSBuild version 18.10.1-1.26427.6+3cd27c13e for .NET Framework
+
+  Checking File Globs
+  1>Checking Build System
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/CMakeLists.txt
+  diagnostics.c
+  fault_history.c
+  product_session.c
+  statemachine.c
+  supervisor.c
+  watchdog_gate.c
+  secure_update.c
+  memory.c
+  health.c
+  baremetal.c
+  common.c
+  Generating Code...
+  fault.c
+  fault.c
+  uetd_core.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\manual-runtime-smoke\uetd-build\Debug\uetd_core.lib
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/examples/manual_runtime/generated/CMakeLists.txt
+  controller.c
+  manual_runtime.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\manual-runtime-smoke\Debug\manual_runtime.lib
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/examples/manual_runtime/generated/CMakeLists.txt
+  host_main.c
+  manual_application.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\manual-runtime-smoke\Debug\manual_application.exe
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/examples/manual_runtime/generated/CMakeLists.txt

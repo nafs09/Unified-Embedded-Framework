@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "src/umid/data/process_image.c"
+  ],
+  "dependencies": [],
+  "scaffold_only": true,
+  "scaffold_stage": "phase0",
+  "scaffold_reason": "The instance-aware scan contract is defined; validation, staging, atomic publication, and synchronization remain unimplemented.",
+  "headers": [
+    "include/ucore/status.h",
+    "include/ucore/types.h",
+    "include/umid/data/process_image.h"
+  ],
+  "available_for_generation": false,
+  "external_dependencies": [
+    "uproto industrial adapter",
+    "future external endpoint types"
+  ],
+  "phase": 0
+}

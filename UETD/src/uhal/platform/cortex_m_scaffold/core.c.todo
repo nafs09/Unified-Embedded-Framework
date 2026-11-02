@@ -1,0 +1,7 @@
+/* Required platform functions; CPU instruction primitives are in arch/cortex_m.
+ * uetd_u32_t uhal_cpu_freq_hz(void);
+ * uetd_u64_t uhal_cycle_count_64(void);
+ * Read frequency from the verified clock tree. An extended counter is optional:
+ * return zero when unsupported, or document overflow/sleep/clock-change policy.
+ * Do not infer a monotonic timebase from infrequent reads of a wrapping DWT.
+ */

@@ -2,7 +2,7 @@
 /// @file src/ucon/control/nonlinear/feedback_lin.c
 /// @brief Fail-closed operation outline; no algorithm behavior is implemented.
 #include <ucon/control/nonlinear/feedback_lin.h>
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 
 /**
  * Catalogue summary: Exact feedback linearisation; needs `{{INVERSE_DYNAMICS}}` block

@@ -1,0 +1,11 @@
+{
+  "sources": ["src/upal/display/display.c"],
+  "headers": ["include/ucore/status.h", "include/ucore/types.h", "include/upal/display/display.h"],
+  "dependencies": [],
+  "phase": 0,
+  "available_for_generation": false,
+  "contract_status": "provider_interface",
+  "scaffold_reason": "The generic display facade and pixel-loan validation are implemented. A selected panel/controller, memory/bandwidth profile and qualified provider are required before generation.",
+  "external_dependencies": ["selected display/panel provider and exact board memory/DMA profile"],
+  "design_contract": "docs/design/complete-system/MYOVENA_HANDHELD.md"
+}

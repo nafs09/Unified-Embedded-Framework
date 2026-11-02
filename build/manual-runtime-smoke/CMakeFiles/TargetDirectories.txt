@@ -1,0 +1,8 @@
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/CMakeFiles/manual_runtime.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/CMakeFiles/manual_application.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/CMakeFiles/INSTALL.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/CMakeFiles/ALL_BUILD.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/CMakeFiles/ZERO_CHECK.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/uetd-build/CMakeFiles/uetd_core.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/uetd-build/CMakeFiles/INSTALL.dir
+C:/NEXUS/Unified Embedded Framework/build/manual-runtime-smoke/uetd-build/CMakeFiles/ALL_BUILD.dir

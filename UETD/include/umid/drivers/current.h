@@ -10,7 +10,7 @@ extern "C" {
 
 #include "ucore/status.h"
 #include "ucore/types.h"
-#include "upal/adc.h"
+#include "upal/analog/adc.h"
 
 typedef struct {
     upal_adc_t* adc;
@@ -20,8 +20,11 @@ typedef struct {
     uetd_f32_t shunt_ohm;
 } umid_current_t;
 
+/// Initialize the current sensor adapter.
 uetd_status_t umid_current_init(umid_current_t* cs);
+/// Read the measured current in amperes.
 uetd_f32_t umid_current_read_a(const umid_current_t* cs);
+/// Calibrate the current sensor's zero offset from the ADC readings.
 uetd_status_t umid_current_calibrate_zero(umid_current_t* cs);
 
 #ifdef __cplusplus

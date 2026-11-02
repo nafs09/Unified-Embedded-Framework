@@ -6,7 +6,7 @@
 
 #include <ucore/status.h>
 #include <ucore/types.h>
-#include <upal/sdmmc.h>
+#include <upal/storage/sdmmc.h>
 
 #ifdef __cplusplus
 extern "C" {

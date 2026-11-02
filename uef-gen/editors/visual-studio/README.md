@@ -1,6 +1,6 @@
 # UEF Project Language for Visual Studio
 
-This folder scaffolds a native Visual Studio VSIX for `.uef` and `.uefs` files.
+This folder builds a native Visual Studio VSIX for `.uef` and `.uefs` files.
 It is aimed at Visual Studio Professional 2026 and uses the Visual Studio 17.x
 extension API surface so the same package can also support Visual Studio 2022.
 The manifest has no upper version bound; Microsoft documents that VS2022
@@ -40,6 +40,31 @@ not resolve to it. Set `UETD_PATH` to the UETD checkout if it is not
 discoverable next to the project.
 
 ## Build and launch
+
+The 0.1.15 local rebuild uses the updated shared language server with repaired
+flags parsing and member completion, imported-source diagnostic links, and
+block/continuation formatting with corrected newline and selection handling.
+The VSIX contains the native Visual Studio client, classifications, grammars,
+and language configuration; Python tooling remains a separate editable install.
+It is distinct from the VS Code extension, whose `.vsix` format targets a
+different editor. Use `UEF.ProjectLanguage.VisualStudio-0.1.15.vsix` for Visual Studio.
+
+Version 0.1.15 corrects oversized Quick Info popups on system nodes. Each
+imported source contributes one count summary on the node; its complete
+diagnostics appear under the referenced file in Error List. Open buffers take
+precedence over diagnostics from saved imports. Saving the referenced file
+refreshes the system summary; removing an import or closing the last importing
+system clears its stale Error List entries. Restart Visual Studio after updating
+so its existing Python language-server process reloads the editable source.
+
+From this folder, an installed Visual Studio MSBuild can produce the release
+package without deploying it into the experimental hive:
+
+```powershell
+& "C:\Program Files\Microsoft Visual Studio\18\Professional\MSBuild\Current\Bin\MSBuild.exe" `
+  .\src\UEF.ProjectLanguage.VisualStudio\UEF.ProjectLanguage.VisualStudio.csproj `
+  /t:Rebuild /p:Configuration=Release /p:DeployExtension=false /p:CopyVsixExtensionFiles=false
+```
 
 1. Open `UEF.ProjectLanguage.VisualStudio.sln` in Visual Studio.
 2. Restore NuGet packages and build the VSIX project.

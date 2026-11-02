@@ -3,7 +3,7 @@
 /// @brief Initial-wave fail-closed module outline for EKF.
 #ifndef UETD_UCON_SCAFFOLD_EKF_H
 #define UETD_UCON_SCAFFOLD_EKF_H
-#include <ucon/detail/algorithm_call.h>
+#include <ucon/algorithm_call.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -56,7 +56,8 @@ ucon_status_t ucon_ekf_predict(const ucon_algorithm_scaffold_call_t* call);
 
 /// Apply valid measurement channels and produce innovation diagnostics.
 /// TODO(EKF.correct): 1) Select only channels marked present; evaluate h(x_pred) and H at the
-/// documented point. 2) Form ν=z−h(x_pred), S=H P_pred Hᵀ+R, and solve S
+/// documented point.
+/// 2) Form ν=z−h(x_pred), S=H P_pred Hᵀ+R, and solve S
 /// w=ν without an explicit inverse; compute K from the same factorization.
 /// 3) Apply the configured normalized-innovation gate, then update x and
 /// use a Joseph-form covariance update; validate and commit together, or

@@ -2,7 +2,7 @@
 /// @brief Four-dimensional vector operations.
 #include <math.h>
 #include <stddef.h>
-#include <umath/internal/scalar_math.h>
+#include <umath/internal_scalar_math.h>
 #include <umath/scalar.h>
 #include <umath/vector/vector4.h>
 

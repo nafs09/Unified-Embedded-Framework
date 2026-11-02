@@ -50,13 +50,13 @@ facts remain required for target qualification.
 | Layer | Current state | Remaining capability gaps |
 |---|---|---|
 | UCORE | Shared storage types, status conversion, time API, assertions, and limits are present. Target-selected UHAL supplies the time implementation. | Integer-overflow, time-source, and assertion policies are not fully qualified across supported compilers and targets. |
-| UMATH | Shared scalar/fixed-point, vector, complex, matrix/Cholesky, quaternion, rigid-transform, and polynomial APIs are implemented. The catalogue classifies 19 Phase 0 priority scaffolds, 3 Phase 1 scaffolds, and one later sparse-CSR scaffold; all remain fail-closed and unavailable to generation. | The Phase 0 math foundation for nonlinear estimators, spectral PLL work, and predictive control is not yet implemented and numerically qualified. Scaffold operations remain unavailable to generation. |
-| UHAL | Host simulation exists. Cortex-M APIs have declarations and target sources; most target functions remain no-op or neutral scaffolds. Target-family records describe six families but are not exact-part board profiles. | Clock, GPIO, IRQ/NVIC, cache/MPU, memory, timing, fault-capture, and atomic behavior is not qualified for a selected board. |
-| UPAL | Per-peripheral APIs and source files exist, including SDMMC and separate FDCAN-FD. Most operations return `UETD_NOT_SUPPORTED` or are no-op scaffolds. | Target-backed DMA, serial, timer, conversion, CAN, storage, watchdog, and other drivers remain incomplete. Phase 1 SDMMC/FDCAN are not hardware-ready. |
+| UMATH | Shared scalar/fixed-point, vector, complex, matrix/Cholesky, quaternion, rigid-transform, and polynomial APIs are implemented. The catalogue classifies 20 Phase 0 entries, 3 Phase 1 entries, and one later sparse-CSR entry that remain generation-blocked. Generic-vector and dual-number direct-C functions are implemented within those blocked identities; 73 public math operations still return not-implemented. | The Phase 0 math foundation for nonlinear estimators, spectral PLL work, and predictive control is not yet implemented and numerically qualified. Scaffold operations remain unavailable to generation. |
+| UHAL | Host simulation exists. Cortex-M APIs have declarations and target sources; most target functions remain no-op or neutral scaffolds. The registries describe 68 families and seven C family-profile scaffolds; all 16 physical board records remain generation-unavailable. | Clock, GPIO, IRQ/NVIC, cache/MPU, memory, timing, fault-capture, and atomic behavior is not qualified for a selected board. |
+| UPAL | Per-peripheral APIs and source files exist, including SDMMC and separate FDCAN-FD. Active portable contracts cover external radio buses, packet netifs, Ethernet MAC/PHY and the generic display facade; IEEE 802.15.4 remains a future frame-provider outline. | Most peripheral operations remain fail-closed. No radio/network provider or exact target has been integrated or qualified; target-backed DMA, serial, timer, conversion, CAN, storage, and watchdog drivers also remain incomplete. |
 | UOS | Bare-metal and FreeRTOS source surfaces exist. Bare-metal synchronization calls are unsupported stubs. FreeRTOS Kernel 11.3.1 is staged with an upstream lock and one generic ARM Cortex-M4F GCC source profile; the copied tree has not been checksum-compared with upstream, and no board is qualified. The API still uses ambiguous result forms, backend time epochs differ, and deadline updates are unchecked. A SafeRTOS operation outline exists but is not selectable. | Define status-returning poll/timeout semantics, common monotonic time, transactional deadlines, ISR context, object lifetime/concurrency, and complete target ABI storage checks. The generic profile still requires a matching toolchain and `FreeRTOSConfig.h`; exact startup, clock, linker, interrupt priorities, and hardware evidence are target-specific. See the [UOS API contract](../design/UOS_CONTRACTS.md). |
-| UMID | Ring buffer, bounded health registry, coherent snapshots, freshness query, and bounded UART text logger are implemented. Device-specific drivers remain consumer-authored scaffolds; persistent storage, calibration records, and binary blackbox are design-only future services. | Device/board drivers, calibration, synchronization, timestamps, stale-data behavior, UPAL error mapping, and SDMMC/FatFS integration remain incomplete. Future storage contracts need atomic commit, recovery, and backend semantics. |
-| UPROTO | PPM is a fixed-memory interval decoder. DSHOT, CRSF, SBUS, MAVLink, and UAVCAN/DroneCAN APIs remain fail-closed. Six Part XV.3 future modules have operation-level outlines but no stable typed contract, output template, or dispatch entry. | Implementations and contracts for current protocol cores, transport boundaries, and deferred-processing contexts remain incomplete; future modules remain non-selectable. |
-| UAPP | Transitional component lifecycle, bounded run-to-completion event/state machine, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and task-context fault dispatch exist. The FSM is single-owner, flat, non-ISR-safe, and requires static configuration-table lifetimes. Its queue rejects newest events with `UETD_OVERFLOW`; critical-event recovery is application-owned. Fatal backup metadata still has zero PC/LR placeholders; durable crash history and secure update remain design-only future services. | Safe-state cleanup after callback failure, richer hierarchy, target watchdog qualification, and architecture-captured crash context with retained-record handling remain incomplete. |
+| UMID | Ring buffer, bounded health registry, coherent snapshots, freshness query, and bounded transport-neutral text logger are implemented. UART is an optional sink adapter; a project may provide a bounded BLE/WiFi/IP sink without adding UPROTO dependencies. Device-specific drivers remain consumer-authored scaffolds. Storage, calibration, binary blackbox, and process-image APIs have first-pass headers, source stubs, and blocked module records. | Device/board drivers, calibration, synchronization, timestamps, stale-data behavior, UPAL error mapping, and SDMMC/FatFS integration remain incomplete. First-pass data services still need committed implementations, integrity/recovery rules, and backend semantics. |
+| UPROTO | PPM is a fixed-memory interval decoder. DSHOT, CRSF, SBUS, MAVLink, and UAVCAN/DroneCAN APIs remain fail-closed. Active typed provider APIs cover WiFi, Bluetooth LE/Classic SPP, and IP/DHCP/DNS/sockets; TLS/DTLS, MQTT, HTTP, Modbus and CANopen CC are first-pass outlines. PPP, CoAP, Thread/Zigbee and separate CANopen FD/USDO remain later outlines. Myovena MEDI CAN is a separate fail-closed protocol-extension scaffold with planned reliable delivery and execution gating. | Active APIs do not supply vendor radios or network/security stacks. No provider or exact target is integrated or qualified; current UHAL target selection does not include ESP-IDF. Existing protocol cores and target integrations remain incomplete; provider memory/timing/security contracts still require exact-board qualification. |
+| UAPP | Transitional component lifecycle, bounded run-to-completion event/state machine, periodic status/staleness supervisor, health-lease watchdog gate, bounded recoverable-fault queue, and task-context fault dispatch exist. The FSM is single-owner, flat, non-ISR-safe, and requires static configuration-table lifetimes. Its queue rejects newest events with `UETD_OVERFLOW`; critical-event recovery is application-owned. Fatal backup metadata still has zero PC/LR placeholders; durable crash history and secure update remain design-only first-pass services. | Safe-state cleanup after callback failure, richer hierarchy, target watchdog qualification, and architecture-captured crash context with retained-record handling remain incomplete. |
 | UCON | Detailed catalogue and function-level scaffolds are covered by `UCON_CATALOGUE_AUDIT.md`. PID and lead-lag are the only registered implementations. | CKF wording, DEADBEAT_MPC priority conflicts, and typed contracts for additional algorithms remain unresolved. |
 
 ## Current implementation contracts
@@ -72,9 +72,10 @@ facts remain required for target qualification.
 - Recoverable faults enter a bounded RAM queue with copied detail, monotonic
   timestamps, a dropped counter, and task-context dispatch. Fatal reset metadata
   still uses placeholder PC/LR values; retained crash history remains a
-  separate future service.
-- Future protocol outlines and target profiles remain fail-closed and outside
-  normal selectable capabilities.
+  separate first-pass service.
+- First-pass and later protocol outlines and target profiles remain
+  fail-closed and outside normal selectable capabilities. Scope placement
+  does not change their implementation or qualification status.
 
 ## Target and release gaps
 
@@ -91,7 +92,7 @@ facts remain required for target qualification.
    The public transport and execution-context contract remains unresolved.
 5. **Fault API:** recoverable faults are queued in RAM; fatal reports still use
    placeholder PC/LR values. Retained crash context and reset-safe persistence
-   are separate future contracts.
+   are separate first-pass contracts.
 6. **Concurrency:** ring-buffer, logger, health-snapshot, and critical-section
    ownership is bounded to documented single-core patterns. CRSF/SBUS frame
    freshness, parser context, and host multi-threaded behavior need explicit
@@ -135,23 +136,17 @@ library/license inputs, bounded memory/work, and UETD-owned wrapper templates.
 
 The catalogue was reclassified after checking it against the active NEXUS work:
 nonlinear ES-EKF/InEKF/UKF, predictive control, PLL/spectral control, trajectory
-generation, and the planned medical estimator. Phase 0 now contains 19
-scaffolds, including Jacobians and forward-mode autodiff, quadrature/ODE steps,
+generation, and the planned medical estimator. Phase 0 now contains 20
+generation-blocked entries, including Jacobians and forward-mode autodiff, quadrature/ODE steps,
 FFT/windows, SO(3)/SE(3), LU/LDLᵀ/QR/SVD/eigensystems, probability/statistics,
 least squares, and trajectory math. Phase 1 contains SO(2), SE(2), and seeded
 random streams. Sparse CSR is the sole later UMATH scaffold.
 
-A static consistency pass confirmed 34 UMATH registry entries match the phase
-lists and their declared source/header/dependency paths resolve. All 122
-UMATH status-returning declarations have source definitions. The 23
-scaffold-only module records remain unavailable to generation, and every
-scaffold function has a focused TODO in its source.
+The refreshed inventory contains 35 UMATH module records and 331 public function declarations. All declared source/header paths resolve. Of these declarations, 258 have source or inline bodies without a not-implemented return and 73 remain fail-closed. The 24 blocked module identities include implemented direct-C generic vectors and dual numbers awaiting binding review.
 
-These phase labels change implementation order only. The scaffold APIs remain
-outside the stable umbrella, carry `available_for_generation: false`, and
-return `UMATH_NOT_IMPLEMENTED`. Phase 0/1 outline translation units compile in
+These phase labels change implementation order only. The unimplemented scaffold APIs remain outside the stable umbrella, carry `available_for_generation: false`, and return `UMATH_NOT_IMPLEMENTED`. Direct-C implementations in blocked module identities must be distinguished from those stubs. Phase 0/1 outline translation units compile in
 the normal UETD source set; the CMake future option applies only to the later
-`src/umath/future/` directory. FFT/windowing is prioritized for spectral PLL
+`src/umath/matrix/sparse_csr.c` file (excluded from the default library). FFT/windowing is prioritized for spectral PLL
 acquisition, harmonic analysis, and diagnostics; PLL loops that use a time-domain
 phase detector may not need an FFT in every update. UCON retains PID/integrator
 state and anti-windup behavior, while UMATH supplies reusable quadrature and
@@ -160,11 +155,12 @@ ODE operations for control and model propagation.
 ## Future catalogue boundary
 
 The machine-readable future catalogue is available for roadmap inspection and
-reference integrity. It remains disconnected from selectable module registries,
-project completion, umbrella headers, and generation routes. Future entries
+reference integrity. Its design-only status does not grant module selection or generation. Some future capabilities also have explicitly blocked module records for source discovery; cross-index presence does not grant readiness. Future entries
 become capabilities only after their contracts, implementations, target
 bindings, and qualification evidence are complete.
 
 The watchdog gate supervises refreshes routed through its injected callback;
 direct hardware feeds outside that route remain outside the generic API's
-control. Future security, storage, and evidence contracts remain proposals.
+control. First-pass security/storage interfaces now have typed unsupported
+scaffolds, while host evidence obligations have a separate blocked generation
+catalogue. Neither establishes completed runtime or source-to-image behavior.

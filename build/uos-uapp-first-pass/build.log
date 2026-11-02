@@ -1,0 +1,175 @@
+MSBuild version 18.10.1-1.26427.6+3cd27c13e for .NET Framework
+
+  Checking File Globs
+  1>Checking Build System
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uetd_canopen_fd_scaffold_contracts.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  manual_tasks_contracts.c
+  uetd_medi_can_scaffold_contracts.c
+  uetd_target_profile_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_target_profile_scaffold_contracts.exe
+  uetd_first_pass_service_scaffolds.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  supervisor.c
+  tasks.c
+  Generating Code...
+  watchdog_gate.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_supervision_contracts.c
+  ucon_scaffold_contracts.c
+  fault_history.c
+  uetd_umath_scaffold_contracts.c
+  current.c
+  Generating Code...
+  statemachine.c
+  encoder.c
+  supervisor.c
+  gnss.c
+  watchdog_gate.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  imu.c
+  cache.c
+  mag.c
+  clock.c
+  pressure.c
+  uetd_medi_can_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_medi_can_scaffold_contracts.exe
+  uetd_canopen_fd_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_canopen_fd_scaffold_contracts.exe
+  memory.c
+  temp.c
+  uos_freertos_contracts.c
+  current.c
+  voltage.c
+  encoder.c
+  uetd_umid_scaffold_contracts.c
+  gnss.c
+  freertos.c
+  imu.c
+  Generating Code...
+  mag.c
+  uetd_manual_tasks_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_manual_tasks_contracts.exe
+  common.c
+  pressure.c
+  uetd_uapp_supervision_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_supervision_contracts.exe
+  uos_freertos_contracts.c
+  core.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  temp.c
+  voltage.c
+  uetd_first_pass_service_scaffolds.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_first_pass_service_scaffolds.exe
+  uetd_umath_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_umath_scaffold_contracts.exe
+  log_uart.c
+  freertos.c
+  baremetal.c
+  adc.c
+  dac.c
+  common.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  capability_contracts.c
+  core.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Generating Code...
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uetd_umid_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_umid_scaffold_contracts.exe
+  timing.c
+  uos_freertos_contracts.c
+  tasks.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Compiling...
+  cordic.c
+  uetd_ucon_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_ucon_scaffold_contracts.exe
+  uetd_upal_fdcan_fd_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_upal_fdcan_fd_scaffold_contracts.exe
+  dma.c
+  freertos.c
+  list.c
+  i2c.c
+  uetd_uos_safertos_scaffold_contracts.c
+  spi.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  queue.c
+  timing.c
+  uart.c
+  common.c
+  tasks.c
+  qspi.c
+  core.c
+  baremetal.c
+  sdmmc.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  event_groups.c
+  hrtim.c
+  list.c
+  timer.c
+  timers.c
+  adc.c
+  crsf.c
+  queue.c
+  dshot.c
+  dac.c
+  port.c
+  sbus.c
+  capability_contracts.c
+  uproto_scaffold_contracts.c
+  Generating Code...
+  event_groups.c
+  cordic.c
+  timing.c
+  dma.c
+  timers.c
+  tasks.c
+  crsf.c
+  i2c.c
+  spi.c
+  port.c
+  dshot.c
+  uetd_uos_safertos_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_safertos_scaffold_contracts.exe
+  uetd_uos_time_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_time_contracts.exe
+  uart.c
+  list.c
+  sbus.c
+  qspi.c
+  uetd_uproto_scaffold_contracts.c
+  sdmmc.c
+  queue.c
+  hrtim.c
+  timer.c
+  Generating Code...
+  uetd_upal_scaffold_contracts.c
+  event_groups.c
+  Generating Code...
+  uetd_uproto_future_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uproto_future_scaffold_contracts.exe
+  timers.c
+  port.c
+  Generating Code...
+  Generating Code...
+  fault.c
+  uetd_uproto_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uproto_scaffold_contracts.exe
+  uetd_upal_scaffold_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_upal_scaffold_contracts.exe
+  Generating Code...
+  uetd_uos_freertos_16.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_freertos_16.exe
+  fault.c
+  uetd_uos_freertos_32.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_freertos_32.exe
+  uetd_uos_freertos_64.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uos_freertos_64.exe
+  uetd_core.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\Debug\uetd_core.lib
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uapp_runtime_contracts.c
+  uetd_uapp_update_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_update_contracts.exe
+  uetd_display_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_display_contracts.exe
+  uapp_services_contracts.c
+  Building Custom Rule C:/NEXUS/Unified Embedded Framework/UETD/tests/CMakeLists.txt
+  uetd_uapp_runtime_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_runtime_contracts.exe
+  portable_runtime_contracts.c
+  uetd_uapp_services_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_uapp_services_contracts.exe
+  uetd_first_pass_expansion_contracts.c
+  uetd_portable_runtime_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_portable_runtime_contracts.exe
+  uetd_first_pass_expansion_contracts.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\Debug\uetd_first_pass_expansion_contracts.exe
+  uetd_example.vcxproj -> C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\Debug\uetd_example.exe

@@ -4,6 +4,7 @@
     <LangVersion>7.3</LangVersion>
     <RootNamespace>UEF.ProjectLanguage.VisualStudio</RootNamespace>
     <AssemblyName>UEF.ProjectLanguage.VisualStudio</AssemblyName>
+    <Version>0.1.15</Version>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>

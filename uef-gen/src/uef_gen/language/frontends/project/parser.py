@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 from uef_gen.language.frontends.project.ast import (AlgorithmStage, BinaryExpression, BoundedLoop, CastExpression, CompositionLocal, CompositionOutput, CompositionStage,
                                           ConditionalStatement, ContractImport, Declaration, EnumDefinition, EnumVariant, Equation, FixedPointDefinition,
-                                          FlagsDefinition, FlagsMember, Identifier, IndexExpression, IndexSubscript, ListValue, Literal, MatchArm, MatchExpression,
+                                          FlagsDefinition, FlagsMember, FlagsOperationExpression, Identifier, IndexExpression, IndexSubscript, ListValue, Literal, MatchArm, MatchExpression,
                                           MatrixLiteral, MathCallExpression, Property, ProjectDocument, RecordBoundary, RecordDefinition, RecordValue, Reference,
                                           SelectValue, SourcePosition, SourceSpan, TypeSpec, TypedBinding, UnaryExpression, UnitConversionExpression, VariantCaseDefinition,
                                           VariantConstructorExpression, VariantDefinition)
@@ -84,6 +84,15 @@ class Parser:
                 elif word == "numeric":
                     self._claim_section(seen, "numeric")
                     declarations.append(self._parse_numeric())
+                elif word == "hardware":
+                    self._claim_section(seen, "hardware")
+                    self._require_before_runtime(runtime_seen, "hardware profile")
+                    start_hardware = self._advance()
+                    properties = self._parse_property_block()
+                    names = [item.name for item in properties]
+                    if len(names) != len(set(names)):
+                        self._error("duplicate_hardware_property", "Hardware properties must be unique.", start_hardware.span)
+                    declarations.append(Declaration("hardware", None, None, properties=tuple(properties), span=self._join(start_hardware.span, self._previous().span)))
                 elif word == "parameter":
                     self._require_before_runtime(runtime_seen, "project parameter")
                     parameters.append(self._parse_project_parameter())

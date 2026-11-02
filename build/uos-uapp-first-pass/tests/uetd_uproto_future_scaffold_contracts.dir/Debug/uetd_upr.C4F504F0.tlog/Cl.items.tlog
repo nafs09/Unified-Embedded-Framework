@@ -1,0 +1,7 @@
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\future\j1939.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\j1939.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\can\future\uavcan_v1.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\uavcan_v1.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\industrial\iec60870.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\iec60870.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\industrial\lin.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\lin.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\future\elrs.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\elrs.obj
+C:\NEXUS\Unified Embedded Framework\UETD\src\uproto\rc\future\msp.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\msp.obj
+C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uproto_scaffold_contracts.c;C:\NEXUS\Unified Embedded Framework\build\uos-uapp-first-pass\tests\uetd_uproto_future_scaffold_contracts.dir\Debug\uproto_scaffold_contracts.obj
